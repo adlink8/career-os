@@ -1,0 +1,10 @@
+{
+  "id": "judge0",
+  "name": "Judge0 代码执行适配器",
+  "version": "1.0.0",
+  "capabilities": ["code_runner"],
+  "entrypoint": "plugins.judge0.adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "GPL-3.0",
+  "description": "通过 JUDGE0_URL 接入自托管 Judge0；未配置时不启用。"
+}

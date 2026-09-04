@@ -1,0 +1,14 @@
+.git
+.gitignore
+.planning
+tmp
+__pycache__
+*.pyc
+data/cv
+data/analysis
+data/jobs
+data/tracker.tsv.local
+config/profile.yml
+config/personal-data-warehouse.yml
+*.pdf
+*.docx

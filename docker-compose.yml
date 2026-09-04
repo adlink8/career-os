@@ -1,0 +1,17 @@
+services:
+  career-os:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: career-os:local
+    environment:
+      CAREER_OS_DB_PATH: /app/data/career_jobs.sqlite
+      CAREER_OS_PLUGINS: ${CAREER_OS_PLUGINS:-}
+      CAREER_OS_LLM_BASE_URL: ${CAREER_OS_LLM_BASE_URL:-}
+      CAREER_OS_LLM_MODEL: ${CAREER_OS_LLM_MODEL:-gpt-4o-mini}
+      CAREER_OS_LLM_TIMEOUT_SECONDS: ${CAREER_OS_LLM_TIMEOUT_SECONDS:-30}
+    volumes:
+      - ./data:/app/data
+    stdin_open: true
+    tty: true
+    command: ["python", "bin/career_jobs_cli.py", "stats"]

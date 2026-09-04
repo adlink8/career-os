@@ -1,0 +1,16 @@
+# Generated local config is written to judge0.conf by scripts/deploy-judge0.ps1.
+# Keep this file free of secrets. Judge0 requires non-empty Redis/Postgres passwords.
+JUDGE0_TELEMETRY_ENABLE=false
+ENABLE_WAIT_RESULT=true
+ENABLE_NETWORK=false
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=CHANGE_ME
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DB=judge0
+POSTGRES_USER=judge0
+POSTGRES_PASSWORD=CHANGE_ME
+AUTHN_HEADER=X-Auth-Token
+AUTHN_TOKEN=CHANGE_ME
+ALLOW_ORIGIN=http://127.0.0.1

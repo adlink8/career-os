@@ -1,0 +1,64 @@
+# Career OS — gitignore
+
+# 个人隐私数据(DATA-03):简历全系列、个人评估、岗位清单与抓取数据,仅本地
+data/cv/
+data/analysis/
+data/jobs/
+
+# 真实求职画像(含姓名/出生年/学校/手机等),仅本地保留
+# skill 运行时读取 config/profile.yml;提交时用 config/profile.example.yml 脱敏样本
+config/profile.yml
+
+# 本机数据仓库路径（含绝对路径）
+config/personal-data-warehouse.yml
+
+# 本地投递记录含真实公司沟通,默认不公开;如需公开请改为脱敏版
+data/tracker.tsv.local
+
+# 本地数据库与备份文件（含真实信息与运行状态，绝不上云）
+data/*.sqlite*
+data/*.db
+data/*.bak
+*.sqlite
+*.sqlite3
+*.db
+
+# 抓取、爬虫分析数据与临时报表
+data/tianyancha/
+data/aispeech_campus_jobs_*.json
+data/job_target_*.json
+
+# 临时目录与临时脚本/调试参数
+tmp/
+tmp_*.py
+tc_params.json
+
+# 个人简历、证件照及导出产物全格式拦截（纯占位模板保留在 templates/）
+*.pdf
+*.docx
+*.jpg
+*.jpeg
+*.png
+
+# 独立子 Git 仓库与子项目
+adlink8-profile/
+
+# 历史备份文件
+docs/*.backup
+*.backup
+
+# 系统与开发环境文件
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode/
+.idea/
+
+# Local Judge0 deployment secrets/runtime env
+deploy/judge0/judge0.conf
+deploy/judge0/runtime.env
+

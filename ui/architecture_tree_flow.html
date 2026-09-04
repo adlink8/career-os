@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏛️ 系统自顶向下分解树与代码全景透视</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #0b1120;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部 Header */
+        header {
+            background-color: #0f172a;
+            border-bottom: 1px solid #1e293b;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title { font-size: 18px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        .header-subtitle { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+        
+        .tab-btn {
+            background: #1e293b;
+            color: #94a3b8;
+            border: 1px solid #334155;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover { background: #334155; color: #fff; }
+        .tab-btn.active {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        /* 主体双栏布局 */
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+            padding: 20px;
+            overflow: hidden;
+            height: calc(100vh - 75px);
+        }
+
+        .canvas-section {
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* 树状视图 */
+        .root-box {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
+            cursor: pointer;
+        }
+        .root-tag { font-size: 11px; font-weight: 700; color: #38bdf8; letter-spacing: 1px; }
+        .root-title { font-size: 16px; font-weight: 700; color: #ffffff; margin: 4px 0; }
+        .root-desc { font-size: 12px; color: #94a3b8; }
+
+        .tree-line-v {
+            width: 2px;
+            height: 24px;
+            background: #38bdf8;
+            margin: 0 auto;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .module-card {
+            background: #131d31;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 8px;
+        }
+        .module-title { font-size: 13px; font-weight: 700; }
+        .module-tag { font-size: 11px; color: #64748b; font-family: monospace; }
+
+        .file-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .file-item:hover {
+            border-color: #38bdf8;
+            background: #25334d;
+            transform: translateX(3px);
+        }
+        .file-item.selected {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.15);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+        .file-name { font-size: 12px; font-weight: 600; font-family: 'Fira Code', Consolas, monospace; color: #f1f5f9; }
+        .file-desc { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        /* 颜色分类 */
+        .color-blue { color: #60a5fa; border-color: #2563eb; }
+        .color-cyan { color: #38bdf8; border-color: #0284c7; }
+        .color-purple { color: #c084fc; border-color: #9333ea; }
+        .color-emerald { color: #34d399; border-color: #059669; }
+        .color-orange { color: #fb923c; border-color: #ea580c; }
+        .color-pink { color: #f472b6; border-color: #db2777; }
+        .color-indigo { color: #818cf8; border-color: #4f46e5; }
+
+        /* 右侧详情视窗 */
+        .detail-panel {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+        .detail-header {
+            background: #0b1120;
+            padding: 12px 16px;
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .detail-body {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .detail-title { font-size: 15px; font-weight: 700; color: #ffffff; }
+        .detail-path { font-size: 11px; font-family: monospace; color: #38bdf8; background: #1e293b; padding: 6px 10px; border-radius: 6px; word-break: break-all; }
+        .detail-desc { font-size: 12px; line-height: 1.6; color: #cbd5e1; }
+        
+        .pitch-card {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .pitch-label { font-size: 11px; font-weight: bold; color: #38bdf8; margin-bottom: 4px; display: flex; items-center; gap: 4px; }
+        .pitch-text { font-size: 12px; line-height: 1.6; color: #e2e8f0; }
+
+        .code-block {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #34d399;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* 隐藏类 */
+        .hidden { display: none !important; }
+
+        /* 流图容器 */
+        .flow-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .flow-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .flow-box {
+            background: #131d31;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .flow-arrow-down {
+            text-align: center;
+            font-size: 18px;
+            color: #38bdf8;
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header>
+        <div>
+            <div class="header-title">🏛️ 系统架构自顶向下分解与代码全景中枢</div>
+            <div class="header-subtitle">将 22 个工程、28GB 湖仓与软硬件连接完整白盒化呈现</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button id="btn-tree" class="tab-btn active" onclick="switchView('tree')">🌲 自顶向下分解树 (手绘图 2)</button>
+            <button id="btn-flow" class="tab-btn" onclick="switchView('flow')">🔄 模块数据流向网络 (手绘图 1)</button>
+        </div>
+    </header>
+
+    <!-- 主体双栏 -->
+    <main>
+        
+        <!-- 左侧画布区 -->
+        <section class="canvas-section">
+            
+            <!-- 视图一：自顶向下分解树 -->
+            <div id="view-tree">
+                
+                <!-- 顶层根节点 -->
+                <div class="root-box" onclick="showDetail('root')">
+                    <div class="root-tag">LEVEL 1 · 顶层总系统 (SYSTEM ROOT)</div>
+                    <div class="root-title">智能数据湖仓与多源决策操作系统 (PKS & Career OS)</div>
+                    <div class="root-desc">承载 22 个工程、28GB 异构湖仓、14,031 条证据链与 59 家企业校招中枢</div>
+                </div>
+
+                <div class="tree-line-v"></div>
+
+                <!-- 7 大功能模块网格 -->
+                <div class="modules-grid">
+                    
+                    <!-- 模块 1: 数据摄取清洗 -->
+                    <div class="module-card color-blue">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #60a5fa;">📦 模块一: 数据摄取与规范化</div>
+                            <div class="module-tag">Ingestion Pipeline</div>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'canonical_pipe')">
+                            <div>
+                                <div class="file-name">canonical_pipeline.py</div>
+                                <div class="file-desc">17.8 万条对话规范化清洗与敏感密钥剥离</div>
+                            </div>
+                            <span class="badge" style="background:#1e3a8a; color:#93c5fd;">Python</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'google_importer')">
+                            <div>
+                                <div class="file-name">google_takeout_importer.py</div>
+                                <div class="file-desc">Google Takeout / ChatGPT JSON 异构摄取</div>
+                            </div>
+                            <span class="badge" style="background:#1e3a8a; color:#93c5fd;">Python</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'db_canonical')">
+                            <div>
+                                <div class="file-name">agent_conversations.sqlite</div>
+                                <div class="file-desc">178,131 条规范消息权威主库 (SSOT)</div>
+                            </div>
+                            <span class="badge" style="background:#0c4a6e; color:#7dd3fc;">SQLite</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 2: 核心湖仓与不可变证据 -->
+                    <div class="module-card color-cyan">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #38bdf8;">📦 模块二: 核心湖仓与证据治理</div>
+                            <div class="module-tag">Lakehouse Core</div>
+                        </div>
+                        <div class="file-item selected" onclick="selectItem(this, 'db_evidence')">
+                            <div>
+                                <div class="file-name">personal_system.sqlite</div>
+                                <div class="file-desc">14,031 条证据库 (挂载不可变触发器)</div>
+                            </div>
+                            <span class="badge" style="background:#0c4a6e; color:#7dd3fc;">SQLite</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'db_semantic')">
+                            <div>
+                                <div class="file-name">semantic_mvp_v3.sqlite</div>
+                                <div class="file-desc">7,400 个知识单元 (KU) 与实体事实卡片</div>
+                            </div>
+                            <span class="badge" style="background:#0c4a6e; color:#7dd3fc;">SQLite</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'ku_repo')">
+                            <div>
+                                <div class="file-name">ku_repository.py</div>
+                                <div class="file-desc">SQLite 事务回滚控制与防篡改触发器注入</div>
+                            </div>
+                            <span class="badge" style="background:#1e3a8a; color:#93c5fd;">Python</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 3: 语义检索与 MCP 接口 -->
+                    <div class="module-card color-purple">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #c084fc;">📦 模块三: 语义检索与自研 MCP</div>
+                            <div class="module-tag">Retrieval & MCP</div>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'mcp_server')">
+                            <div>
+                                <div class="file-name">mcp_server.py</div>
+                                <div class="file-desc">自研标准 MCP Server · 暴露 14+ 受控工具</div>
+                            </div>
+                            <span class="badge" style="background:#581c87; color:#d8b4fe;">Protocol</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'retriever')">
+                            <div>
+                                <div class="file-name">multi_layer_retriever.py</div>
+                                <div class="file-desc">分层多维索引检索算法 (查询延迟 &lt; 50ms)</div>
+                            </div>
+                            <span class="badge" style="background:#1e3a8a; color:#93c5fd;">Python</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 4: 质量门禁与自动化测试 -->
+                    <div class="module-card color-emerald">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #34d399;">📦 模块四: 质量防御与自动化测试</div>
+                            <div class="module-tag">Quality Gates</div>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'preflight')">
+                            <div>
+                                <div class="file-name">preflight.py</div>
+                                <div class="file-desc">13 道代码与数据发布门禁 (密钥/断言/外键)</div>
+                            </div>
+                            <span class="badge" style="background:#064e3b; color:#6ee7b7;">Gate</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'tests')">
+                            <div>
+                                <div class="file-name">test_evidence_integrity.py</div>
+                                <div class="file-desc">280+ 自动化测试套件 (覆盖率 &ge; 85%)</div>
+                            </div>
+                            <span class="badge" style="background:#064e3b; color:#6ee7b7;">pytest</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 5: 决策驾驶舱前端 -->
+                    <div class="module-card color-pink">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #f472b6;">📦 模块五: 全栈决策驾驶舱前端</div>
+                            <div class="module-tag">React Cockpit</div>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'app_tsx')">
+                            <div>
+                                <div class="file-name">App.tsx</div>
+                                <div class="file-desc">React 18 + Vite 6 主界面与多维路由管理</div>
+                            </div>
+                            <span class="badge" style="background:#831843; color:#fbcfe8;">React</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'drawer_tsx')">
+                            <div>
+                                <div class="file-name">EvidenceDrawer.tsx</div>
+                                <div class="file-desc">证据实时抽屉组件 (点击事实毫秒级滑出)</div>
+                            </div>
+                            <span class="badge" style="background:#831843; color:#fbcfe8;">React</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 6: 物理硬件与端侧通信 -->
+                    <div class="module-card color-orange">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #fb923c;">📦 模块六: 物理硬件与端侧通信</div>
+                            <div class="module-tag">Hardware & IoT</div>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'esp32_driver')">
+                            <div>
+                                <div class="file-name">esp32_sensor_driver.ino</div>
+                                <div class="file-desc">ESP32 引脚中断与 ADC 传感器采集驱动</div>
+                            </div>
+                            <span class="badge" style="background:#7c2d12; color:#fdba74;">C++</span>
+                        </div>
+                        <div class="file-item" onclick="selectItem(this, 'ring_buffer')">
+                            <div>
+                                <div class="file-name">ring_buffer_uart.c</div>
+                                <div class="file-desc">UART 串口 115200 环形缓冲区 (零丢包)</div>
+                            </div>
+                            <span class="badge" style="background:#7c2d12; color:#fdba74;">C</span>
+                        </div>
+                    </div>
+
+                    <!-- 模块 7: 2027 届校招情报中枢 -->
+                    <div class="module-card color-indigo" style="grid-column: span 2;">
+                        <div class="module-header">
+                            <div class="module-title" style="color: #818cf8;">📦 模块七: 2027 届校招情报与真题中枢系统 (Career OS)</div>
+                            <div class="module-tag">Career Jobs OS</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="file-item" onclick="selectItem(this, 'db_career')">
+                                <div>
+                                    <div class="file-name">career_jobs.sqlite</div>
+                                    <div class="file-desc">59 家企业 / 60 个岗位 / 59 份完整真题指南</div>
+                                </div>
+                                <span class="badge" style="background:#312e81; color:#c7d2fe;">SQLite</span>
+                            </div>
+                            <div class="file-item" onclick="selectItem(this, 'cli_tool')">
+                                <div>
+                                    <div class="file-name">career_jobs_cli.py</div>
+                                    <div class="file-desc">终端秒级查询、岗位详情与真题大百科命令行</div>
+                                </div>
+                                <span class="badge" style="background:#1e3a8a; color:#93c5fd;">Python</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 视图二：子系统数据流向网络 -->
+            <div id="view-flow" class="hidden">
+                <div class="flow-wrapper">
+                    
+                    <div style="background:#131d31; border:1px solid #1e293b; border-radius:12px; padding:16px;">
+                        <div style="font-size:13px; font-weight:bold; color:#38bdf8; margin-bottom:12px;">
+                            🔄 全链路数据从底层到上层流转拓扑 (End-to-End Topology)
+                        </div>
+
+                        <div class="flow-row">
+                            <div class="flow-box color-orange">
+                                <div style="font-size:12px; font-weight:bold; color:#fb923c; margin-bottom:6px;">① 硬件端侧采集</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• esp32_sensor_driver.ino</div>
+                                <div class="flow-arrow-down">↓ 串口 UART</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• ring_buffer_uart.c (环形缓冲)</div>
+                            </div>
+
+                            <div class="flow-box color-blue">
+                                <div style="font-size:12px; font-weight:bold; color:#60a5fa; margin-bottom:6px;">② 数据摄取与清洗</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• google_takeout_importer.py</div>
+                                <div class="flow-arrow-down">↓ 管道清洗</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• canonical_pipeline.py (17.8万条)</div>
+                            </div>
+
+                            <div class="flow-box color-cyan">
+                                <div style="font-size:12px; font-weight:bold; color:#38bdf8; margin-bottom:6px;">③ 湖仓与不可变证据</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• agent_conversations.sqlite</div>
+                                <div class="flow-arrow-down">↓ 不可变触发器</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• personal_system.sqlite (1.4万条)</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:16px;" class="flow-row">
+                            <div class="flow-box color-emerald">
+                                <div style="font-size:12px; font-weight:bold; color:#34d399; margin-bottom:6px;">④ 质量防御与门禁</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• preflight.py (13道发布门禁)</div>
+                                <div class="flow-arrow-down">↓ 拦截阻断</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• test_evidence_integrity.py (280+)</div>
+                            </div>
+
+                            <div class="flow-box color-purple">
+                                <div style="font-size:12px; font-weight:bold; color:#c084fc; margin-bottom:6px;">⑤ 检索与 MCP 服务</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• multi_layer_retriever.py</div>
+                                <div class="flow-arrow-down">↓ JSON-RPC</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• mcp_server.py (14+受控工具)</div>
+                            </div>
+
+                            <div class="flow-box color-pink">
+                                <div style="font-size:12px; font-weight:bold; color:#f472b6; margin-bottom:6px;">⑥ 前端决策驾驶舱</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• App.tsx (React 18 + Vite 6)</div>
+                                <div class="flow-arrow-down">↓ 事实联动</div>
+                                <div style="font-size:11px; color:#cbd5e1;">• EvidenceDrawer.tsx (抽屉)</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 右侧：源码与面试话术视窗 -->
+        <section class="detail-panel">
+            <div class="detail-header">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+                <span style="font-size:12px; font-family:monospace; color:#94a3b8; margin-left:6px;" id="detail-badge">personal_system.sqlite</span>
+            </div>
+
+            <div class="detail-body">
+                <div>
+                    <div class="detail-title" id="detail-title">personal_system.sqlite (不可变证据库)</div>
+                    <div class="detail-path" id="detail-path">D:/ADLINK/数据分析/var/db/personal_system.sqlite</div>
+                    <div class="detail-desc" id="detail-desc">
+                        承载全系统 14,031 条证据链的核心物理存储。通过注入不可变 SQLite 触发器（BEFORE UPDATE/DELETE ABORT），在物理层杜绝一切历史数据篡改。
+                    </div>
+                </div>
+
+                <div class="pitch-card">
+                    <div class="pitch-label">💡 架构价值与面试破局话术:</div>
+                    <div class="pitch-text" id="detail-pitch">
+                        “在传统的软件设计中，数据防篡改常写在应用层。我在数据库引擎物理层挂载了不可变触发器，任何尝试修改或删除历史证据的操作都会被底层引擎原子阻断并抛出异常，从根源上保障了数据的不可篡改性。”
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-size:11px; color:#94a3b8; font-family:monospace; margin-bottom:6px;">⚙️ 底层真实代码 / 规则实现:</div>
+                    <div class="code-block" id="detail-code">-- 不可变触发器注入
+CREATE TRIGGER IF NOT EXISTS trg_prevent_evidence_update
+BEFORE UPDATE ON knowledge_unit_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'CRITICAL: Evidence history is immutable!');
+END;</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const detailsData = {
+            'root': {
+                title: '智能数据湖仓与多源决策操作系统 (System Root)',
+                badge: 'System Architecture Root',
+                path: 'D:/ADLINK/数据分析 & D:/ADLINK/Myproject/career-os',
+                desc: '整个数字大厦的顶层总中枢，横跨 6 大领域、22 个工程，管理 28GB 多源数据湖与 59 家企业的求职情报网络。',
+                pitch: '“我独立设计了一套从物理硬件传感器、到数据清洗、再到湖仓不可变治理与全栈决策驾驶舱的端到端系统，实现了软硬件与数据全链路贯通。”',
+                code: `# 系统顶层根指标
+Total Projects: 22 distinct core engineering projects
+Total Data Lake: 28GB Multi-source canonical messages
+Total Evidence: 14,031 verified rows (0.00% dangling)
+Automated Tests: 280+ test suites with Preflight 13 gates`
+            },
+            'db_evidence': {
+                title: 'personal_system.sqlite (不可变证据库)',
+                badge: 'var/db/personal_system.sqlite',
+                path: 'D:/ADLINK/数据分析/var/db/personal_system.sqlite',
+                desc: '存储 14,031 条证据链。物理层挂载不可变触发器，确保所有知识单元结论均能精准追溯至原始消息。',
+                pitch: '“在数据库引擎物理层注入不可变触发器，杜绝了应用层代码 Bug 误改历史记录的风险，提供了金融级数据严肃性。”',
+                code: `CREATE TRIGGER IF NOT EXISTS trg_prevent_evidence_update
+BEFORE UPDATE ON knowledge_unit_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'CRITICAL: Evidence history is immutable!');
+END;`
+            },
+            'canonical_pipe': {
+                title: 'canonical_pipeline.py (数据清洗管道)',
+                badge: 'src/.../canonical_pipeline.py',
+                path: 'D:/ADLINK/数据分析/src/personal_knowledge/domains/conversation/canonical_pipeline.py',
+                desc: '负责将 17.8 万条原始异构长文本对话进行正则清洗、敏感信息剔除与统一哈希去重。',
+                pitch: '“面对格式混乱的原始对话，我构建了标准化数据清洗流水线，100% 剥离了密钥凭证，完成了多源数据的规范化重构。”',
+                code: `def scrub_and_normalize(raw_message):
+    clean_text = regex_scrub_tokens(raw_message.text)
+    msg_hash = hashlib.sha256(clean_text.encode('utf-8')).hexdigest()
+    return CanonicalMessage(id=msg_hash, content=clean_text)`
+            },
+            'google_importer': {
+                title: 'google_takeout_importer.py (多源数据摄取)',
+                badge: 'src/services/google_takeout_importer.py',
+                path: 'D:/ADLINK/数据分析/src/personal_knowledge/services/google_takeout_importer.py',
+                desc: '统一摄取 Google Takeout、ChatGPT JSON 等异构数据源，完成时间戳对齐与元数据标准化。',
+                pitch: '“通过设计适配器模式（Adapter Pattern），将多平台各不相同的 JSON 格式转化为统一的领域实体对象。”',
+                code: `def parse_takeout_json(json_stream):
+    for entry in json_stream:
+        yield StandardRecord(
+            timestamp=parse_iso_time(entry['created_at']),
+            author=entry['sender'],
+            text=entry['message']
+        )`
+            },
+            'db_canonical': {
+                title: 'agent_conversations.sqlite (权威规范主库)',
+                badge: 'data/canonical/.../agent_conversations.sqlite',
+                path: 'D:/ADLINK/数据分析/data/canonical/agent/structured/db/agent_conversations.sqlite',
+                desc: '全系统单点真实数据源（SSOT），存放 178,131 条完全清洗完毕的规范化消息与上下文。',
+                pitch: '“作为数仓的 ODS/DWD 规范层，所有后续的实体抽取与知识卡片必须且只能以此数据库作为权威输入。”',
+                code: `CREATE TABLE IF NOT EXISTS canonical_messages (
+    id TEXT PRIMARY KEY,
+    conversation_id TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    role TEXT NOT NULL,
+    content TEXT NOT NULL
+);`
+            },
+            'db_semantic': {
+                title: 'semantic_mvp_v3.sqlite (知识单元与事实库)',
+                badge: 'var/db/semantic_mvp_v3.sqlite',
+                path: 'D:/ADLINK/数据分析/var/db/semantic_mvp_v3.sqlite',
+                desc: '存储从对话中提炼出的 7,400 个知识单元（KU）与实体事实卡片，支持多维度标签与状态追踪。',
+                pitch: '“通过将扁平的文字对话萃取为结构化知识单元，大幅降低了检索熵值，实现了知识的模块化管理。”',
+                code: `CREATE TABLE IF NOT EXISTS knowledge_units (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    summary TEXT,
+    category TEXT,
+    created_at TIMESTAMP
+);`
+            },
+            'ku_repo': {
+                title: 'ku_repository.py (SQLite 仓储与事务管理)',
+                badge: 'src/.../ku_repository.py',
+                path: 'D:/ADLINK/数据分析/src/personal_knowledge/domains/knowledge/ku_repository.py',
+                desc: '封装 SQLite 物理连接池、上下文管理器事务控制（Context Manager）与触发器初始化。',
+                pitch: '“采用仓储模式（Repository Pattern）隔离底层 SQL 与上层领域逻辑，支持原子批量插入与自动回滚。”',
+                code: `class SQLiteKURepository:
+    def bulk_insert_with_tx(self, ku_records):
+        with self.connection:
+            self.cursor.executemany(INSERT_KU_SQL, ku_records)`
+            },
+            'mcp_server': {
+                title: 'mcp_server.py (自研 Model Context Protocol)',
+                badge: 'src/services/mcp_server.py',
+                path: 'D:/ADLINK/数据分析/src/personal_knowledge/services/mcp_server.py',
+                desc: '自研标准 MCP Server，暴露 14+ 个受控工具，支持大模型在严格权限管控下调用本地数据库。',
+                pitch: '“基于 Anthropic MCP 标准构建受控工具流，让大模型可以通过标准 JSON-RPC 协议安全检索本地知识库。”',
+                code: `@server.tool("search_evidence")
+def search_evidence(query: str) -> list:
+    """通过 SQLite 复合索引毫秒级检索证据链"""
+    return db.query_evidence_by_text(query)`
+            },
+            'retriever': {
+                title: 'multi_layer_retriever.py (分层语义检索)',
+                badge: 'src/retrieval/multi_layer_retriever.py',
+                path: 'D:/ADLINK/数据分析/src/personal_knowledge/retrieval/multi_layer_retriever.py',
+                desc: '结合 SQLite 全文索引（FTS5）与多层过滤算法，实现毫秒级（< 50ms）精准检索召回。',
+                pitch: '“设计了‘粗筛（BM25/FTS5）+ 精排（证据链置信度校验）’的双层检索流水线，兼顾了高召回率与毫秒级延迟。”',
+                code: `def retrieve(query: str, limit: int = 5):
+    # Tier 1: FTS5 倒排索引初筛
+    candidates = fts_index.query(query, limit=20)
+    # Tier 2: 证据链置信度打分重排
+    return score_and_rerank(candidates)[:limit]`
+            },
+            'preflight': {
+                title: 'preflight.py (Preflight 13 道发布门禁)',
+                badge: 'governance/preflight.py',
+                path: 'D:/ADLINK/数据分析/governance/preflight.py',
+                desc: '在数据入库和代码发布前执行 13 道自动化强制校验（PRAGMA 完整性/密钥残留/悬空外键）。',
+                pitch: '“工程质量不靠人工自觉，而靠流水线门禁。只要有 1 条证据悬空或 1 个密钥残留，立即阻断发布。”',
+                code: `GATES = [
+    Gate("PRAGMA integrity_check", check_db),
+    Gate("Zero Secret Leakage", scan_secrets),
+    Gate("Evidence Lineage 100%", verify_evidence)
+]`
+            },
+            'tests': {
+                title: 'test_evidence_integrity.py (280+ 测试套件)',
+                badge: 'tests/test_evidence_integrity.py',
+                path: 'D:/ADLINK/数据分析/tests/test_evidence_integrity.py',
+                desc: '基于 pytest 编写的 280+ 个测试用例，覆盖单元、集成、数据防篡改与并发破坏性测试。',
+                pitch: '“覆盖率保持在 85% 以上，严密的测试用例保证了每一次系统重构都不会破坏历史数据的一致性。”',
+                code: `def test_evidence_cannot_be_deleted():
+    with pytest.raises(sqlite3.OperationalError):
+        db.execute("DELETE FROM knowledge_unit_evidence WHERE id = 1")`
+            },
+            'app_tsx': {
+                title: 'App.tsx (React 18 决策驾驶舱前端)',
+                badge: 'apps/personal_decision_cockpit/.../App.tsx',
+                path: 'D:/ADLINK/数据分析/apps/personal_decision_cockpit/src/App.tsx',
+                desc: 'React 18 + Vite 6 + Tailwind 打造的现代化可视化界面，支持多视图切换与数据流监控。',
+                pitch: '“前端采用组件化架构与响应式设计，实现了毫秒级的数据渲染与流畅的人机交互体验。”',
+                code: `export default function App() {
+    return (
+        <CockpitLayout>
+            <KnowledgeGraphView />
+            <EvidenceDrawerContainer />
+        </CockpitLayout>
+    );
+}`
+            },
+            'drawer_tsx': {
+                title: 'EvidenceDrawer.tsx (证据实时抽屉组件)',
+                badge: 'apps/.../EvidenceDrawer.tsx',
+                path: 'D:/ADLINK/数据分析/apps/personal_decision_cockpit/src/components/EvidenceDrawer.tsx',
+                desc: '右侧滑出抽屉组件，点击任意事实或知识单元时，实时异步加载并高亮原始对话证据。',
+                pitch: '“通过抽屉式交互将抽象结论与物理证据无缝连接，彻底消除了用户对大模型幻觉的疑虑。”',
+                code: `export function EvidenceDrawer({ kuId, isOpen, onClose }) {
+    const { evidence } = useEvidence(kuId);
+    return <Drawer open={isOpen}><EvidenceList items={evidence} /></Drawer>;
+}`
+            },
+            'esp32_driver': {
+                title: 'esp32_sensor_driver.ino (单片机驱动)',
+                badge: '竞赛/esp32_sensor_driver.ino',
+                path: 'D:/ADLINK/竞赛/esp32_sensor_driver.ino',
+                desc: 'ESP32 硬件引脚接线、GPIO 中断、ADC 传感器采集与串口波特率配置驱动。',
+                pitch: '“在物理端侧通过硬件消抖电容与 GPIO 中断服务函数，解决了工业传感器采样抖动与通信丢包难题。”',
+                code: `#define SENSOR_PIN 34
+void IRAM_ATTR isr_handler() { state_flag = true; }
+void setup() {
+    Serial.begin(115200);
+    pinMode(SENSOR_PIN, INPUT_PULLUP);
+    attachInterrupt(SENSOR_PIN, isr_handler, FALLING);
+}`
+            },
+            'ring_buffer': {
+                title: 'ring_buffer_uart.c (UART 串口环形缓冲区)',
+                badge: '串口调试/ring_buffer_uart.c',
+                path: 'D:/ADLINK/串口调试/ring_buffer_uart.c',
+                desc: '基于 C 语言编写的高性能无阻塞串口环形缓冲区驱动，在 115200 高波特率下确保数据零溢出。',
+                pitch: '“采用环形指针与原子头尾游标设计，实现了中断服务函数与主程序之间的高效异步解耦。”',
+                code: `void push_byte(RingBuffer* rb, uint8_t data) {
+    uint8_t next = (rb->head + 1) % 256;
+    if (next != rb->tail) {
+        rb->buffer[rb->head] = data;
+        rb->head = next;
+    }
+}`
+            },
+            'db_career': {
+                title: 'career_jobs.sqlite (2027 校招情报库)',
+                badge: 'career-os/data/career_jobs.sqlite',
+                path: 'D:/ADLINK/Myproject/career-os/data/career_jobs.sqlite',
+                desc: '全量收录 59 家企业、60 个精选岗位与 59 份完整面试通关真题库，所有链接 100% 真实连通。',
+                pitch: '“我将求职过程工程化为结构化关系数据库，实现了一键按城市、技术栈、出差频率进行多维筛选与面试真题调阅。”',
+                code: `SELECT j.company_name, j.job_title, g.typical_questions
+FROM jobs j
+JOIN company_interview_guides g ON j.company_id = g.company_id
+WHERE j.city LIKE '%南京%' AND j.category = '数据分析';`
+            },
+            'cli_tool': {
+                title: 'career_jobs_cli.py (Career OS 终端中枢)',
+                badge: 'career-os/bin/career_jobs_cli.py',
+                path: 'D:/ADLINK/Myproject/career-os/bin/career_jobs_cli.py',
+                desc: '支持 list / detail / guide / query / stats 等全套 CLI 命令，实现毫秒级求职情报与题库调阅。',
+                pitch: '“打造了极客风格的终端 CLI 工具，把数据库查询与真题调阅浓缩为简单的几行指令，提升了备战效率。”',
+                code: `def main():
+    if sys.argv[1] == 'guide':
+        show_interview_guide(sys.argv[2])`
+            }
+        };
+
+        function selectItem(element, key) {
+            document.querySelectorAll('.file-item').forEach(el => el.classList.remove('selected'));
+            if (element) {
+                element.classList.add('selected');
+            }
+            showDetail(key);
+        }
+
+        function showDetail(key) {
+            const data = detailsData[key] || detailsData['db_evidence'];
+            document.getElementById('detail-title').innerText = data.title;
+            document.getElementById('detail-badge').innerText = data.badge;
+            document.getElementById('detail-path').innerText = data.path;
+            document.getElementById('detail-desc').innerText = data.desc;
+            document.getElementById('detail-pitch').innerText = data.pitch;
+            document.getElementById('detail-code').innerText = data.code;
+        }
+
+        function switchView(view) {
+            if (view === 'tree') {
+                document.getElementById('view-tree').classList.remove('hidden');
+                document.getElementById('view-flow').classList.add('hidden');
+                document.getElementById('btn-tree').classList.add('active');
+                document.getElementById('btn-flow').classList.remove('active');
+            } else {
+                document.getElementById('view-tree').classList.add('hidden');
+                document.getElementById('view-flow').classList.remove('hidden');
+                document.getElementById('btn-flow').classList.add('active');
+                document.getElementById('btn-tree').classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+  "name": "career-os-project-assessment-bank",
+  "description": "从 Career OS 自有知识库 knowledge/assessment-banks/mock-questions.md 结构化导出的既有示例题；不新增题目。",
+  "source": {
+    "repository": "local Career OS",
+    "path": "knowledge/assessment-banks/mock-questions.md",
+    "license": "本项目许可"
+  },
+  "questions": [
+    {
+      "source_question_id": "career-os-project-q1",
+      "question_type": "choice",
+      "category": "北森 · 图形推理",
+      "difficulty": "中",
+      "company_tags": "通用,校招测评",
+      "title": "九宫格中每行/列黑色方块数遵循 1 个的规律，右上角缺失位置应选哪项？\n\n图示：\n? ■ ?\n■ □ □\n□ □ ■",
+      "options": ["A. □□■", "B. ■□□", "C. □■□", "D. ■■□"],
+      "answer": "B",
+      "explanation": "每行/列黑色方块数为 1，右上角缺一个，选 B。"
+    },
+    {
+      "source_question_id": "career-os-project-q2",
+      "question_type": "choice",
+      "category": "北森 · 言语理解",
+      "difficulty": "中",
+      "company_tags": "通用,校招测评",
+      "title": "近年来，云计算市场规模持续扩大，但中小企业上云率仍然偏低。原因在于技术门槛、成本顾虑和安全担忧。专家建议云厂商推出更轻量、更安全的解决方案。这段文字主要说明：",
+      "options": ["A. 云计算市场前景广阔", "B. 中小企业上云面临多重障碍", "C. 云厂商应该降低价格", "D. 中小企业不适合上云"],
+      "answer": "B",
+      "explanation": "转折词“但”后的中小企业上云率低及其三类原因是文段重点。"
+    },
+    {
+      "source_question_id": "career-os-project-q3",
+      "question_type": "choice",
+      "category": "北森 · 数量关系",
+      "difficulty": "中",
+      "company_tags": "通用,校招测评",
+      "title": "数字推理：2，6，12，20，30，？",
+      "options": ["A. 40", "B. 42", "C. 44", "D. 46"],
+      "answer": "B",
+      "explanation": "相邻差为 4、6、8、10，下一个差为 12，因此 30+12=42。"
+    },
+    {
+      "source_question_id": "career-os-project-q4",
+      "question_type": "choice",
+      "category": "智鼎 · 逻辑推理",
+      "difficulty": "中",
+      "company_tags": "通用,校招测评",
+      "title": "如果下雨，我就带伞。今天我没带伞。可以推出：",
+      "options": ["A. 今天下雨了", "B. 今天没下雨", "C. 今天可能下雨", "D. 无法判断"],
+      "answer": "B",
+      "explanation": "下雨→带伞的逆否命题是没带伞→没下雨。"
+    },
+    {
+      "source_question_id": "career-os-project-q5",
+      "question_type": "choice",
+      "category": "赛码 · 资料分析",
+      "difficulty": "中",
+      "company_tags": "通用,校招测评",
+      "title": "2024 年某公司营收：Q1 200 万、Q2 250 万、Q3 300 万、Q4 350 万。下半年营收比上半年增长百分之多少？",
+      "options": ["A. 25%", "B. 33%", "C. 40%（最接近）", "D. 50%"],
+      "answer": "C",
+      "explanation": "上半年 450 万，下半年 650 万，增长率为 (650-450)/450≈44.4%，选项中 C 最接近；实际考试以精确计算为准。"
+    }
+  ]
+}

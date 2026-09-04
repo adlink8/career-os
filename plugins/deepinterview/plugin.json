@@ -1,0 +1,10 @@
+{
+  "id": "deepinterview",
+  "name": "DeepInterview 本地兼容面试适配器",
+  "version": "0.2.0",
+  "capabilities": ["interview_agent"],
+  "entrypoint": "plugins.deepinterview.adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "Apache-2.0",
+  "description": "本地兼容实现，提供 prepare/questions/score/report 契约；不连接远程 DeepInterview 服务。"
+}

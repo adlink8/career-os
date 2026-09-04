@@ -1,0 +1,10 @@
+{
+  "id": "open-quiz-commons",
+  "name": "Open Quiz Commons 技术题库适配器",
+  "version": "1.0.0",
+  "capabilities": ["question_bank"],
+  "entrypoint": "bin.question_bank_adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "CC-BY-SA-4.0",
+  "description": "导入 Open Quiz Commons 的 Python/pandas/JavaScript MCQ；题库快照保留上游题号和署名要求。"
+}

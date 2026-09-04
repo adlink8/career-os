@@ -1,0 +1,14 @@
+{
+  "questions": [
+    {
+      "id": "example-choice-1",
+      "type": "single",
+      "category": "Linux",
+      "difficulty": "中",
+      "title": "D 状态进程通常在等待什么？",
+      "options": ["CPU", "不可中断 I/O", "DNS", "端口"],
+      "answer": "B",
+      "explanation": "D 状态通常表示不可中断的磁盘或 NFS I/O。"
+    }
+  ]
+}

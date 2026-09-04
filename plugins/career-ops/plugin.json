@@ -1,0 +1,10 @@
+{
+  "id": "career-ops",
+  "name": "career-ops 评估管线适配器（声明）",
+  "version": "0.1.0",
+  "capabilities": ["job_source", "resume_evaluation"],
+  "entrypoint": "bin.job_source_adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "MIT",
+  "description": "预留 A-H 评估与 ATS 导出适配；不替换 Career OS 人工确认。"
+}

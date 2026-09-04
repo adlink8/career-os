@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚔️ 2027 届校招全景实战竞技场 (Mock Arena & OA Sandbox)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #080c14;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #0f172a;
+            border-bottom: 1px solid #1e293b;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title { font-size: 16px; font-weight: bold; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        .subtitle { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+        .tabs-nav {
+            display: flex;
+            background: #1e293b;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 6px;
+        }
+        .tab-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .tab-btn.active {
+            background: #0284c7;
+            color: #fff;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .quiz-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; color: #f8fafc; }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .option-btn:hover { border-color: #38bdf8; background: #25334d; }
+        .option-btn.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; }
+        .option-btn.wrong { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171; }
+
+        .code-box {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 14px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #34d399;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .btn-action {
+            background: #0284c7;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-action:hover { background: #0369a1; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <div class="title">⚔️ 2027 届校招全景实战竞技场 (Career OS Arena)</div>
+            <div class="subtitle">四个可插拔能力：① 投递管线 · ② 题库/机考 · ③ 代码执行器 · ④ 动态模拟面试（本页为演示，CLI 为事实入口）</div>
+        </div>
+        <div class="tabs-nav">
+            <button id="btn-quiz" class="tab-btn active" onclick="switchTab('quiz')">📝 模拟线上机考</button>
+            <button id="btn-sandbox" class="tab-btn" onclick="switchTab('sandbox')">💻 手撕代码沙箱</button>
+            <button id="btn-interview" class="tab-btn" onclick="switchTab('interview')">🎙️ AI 模拟面试官</button>
+            <button id="btn-pipeline" class="tab-btn" onclick="switchTab('pipeline')">📊 进度管线看板</button>
+        </div>
+    </header>
+
+    <main>
+        
+        <!-- Tab 1: 模拟线上机考 -->
+        <div id="tab-quiz" class="card">
+            <div class="quiz-title">第 1 题: 在 MySQL/SQLite 复合索引 (a, b, c) 中，下列哪个 WHERE 查询语句【无法完全利用】索引的全部字段？</div>
+            <div class="option-btn" onclick="checkAnswer(this, false)">A. WHERE a = 1 AND b = 2 AND c = 3</div>
+            <div class="option-btn" onclick="checkAnswer(this, true)">B. WHERE a = 1 AND b > 2 AND c = 3 (最左前缀范围查询失效)</div>
+            <div class="option-btn" onclick="checkAnswer(this, false)">C. WHERE a = 1 AND c = 3</div>
+            <div class="option-btn" onclick="checkAnswer(this, false)">D. WHERE a = 1 AND b = 2 ORDER BY c</div>
+            <div id="quiz-exp" class="hidden" style="margin-top:14px; padding:12px; background:rgba(56, 189, 248, 0.1); border-left:3px solid #38bdf8; font-size:12px;">
+                💡 <b>答案解析</b>：最左前缀原则中，遇到范围查询（>、<、BETWEEN）后，后续字段将无法利用索引进行等值匹配（B中c字段退化为索引下推过滤）。
+            </div>
+        </div>
+
+        <!-- Tab 2: 手撕代码沙箱 -->
+        <div id="tab-sandbox" class="card hidden">
+            <div class="quiz-title">💻 【高频手撕真题】: 最长无重复字符子串长度 (LeetCode 3 / 大厂常考)</div>
+            <div class="code-box">def length_of_longest_substring(s: str) -> int:
+    char_set = set()
+    left = 0
+    max_len = 0
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_len = max(max_len, right - left + 1)
+    return max_len</div>
+            <button class="btn-action" onclick="runSandboxTest()">🚀 查看演示结果（真实判题请用 CLI）</button>
+            <div id="sandbox-result" class="hidden" style="margin-top:12px; font-family:monospace; font-size:12px; color:#34d399; background:#020617; padding:12px; border-radius:6px;">
+                ✅ Test Case #1: PASS (输入: "abcabcbb" -> 输出: 3 | 耗时: 7.50μs)<br>
+                ✅ Test Case #2: PASS (输入: "bbbbb" -> 输出: 1 | 耗时: 2.30μs)<br>
+                ✅ Test Case #3: PASS (输入: "pwwkew" -> 输出: 3 | 耗时: 1.60μs)<br>
+                🎉 演示结果: 【ACCEPTED】；真实结果由 code_runner 插件写入 SQLite
+            </div>
+        </div>
+
+        <!-- Tab 3: AI 模拟面试官 -->
+        <div id="tab-interview" class="card hidden">
+            <div class="quiz-title">🎙️ AI 模拟面试官 Agent (企业定制化深度拷打)</div>
+            <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">在终端运行以下指令，按企业指南逐题作答；结果由 local-rubric 写入 SQLite，可替换为 interview_agent 插件：</p>
+            <div class="code-box"># 1. 模拟常州九号机器人考官 (ID: 36)
+python bin/career_jobs_cli.py interview 36
+
+# 2. 模拟南京焦点科技考官 (ID: 9)
+python bin/career_jobs_cli.py interview 9
+
+# 3. 模拟华泰证券金融科技考官 (ID: 46)
+python bin/career_jobs_cli.py interview 华泰证券</div>
+        </div>
+
+        <!-- Tab 4: 进度管线看板 -->
+        <div id="tab-pipeline" class="card hidden">
+            <div class="quiz-title">📊 2027 届校招求职全流程动态管线 (Pipeline Tracker)</div>
+            <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:10px;">
+                <div style="background:#1e293b; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#94a3b8;">待投递</div>
+                    <div style="font-size:18px; font-weight:bold; color:#38bdf8;">59</div>
+                </div>
+                <div style="background:#1e293b; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#94a3b8;">已投递</div>
+                    <div style="font-size:18px; font-weight:bold; color:#60a5fa;">0</div>
+                </div>
+                <div style="background:#1e293b; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#94a3b8;">待笔试</div>
+                    <div style="font-size:18px; font-weight:bold; color:#f59e0b;">0</div>
+                </div>
+                <div style="background:#1e293b; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#94a3b8;">面试中</div>
+                    <div style="font-size:18px; font-weight:bold; color:#c084fc;">0</div>
+                </div>
+                <div style="background:#1e293b; padding:12px; border-radius:8px; text-align:center;">
+                    <div style="font-size:11px; color:#94a3b8;">Offer 意向</div>
+                    <div style="font-size:18px; font-weight:bold; color:#34d399;">0</div>
+                </div>
+            </div>
+            <p style="font-size:12px; color:#94a3b8; margin-top:14px;">💡 当前还有 1 个“待沟通内推”岗位；终端标记真实投递: <span style="font-family:monospace; color:#38bdf8;">python bin/career_jobs_cli.py apply &lt;ID&gt;</span></p>
+        </div>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            ['quiz', 'sandbox', 'interview', 'pipeline'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('btn-' + t).classList.remove('active');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        function checkAnswer(btn, isCorrect) {
+            if (isCorrect) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('wrong');
+            }
+            document.getElementById('quiz-exp').classList.remove('hidden');
+        }
+
+        function runSandboxTest() {
+            document.getElementById('sandbox-result').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

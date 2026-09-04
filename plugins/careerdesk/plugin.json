@@ -1,0 +1,10 @@
+{
+  "id": "careerdesk",
+  "name": "CareerDesk 岗位来源适配器（声明）",
+  "version": "0.1.0",
+  "capabilities": ["job_source"],
+  "entrypoint": "bin.job_source_adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "MIT",
+  "description": "预留岗位导出适配；只允许导入，不自动投递。"
+}

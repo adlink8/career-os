@@ -1,0 +1,12 @@
+{
+  "jobs": [
+    {
+      "id": "example-job-1",
+      "company": "示例科技",
+      "title": "DevOps 实习生",
+      "city": "苏州",
+      "salary": "6-8k",
+      "url": "https://example.com/campus"
+    }
+  ]
+}

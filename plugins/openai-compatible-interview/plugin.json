@@ -1,0 +1,10 @@
+{
+  "id": "openai-compatible-interview",
+  "name": "OpenAI-compatible 真实模型面试适配器",
+  "version": "0.1.0",
+  "capabilities": ["interview_agent"],
+  "entrypoint": "plugins.openai_compatible_interview.adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "project",
+  "description": "连接本地或托管的 OpenAI-compatible /v1/chat/completions；未配置 CAREER_OS_LLM_BASE_URL 时不联网并安全回退。"
+}

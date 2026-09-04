@@ -1,0 +1,10 @@
+{
+  "id": "careersail",
+  "name": "CareerSail 岗位来源适配器（声明）",
+  "version": "0.1.0",
+  "capabilities": ["job_source"],
+  "entrypoint": "bin.job_source_adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "MIT",
+  "description": "预留 Playwright/Feishu 导出适配；需要人工确认后导入。"
+}

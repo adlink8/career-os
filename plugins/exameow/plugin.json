@@ -1,0 +1,10 @@
+{
+  "id": "exameow",
+  "name": "Exameow 题库导入适配器",
+  "version": "1.0.0",
+  "capabilities": ["question_bank"],
+  "entrypoint": "bin.question_bank_adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "Apache-2.0",
+  "description": "接收 Exameow/通用 JSON 或 CSV 导出，映射到 Career OS 题库。"
+}

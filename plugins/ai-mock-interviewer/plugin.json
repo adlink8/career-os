@@ -1,0 +1,10 @@
+{
+  "id": "ai-mock-interviewer",
+  "name": "AI Mock Interviewer 本地兼容适配器",
+  "version": "0.2.0",
+  "capabilities": ["interview_agent", "question_bank"],
+  "entrypoint": "plugins.ai_mock_interviewer.adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "MIT",
+  "description": "本地无模型兼容实现，提供 interview_agent 契约并复用统一 question_bank 导入适配器；不连接远程服务。"
+}
