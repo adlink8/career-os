@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 11
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -509,6 +509,150 @@ def migrate(conn: sqlite3.Connection) -> None:
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_github_commits_author "
         "ON github_commits(author_login, committed_at)"
+    )
+
+    # v10 简历证据域：会话/git 挖掘出的可上简历、可扛拷打的证据资产。
+    # 粒度：项目 → bullet 候选（三层拷打答案+钩子类型）/ 里程碑 / 可验证数字 / 面试 QA。
+    # bullet 以 (project_id, sort_order) 幂等重灌；数字以 (project_id, number_display) 幂等。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_evidence_projects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_key TEXT NOT NULL UNIQUE,
+            display_name TEXT NOT NULL,
+            repo_url TEXT NOT NULL DEFAULT '',
+            positioning TEXT NOT NULL DEFAULT '',
+            started_on TEXT NOT NULL DEFAULT '',
+            ended_on TEXT NOT NULL DEFAULT '',
+            scale_summary TEXT NOT NULL DEFAULT '',
+            source_report TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_evidence_bullets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            sort_order INTEGER NOT NULL DEFAULT 0,
+            bullet_text TEXT NOT NULL,
+            hook_type TEXT NOT NULL DEFAULT '',
+            what_it_is TEXT NOT NULL DEFAULT '',
+            why_this_choice TEXT NOT NULL DEFAULT '',
+            pitfall_detail TEXT NOT NULL DEFAULT '',
+            evidence_chain TEXT NOT NULL DEFAULT '',
+            evidence_status TEXT NOT NULL DEFAULT 'unsupported',
+            is_public_verifiable INTEGER NOT NULL DEFAULT 0,
+            notes TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (project_id) REFERENCES resume_evidence_projects(id),
+            UNIQUE (project_id, sort_order)
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_evidence_milestones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            milestone_date TEXT NOT NULL,
+            description TEXT NOT NULL,
+            session_evidence TEXT NOT NULL DEFAULT '',
+            commit_evidence TEXT NOT NULL DEFAULT '',
+            FOREIGN KEY (project_id) REFERENCES resume_evidence_projects(id)
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_evidence_numbers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            number_display TEXT NOT NULL,
+            description TEXT NOT NULL DEFAULT '',
+            verification_method TEXT NOT NULL DEFAULT '',
+            is_public INTEGER NOT NULL DEFAULT 0,
+            usable_on_resume INTEGER NOT NULL DEFAULT 1,
+            FOREIGN KEY (project_id) REFERENCES resume_evidence_projects(id),
+            UNIQUE (project_id, number_display)
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_evidence_interview_qa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_id INTEGER NOT NULL,
+            sort_order INTEGER NOT NULL DEFAULT 0,
+            question TEXT NOT NULL,
+            answer_points TEXT NOT NULL,
+            related_bullet_sort INTEGER,
+            FOREIGN KEY (project_id) REFERENCES resume_evidence_projects(id),
+            UNIQUE (project_id, sort_order)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_evidence_bullets_project "
+        "ON resume_evidence_bullets(project_id, sort_order)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_evidence_bullets_status "
+        "ON resume_evidence_bullets(evidence_status)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_evidence_numbers_project "
+        "ON resume_evidence_numbers(project_id, usable_on_resume)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_evidence_qa_project "
+        "ON resume_evidence_interview_qa(project_id, sort_order)"
+    )
+
+    # v11 JD 对位证据域：按具体 JD 从简历证据域挖掘不同层面的组合包。
+    # 层面（layer）：技术深挖 / 数据工程 / 质量测试 / 工程治理 / 运维部署 / AI 协作。
+    # 一个 JD 一个 package；每条匹配记录指向 resume_evidence_bullets 的 (project_key, sort_order)。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS jd_evidence_packages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            jd_key TEXT NOT NULL UNIQUE,
+            company_name TEXT NOT NULL,
+            job_title TEXT NOT NULL,
+            jd_source TEXT NOT NULL DEFAULT '',
+            focus_layers TEXT NOT NULL DEFAULT '[]',
+            hook_strategy TEXT NOT NULL DEFAULT '',
+            gap_notes TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS jd_evidence_matches (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            package_id INTEGER NOT NULL,
+            project_key TEXT NOT NULL,
+            bullet_sort INTEGER NOT NULL,
+            layer TEXT NOT NULL,
+            match_role TEXT NOT NULL DEFAULT 'support',
+            rationale TEXT NOT NULL DEFAULT '',
+            FOREIGN KEY (package_id) REFERENCES jd_evidence_packages(id),
+            UNIQUE (package_id, project_key, bullet_sort, layer)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_jd_evidence_packages_company "
+        "ON jd_evidence_packages(company_name)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_jd_evidence_matches_package "
+        "ON jd_evidence_matches(package_id, match_role)"
     )
 
     conn.execute(
