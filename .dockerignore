@@ -5,6 +5,7 @@ tmp
 __pycache__
 *.pyc
 data/cv
+data/resume-project-proposals
 data/analysis
 data/jobs
 data/tracker.tsv.local

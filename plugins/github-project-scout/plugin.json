@@ -1,0 +1,10 @@
+{
+  "id": "github-project-scout",
+  "name": "GitHub JD 项目候选来源适配器",
+  "version": "0.1.0",
+  "capabilities": ["project_source"],
+  "entrypoint": "plugins.github_project_scout.adapter:create_plugin",
+  "enabled_by_default": false,
+  "license": "project",
+  "description": "只读搜索与记录 GitHub 开源项目候选；不自动 clone、fork、发布或改写简历。"
+}

@@ -19,7 +19,7 @@ personal:
   age: {{年龄}}
 
 education:
-  current: "{{在读状态,如:专升本在读}}"
+  current: "{{在读状态,如:本科在读}}"
   school: "{{学校全称}}"
   major: "{{专业}}"
   graduation: "{{毕业年月,如:2027-06}}"

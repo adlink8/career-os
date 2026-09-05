@@ -13,6 +13,7 @@ Career OS 保持本地 profile、岗位 SQLite、tracker.tsv 和面试/笔试报
 | P0 | 机考不符合真实线上测试节奏 | Exameow/自有题库组卷思路 | 默认 JD 分层抽取 30 题/30 分钟，`--all` 仅审计 |
 | P1 | 岗位来源和 ATS 评估缺少统一入口 | CareerDesk、CareerSail、career-ops | 已预留 `job_source` / `resume_evaluation` 插件契约，当前只允许人工确认后的导入 |
 | P2 | 语音面试和浏览器 UI | DeepInterview / AI Mock Interviewer | 仅保留适配位；当前文本链路先保证可追溯 |
+| P1 | JD 与个人项目素材脱节 | GitHub REST / project-source 插件 | 已接入候选库；人工确认和证据通过后才生成简历提案 |
 
 ## 插件契约
 
@@ -44,12 +45,15 @@ Career OS 保持本地 profile、岗位 SQLite、tracker.tsv 和面试/笔试报
 - [Judge0](https://github.com/judge0/judge0)：自托管代码执行；通过 `plugins/judge0` 接入，未配置服务时不把本机进程冒充安全沙箱。
 - [DeepInterview](https://github.com/ngoanpv/DeepInterview)：prep/live/post 和语音链路；当前由文本 Agent 的报告契约承接，语音作为 P2 插件。
 - [AI Mock Interviewer](https://github.com/iarsingh/ai-mock-interviewer)：DevOps/SRE/Cloud 题库和本地模型；可通过题库/面试插件替换本地 rubric。
+- [GitHub REST Repository Search](https://docs.github.com/en/rest/search/search#search-repositories)：只读项目候选来源；通过 `github-project-scout` 暴露 `project_source`，保留仓库元数据和来源，不自动 clone/fork 或声称个人贡献。
 
 当前 `deepinterview` 与 `ai-mock-interviewer` 插件是本地兼容适配器：可插拔地提供 `prepare/questions/score/report` 契约，但 `external_service=false`，评分引擎明确记录为 `local-rubric`，未伪装成已接入远程模型。
 
 `openai-compatible-interview` 是真实模型适配器：使用标准库 HTTP 调用用户配置的 `/chat/completions`，结构化解析五维评分；缺少 endpoint、响应不合规或网络失败均在写库前/逐题评分边界回退到 `local-rubric`。回归脚本使用本地假 HTTP 服务，不需要 API Key。
 
 外部题库只允许导入用户有权使用的内容，不复制 Beisen、SHL 等受版权保护的题目。所有岗位导入和申请状态变化保留人工确认。
+
+项目候选也遵循同一边界：GitHub 搜索结果是外部参考，不等于个人经历。候选写入 `github_project_candidates`，人工核验后写入 `resume_project_proposals`；只有两次显式确认（`confirm --confirm`、`apply --confirm`）才会追加到简历 Markdown。`reference`、`adapted`、`implemented` 三种口径必须与可复现的个人证据一致。
 
 ## 本机 Judge0 部署
 

@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 9
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -357,6 +357,158 @@ def migrate(conn: sqlite3.Connection) -> None:
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_application_timeline_application "
         "ON application_timeline(application_id, event_date)"
+    )
+
+    # JD 驱动的 GitHub 项目候选库。候选与简历提案分表，避免外部仓库
+    # 在未核验许可证、贡献边界和个人证据前进入简历。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS github_project_candidates (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER NOT NULL,
+            provider TEXT NOT NULL,
+            repo_full_name TEXT NOT NULL,
+            repo_url TEXT NOT NULL DEFAULT '',
+            name TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            language TEXT NOT NULL DEFAULT '',
+            topics_json TEXT NOT NULL DEFAULT '[]',
+            stars INTEGER NOT NULL DEFAULT 0,
+            forks INTEGER NOT NULL DEFAULT 0,
+            open_issues INTEGER NOT NULL DEFAULT 0,
+            license_spdx TEXT NOT NULL DEFAULT '',
+            license_status TEXT NOT NULL DEFAULT 'unknown',
+            archived INTEGER NOT NULL DEFAULT 0,
+            pushed_at TEXT NOT NULL DEFAULT '',
+            repo_updated_at TEXT NOT NULL DEFAULT '',
+            matched_terms_json TEXT NOT NULL DEFAULT '[]',
+            relevance_score REAL NOT NULL DEFAULT 0,
+            search_query TEXT NOT NULL DEFAULT '',
+            source_url TEXT NOT NULL DEFAULT '',
+            status TEXT NOT NULL DEFAULT 'candidate',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (job_id) REFERENCES jobs(id),
+            UNIQUE (job_id, provider, repo_full_name)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_github_project_candidates_job "
+        "ON github_project_candidates(job_id, status, relevance_score DESC)"
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_project_proposals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            candidate_id INTEGER NOT NULL,
+            resume_key TEXT NOT NULL,
+            resume_path TEXT NOT NULL,
+            claim_level TEXT NOT NULL DEFAULT 'reference',
+            evidence_text TEXT NOT NULL,
+            proposal_markdown TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'confirmed',
+            confirmed_at TEXT,
+            applied_at TEXT,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (candidate_id) REFERENCES github_project_candidates(id),
+            UNIQUE (candidate_id, resume_key)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_project_proposals_status "
+        "ON resume_project_proposals(status, resume_key)"
+    )
+
+    # v9 GitHub 数据域：本人账号的全量仓库、提交与档案快照。
+    # 仓库以 full_name 幂等 upsert；提交以 (repo_full_name, sha) 幂等。
+    # fork 仓库只存元数据与精确提交数，不逐条入库（避免外部项目噪声）。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS github_profile (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            login TEXT NOT NULL,
+            name TEXT NOT NULL DEFAULT '',
+            bio TEXT NOT NULL DEFAULT '',
+            company TEXT NOT NULL DEFAULT '',
+            location TEXT NOT NULL DEFAULT '',
+            public_repos INTEGER NOT NULL DEFAULT 0,
+            followers INTEGER NOT NULL DEFAULT 0,
+            total_authored_commits INTEGER,
+            account_created_at TEXT NOT NULL DEFAULT '',
+            fetched_at TEXT NOT NULL,
+            raw_json TEXT NOT NULL DEFAULT '{}'
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS github_repositories (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL DEFAULT '',
+            owner TEXT NOT NULL DEFAULT '',
+            description TEXT NOT NULL DEFAULT '',
+            homepage TEXT NOT NULL DEFAULT '',
+            html_url TEXT NOT NULL DEFAULT '',
+            primary_language TEXT NOT NULL DEFAULT '',
+            languages_json TEXT NOT NULL DEFAULT '{}',
+            topics_json TEXT NOT NULL DEFAULT '[]',
+            license_spdx TEXT NOT NULL DEFAULT '',
+            default_branch TEXT NOT NULL DEFAULT '',
+            stars INTEGER NOT NULL DEFAULT 0,
+            forks INTEGER NOT NULL DEFAULT 0,
+            open_issues INTEGER NOT NULL DEFAULT 0,
+            size_kb INTEGER NOT NULL DEFAULT 0,
+            is_private INTEGER NOT NULL DEFAULT 0,
+            is_fork INTEGER NOT NULL DEFAULT 0,
+            is_archived INTEGER NOT NULL DEFAULT 0,
+            commit_count INTEGER,
+            commits_imported INTEGER NOT NULL DEFAULT 0,
+            repo_created_at TEXT NOT NULL DEFAULT '',
+            repo_updated_at TEXT NOT NULL DEFAULT '',
+            repo_pushed_at TEXT NOT NULL DEFAULT '',
+            fetched_at TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_github_repositories_language "
+        "ON github_repositories(primary_language, is_fork)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_github_repositories_pushed "
+        "ON github_repositories(repo_pushed_at DESC)"
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS github_commits (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            repo_full_name TEXT NOT NULL,
+            sha TEXT NOT NULL,
+            author_login TEXT NOT NULL DEFAULT '',
+            author_name TEXT NOT NULL DEFAULT '',
+            author_email TEXT NOT NULL DEFAULT '',
+            committed_at TEXT NOT NULL DEFAULT '',
+            message TEXT NOT NULL DEFAULT '',
+            additions INTEGER,
+            deletions INTEGER,
+            html_url TEXT NOT NULL DEFAULT '',
+            fetched_at TEXT NOT NULL,
+            UNIQUE (repo_full_name, sha),
+            FOREIGN KEY (repo_full_name) REFERENCES github_repositories(full_name)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_github_commits_repo_date "
+        "ON github_commits(repo_full_name, committed_at)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_github_commits_author "
+        "ON github_commits(author_login, committed_at)"
     )
 
     conn.execute(

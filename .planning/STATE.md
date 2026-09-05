@@ -88,7 +88,7 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 
 ## Phase 5 行动清单（按优先级）
 
-1. **[最高] 实战验证（C1）** — 在真实 Agent 中触发至少 3 个 skill，验证 trigger / 知识层读取 / 输出格式。
+1. **[最高] 实战验证（C1）** — ✅ 2026-09-05 首轮完成：3 个 skill（daily-driver/interview-master/general-recruit）子 agent 运行时测试 PASS（general-recruit 首测 PARTIAL → 13 处修复 → 独立复测 PASS），报告见 `.planning/testing/runtime-test-report.md`；剩余：用户日常 agent 真实触发确认平台级 trigger 路由。
 2. **[高] 真实投递回写** — 首批岗位人工核验后，把真实申请状态回写 tracker 和 timeline。
 3. **[中] Judge0 服务验证（已实测为 PARTIAL）** — 本机 Docker Desktop 已部署 Judge0 1.13.0，`/system_info`/`/languages` 可达；实际 isolate 因 Windows cgroup 失败，代码题暂不能视为安全执行，保留 trusted-local 边界并建议迁移 Linux/WSL2 VM。
 4. **[中] 语音面试插件** — 以 DeepInterview/AI Mock Interviewer 为外部实现，先完成接口和隐私评估，再接浏览器语音。
@@ -98,7 +98,7 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 
 | 风险 | 严重度 | 缓解状态 |
 |------|--------|---------|
-| C1：Agent 运行时从未验证 | 🟠 中 | 未缓解 |
+| C1：Agent 运行时从未验证 | 🟠 中 | **首轮已缓解**（2026-09-05 子 agent 运行时测试 3 skill PASS + 13 处修复 + 复测 PASS，见 `.planning/testing/runtime-test-report.md`）；待用户日常 agent 真实触发完全闭环 |
 | C2：Git 根在父目录，邮箱在 commit 元数据 | 🟠 中 | 未缓解 |
 | C3：career-self-assessment 的 profile 匹配可进一步深化 | 🟡 低 | 未缓解 |
 | C4：薪资数据最后核对 2026-06 | 🟡 低 | 有 refresh 标签 |
@@ -113,4 +113,4 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 | C14：Windows Docker Desktop 的 Judge0 isolate 无法创建 cgroup | 🟠 中 | **已确认；服务可达但代码执行 PARTIAL，需 Linux/WSL2 VM** |
 
 ---
-*Last updated: 2026-09-02 — 完成 Phase 5 作战层与统一插件适配运行时*
+*Last updated: 2026-09-05 — C1 首轮运行时验证通过（3 skill PASS + 13 处修复 + 独立复测 PASS），报告见 `.planning/testing/runtime-test-report.md`*

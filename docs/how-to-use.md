@@ -53,6 +53,17 @@ python bin/career_jobs_cli.py import-questions <file> --source exameow   # 默�
 python bin/career_jobs_cli.py import-questions <file> --source exameow --apply
 python bin/career_jobs_cli.py import-jobs <file> --source careerdesk   # 默认预览
 python bin/career_jobs_cli.py import-jobs <file> --source careerdesk --apply
+
+# 根据数据库 JD 生成 GitHub 项目候选（默认只预览查询，不联网）
+python bin/career_jobs_cli.py project-candidates search --job 42
+# 明确联网搜索并把候选元数据保存到本地 SQLite
+python bin/career_jobs_cli.py project-candidates search --job 42 --live --limit 10
+python bin/career_jobs_cli.py project-candidates list --job 42
+# 人工核验仓库、许可证和个人证据后，先生成确认提案
+python bin/career_jobs_cli.py project-candidates confirm 1 --resume cv-ops --evidence "本地可复现的 IoT 网关联调记录" --claim-level adapted --confirm
+python bin/career_jobs_cli.py project-candidates proposals
+# 再次明确确认，才追加可审阅块到 data/cv/cv-ops.md
+python bin/career_jobs_cli.py project-candidates apply 1 --confirm
 ```
 
 `exam` 默认按 JD 匹配题池分层抽取 30 题、建议限时 30 分钟，并把题目 ID、来源、种子和题池规模写入报告；`--seed` 用于复现实验，`--all` 仅用于审计全量题池。`personality` 默认运行项目快测 15 题；`--full` 或 `--kind full` 才运行 GitHub/IPIP-NEO-120 的 120 题完整模式。
@@ -93,6 +104,21 @@ python bin/career_jobs_cli.py assessment-intel --all-jobs
 `assessment-intel --job <ID>` 会读取 SQLite 当前 JD 的岗位类别、标题、职责、要求和英语要求，输出命中的技能信号、建议题型和训练入口；这是“基于 JD 的推导”，不会伪装成企业内部题库。`--all-jobs` 用于查看当前岗位池的轨道覆盖。
 
 `interview <企业ID或名称> <job_id>` 会把同一份 JD 画像传给模拟面试 Agent；报告中的 `qa_transcript_json.context` 保存轨道、匹配信号、题型族和每题来源。插件默认关闭，启用本地兼容实现：`$env:CAREER_OS_PLUGINS='deepinterview'`。启用真实 OpenAI-compatible Provider：
+
+### JD 驱动的 GitHub 项目候选库
+
+`project-candidates` 读取 `jobs` 表中的岗位职责、要求、类别和标题，由 `jd_assessment_mapper` 生成可解释的搜索关键词。`--live` 使用只读 GitHub REST 搜索；可设置 `GITHUB_TOKEN` 提高 API 配额，但 Token 只从环境变量读取，不写入 SQLite、日志或简历。候选记录保留仓库链接、许可证、活跃时间、Star、匹配关键词和 Provider，重复搜索按“岗位 + Provider + 仓库名”幂等更新。
+
+候选项目不是个人经历。`confirm` 要求人工确认和 `--evidence`，并记录 `reference`（外部参考）、`adapted`（个人改造）或 `implemented`（个人实现）口径；`apply` 还要再次带 `--confirm`，只向指定 `data/cv/*.md` 追加带来源的“开源项目补强（人工确认）”块，重复执行不会重复追加。默认不 clone、fork、提交 PR、自动投递或覆盖已有简历段落。候选和提案表会随 `get_db()` 自动创建，真实数据库文件仍由 `.gitignore` 保护。
+
+启用可拔插 Provider：
+
+```powershell
+$env:CAREER_OS_PLUGINS = 'github-project-scout'
+python bin/career_jobs_cli.py project-candidates search --job 42 --live
+```
+
+未启用插件时 CLI 使用同一只读 REST 实现作为本地回退；后续可把企业内部项目索引或本地静态库实现为 `project_source` 插件。
 
 ```powershell
 $env:CAREER_OS_PLUGINS = 'openai-compatible-interview'

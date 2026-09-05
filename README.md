@@ -29,7 +29,7 @@ Data (数据层)      = 关于你是谁   →  简历、技能栈、求职画像
 └─────────────────────────────────────────────────────────┘
 ```
 
-运行时通过 `bin/career_os_plugins.py` 按 capability 适配外部开源项目；插件默认关闭、可随时拔出。
+运行时通过 `bin/career_os_plugins.py` 按 capability 适配外部开源项目；插件默认关闭、可随时拔出。新增 `project_source` 能力用于把 JD 映射为 GitHub 开源项目候选，人工确认后才进入简历提案。
 
 ## 16 步流程 × 三层资源
 
@@ -72,6 +72,7 @@ career-os/
 │   ├── github-expansion-smoke.py # 新增 GitHub 快照结构/许可证/幂等校验
 │   ├── github-expansion-runtime-smoke.py # 新增题库真实运行器全链路冒烟
 │   ├── openai-interview-agent-smoke.py # OpenAI-compatible 本地假服务链路冒烟
+│   ├── github-project-candidates-smoke.py # JD→GitHub候选库→简历确认链路冒烟
 │   └── docker-healthcheck.py     # 容器内 SQLite 健康检查
 ├── skills/                      # 操作层: AI 助手 Skill(平台中立)
 │   ├── career-personal-data-update/ # 🟢 仓库证据 → LLM → 更新画像
@@ -136,6 +137,18 @@ career-os/
     ├── personal-data-warehouse.md  # 仓库×LLM×Career OS 联动
     └── open-source-integration.md  # 开源项目适配矩阵
 ```
+
+## JD 驱动的项目候选库
+
+```powershell
+python bin/career_jobs_cli.py project-candidates search --job 42
+python bin/career_jobs_cli.py project-candidates search --job 42 --live --limit 10
+python bin/career_jobs_cli.py project-candidates list --job 42
+python bin/career_jobs_cli.py project-candidates confirm <候选ID> --resume cv-ops --evidence "个人可复现证据" --claim-level adapted --confirm
+python bin/career_jobs_cli.py project-candidates apply <提案ID> --confirm
+```
+
+候选库记录 GitHub 仓库链接、许可证、活跃度和 JD 匹配词；`--live` 只读访问 GitHub REST。候选不是个人经历，必须人工核验并提供证据；`apply` 只追加带来源的可审阅 Markdown 块，不自动 clone、fork、投递或覆盖既有简历段落。详见 [`docs/how-to-use.md`](docs/how-to-use.md) 和 [`docs/open-source-integration.md`](docs/open-source-integration.md)。
 
 ## 个人数据仓库（LLM 供数）
 

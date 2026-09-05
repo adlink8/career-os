@@ -1,5 +1,7 @@
 import json
+import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 try:
     from career_os_store import add_timeline_event, get_db
@@ -40,6 +42,8 @@ def list_jobs():
     print("💡 使用 'python career_jobs_cli.py plugins' 查看可插拔开源适配器")
     print("💡 使用 'python bin/career_jobs_cli.py assessment-intel [企业名]' 查询官方/社区测评情报")
     print("💡 使用 'python bin/career_jobs_cli.py assessment-intel --job <ID>' 根据当前 JD 生成岗位测评准备画像")
+    print("💡 使用 'python bin/career_jobs_cli.py project-candidates search --job <ID> --live' 搜索 JD 匹配的 GitHub 项目候选")
+    print("💡 候选确认后再用 project-candidates apply <提案ID> --confirm 写入简历草稿")
     print("💡 使用 'python career_jobs_cli.py track' 查看求职全流程看板\n")
 
 def show_job_detail(job_id):
@@ -310,6 +314,179 @@ def show_all_job_assessment_summary():
     print("\n查看单个岗位: python bin/career_jobs_cli.py assessment-intel --job <ID>")
     print("=" * 72 + "\n")
 
+
+def _flag_value(args, flag: str, default=None):
+    if flag not in args:
+        return default
+    pos = args.index(flag)
+    return args[pos + 1] if pos + 1 < len(args) else default
+
+
+def project_candidates_command(args):
+    """管理 JD 驱动的 GitHub 项目候选库和人工确认提案。"""
+
+    try:
+        from github_project_candidates import (
+            GitHubRestSource,
+            apply_proposal,
+            build_search_queries,
+            candidate_rows,
+            confirm_candidate,
+            get_job,
+            save_candidates,
+        )
+    except ModuleNotFoundError:
+        from bin.github_project_candidates import (
+            GitHubRestSource,
+            apply_proposal,
+            build_search_queries,
+            candidate_rows,
+            confirm_candidate,
+            get_job,
+            save_candidates,
+        )
+
+    subcommand = args[0].lower() if args else "list"
+    if subcommand == "search":
+        raw_job = _flag_value(args, "--job")
+        if not raw_job or not str(raw_job).isdigit():
+            print("❌ project-candidates search 需要 --job <岗位ID>")
+            return
+        limit = _flag_value(args, "--limit", "10")
+        try:
+            limit = max(1, min(int(limit), 30))
+        except ValueError:
+            print("❌ --limit 必须是 1-30 的整数")
+            return
+        conn = get_db()
+        try:
+            job = get_job(conn, int(raw_job))
+            queries = build_search_queries(job)
+            print(f"🎯 {job['company_name']} · {job['job_title']} (岗位 {raw_job})")
+            print("🔎 JD → GitHub 查询：")
+            for query in queries:
+                print(f"  - {query}")
+            if "--live" not in args:
+                print("👀 当前为查询预览；加 --live 才会访问 GitHub 并写入候选库")
+                return
+            preferred = _flag_value(args, "--provider")
+            source = None
+            try:
+                from career_os_plugins import get_plugin_manager
+            except ModuleNotFoundError:
+                from bin.career_os_plugins import get_plugin_manager
+            if preferred or os.environ.get("CAREER_OS_PLUGINS", "").strip():
+                source = get_plugin_manager().capability("project_source", preferred=preferred)
+            if source is None:
+                source = GitHubRestSource()
+            all_rows = []
+            for query in queries:
+                rows = source.search(query, limit=limit)
+                all_rows.extend((query, row) for row in rows)
+            if all_rows:
+                conn.execute(
+                    "UPDATE github_project_candidates SET status='stale', updated_at=? "
+                    "WHERE job_id=? AND provider=? AND status='candidate'",
+                    (datetime.now(timezone.utc).isoformat(timespec="seconds"), int(raw_job), source.provider_name),
+                )
+            total = 0
+            for query, row in all_rows:
+                total += save_candidates(conn, job_id=int(raw_job), query=query, source=source, candidates=[row])
+            print(f"✅ 已保存/更新 {total} 条候选（provider={source.provider_name}）；默认仍需人工确认")
+        except (RuntimeError, ValueError, OSError) as exc:
+            print(f"❌ 项目候选搜索失败: {exc}")
+        finally:
+            conn.close()
+        return
+
+    if subcommand == "list":
+        raw_job = _flag_value(args, "--job")
+        job_id = int(raw_job) if raw_job and str(raw_job).isdigit() else None
+        status = _flag_value(args, "--status", "candidate")
+        if status == "all":
+            status = None
+        conn = get_db()
+        try:
+            rows = candidate_rows(conn, job_id=job_id, status=status)
+            if not rows:
+                print("📭 暂无候选；先运行 project-candidates search --job <ID> --live")
+                return
+            print("\n📦 【GitHub 项目候选库】")
+            for row in rows:
+                print(
+                    f"  [{row['id']}] 岗位{row['job_id']} {row['repo_full_name']} "
+                    f"score={row['relevance_score']:.2f} ★{row['stars']} "
+                    f"license={row['license_spdx'] or 'unknown'}({row['license_status']}) status={row['status']}\n"
+                    f"      {row['repo_url']} | 匹配: {', '.join(json.loads(row['matched_terms_json'] or '[]')) or '待复核'}"
+                )
+        finally:
+            conn.close()
+        return
+
+    if subcommand == "confirm":
+        raw_id = args[1] if len(args) > 1 and args[1].isdigit() else _flag_value(args, "--candidate")
+        resume_key = _flag_value(args, "--resume")
+        evidence = _flag_value(args, "--evidence", "")
+        claim_level = _flag_value(args, "--claim-level", "reference")
+        if not raw_id or not str(raw_id).isdigit() or not resume_key:
+            print("❌ confirm 用法: project-candidates confirm <候选ID> --resume cv-ops --evidence \"个人证据/参考说明\" --claim-level reference|adapted|implemented --confirm")
+            return
+        conn = get_db()
+        try:
+            proposal = confirm_candidate(
+                conn,
+                candidate_id=int(raw_id),
+                resume_key=resume_key,
+                evidence=evidence,
+                claim_level=claim_level,
+                confirm="--confirm" in args,
+            )
+            print(f"✅ 已人工确认候选 {raw_id}，提案 ID={proposal['id']}；尚未写入简历")
+            print("   下一步：project-candidates apply <提案ID> --confirm")
+        except (ValueError, FileNotFoundError, OSError) as exc:
+            print(f"❌ 候选确认失败: {exc}")
+        finally:
+            conn.close()
+        return
+
+    if subcommand == "apply":
+        raw_id = args[1] if len(args) > 1 and args[1].isdigit() else _flag_value(args, "--proposal")
+        if not raw_id or not str(raw_id).isdigit():
+            print("❌ apply 用法: project-candidates apply <提案ID> --confirm")
+            return
+        conn = get_db()
+        try:
+            path = apply_proposal(conn, proposal_id=int(raw_id), confirm="--confirm" in args)
+            print(f"✅ 已将人工确认提案写入简历草稿: {path}")
+        except (ValueError, FileNotFoundError, OSError) as exc:
+            print(f"❌ 写入简历失败: {exc}")
+        finally:
+            conn.close()
+        return
+
+    if subcommand == "proposals":
+        conn = get_db()
+        try:
+            rows = conn.execute(
+                """
+                SELECT p.id, p.resume_key, p.claim_level, p.status, p.candidate_id,
+                       c.repo_full_name, p.updated_at
+                FROM resume_project_proposals p
+                JOIN github_project_candidates c ON c.id=p.candidate_id
+                ORDER BY p.id DESC
+                """
+            ).fetchall()
+            if not rows:
+                print("📭 暂无简历提案")
+                return
+            for row in rows:
+                print(f"  提案 {row['id']} | {row['repo_full_name']} -> {row['resume_key']} | {row['claim_level']} | {row['status']} | {row['updated_at']}")
+        finally:
+            conn.close()
+        return
+
+    print("❌ 支持: search, list, confirm, apply, proposals")
+
 def main():
     if len(sys.argv) < 2:
         list_jobs()
@@ -336,6 +513,8 @@ def main():
             show_all_job_assessment_summary()
         else:
             show_assessment_intelligence(' '.join(args) if args else None)
+    elif cmd == 'project-candidates':
+        project_candidates_command(sys.argv[2:])
     elif cmd == 'plugins':
         from career_os_plugins import get_plugin_manager
         manager = get_plugin_manager()
@@ -442,7 +621,7 @@ def main():
         run_mock_interview(target, job_id=job_id)
     else:
         print(f"❌ 未知命令: {cmd}")
-        print("💡 支持命令: list, detail <ID>, guide <ID/Name>, track, apply <ID>, exam [job_id] [--limit N] [--minutes N] [--seed N] [--all], personality [job_id] [--full|--kind quick|full], assessment-intel [企业名|--job <ID>|--all-jobs], code-sandbox <ID> [--trusted-local], interview <ID> [job_id], plugins, import-questions <file> --source <plugin>, import-jobs <file> [--source <plugin>] [--apply], stats")
+        print("💡 支持命令: list, detail <ID>, guide <ID/Name>, track, apply <ID>, project-candidates search|list|confirm|apply|proposals, exam [job_id] [--limit N] [--minutes N] [--seed N] [--all], personality [job_id] [--full|--kind quick|full], assessment-intel [企业名|--job <ID>|--all-jobs], code-sandbox <ID> [--trusted-local], interview <ID> [job_id], plugins, import-questions <file> --source <plugin>, import-jobs <file> [--source <plugin>] [--apply], stats")
 
 if __name__ == "__main__":
     main()

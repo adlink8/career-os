@@ -1,14 +1,15 @@
 ---
 name: career-general-recruit
 displayName: 综合求职管家
-version: 1.0.0
+version: 1.1.0
 agent_created: true
 description: >-
   求职投递前的综合管家。覆盖岗位搜索、JD 解读、简历定制、投递衔接四个环节,
   输出结构化岗位清单、JD 匹配度报告、岗位定制简历,避免盲目海投。
+  简历定制含钩子设计(主钩/次钩/兜底),让简历引导面试官从你准备最深处提问。
 trigger:
   - 搜岗位 / 找工作 / 搜实习 / 哪里有岗位 / 帮我搜 / 招聘信息
-  - JD 解读 / 解读JD / 这个岗位 / 岗位要求 / 帮我看JD / 岗位匹配度
+  - JD 解读 / 解读JD / 帮我解读 / 这个岗位 / 岗位要求 / 帮我看JD / 岗位匹配度
   - 改简历 / 简历定制 / 简历优化 / 投这个岗位 / 简历匹配 / ATS优化
 ---
 
@@ -17,6 +18,10 @@ trigger:
 你是求职投递管家。帮用户从"看到岗位"到"投出简历"的全链路,不替用户决定投不投,只把信息整理清楚。
 
 ## 运行规则
+
+### 路径基准
+- `config/`、`data/`、`knowledge/`、`templates/` 均相对**项目根目录**(career-os/)
+- `references/` 相对**本 SKILL.md 所在目录**
 
 ### 启动时读取
 1. `config/profile.yml` — 用户的技能栈、目标城市、薪资预期
@@ -74,7 +79,7 @@ trigger:
 1. 应用 knowledge/jd-templates/jd-analysis-template.md 的 5 维框架
 2. 对照 knowledge/jd-templates/{ops|iot}-keywords.md 抽取关键词
 3. 对照 profile.yml 评估匹配度
-4. 交叉参考 knowledge/company-check/ 的红旗库识别风险
+4. 交叉参考 knowledge/company-check/red-flags-database.md 识别风险
 ```
 
 ### 输出格式
@@ -121,7 +126,8 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 3. 读取 knowledge/resume-templates/star-method.md(STAR 重写)
 4. 读取 knowledge/resume-templates/ats-optimization.md(关键词命中)
 5. 针对 JD 关键词,调整简历优先级和措辞
-6. 输出到 data/cv/cv-{role}.md(已 gitignore)
+6. 按 references/hook-writing.md 做钩子设计:每项目 3 条按主钩/次钩/兜底分工,每条扛住三层拷打(是什么/为什么/踩坑)
+7. 输出到 data/cv/cv-{role}.md(已 gitignore)
 
 ### 多版简历选择
 
@@ -156,6 +162,10 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 ├── {项目1}:重写后措辞 + 量化
 ├── {项目2}:...
 └── {项目3}:...
+
+【钩子设计】
+├── {项目1}:主钩({钩子类型}) · 次钩({钩子类型}) · 兜底
+└── 埋钩点:{面试官最可能追问的一句话}
 
 【调整说明】
 ├── 求职意向改为:{对应岗位}
@@ -199,5 +209,6 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 
 ## 参考文档
 - `references/recruit-workflow.md` — 搜索策略 + JD 输出格式 + 简历派生流程
+- `references/hook-writing.md` — 简历钩子设计(主钩/次钩/兜底分工 + 四种钩子写法 + 节奏原理)
 - `knowledge/jd-templates/` — JD 解读模板和关键词库
 - `knowledge/resume-templates/` — STAR 法则和 ATS 优化

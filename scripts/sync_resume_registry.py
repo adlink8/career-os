@@ -113,7 +113,37 @@ def version_spec(path: Path) -> dict[str, str] | None:
         "cv-ai-infra": "ai-infra",
         "cv-network": "network",
         "cv-compact": "compact",
+        "cv-aispeech-devops": "aispeech-devops",
+        "cv-aispeech-opensource": "aispeech-opensource",
+        "cv-aispeech-agent": "aispeech-agent",
     }
+
+    # Generated photo-style artifacts are alternate renderings of an existing
+    # logical version. Keep them attached to that version instead of creating
+    # unclassified logical versions during a registry scan.
+    photo_style = re.fullmatch(r"cv-(ops|iot|ai-infra|network|compact|aispeech-devops|aispeech-opensource|aispeech-agent)-photo-style", stem)
+    if photo_style:
+        role = photo_style.group(1)
+        version_label = "v2.0" if role in {"ops", "iot", "ai-infra"} else "v1.0"
+        return {
+            "version_key": f"{role}-{version_label}",
+            "role_slug": role,
+            "company_slug": "",
+            "job_slug": "",
+            "version_label": version_label,
+            "state": "ready",
+        }
+
+    if stem == "cv-newland-customized-photo-style":
+        return {
+            "version_key": "newland-data-analyst-v1.0",
+            "role_slug": "data-analyst",
+            "company_slug": "newland",
+            "job_slug": "data-analyst-2027-campus",
+            "version_label": "v1.0",
+            "state": "ready",
+        }
+
     if stem in role_files:
         role = role_files[stem]
         return {
@@ -254,15 +284,25 @@ def upsert_artifact(
         artifact_id = int(existing[0])
         old_state = str(existing[1])
         chosen_state = state if STATE_PRIORITY.get(state, 0) >= STATE_PRIORITY.get(old_state, 0) else old_state
+        chosen_version_id = existing[2]
+        if version_id and existing[2]:
+            old_version = conn.execute(
+                "SELECT version_key FROM resume_versions WHERE id=?",
+                (int(existing[2]),),
+            ).fetchone()
+            if old_version and str(old_version[0]).endswith("-unclassified-v1.0"):
+                chosen_version_id = version_id
+        elif version_id:
+            chosen_version_id = version_id
         conn.execute(
             """
             UPDATE resume_artifacts
-            SET resume_version_id=COALESCE(resume_version_id, ?),
+            SET resume_version_id=?,
                 file_state=?, canonical_filename=?, size_bytes=?,
                 last_seen_at=?, missing_at=NULL
             WHERE id=?
             """,
-            (version_id, chosen_state, canonical, size_bytes, now, artifact_id),
+            (chosen_version_id, chosen_state, canonical, size_bytes, now, artifact_id),
         )
     else:
         conn.execute(
@@ -276,23 +316,18 @@ def upsert_artifact(
         )
         artifact_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
 
-    same_location = conn.execute(
-        "SELECT id FROM resume_artifact_locations WHERE relative_path=? AND artifact_id=? ORDER BY id DESC LIMIT 1",
-        (relative_path, artifact_id),
-    ).fetchone()
-    current = conn.execute(
-        "SELECT id, artifact_id FROM resume_artifact_locations WHERE relative_path=? AND is_current=1",
+    # A path is unique in the registry. If its content hash changed since the
+    # previous scan (for example, an edited catalog), retarget that path row to
+    # the new artifact instead of attempting a second row and violating the
+    # path uniqueness invariant.
+    location = conn.execute(
+        "SELECT id, artifact_id FROM resume_artifact_locations WHERE relative_path=? ORDER BY id DESC LIMIT 1",
         (relative_path,),
     ).fetchone()
-    if current and int(current[1]) != artifact_id:
+    if location:
         conn.execute(
-            "UPDATE resume_artifact_locations SET is_current=0, missing_at=COALESCE(missing_at, ?) WHERE id=?",
-            (now, int(current[0])),
-        )
-    if same_location:
-        conn.execute(
-            "UPDATE resume_artifact_locations SET original_filename=?, is_current=1, last_seen_at=?, missing_at=NULL WHERE id=?",
-            (original_filename, now, int(same_location[0])),
+            "UPDATE resume_artifact_locations SET artifact_id=?, original_filename=?, is_current=1, last_seen_at=?, missing_at=NULL WHERE id=?",
+            (artifact_id, original_filename, now, int(location[0])),
         )
     else:
         conn.execute(

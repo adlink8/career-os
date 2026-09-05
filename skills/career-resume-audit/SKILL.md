@@ -1,16 +1,18 @@
 ---
 name: career-resume-audit
 displayName: 简历自我审计(证据优先)
-version: 1.0.0
+version: 1.1.0
 agent_created: true
 description: >-
   用证据优先方法审计自己的简历:拆原子主张、内部一致性检查、
-  对照仓库证据定五档状态、排查包装夸大模式。投递前防面试官拷打。
+  对照仓库证据定五档状态、排查包装夸大模式、检查 AI 生成感与数字口径。
+  投递前防面试官拷打。
   方法论改编自 Claycui828/ASu-resume-skills(MIT,见 references 头部声明)。
 trigger:
   - 简历审计 / 简历自查 / 审计我的简历
   - 这个写法会不会被问穿 / 经得起拷打吗 / 防追问
   - 简历夸大检查 / 包装过度 / 证据状态
+  - 简历有 AI 味 / 反AI感 / 数字口径 / 数字太假
 ---
 
 # 简历自我审计(证据优先)
@@ -21,7 +23,7 @@ trigger:
 
 - 待审简历:`data/cv/cv-*.md` 或用户指定的 docx/PDF 文本
 - 证据基线:`data/cv/cv-material.md`(仓库取证版素材)、`config/profile.yml`
-- 参考:`references/evidence-status.md`、`references/inflation-patterns.md`
+- 参考:`references/evidence-status.md`、`references/inflation-patterns.md`、`references/ai-flavor-patterns.md`
 
 ## 工作流
 
@@ -55,7 +57,15 @@ trigger:
 
 逐条过 references/inflation-patterns.md 的清单(贡献升级、团队成果归个人、分母切换、最高级无比较集、跨平台自授 title 等)。
 
-### 5. 输出
+### 5. AI 生成感与数字口径检查
+
+逐条过 references/ai-flavor-patterns.md 的清单(HR 识别 AI 简历三特征、数字口径、逐句"能否被抄走"自查、AI 应用能力明牌原则):
+
+- 数字口径:每页 ≤5 个、取整、可公开验证且本人能讲出来源;高精度统计数字(如"4,148 个测试函数")标记为必改
+- 每条 bullet 至少一个"只有做过才知道"的具体名词;纯"负责/优化/提升"句标记为模板化
+- 概述-项目-技能是否一条主线,板块间有无拼凑感
+
+### 6. 输出
 
 ```text
 ## 简历审计报告:{文件名}

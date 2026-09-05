@@ -33,6 +33,10 @@ cv__{role}__v{major}.{minor}__source.md
 - `resume_artifact_locations`：文件当前或历史路径，支持改名/移动追踪。
 - `applications`：岗位与简历版本、实际投递文件的关联。
 - `application_timeline.application_id`：投递过程事件的归属。
+- `github_project_candidates`：按岗位保存外部 GitHub 候选仓库及许可证、匹配词和来源。
+- `resume_project_proposals`：保存人工确认的简历提案、个人证据和写入状态；它不替代 `resume_versions`。
+
+GitHub 候选不会自动变成简历经历。只有 `project-candidates confirm ... --confirm` 生成 `confirmed` 提案，再执行 `project-candidates apply ... --confirm`，才会向目标 Markdown 简历追加带来源的审阅块；实际投递仍需同步登记并以不可变 PDF/DOCX 快照为准。
 
 ## 同步
 

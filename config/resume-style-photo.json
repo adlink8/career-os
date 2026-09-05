@@ -1,0 +1,44 @@
+{
+  "name": "photo-style",
+  "description": "A4 one-page two-column resume style based on cv-newland-photo-edition",
+  "page": {
+    "width_mm": 210,
+    "height_mm": 297
+  },
+  "fonts": {
+    "body": "Microsoft YaHei",
+    "latin": "Arial",
+    "mono": "Consolas"
+  },
+  "colors": {
+    "sidebar": "#3E4D5E",
+    "sidebar_text": "#F1F5F9",
+    "sidebar_muted": "#E2E8F0",
+    "main_text": "#334155",
+    "main_strong": "#0F172A",
+    "ribbon": "#DDE3EA",
+    "ribbon_text": "#2C3E50",
+    "link": "#1D4ED8"
+  },
+  "metrics": {
+    "sidebar_width_mm": 65,
+    "main_width_mm": 145,
+    "sidebar_padding": "14mm 5.5mm 12mm 6.5mm",
+    "main_padding": "13mm 9mm 12mm 9mm",
+    "name_px": 28,
+    "intent_px": 11.5,
+    "side_heading_px": 13.5,
+    "side_item_px": 10.8,
+    "side_item_line": 1.68,
+    "side_skill_px": 9.8,
+    "side_skill_line": 1.56,
+    "ribbon_px": 14.5,
+    "body_px": 10.5,
+    "body_line": 1.58,
+    "project_title_px": 12.5,
+    "project_duty_px": 9.8,
+    "project_duty_line": 1.48,
+    "photo_width_mm": 44,
+    "photo_height_mm": 58
+  }
+}

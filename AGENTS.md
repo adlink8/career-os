@@ -45,6 +45,7 @@ In these cases, respond directly and keep overhead low.
 - Planning files: `.planning/`
 - Current phase: Phase 5, Operational Layer（作战层与统一插件运行时已实现；当前重点是真实 Agent/真实投递验证）
 - Truth source: checked local files and smoke verification, not README completion claims.
+- Data authority (2026-09-05): `data/career_jobs.sqlite` 是求职全流程唯一权威事实源；md/TSV 文档只是库的规范描述或派生视图，冲突以库为准。新功能先定库表契约（`bin/career_os_store.py` 迁移），再写 Skill 与文档。详见 `docs/data-model.md`。
 - v1 status: 14 skills passed static verification, 11 knowledge domains populated, runtime-smoke passed, tracker.tsv 尚无真实投递记录
 - Last audited: 2026-09-02
 
