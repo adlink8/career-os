@@ -2,6 +2,7 @@
 
 # 个人隐私数据(DATA-03):简历全系列、个人评估、岗位清单与抓取数据,仅本地
 data/cv/
+data/resume-project-proposals/
 data/analysis/
 data/jobs/
 
@@ -12,8 +13,11 @@ config/profile.yml
 # 本机数据仓库路径（含绝对路径）
 config/personal-data-warehouse.yml
 
-# 本地投递记录含真实公司沟通,默认不公开;如需公开请改为脱敏版
+# 真实投递与求职状态（含真实公司、投递进度、内推渠道），仅本地；权威数据在本地 sqlite
+data/tracker.tsv
 data/tracker.tsv.local
+data/current-status.md
+data/platform_recruitment_jd.md
 
 # 本地数据库与备份文件（含真实信息与运行状态，绝不上云）
 data/*.sqlite*
@@ -32,6 +36,9 @@ data/job_target_*.json
 tmp/
 tmp_*.py
 tc_params.json
+
+# 浏览器自动化运行日志与页面快照（可能含访问足迹）
+.playwright-cli/
 
 # 个人简历、证件照及导出产物全格式拦截（纯占位模板保留在 templates/）
 *.pdf
@@ -61,4 +68,3 @@ __pycache__/
 # Local Judge0 deployment secrets/runtime env
 deploy/judge0/judge0.conf
 deploy/judge0/runtime.env
-
