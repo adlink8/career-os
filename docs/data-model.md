@@ -1,6 +1,6 @@
 # 数据库与文档关系图（data-model）
 
-> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v9，22 张业务表）。
+> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v11，29 张业务表）。
 > md 文档分三类：**描述数据库的**（docs/）、**被数据库引用或导出的**（data/*.md）、**与数据库无关的参考层**（knowledge/）。本文是它们与数据库关系的单一事实源。
 
 ## 0. 权威原则（2026-09-05 确定）
@@ -14,7 +14,7 @@
 
 - **文件**：`data/career_jobs.sqlite`
 - **唯一迁移/访问入口**：`bin/career_os_store.py`（`DB_PATH` 常量，可用 `CAREER_OS_DB_PATH` 环境变量覆盖）
-- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v9
+- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v11
 - **简历二进制不进库**：PDF/DOCX/MD 原文件留在 `data/cv/`，库里只存元数据（SHA-256 为内容身份），见 `docs/resume-registry.md`
 
 ## 2. 业务表分域
@@ -66,6 +66,30 @@
 - 同步入口：`python scripts/sync_github_data.py`（走已认证 gh CLI，幂等可重跑：仓库 upsert、提交按 sha 去重）
 - 口径说明：`github_commits` 只覆盖**默认分支**；fork 仓库的 `commit_count` 是上游仓库在默认分支的提交总数，不等于本人贡献
 - 该域是简历实证数字（如 novel-mind 635 commits）的权威来源，与 memory/文档中的旧数字冲突时以库为准
+
+### F. 简历证据域（v10，2026-09-05 两轮导入：旗舰 3 项目 + 全项目扫荡）
+
+| 表 | 行数(约) | 作用 |
+|---|---:|---|
+| `resume_evidence_projects` | 15 | 全部仓库的简历价值判定（A/B/C 级 + fork 排雷记录）：定位、时间跨度、规模 |
+| `resume_evidence_bullets` | 28 | bullet 候选：钩子类型 + 三层拷打答案（是什么/为什么/踩坑）+ 证据链 + 五档证据状态 |
+| `resume_evidence_milestones` | 21 | 开发里程碑（日期 + 会话/commit 证据），按 (project_id, milestone_date) upsert 增量导入 |
+| `resume_evidence_numbers` | 23 | 可验证数字清单（验证方式 + 是否公开 + 是否可上简历） |
+| `resume_evidence_interview_qa` | 10 | 面试拷打预演：最可能追问 + 回答要点 |
+
+- 来源：两轮并行子 agent 只读挖掘 `D:\ADLINK\数据分析` 会话库（2,569 会话/178k 消息）+ 本地 git + GitHub API，载荷在 `data/analysis/resume-evidence-*.json`
+- 导入：`python scripts/import_resume_evidence.py [--input <json>]`（幂等，里程碑只增不清）；筛选标准来自 career-resume-audit / hook-writing / ai-flavor-patterns 三个 skill
+- 关键排雷结论：TraceMemo 与 xiaozhi 三件套为**零贡献 fork**（严禁声称参与）；仓库已改名 **pk-core**（旧 personal-data-analysis-system URL 重定向）；博客"91 篇"口径待复核（本地实测 59 篇内容页）
+
+### G. JD 对位证据域（v11，2026-09-05 首次导入）
+
+| 表 | 行数(约) | 作用 |
+|---|---:|---|
+| `jd_evidence_packages` | 6 | 每个在投/目标 JD 一个证据包：聚焦层面、钩子策略（主钩/次钩/兜底）、缺口台账 |
+| `jd_evidence_matches` | 22 | 包内匹配：指向 `resume_evidence_bullets` 的 (project_key, bullet_sort)，标注层面（技术深挖/数据工程/质量测试/工程治理/运维部署/AI 协作）与角色（primary/support/gap） |
+
+- 来源：`data/analysis/jd-evidence-packages-2026-09.json`；导入 `python scripts/import_jd_evidence_packages.py`
+- 用法：面试准备时按 `jd_key` 查包，先读 `hook_strategy`，再按 layer 拉对应 bullet 的三层拷打答案；`gap_notes` 是不能硬凑的诚实边界
 
 ## 3. md 文档 ↔ 数据库关系
 
