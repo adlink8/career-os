@@ -1,0 +1,134 @@
+{
+  "channel": "guopin",
+  "entries": [
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "运维工程师",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/job/list?keyword=%E8%BF%90%E7%BB%B4%E5%B7%A5%E7%A8%8B%E5%B8%88",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-运维工程师.png",
+      "screenshot_type": "list",
+      "captured_at": "2026-09-07T16:21:40+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "运维工程师",
+      "page": 1,
+      "detail_index": 1,
+      "detail_url": "https://www.iguopin.com/job/detail?id=208455313571971999",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-运维工程师-01.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:21:47+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "运维工程师",
+      "page": 1,
+      "detail_index": 2,
+      "detail_url": "https://www.iguopin.com/job/detail?id=211006032372041874",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-运维工程师-02.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:21:56+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "运维工程师",
+      "page": 1,
+      "detail_index": 3,
+      "detail_url": "https://www.iguopin.com/job/detail?id=216195603774832863",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-运维工程师-03.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:22:05+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "技术支持工程师",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/job/list?keyword=%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81%E5%B7%A5%E7%A8%8B%E5%B8%88",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-技术支持工程师.png",
+      "screenshot_type": "list",
+      "captured_at": "2026-09-07T16:22:19+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "技术支持工程师",
+      "page": 1,
+      "detail_index": 1,
+      "detail_url": "https://www.iguopin.com/job/detail?id=215585047279830609",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-技术支持工程师-01.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:22:26+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "技术支持工程师",
+      "page": 1,
+      "detail_index": 2,
+      "detail_url": "https://www.iguopin.com/job/detail?id=213388720877862947",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-技术支持工程师-02.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:22:37+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "技术支持工程师",
+      "page": 1,
+      "detail_index": 3,
+      "detail_url": "https://www.iguopin.com/job/detail?id=205118719859360528",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-技术支持工程师-03.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:22:46+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "平台运维",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/job/list?keyword=%E5%B9%B3%E5%8F%B0%E8%BF%90%E7%BB%B4",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-平台运维.png",
+      "screenshot_type": "list",
+      "captured_at": "2026-09-07T16:22:59+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "平台运维",
+      "page": 1,
+      "detail_index": 1,
+      "detail_url": "https://www.iguopin.com/job/detail?id=209211109352145824",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-平台运维-01.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:23:07+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "平台运维",
+      "page": 1,
+      "detail_index": 2,
+      "detail_url": "https://www.iguopin.com/job/detail?id=210109822031366385",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-平台运维-02.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:23:18+08:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "平台运维",
+      "page": 1,
+      "detail_index": 3,
+      "detail_url": "https://www.iguopin.com/job/detail?id=216327784832696723",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\d01-平台运维-03.png",
+      "screenshot_type": "detail",
+      "captured_at": "2026-09-07T16:23:26+08:00"
+    }
+  ]
+}

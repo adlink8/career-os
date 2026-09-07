@@ -1,0 +1,13 @@
+{
+  "channel": "guopin",
+  "screenshot_path": "data/job_discovery/screenshots/guopin/2026-09-07/p01-运维工程师.png",
+  "captured_at": "2026-09-07T15:55:00+08:00",
+  "leads": [
+    {"company_name": "北京时代民芯科技有限公司", "job_title": "高级运维工程师", "city": "北京", "salary_text": "25~35K", "recruitment_type": "社会招聘", "job_category": "运维工程师", "education_requirement": "本科", "evidence_text": "社招 3-5年 本科；国企 1000-2000人 软件和信息技术服务业"},
+    {"company_name": "海南南之谷科技有限公司", "job_title": "软件运维工程师", "city": "海口", "salary_text": "面议", "recruitment_type": "社会招聘", "job_category": "运维工程师", "education_requirement": "本科", "evidence_text": "社招 3-5年 本科；民营企业 50人以下 软件和信息技术服务业"},
+    {"company_name": "贵州江南航天信息网络通信有限公司", "job_title": "网络运维工程师", "city": "贵阳", "salary_text": "7~10K", "recruitment_type": "校园招聘", "job_category": "网络运维", "education_requirement": "硕士", "evidence_text": "校招 应届生；运维中心；国企 100-300人"},
+    {"company_name": "中国联合网络通信有限公司昌都市分公司", "job_title": "初级运维工程师", "city": "昌都", "salary_text": "面议", "recruitment_type": "校园招聘", "job_category": "运维工程师", "education_requirement": "应届生", "evidence_text": "校招；国企 500-1000人 互联网和相关服务"},
+    {"company_name": "中国联合网络通信有限公司上海市分公司", "job_title": "网络运维工程师", "city": "上海", "salary_text": "面议", "recruitment_type": "校园招聘", "job_category": "网络运维", "education_requirement": "应届生", "evidence_text": "校招；国企 2000-5000人 电信、广播电视和卫星传"}
+  ],
+  "notes": "底部第6张卡片被视口裁切（日喀则方向联通初级运维），字段不完整未收录"
+}

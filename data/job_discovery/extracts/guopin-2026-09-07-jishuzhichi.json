@@ -1,0 +1,13 @@
+{
+  "channel": "guopin",
+  "screenshot_path": "data/job_discovery/screenshots/guopin/2026-09-07/p01-技术支持工程师.png",
+  "captured_at": "2026-09-07T15:55:00+08:00",
+  "leads": [
+    {"company_name": "广州虹科电子科技有限公司", "job_title": "技术支持工程师(J10016)", "city": "上海", "salary_text": "面议", "recruitment_type": "校园招聘", "job_category": "技术支持工程师", "education_requirement": "本科", "evidence_text": "校招 应届生 本科；民营企业 100-300人 科学研究和技术服务业"},
+    {"company_name": "北京华大智宝电子系统有限公司", "job_title": "技术支持工程师_华弘_研发部", "city": "北京", "salary_text": "面议", "recruitment_type": "校园招聘", "job_category": "技术支持工程师", "education_requirement": "硕士", "evidence_text": "校招 应届生；研发部；国企 300-500人 制造业"},
+    {"company_name": "成都积微物联集团股份有限公司", "job_title": "高级技术支持工程师（大数据应用）", "city": "成都", "salary_text": "18~35K", "recruitment_type": "社会招聘", "job_category": "技术支持工程师", "education_requirement": "本科", "evidence_text": "社招 5-10年 本科；技能标签 Java/Hadoop；国企 500-1000人 互联网和相关服务"},
+    {"company_name": "深圳市航天泰瑞维电子有限公司", "job_title": "技术支持助理工程师", "city": "深圳", "salary_text": "8~12K", "recruitment_type": "校园招聘", "job_category": "技术支持工程师", "education_requirement": "本科", "evidence_text": "校招 应届生；海外事业部；国企 100-300人 仪器仪表制造业"},
+    {"company_name": "上海船舶运输科学研究所有限公司", "job_title": "技术支持及调试服务工程师", "city": "上海", "salary_text": "面议", "recruitment_type": "社会招聘", "job_category": "技术支持工程师", "education_requirement": "本科", "evidence_text": "社招 3-5年 本科；国企 300-500人 水上运输业"}
+  ],
+  "notes": "底部第6张卡片（上海-浦东新区 同所）被裁切未收录"
+}

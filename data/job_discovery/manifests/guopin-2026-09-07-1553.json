@@ -1,0 +1,32 @@
+{
+  "channel": "guopin",
+  "entries": [
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "运维工程师",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-运维工程师.png",
+      "captured_at": "2026-09-07T07:53:18+00:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "技术支持工程师",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-技术支持工程师.png",
+      "captured_at": "2026-09-07T07:53:27+00:00"
+    },
+    {
+      "channel": "guopin",
+      "channel_name": "国聘",
+      "keyword": "DevOps",
+      "page": 1,
+      "page_url": "https://www.iguopin.com/",
+      "screenshot_path": "data\\job_discovery\\screenshots\\guopin\\2026-09-07\\p01-DevOps.png",
+      "captured_at": "2026-09-07T07:53:38+00:00"
+    }
+  ]
+}

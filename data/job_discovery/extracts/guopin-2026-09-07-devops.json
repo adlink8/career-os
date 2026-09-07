@@ -1,0 +1,9 @@
+{
+  "channel": "guopin",
+  "screenshot_path": "data/job_discovery/screenshots/guopin/2026-09-07/p01-DevOps.png",
+  "captured_at": "2026-09-07T15:55:00+08:00",
+  "leads": [
+    {"company_name": "中国数联物流信息有限公司", "job_title": "平台运维管理岗", "city": "天津", "salary_text": "面议", "recruitment_type": "社会招聘", "job_category": "平台运维", "education_requirement": "本科", "evidence_text": "社招 本科；京津冀区域公司（筹）；国企 2000-5000人 软件和信息技术服务业"}
+  ],
+  "notes": "DevOps 关键词命中噪音多：AI产品经理/项目管理/移动开发/系统架构等岗位与本方向不符，未收录；顶部残卡（时空AI）被裁切未收录"
+}
