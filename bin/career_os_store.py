@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 11
+SCHEMA_VERSION = 15
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -238,6 +238,14 @@ def migrate(conn: sqlite3.Connection) -> None:
         ("experience_requirement", "TEXT NOT NULL DEFAULT ''"),
         ("jd_source_url", "TEXT NOT NULL DEFAULT ''"),
         ("jd_evidence_confidence", "TEXT NOT NULL DEFAULT '中'"),
+        # v15: screenshot-based discovery (模拟真人浏览 + 截图 + 视觉提取).
+        # salary_text 保留来源页原始写法（如 "8-12K·13薪"、"面议"），不做数值化。
+        # screenshot_path 指向本次采集的页面截图（相对项目根），供溯源复核。
+        # capture_method 区分采集链路：manual / screenshot_vision / script。
+        ("salary_text", "TEXT NOT NULL DEFAULT ''"),
+        ("screenshot_path", "TEXT NOT NULL DEFAULT ''"),
+        ("capture_method", "TEXT NOT NULL DEFAULT 'manual'"),
+        ("captured_at", "TEXT NOT NULL DEFAULT ''"),
     ):
         _add_column(conn, "platform_recruitment_leads", name, definition)
     for column in (
@@ -655,10 +663,172 @@ def migrate(conn: sqlite3.Connection) -> None:
         "ON jd_evidence_matches(package_id, match_role)"
     )
 
+    # v12 面试拷打域：按项目逐功能下钻的问答卡。
+    # 每行 = 一个可能被提问的点：depth 1=是什么 2=为什么取舍 3=踩坑细节；
+    # my_thinking 存项目主人当时的原始思考（会话概括），evidence 存 session/commit/ADR 溯源。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS interview_drill_points (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            project_key TEXT NOT NULL,
+            feature TEXT NOT NULL,
+            phase TEXT NOT NULL DEFAULT '',
+            depth INTEGER NOT NULL DEFAULT 1,
+            question TEXT NOT NULL,
+            answer_points TEXT NOT NULL DEFAULT '',
+            my_thinking TEXT NOT NULL DEFAULT '',
+            evidence TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (project_key, feature, question)
+        )
+        """
+    )
+    # v13 校招投递限制与岗位推荐权重域
+    _add_column(conn, "companies", "max_campus_applications", "INTEGER")
+    _add_column(conn, "companies", "campus_application_rules", "TEXT")
+    _add_column(conn, "jobs", "recommendation_weight", "REAL")
+    _add_column(conn, "jobs", "recommendation_rank", "INTEGER")
+    _add_column(conn, "jobs", "recommendation_reason", "TEXT")
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_jobs_company_rank "
+        "ON jobs(company_id, recommendation_rank)"
+    )
+
+    # v14 简历生成规则与硬红线契约库 (resume_generation_rules)
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_generation_rules (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            rule_category TEXT NOT NULL,
+            rule_key TEXT NOT NULL UNIQUE,
+            rule_title TEXT NOT NULL,
+            rule_content TEXT NOT NULL,
+            rationale TEXT NOT NULL DEFAULT '',
+            priority INTEGER NOT NULL DEFAULT 1,
+            is_active INTEGER NOT NULL DEFAULT 1,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_resume_rules_category "
+        "ON resume_generation_rules(rule_category, is_active)"
+    )
+
+    rules_seed = [
+        (
+            "layout_intent",
+            "no_target_location",
+            "求职意向去目标地点",
+            "求职意向严禁携带具体目标地点（如'常州武进区/新北区'），仅保留'岗位名称 + 2027届统招本科'。",
+            "避免地域标签过早限定求职范围，提升简历泛化通用性",
+            1,
+        ),
+        (
+            "layout",
+            "strict_1_page_a4_balanced",
+            "严格A4物理单页且版面饱满",
+            "PDF必须严格为1页，无任何跨页溢出；版面上下均衡饱满，严禁下半部大面积留白；行距与段距合理分布。",
+            "校招纸质与电子简历物理单页规范，避免排版松散或溢出",
+            1,
+        ),
+        (
+            "layout",
+            "sidebar_font_spacing_and_wrapping",
+            "左侧栏字间距规整与优雅换行",
+            "侧边栏宽度受限时使用左对齐和break-word，严禁在窄列使用justify导致汉字间隙被拉伸；长词组必须优雅换行，严禁单个字单独掉到下一行。",
+            "确保中英文混排视觉美感与阅读体验",
+            1,
+        ),
+        (
+            "education",
+            "education_bachelor_only",
+            "教育背景仅限常州大学全日制本科",
+            "教育背景必须且仅有：常州大学 | 计算机科学与技术 | 本科 | 2027年6月毕业。彻底清除专科、专升本、江苏信息职业技术学院等任何专科字样。删除大学英语四六级/英语文档表述，保留省级技能大赛（省级获奖）与软著。",
+            "用户最高红线，杜绝任何历史冗余与无关信息干扰",
+            1,
+        ),
+        (
+            "skill",
+            "ai_skill_first_no_prompt",
+            "AI技能首位与彻底禁用Prompt",
+            "主要技能第一条必须是AI技能：熟练使用 Codex、Claude Code、Gemini 等大模型工具；掌握 MCP 协议规范与 Skill 自动化应用，具备 RAG 知识检索与 Agent 工作流能力。全篇严禁出现 Prompt / Prompt 工程等词汇。技能项禁用精通/熟悉等分级标签。",
+            "突显先进开发工具链与协议理解，杜绝空泛无意义的Prompt标签",
+            1,
+        ),
+        (
+            "project",
+            "no_ai_whitewash_on_projects",
+            "禁止给每个项目强扣AI帽子",
+            "只有原本具备 RAG、向量切片和状态机代码的项目（pk-core、novel-mind）才说明 AI 能力；物联网通信、Wireshark抓包排障、Linux运维、技术博客和技能大赛绝不强加任何AI标签，展现扎实的工程本质。",
+            "防止面试官认为项目全为AI虚构生成，还原候选人真实动手开发能力",
+            1,
+        ),
+        (
+            "anti_inflation",
+            "no_hallucinated_percentages",
+            "严禁编造无基线伪精确百分比",
+            "严禁在简历中编造'84%提升至98.5%'、'误报率降至0.5%'、'降低62%'等无底层测试量测依据的伪精确数字。",
+            "遵守简历审计红线，防止面试时被深挖量测工具导致当场证伪",
+            1,
+        ),
+        (
+            "anti_inflation",
+            "no_inflated_magnitude_counts",
+            "严禁堆砌几千几万的夸大数字",
+            "校招简历严禁堆砌'15.8万处脏数据'、'1500+个测试用例'、'2800+行代码'等在面试官看来明显夸大、不真实的数字。重点放在业务痛点、具体做了什么模块、采用了什么机制以及带来哪些真实提升。",
+            "消除夸大感与吹牛感，建立踏实、严谨的工程人设",
+            1,
+        ),
+        (
+            "project",
+            "focus_what_done_and_lift",
+            "务实说明做了什么与具体提升",
+            "项目描述必须采用'业务痛点/背景 + 做了什么模块/技术手段 + 具体带来哪些实在提升'的叙事结构。例如：通过复合索引将查询延迟由 280ms 降低至 38ms；通过指数退避（1s至60s）解决瞬断重连网关堵塞；通过 Checksum 增量缓存缩短回归耗时；通过时间戳归一化消除多源数据时序错乱。",
+            "以真实工程方案和实测改变量化价值，逻辑闭环",
+            1,
+        ),
+        (
+            "project",
+            "no_fake_domain_wrapping",
+            "严禁将项目虚假包装为不存在的车间MES",
+            "不得将开源软件或个人数据项目强行包装成'制造车间生产工序/MES/WMS'。主数据治理岗对位多源数据清洗、SQL比对与数据库调优；智能制造岗以真实的物联网设备通信（MQTT/HTTP）、工业网关部署、Wireshark抓包排障、局域网组网为主干，辅以数据清洗与系统测试能力。",
+            "坚守代码与事实一致性，确保面试现场可随时打开仓库对照演示",
+            1,
+        ),
+        (
+            "layout",
+            "concise_section_titles",
+            "模块标题简洁规范（个人概述就叫个人概述）",
+            "主栏各模块标题使用标准简洁命名（如'个人概述'、'核心工程与数据治理项目经历'、'专业竞赛与工程实践'），个人概述模块标题直接使用'个人概述'，严禁随意添加'与专业定位'、'与制造数字化定位'等冗余后缀。",
+            "保证简历模块标题严谨清晰，杜绝画蛇添足的自造标题",
+            1,
+        ),
+    ]
+    for cat, key, title, content, rat, pri in rules_seed:
+        conn.execute(
+            """
+            INSERT INTO resume_generation_rules
+                (rule_category, rule_key, rule_title, rule_content, rationale, priority, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(rule_key) DO UPDATE SET
+                rule_category = excluded.rule_category,
+                rule_title = excluded.rule_title,
+                rule_content = excluded.rule_content,
+                rationale = excluded.rationale,
+                priority = excluded.priority,
+                updated_at = CURRENT_TIMESTAMP
+            """,
+            (cat, key, title, content, rat, pri),
+        )
+
     conn.execute(
         "INSERT OR IGNORE INTO career_os_schema_migrations(version, applied_at) VALUES (?, ?)",
         (SCHEMA_VERSION, _utc_now()),
     )
+
     conn.commit()
 
 

@@ -68,3 +68,6 @@ __pycache__/
 # Local Judge0 deployment secrets/runtime env
 deploy/judge0/judge0.conf
 deploy/judge0/runtime.env
+
+# 岗位截图管道：浏览器会话含登录 cookie，严禁入库
+data/job_discovery/browser_profiles/
