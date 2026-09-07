@@ -24,14 +24,22 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
+import socket
+import subprocess
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
 
 import yaml
-from playwright.sync_api import sync_playwright
+# patchright：Playwright 隐身分支，修复 CDP Runtime.enable 特征泄漏
+# （BOSS直聘风控会探测 CDP 协议特征并把页面强制导航到 about:blank，原生 Playwright 必白屏）
+try:
+    from patchright.sync_api import sync_playwright
+except ImportError:
+    from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "config" / "job_discovery_channels.yml"
@@ -52,19 +60,91 @@ def _human_scroll(page, steps: int) -> None:
         _human_pause(0.8, 2.2)
 
 
+def _cdp_alive(port: int) -> bool:
+    """探测 CDP 调试端口是否已有浏览器在监听。"""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(1)
+        return s.connect_ex(("127.0.0.1", port)) == 0
+
+
+_EDGE_PATHS = [
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+    r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+]
+_CHROME_PATHS = [r"C:\Program Files\Google\Chrome\Application\chrome.exe"]
+
+
+def _find_channel_exe(channel_name: str) -> str:
+    """找本机真实浏览器 exe（attach 模式启动用）。"""
+    candidates = _EDGE_PATHS if "edge" in channel_name else _CHROME_PATHS
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+    raise FileNotFoundError(f"本机未找到 {channel_name}，请安装或改用 browser_channel 其他值")
+
+
+def _safe_close(context, attach_mode: bool) -> None:
+    """attach 模式下浏览器常驻复用，绝不 close；launch 模式才收尾。"""
+    if attach_mode:
+        return
+    try:
+        context.close()
+    except Exception:
+        pass  # 窗口可能已被手动关闭
+
+
+def _goto(page, url: str, timeout: int = 60_000) -> None:
+    """导航包装：commit 模式（服务器响应即返回）+ 重试。
+
+    BOSS 对登录态自动化会话会挂起连接/下发挑战页，等 domcontentloaded 会 60s 超时；
+    commit 模式先让页面到手，内容是否正常交给后续的卡片等待逻辑判断。
+    """
+    for attempt in range(3):
+        try:
+            page.goto(url, wait_until="commit", timeout=timeout)
+            _human_pause(1.0, 2.0)
+            return
+        except Exception:
+            if attempt == 2:
+                raise
+            _human_pause(2.0, 4.0)
+
+
+def _is_logged_in(page, channel: dict) -> bool:
+    """多策略登录态判定。
+
+    1. 渠道配置的 login_detect_selector（可能过时，BOSS 改版频繁）
+    2. URL 启发式：出现登录后才有的页面（job-recommend / web/user 个人中心）即视为已登录
+    """
+    detect = channel.get("login_detect_selector")
+    if detect:
+        try:
+            if page.locator(detect).count() > 0:
+                return True
+        except Exception:
+            pass
+    url = page.url
+    return any(marker in url for marker in ("job-recommend", "/web/user/", "/web/geek/job?"))
+
+
 def _wait_for_login(page, channel: dict, timeout_s: int = 180) -> bool:
     """轮询登录态，代替固定等待。
 
-    判定依据（渠道可配 login_detect_selector，默认 BOSS 的头像入口）：
-      - login_detect_selector 出现 = 已登录
-      - 超时未出现 = 放弃本轮（cookie 已留存在 profile，下次续扫）
+    判定依据见 _is_logged_in：
+      - 已登录 = 继续
+      - 超时未登录 = 放弃本轮（cookie 已留存在 profile，下次续扫）
     """
-    detect = channel.get("login_detect_selector", "//li[@class='nav-figure']")
     print(f"[{channel['id']}] 请在弹出的浏览器中完成登录/扫码（最长 {timeout_s}s），本窗口每 3s 自动检测...")
     deadline = time.time() + timeout_s
+    last_url = ""
     while time.time() < deadline:
         try:
-            if page.locator(detect).count() > 0:
+            # 白屏诊断：页面被风控跳转时把实际 URL 打出来
+            cur_url = page.url
+            if cur_url != last_url:
+                print(f"[{channel['id']}] 当前页面: {cur_url[:100]}")
+                last_url = cur_url
+            if _is_logged_in(page, channel):
                 print(f"[{channel['id']}] 登录态确认 ✓")
                 return True
         except Exception:
@@ -194,43 +274,97 @@ def _shoot_channel(channel: dict, pages: int, scroll_steps: int, keyword: str,
     needs_login = channel.get("needs_login", False)
     headless = channel.get("headless", True) and not needs_login
     entries: list[dict] = []
+    attach_mode = bool(channel.get("attach_cdp"))
+    owned_context = None  # attach 模式下 context 属于常驻浏览器，不 close
 
     with sync_playwright() as p:
-        # 持久化会话：cookie 存本地，登录类渠道一次扫码多日免登
-        profile_dir = OUT_ROOT / "browser_profiles" / channel["id"]
+        # 持久化会话：cookie 存本地，登录类渠道一次扫码多日免登。
+        # 渠道可配 browser_channel（chrome/msedge）切换内核；profile 按内核分目录避免锁冲突
+        profile_dir = OUT_ROOT / "browser_profiles" / channel["id"] / channel.get("browser_channel", "chromium")
         profile_dir.mkdir(parents=True, exist_ok=True)
-        context = p.chromium.launch_persistent_context(
-            user_data_dir=str(profile_dir),
-            headless=headless,
-            locale="zh-CN",
-            timezone_id="Asia/Shanghai",
-            viewport={"width": random.choice([1366, 1440, 1536]), "height": 900},
-        )
+
+        if attach_mode:
+            # ===== CDP 附加模式（社区正统方案，get_jobs 同款）=====
+            # BOSS 检测"自动化方式启动的浏览器"会强制刷新/打回匿名/封号；
+            # 正解：真实 Edge 用 debug 端口启动一次并常驻，脚本只附加操作，
+            # 浏览器进程跨运行复用（每次新开浏览器=登录态取消，是风控重灾区）
+            cdp_port = int(channel.get("cdp_port", 9222))
+            if not _cdp_alive(cdp_port):
+                exe = _find_channel_exe(channel.get("browser_channel", "msedge"))
+                subprocess.Popen(
+                    [exe, f"--remote-debugging-port={cdp_port}",
+                     f"--user-data-dir={profile_dir}",
+                     "--no-first-run", "--no-default-browser-check",
+                     channel["entry_url"]],
+                )
+                for _ in range(30):
+                    if _cdp_alive(cdp_port):
+                        break
+                    time.sleep(1)
+            browser = p.chromium.connect_over_cdp(f"http://127.0.0.1:{cdp_port}")
+            context = browser.contexts[0] if browser.contexts else browser.new_context()
+        else:
+            # ===== 传统 launch 模式（官网类低风控渠道用）=====
+            stealth_args = ["--disable-blink-features=AutomationControlled"]
+            if channel.get("no_proxy"):
+                stealth_args.append("--no-proxy-server")
+            launch_kw = dict(
+                user_data_dir=str(profile_dir),
+                headless=headless,
+                locale="zh-CN",
+                timezone_id="Asia/Shanghai",
+                viewport={"width": random.choice([1366, 1440, 1536]), "height": 900},
+            )
+            try:
+                owned_context = p.chromium.launch_persistent_context(
+                    channel=channel.get("browser_channel", "chrome"), args=stealth_args, **launch_kw
+                )
+            except Exception:
+                owned_context = p.chromium.launch_persistent_context(args=stealth_args, **launch_kw)
+            owned_context.add_init_script(
+                """
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                window.chrome = window.chrome || { runtime: {} };
+                Object.defineProperty(navigator, 'languages', {get: () => ['zh-CN', 'zh', 'en']});
+                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+                """
+            )
+            context = owned_context
         page = context.pages[0] if context.pages else context.new_page()
 
         # 登录渠道：先探已有 cookie 是否还有效，失效才弹扫码等待
         if needs_login:
-            page.goto(channel["entry_url"], wait_until="domcontentloaded", timeout=60_000)
+            _goto(page, channel["entry_url"])
             _human_pause(2.0, 3.0)
-            detect = channel.get("login_detect_selector", "//li[@class='nav-figure']")
-            if page.locator(detect).count() == 0 and not _wait_for_login(page, channel):
-                context.close()
+            if not _is_logged_in(page, channel) and not _wait_for_login(page, channel):
+                _safe_close(context, attach_mode)
                 return entries
 
         keywords = channel.get("keywords") or [keyword]
         for kw in keywords:
             search_url = channel.get("search_url_template")
             if search_url:
-                page.goto(search_url.format(kw=kw), wait_until="domcontentloaded", timeout=60_000)
+                _goto(page, search_url.format(kw=kw))
             else:
-                page.goto(channel["entry_url"], wait_until="domcontentloaded", timeout=60_000)
+                _goto(page, channel["entry_url"])
                 sel = channel.get("search_input_selector")
                 if sel:
-                    page.fill(sel, kw)
+                    box = page.locator(sel).first
+                    box.click()
+                    _human_pause(0.5, 1.2)
+                    box.type(kw, delay=random.randint(80, 180))  # 逐字符输入模拟手打
+                    _human_pause(0.3, 0.8)
                     page.keyboard.press("Enter")
             _human_pause(2.5, 5.0)
 
             for page_no in range(1, pages + 1):
+                # SPA 异步加载：等岗位卡片渲染出来再截图，否则截到「正在加载中」空壳
+                card_sel = channel.get("detail_link_selector")
+                if card_sel:
+                    try:
+                        page.wait_for_selector(card_sel, timeout=20_000)
+                    except Exception:
+                        print(f"[{channel['id']}] 等待岗位卡片超时（可能风控/无结果），照常截图")
                 _human_scroll(page, scroll_steps)
                 shot_path = shot_dir / f"p{page_no:02d}-{kw.replace(' ', '_')}.png"
                 page.screenshot(path=str(shot_path), full_page=False)
@@ -260,7 +394,7 @@ def _shoot_channel(channel: dict, pages: int, scroll_steps: int, keyword: str,
                         print(f"[{channel['id']}] 第 {page_no} 页后无下一页，提前结束")
                         break
 
-        context.close()
+        _safe_close(context, attach_mode)
 
     return entries
 
