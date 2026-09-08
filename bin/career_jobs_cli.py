@@ -8,6 +8,11 @@ try:
 except ModuleNotFoundError:
     from bin.career_os_store import add_timeline_event, get_db
 
+try:
+    from ats_matcher import ATSScorer, extract_text_from_file, print_report, extract_jd_from_db
+except ModuleNotFoundError:
+    from bin.ats_matcher import ATSScorer, extract_text_from_file, print_report, extract_jd_from_db
+
 # 确保 Windows 终端 UTF-8 输出
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -33,8 +38,8 @@ def list_jobs():
         print(f"{jid:<4} | {cname[:23]:<25} | {title[:30]:<32} | {cat:<10} | {city[:14]:<16} | {sal:<15} | {match:<10} | {status}")
     print("="*110)
     print("💡 使用 'python career_jobs_cli.py detail <ID>' 查看岗位详情与投递直达链接")
-    print("💡 使用 'python career_jobs_cli.py guide <ID/企业名>' 查看该企业真实面试画像与高频真题")
-    print("💡 使用 'python career_jobs_cli.py apply <ID>' 标记为已投递并加入进度追踪管线")
+    print("💡 使用 'python career_jobs_cli.py preflight <ID> <简历路径>' 运行投前常态化五维严苛门禁")
+    print("💡 使用 'python career_jobs_cli.py apply <ID> [--resume <简历路径>]' 质量核验并标记为已投递")
     print("💡 使用 'python bin/career_jobs_cli.py exam [job_id] [--limit N] [--minutes N] [--seed N] [--all]' 启动线上机考并保存答题报告")
     print("💡 使用 'python bin/career_jobs_cli.py personality [job_id] [--full|--kind quick|full]' 启动职业性格/工作风格测评")
     print("💡 使用 'python bin/career_jobs_cli.py code-sandbox <ID> --trusted-local' 或启用 Judge0 插件判题")
@@ -151,7 +156,23 @@ def track_pipeline():
             print(f"  • [ID: {r[0]}] {r[1]} - {r[2]} ({r[3]}) | 状态: 【{r[5]}】")
     print("="*85 + "\n")
 
-def mark_apply(job_id):
+def run_preflight_check(job_id: int, resume_path: str) -> bool:
+    try:
+        jd_info = extract_jd_from_db(int(job_id))
+        resume_text = extract_text_from_file(resume_path)
+    except Exception as e:
+        print(f"❌ 投前预检读取失败: {e}")
+        return False
+
+    scorer = ATSScorer(jd_info, resume_text)
+    res = scorer.run_full_diagnosis()
+    print_report(res, jd_info.get("title", ""), resume_path)
+
+    if res["verdict"] == "FAIL_KNOCKOUT" or res["total_score"] < 70:
+        return False
+    return True
+
+def mark_apply(job_id, resume_path=None, force=False):
     conn = get_db()
     c = conn.cursor()
     c.execute("SELECT company_name, job_title FROM jobs WHERE id = ?", (job_id,))
@@ -160,9 +181,25 @@ def mark_apply(job_id):
         conn.close()
         print(f"❌ 未找到岗位 ID {job_id}")
         return
+
+    if resume_path:
+        print(f"\n🔍 正在对拟投简历 [{os.path.basename(resume_path)}] 执行投前常态化门禁核验...")
+        passed = run_preflight_check(job_id, resume_path)
+        if not passed and not force:
+            conn.close()
+            print("🚨 【投前门禁熔断·严禁盲投】")
+            print(f"   拟投简历在岗位 ID {job_id} ({job[0]} - {job[1]}) 评测未达 70 分合格线或触发一票否决！")
+            print("   已自动阻断标记为【已投递】。请根据上方看板调整项目正文与关键词后重试，或使用 --force 强制标记。\n")
+            return
+        elif not passed and force:
+            print("⚠️ 警告: 已使用 --force 强制忽略投前门禁拦截！\n")
+    else:
+        print("💡 提示: 未指定 --resume 自动核验。强烈建议投递前运行 'python bin/career_jobs_cli.py preflight <ID> <简历路径>' 严控质量！")
+
     c.execute("UPDATE jobs SET status = '已投递', updated_at = CURRENT_TIMESTAMP WHERE id = ?", (job_id,))
+    notes_text = f"通过 Career OS CLI 标记 (附简历: {os.path.basename(resume_path)})" if resume_path else "通过 Career OS CLI 标记"
     add_timeline_event(conn, job_id=int(job_id), company_name=job[0], job_title=job[1],
-                       event_type="已投递", notes="通过 Career OS CLI 标记")
+                       event_type="已投递", notes=notes_text)
     conn.commit()
     conn.close()
     print(f"\n✅ 岗位 ID {job_id} 已成功标记为【已投递】并加入动态追踪管线！")
@@ -502,7 +539,17 @@ def main():
     elif cmd == 'track':
         track_pipeline()
     elif cmd == 'apply' and len(sys.argv) > 2:
-        mark_apply(sys.argv[2])
+        job_id = sys.argv[2]
+        resume_path = None
+        force = '--force' in sys.argv
+        if '--resume' in sys.argv:
+            pos = sys.argv.index('--resume')
+            resume_path = sys.argv[pos + 1] if pos + 1 < len(sys.argv) else None
+        mark_apply(job_id, resume_path=resume_path, force=force)
+    elif cmd == 'preflight' and len(sys.argv) > 3:
+        job_id = sys.argv[2]
+        resume_path = sys.argv[3]
+        run_preflight_check(job_id, resume_path)
     elif cmd == 'stats':
         show_stats()
     elif cmd in {'assessment-intel', 'assessment-intelligence'}:
