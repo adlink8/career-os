@@ -44,7 +44,7 @@
 {
   "agent_role": "ats-scanner",
   "score": 85,
-  "verdict": "PASS", // 可选: PASS (>=80分且无硬伤) / WARN (60-79分) / FAIL (<60分或触发一票否决)
+  "verdict": "PASS", // 可选: PASS (>=85分且无硬伤) / WARN (70-84分) / FAIL (<70分或触发一票否决)。与本地引擎 bin/services/ats_engine.py 的判定口径一致
   "knockout_check": {
     "is_single_intent": true,
     "intent_text": "AI应用开发工程师",

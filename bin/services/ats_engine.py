@@ -166,8 +166,13 @@ class ATSScorer:
 
         # 1. Project Text TF-IDF Cosine Similarity (25 pts)
         if TfidfVectorizer is None or cosine_similarity is None:
+            # 显式降级警示：无 sklearn 时固定给中位分，必须让用户知道这 25 分不可信
             sim = 0.20
             sim_score = 18
+            notes.append(
+                "⚠️ 【引擎降级】scikit-learn 未安装，项目语义相似度采用固定中位分 18/25，"
+                "该维度分数不可信！请执行: pip install scikit-learn"
+            )
         else:
             try:
                 corpus = [self.jd["full_text"], projects_text]
