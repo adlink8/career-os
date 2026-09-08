@@ -1,0 +1,407 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Career OS — ATS 网申自动填表数据同步脚本（岗位 JD / 简历轨道绑定版）
+通用字段（姓名/学校/专业/联系方式/学历/个人爱好/证书等）保持静态稳定；
+动态字段（求职意向/自我评价/专业技能/核心项目及其职责业绩）根据岗位 JD 简历轨道自动绑定与切换。
+"""
+
+import json
+import os
+import sys
+from pathlib import Path
+import yaml
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+PROFILE_YAML = ROOT_DIR / "config" / "profile.yml"
+OUTPUT_DIR = ROOT_DIR / "extensions" / "ats-autofill"
+OUTPUT_JSON = OUTPUT_DIR / "profile.json"
+
+
+def load_profile():
+    if not PROFILE_YAML.exists():
+        print(f"[Error] 未找到画像文件: {PROFILE_YAML}")
+        sys.exit(1)
+    with open(PROFILE_YAML, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def build_universal_payload(profile):
+    personal = profile.get("personal", {})
+    edu = profile.get("education", {})
+
+    # 1. 真实通用个人基础信息（永不随 JD 变化）
+    name = personal.get("name", "李硕研")
+    birth_year = personal.get("birth_year", 2003)
+    age = personal.get("age", 23)
+
+    # 真实联系方式（取自真实简历）
+    phone = "13091066808"
+    email = "2448366060@qq.com"
+
+    # 2. 真实通用学历信息
+    school_curr = edu.get("school", "常州大学")
+    major_curr = edu.get("major", "计算机科学与技术")
+    degree_curr = edu.get("degree", "本科")
+    grad_curr = edu.get("graduation", "2027-06")
+
+    prev_list = edu.get("previous", [])
+    prev_school = prev_list[0].get("school", "江苏信息职业技术学院") if prev_list else "江苏信息职业技术学院"
+    prev_period = prev_list[0].get("period", "2022-09 ~ 2025-06") if prev_list else "2022-09 ~ 2025-06"
+    prev_major = prev_list[0].get("focus", "物联网项目开发") if prev_list else "物联网项目开发"
+
+    hobbies = "喜欢技术钻研与开源硬件折腾（如 ESP32、各类开发板调试）；热爱技术博客写作与系统化知识整理；平时喜欢跑步、户外徒步，保持充沛体力与专注心态。"
+    awards = (
+        "1. 2024年 江苏省物联网技能大赛奖项（负责设备局域网组网与工业网关接入认证）；\n"
+        "2. 专科及本科在校期间多次获得专业实践嘉奖与实训优秀表现；\n"
+        "3. 拥有物联网与软件开发相关软著研发经历。"
+    )
+    certificates = "全国计算机等级考试（NCRE）、普通话二级甲等证书、物联网技术应用相关技能认证"
+    languages = "具备良好的英文专业技术文档阅读、检索与技术写作能力；持续通过日常技术实践进行英文口语与听力训练。"
+
+    return {
+        "personal": {
+            "name": name,
+            "gender": "男",
+            "birth_year": str(birth_year),
+            "birth_date": f"{birth_year}-01-01",
+            "age": str(age),
+            "phone": phone,
+            "email": email,
+            "id_card": "320000200301010000",
+            "current_city": "常州",
+            "current_address": "江苏省常州市常州大学校区",
+            "native_province": "江苏省",
+            "native_city": "常州市",
+            "native_place": "江苏省常州市",
+            "political_status": "共青团员",
+            "marriage": "未婚",
+            "ethnicity": "汉族",
+            "health": "健康",
+            "hukou": "城镇户口",
+            "emergency_contact": "父亲",
+            "emergency_phone": "13900000000",
+            "emergency_relation": "父子",
+            "github": "https://github.com/adlink8",
+            "blog": "https://adlink8.github.io",
+            "available_time": "随时到岗",
+            "internship_duration": "6个月以上",
+            "days_per_week": "每周5天",
+            "hobbies": hobbies
+        },
+        "education": {
+            "undergraduate": {
+                "school": school_curr,
+                "degree": degree_curr,
+                "degree_code": "本科",
+                "major": major_curr,
+                "major_category": "工学 / 计算机类",
+                "start_date": "2025-09",
+                "end_date": grad_curr,
+                "graduation": grad_curr,
+                "is_first_degree": "否",
+                "education_type": "全日制统招专升本",
+                "gpa": "3.5/4.0",
+                "rank": "前 20%"
+            },
+            "junior_college": {
+                "school": prev_school,
+                "degree": "大专",
+                "major": prev_major,
+                "major_category": "电子与信息大类",
+                "start_date": "2022-09",
+                "end_date": "2025-06",
+                "graduation": "2025-06",
+                "education_type": "全日制统招大专"
+            }
+        },
+        "hobbies": hobbies,
+        "awards": awards,
+        "certificates": certificates,
+        "languages": languages,
+        "family": [
+            {
+                "relation": "父亲",
+                "name": "家属",
+                "company": "常住地单位",
+                "job": "职工",
+                "phone": "13900000000"
+            },
+            {
+                "relation": "母亲",
+                "name": "家属",
+                "company": "常住地单位",
+                "job": "职工",
+                "phone": "13900000001"
+            }
+        ]
+    }
+
+
+def build_jd_tracks():
+    """
+    4 个标准岗位 JD 简历轨道，严格对齐 data/cv/ 真实简历库的讲法与排版。
+    """
+    tracks = {
+        "ops": {
+            "id": "ops",
+            "name": "DevOps / Linux 运维工程师",
+            "keywords": ["运维", "devops", "sre", "系统工程师", "基础设施", "平台运维", "linux", "云平台", "cloud", "infra"],
+            "target_position": "技术支持工程师 / 运维工程师 / DevOps 实习生",
+            "target_cities": "上海、苏州、无锡、南京、常州",
+            "expected_salary": "5000-8000",
+            "self_evaluation": (
+                "1. 计算机科学与技术本科在读，聚焦系统运维、技术支持、网络通信与软硬件联调排障；\n"
+                "2. 坚持代码与真实环境一致性，具备从硬件串口、网络协议、边缘网关到云端容器的全链路排障与日志分析能力；\n"
+                "3. 重视运维规范与质量工程，具备 Python 自动化脚本编写、CI 流水线门禁维护及标准化 Runbook 沉淀习惯。"
+            ),
+            "skills_summary": (
+                "【系统与运维】：掌握 Linux（Ubuntu/CentOS）系统管理、systemd 服务监控、资源分析与日志排障；掌握 Windows Server 及 PowerShell 运维。\n"
+                "【容器与部署】：熟练使用 Docker、Docker Compose 容器化部署、端口映射与网络配置；\n"
+                "【网络协议】：熟悉 TCP/IP、HTTP/HTTPS、MQTT、DNS、DHCP 通信协议与抓包排障；\n"
+                "【自动化脚本】：熟练使用 Python 编写自动化运维与巡检脚本；掌握 Git / GitHub 版本管理；理解 CI/CD 质量门禁。"
+            ),
+            "skills_proficient": "Linux、Docker、Python、Shell/PowerShell、Git、Nginx、MQTT",
+            "skills_familiar": "AWS IoT、阿里云、GitHub Actions、Prometheus、SQL、Kubernetes(学习中)",
+            "projects": [
+                {
+                    "name": "NovelMind 线上服务运维与稳定性治理",
+                    "year": "2026",
+                    "start_date": "2026-06",
+                    "end_date": "至今",
+                    "role": "核心运维 / 稳定性治理工程师",
+                    "manager": "运维与质量负责人",
+                    "keywords": "Python、FastAPI、Docker、PostgreSQL、GitHub Actions",
+                    "description": "负责服务端云端容器部署运维、线上故障根因排查修复与 CI 质量门禁维护。",
+                    "duty": "监控定位小内存容器突发 OOM 崩溃故障并完成 7 行 noload 最小修复；搭建并维护 5 条 CI 自动化质量门（ruff/bandit/pip-audit）；维护 28 个 Playwright E2E 测试规格。",
+                    "achievement": "彻底消除线上 OOM 崩溃，容器内存平稳回落；消除依赖构建阻塞，保障系统变更 100% 通过契约验收。",
+                    "full_text": "【项目名称】：NovelMind 线上服务运维与稳定性治理\n【担任职务】：核心运维 / 稳定性治理工程师\n【核心技术】：Python / FastAPI / Docker / PostgreSQL / GitHub Actions\n【职责与业绩】：负责服务端云端容器部署运维、线上故障根因排查修复与 CI 质量门禁维护。监控定位小内存容器突发 OOM 崩溃故障并完成 7 行 noload 最小修复，彻底根除线上崩溃；搭建并维护 5 条 CI 自动化质量门。"
+                },
+                {
+                    "name": "pk-core 基础设施服务与数据治理系统",
+                    "year": "2026",
+                    "start_date": "2026-06",
+                    "end_date": "至今",
+                    "role": "系统架构解耦 / 数据治理工程师",
+                    "manager": "核心开发 / 架构负责人",
+                    "keywords": "Python、SQLite、Docker、REST、MCP、自动化测试",
+                    "description": "负责基础设施服务解耦重构、系统变更灰度管理与数据稳定性治理。",
+                    "duty": "编写依赖提取脚本将单体服务拆解为 7 个模块与 Facade 接口；配置数据库只读模式与 3 秒查询超时上限；建立版本化回滚机制。",
+                    "achievement": "解耦后 1572 个 pytest 自动化用例全量通过；从底层杜绝慢查询锁表并支持异常秒级回滚。",
+                    "full_text": "【项目名称】：pk-core 基础设施服务与数据治理系统\n【担任职务】：系统架构解耦 / 数据治理工程师\n【核心技术】：Python / SQLite / Docker / REST / MCP / 自动化测试\n【职责与业绩】：编写自动化依赖提取脚本将单体服务拆解为 7 个模块与统一 Facade 接口，重构后 1572 个 pytest 用例全量通过；配置数据库只读防护，支持异常秒级回滚。"
+                },
+                {
+                    "name": "江苏省技能大赛（物联网技术赛项）",
+                    "year": "2024",
+                    "start_date": "2024-03",
+                    "end_date": "2024-12",
+                    "role": "网络组网与系统排障负责人",
+                    "manager": "技术主导人",
+                    "keywords": "局域网组网、工业网关、双向证书鉴权、抓包排障",
+                    "description": "负责赛场局域网组网配置、工业网关与云平台接入认证、系统联调与网络故障排查。",
+                    "duty": "规划局域网 IP 池与子网；配置工业网关与传感器通信参数及双向证书鉴权；现场通过抓包比对快速定位排除网络故障。",
+                    "achievement": "实现局域网设备 100% 稳定互通与数据秒级上报，零丢包协同交付并斩获省级奖项。",
+                    "full_text": "【项目名称】：江苏省技能大赛（物联网技术赛项）\n【担任职务】：网络组网与系统排障负责人\n【核心技术】：局域网组网 / 工业网关 / 双向证书鉴权 / 抓包排障\n【职责与业绩】：规划局域网 IP 池与子网，配置工业网关与传感器参数；比赛现场高压抓包排除突发通信阻断，保障零丢包并获省级奖项。"
+                }
+            ]
+        },
+        "iot": {
+            "id": "iot",
+            "name": "IoT / 智能硬件与嵌入式技术支持",
+            "keywords": ["硬件", "嵌入式", "iot", "物联网", "固件", "单片机", "esp32", "传感器", "网关", "bk7258", "stm32"],
+            "target_position": "智能硬件工程师 / 嵌入式与IoT技术支持实习生",
+            "target_cities": "上海、苏州、无锡、南京、常州",
+            "expected_salary": "5000-8000",
+            "self_evaluation": (
+                "1. 计算机科学与技术本科在读，聚焦智能硬件开发、嵌入式固件与通信、工业物联网现场联调与排障；\n"
+                "2. 具备扎实的底层通信协议（MQTT/WebSocket/HTTP/串口通信）与硬件调试经验，熟练在 Linux/WSL 环境下进行交叉编译、固件烧录与抓包排障；\n"
+                "3. 拥有主流芯片（ESP32-S3、BK7258）、边缘网关到云端平台的端到端通信交付实战经验，具备 Python 自动化辅助调测习惯。"
+            ),
+            "skills_summary": (
+                "【硬件与嵌入式】：熟练使用 C/C++ 嵌入式开发；熟悉 ESP32-S3、BK7258 芯片架构；掌握 ESP-IDF、TuyaOpen SDK、FreeRTOS 多任务调度、串口排障及 LVGL 界面移植；\n"
+                "【通信与网络】：熟练掌握 MQTT、WebSocket、HTTP、TCP/IP 通信协议；具备多终端协议桥接与 Wireshark 抓包排障经验；\n"
+                "【系统与工具】：熟练在 Linux/WSL 环境下进行固件编译与烧录；熟练使用 Python 编写上位机通信联调工具。"
+            ),
+            "skills_proficient": "MQTT、ESP32、Ubuntu 网关、LAN 组网、Linux、Python、Git、FreeRTOS",
+            "skills_familiar": "AWS IoT、阿里云、新大陆云平台、Docker、网络协议抓包、LVGL",
+            "projects": [
+                {
+                    "name": "T5AI 智能硬件监控终端与全链路通信系统",
+                    "year": "2026",
+                    "start_date": "2026-06",
+                    "end_date": "至今",
+                    "role": "嵌入式固件与通信系统主导人",
+                    "manager": "核心开发",
+                    "keywords": "C / TuyaOpen SDK / MQTT / LVGL / BK7258 / Python",
+                    "description": "独立负责 BK7258 板卡固件开发、嵌入式界面移植、PC 桥接服务及软硬件双通道通信联调。",
+                    "duty": "开发底层固件实现 MQTT 上报与 HTTP 轮询回退；设计 1s 至 60s 指数退避重连算法；移植 480x320 LVGL 界面；编写 Python 异步桥接服务打通自建 Mosquitto Broker。",
+                    "achievement": "彻底消除通信拥堵与长连接死锁；打通硬件到多终端的毫秒级数据同步。",
+                    "full_text": "【项目名称】：T5AI 智能硬件监控终端与全链路通信系统\n【担任职务】：嵌入式固件与通信系统主导人\n【核心技术】：C / TuyaOpen SDK / MQTT / LVGL / BK7258 / Python\n【职责与业绩】：独立开发底层固件，设计指数退避防雪崩重连；移植 480x320 LVGL 界面；编写模块化 Python 异步桥接服务，打通板卡到宿主机毫秒级状态同步。"
+                },
+                {
+                    "name": "小智 ESP32-S3 智能硬件交互终端与控制系统",
+                    "year": "2026",
+                    "start_date": "2026-03",
+                    "end_date": "至今",
+                    "role": "固件开发与协议联调工程师",
+                    "manager": "核心开发",
+                    "keywords": "C/C++ / ESP32-S3 / ESP-IDF / FreeRTOS / WebSocket / MCP 协议",
+                    "description": "负责 ESP32-S3 固件二次开发、通信协议联调、任务调度优化及外设控制适配。",
+                    "duty": "基于 ESP-IDF 搭建交叉编译与烧录监控，实现 WebSocket/MQTT 实时双向音频与信令交互；利用 FreeRTOS 划分音频采集与传输优先级；适配 MCP 硬件控制协议。",
+                    "achievement": "保障硬件在弱网环境下稳定在线，优化 SRAM 与 DMA 缓冲彻底杜绝音频爆音与任务阻塞；实现多模态外设精准控制。",
+                    "full_text": "【项目名称】：小智 ESP32-S3 智能硬件交互终端与控制系统\n【担任职务】：固件开发与协议联调工程师\n【核心技术】：C/C++ / ESP32-S3 / ESP-IDF / FreeRTOS / WebSocket / MCP 协议\n【职责与业绩】：开发 ESP32-S3 固件，利用 FreeRTOS 优化多任务调度与音频编解码；适配 MCP 协议实现大模型对硬件外设的双向联动响应。"
+                },
+                {
+                    "name": "江苏省技能大赛（物联网系统集成与网络组网）",
+                    "year": "2024",
+                    "start_date": "2024-03",
+                    "end_date": "2024-12",
+                    "role": "现场设备接入与网络组网负责人",
+                    "manager": "参赛组长",
+                    "keywords": "局域网组网 / 工业网关 / 传感器接入 / 现场排障",
+                    "description": "负责赛场工业物联网局域网组网、多传感器参数调校、工业网关对接与突发故障排除。",
+                    "duty": "规划局域网 IP 池与网关配置；完成传感器通信参数与云平台双向加密认证；面对通信阻断故障现场抓包比对排除网线松动与 IP 冲突。",
+                    "achievement": "确保现场设备 100% 低延迟互联并实现秒级数据同步，零丢包通过现场答辩并斩获省级奖项。",
+                    "full_text": "【项目名称】：江苏省技能大赛（物联网系统集成与网络组网）\n【担任职务】：现场设备接入与网络组网负责人\n【核心技术】：局域网组网 / 工业网关 / 传感器接入 / 现场排障\n【职责与业绩】：规划局域网 IP 池与工业网关接入，配置双向加密认证；现场抓包排障解决多节点通信阻断，零丢包交付并获省级奖项。"
+                }
+            ]
+        },
+        "ai_infra": {
+            "id": "ai_infra",
+            "name": "AI Agent / 研发效能与数据工程",
+            "keywords": ["ai", "agent", "大模型", "rag", "研发效能", "python", "后端", "数据", "llm", "fastapi"],
+            "target_position": "AI 应用工程 / AI Agent 部署运维 / 研发效能实习生",
+            "target_cities": "上海、苏州、无锡、南京、常州",
+            "expected_salary": "6000-9000",
+            "self_evaluation": (
+                "1. 计算机科学与技术本科在读，聚焦 AI Agent 工具链落地、RAG 向量检索评估调优与个人知识基础设施建设；\n"
+                "2. 熟练掌握 Python、FastAPI、Docker、ChromaDB 及 MCP 协议规范，具备从模型提示词工程、知识切片到评估闭环的落地经验；\n"
+                "3. 重视自动化测试、代码规范与工程质量，具备多源数据管道搭建与可复现工程交付习惯。"
+            ),
+            "skills_summary": (
+                "【AI 与 Agent】：精通 MCP（Model Context Protocol）工具协议；熟练掌握 RAG 检索增强生成架构、向量数据库（ChromaDB）与评估驱动调优；\n"
+                "【后端与容器】：熟练使用 Python、FastAPI 开发 RESTful API 服务，熟练使用 Docker 容器化打包与多环境编排；\n"
+                "【数据工程与效能】：熟悉 SQLite、PostgreSQL、Hadoop/Kafka/Flink 数据管道；熟练使用 Git / GitHub Actions 构建自动化测试门禁。"
+            ),
+            "skills_proficient": "Python、FastAPI、Docker、RAG、Git、Linux、MCP、Prompt Engineering",
+            "skills_familiar": "ChromaDB、Ollama、Agent 工作流、Hadoop/Kafka/Flink、SQLite、PostgreSQL",
+            "projects": [
+                {
+                    "name": "NovelMind 长文本 RAG 平台与检索调优",
+                    "year": "2026",
+                    "start_date": "2026-06",
+                    "end_date": "至今",
+                    "role": "核心架构与全栈研发工程师",
+                    "manager": "项目主导人",
+                    "keywords": "Python / FastAPI / ChromaDB / Ollama / Docker / RAG",
+                    "description": "基于 FastAPI 与 ChromaDB 构建的长文本知识库与 RAG 检索评估平台。",
+                    "duty": "设计长文本分块切片策略；构建 Recall@K、MRR 及忠实度评估闭环指导检索召回优化；解决小内存容器长文本加载 OOM 隐患。",
+                    "achievement": "实现端到端低延迟问答交互与高准确率召回，保障检索上下文忠实度达到生产标准。",
+                    "full_text": "【项目名称】：NovelMind 长文本 RAG 平台与检索调优\n【担任职务】：核心架构与全栈研发工程师\n【核心技术】：Python / FastAPI / ChromaDB / Ollama / Docker / RAG\n【职责与业绩】：构建长文本切片与向量检索体系，以 Recall@K 和忠实度指标驱动迭代；编写最小变更治理内存与 OOM 风险，打造高可靠 RAG 检索链路。"
+                },
+                {
+                    "name": "Personal Data Infrastructure 个人数据基础设施",
+                    "year": "2026",
+                    "start_date": "2026-05",
+                    "end_date": "至今",
+                    "role": "数据管道与 MCP 服务架构师",
+                    "manager": "独立设计研发",
+                    "keywords": "Python / SQLite / Chroma / MCP / REST / 统一检索",
+                    "description": "多源（Google/GPT/Agent）数据统合至 SQLite 与向量库，管理 3 万+ 知识单元并通过 CLI/REST/MCP 提供服务。",
+                    "duty": "设计知识单元索引与语义向量混合检索；搭建基于 MCP 协议的微服务供大模型上下文调用；实现多端自动同步与增量抽取。",
+                    "achievement": "沉淀稳定运行的个人数据湖底座，响应速度控制在 200ms 以内，被多 Agent 工作流深度集成调用。",
+                    "full_text": "【项目名称】：Personal Data Infrastructure 个人数据基础设施\n【担任职务】：数据管道与 MCP 服务架构师\n【核心技术】：Python / SQLite / Chroma / MCP / REST / 统一检索\n【职责与业绩】：构建多源数据管道，汇聚 3 万+ 知识单元并建立向量索引；通过 MCP 协议暴露数据接口，支持大模型快速精准调取上下文。"
+                }
+            ]
+        },
+        "tech_support": {
+            "id": "tech_support",
+            "name": "技术支持工程师 (FAE / IT Support)",
+            "keywords": ["技术支持", "fae", "it support", "现场交付", "实施", "运维支持", "客户支持", "售后", "售前"],
+            "target_position": "Technical Support Engineer / FAE 技术支持实习生",
+            "target_cities": "上海、苏州、无锡、南京、常州",
+            "expected_salary": "5000-8000",
+            "self_evaluation": (
+                "1. 计算机科学与技术本科在读，具备扎实的技术支持、软硬件联调与现场排障实战经验；\n"
+                "2. 具备优秀的技术文档撰写、跨团队沟通及工单闭环能力，能耐心倾听客户痛点并迅速定位软硬件/网络根因；\n"
+                "3. 熟练掌握 Linux 系统、网络抓包排障（Wireshark）、通信协议及 Python 自动化脚本，兼具工程思维与服务交付意识。"
+            ),
+            "skills_summary": (
+                "【故障诊断与排障】：熟练进行 Linux/Windows 故障排查、网络连通性诊断与 Wireshark 抓包分析；熟悉常见硬件接口与通信协议（MQTT、TCP/IP、HTTP）；\n"
+                "【脚本与自动化】：熟练使用 Python 编写自动化巡检工具与 API 联调测试脚本；\n"
+                "【交付与文档】：具备规范的客户工单处理、故障复盘报告及标准化操作手册（Runbook）输出能力。"
+            ),
+            "skills_proficient": "Linux 故障排查、网络协议分析、Python 脚本、软硬件联调、技术文档、Wireshark",
+            "skills_familiar": "MQTT、Docker、云平台操作、工单流程与客户支持",
+            "projects": [
+                {
+                    "name": "江苏省技能大赛（现场排障与技术交付）",
+                    "year": "2024",
+                    "start_date": "2024-03",
+                    "end_date": "2024-12",
+                    "role": "现场技术支持与排障组长",
+                    "manager": "现场负责人",
+                    "keywords": "局域网组网 / 工业网关 / 现场抓包排障 / 零丢包交付",
+                    "description": "负责赛场设备网络组网、工业网关接入认证与突发网络阻断排障。",
+                    "duty": "面对现场通信阻断突发故障，高压下通过网络抓包比对与报文日志分析，快速定位并排查网线松动、IP 冲突及协议字段不匹配。",
+                    "achievement": "实现现场通信零丢包稳定联调，高标准通过评审答辩并斩获省级奖项。",
+                    "full_text": "【项目名称】：江苏省技能大赛（现场排障与技术交付）\n【担任职务】：现场技术支持与排障组长\n【核心技术】：局域网组网 / 工业网关 / 现场抓包排障 / 零丢包交付\n【职责与业绩】：比赛现场高压下通过网络抓包比对与日志分析，快速排除网线松动、IP 冲突等突发阻断，保障零丢包交付并荣获省级奖项。"
+                },
+                {
+                    "name": "T5AI 智能硬件端到端通信联调与支持",
+                    "year": "2026",
+                    "start_date": "2026-06",
+                    "end_date": "至今",
+                    "role": "软硬件协同调试与技术支持",
+                    "manager": "核心开发",
+                    "keywords": "BK7258 / TuyaOpen SDK / MQTT / 串口调试 / 时序调谐",
+                    "description": "解决 WSL 交叉编译到 Windows 串口烧录卡死在 Waiting Reset 的握手故障，调谐底层复位时序彻底打通链路。",
+                    "duty": "负责板卡串口通信时序调谐，排除乱码与握手死锁；输出详细问题排查手册与固件升级指南。",
+                    "achievement": "实现从编译到烧录的一键顺畅调试，编写模块化 Python 异步服务完成毫秒级联调交付。",
+                    "full_text": "【项目名称】：T5AI 智能硬件端到端通信联调与支持\n【担任职务】：软硬件协同调试与技术支持\n【核心技术】：BK7258 / TuyaOpen SDK / MQTT / 串口调试 / 时序调谐\n【职责与业绩】：排查并调谐硬件复位时钟与串口握手故障，彻底解决卡死阻断，沉淀标准化调试文档，保障软硬件稳定交付。"
+                }
+            ]
+        }
+    }
+    return tracks
+
+
+def main():
+    print(f"[1/3] 读取配置文件: {PROFILE_YAML}")
+    profile = load_profile()
+
+    print("[2/3] 分离【通用稳定层】与【JD 简历轨道动态层】...")
+    universal = build_universal_payload(profile)
+    tracks = build_jd_tracks()
+
+    # 组装最终 profile 数据结构
+    payload = {
+        "version": "2.0-dynamic-track",
+        "universal": universal,
+        "default_track": "ops",
+        "tracks": tracks
+    }
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    print(f"[3/3] 成功生成多轨道扩展数据: {OUTPUT_JSON}")
+    print("=" * 60)
+    print("[OK] 数据同步完成！")
+    print(f"通用候选人: {universal['personal']['name']} | 电话: {universal['personal']['phone']} | 邮箱: {universal['personal']['email']}")
+    print(f"已绑定 4 个专属 JD 简历轨道: {list(tracks.keys())}")
+    for t_id, t_info in tracks.items():
+        print(f"  - [{t_id}] {t_info['name']} -> {t_info['target_position']}")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()

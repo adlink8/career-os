@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Career OS 网申自动填表助手",
+  "version": "1.0.0",
+  "description": "基于 Career OS 本地个人画像与真实项目数据，一键自动填充北森（Beisen）、Moka 等校招网申表单。",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Career OS 自动填表"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "profile.json"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
