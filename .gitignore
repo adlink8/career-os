@@ -71,3 +71,9 @@ deploy/judge0/runtime.env
 
 # 岗位截图管道：浏览器会话含登录 cookie，严禁入库
 data/job_discovery/browser_profiles/
+data/job_discovery/screenshots/
+
+# 临时调试与环境辅助目录
+scratch/
+.workbuddy/
+.git.broken-*/
