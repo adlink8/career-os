@@ -63,16 +63,19 @@ flowchart TD
     Check -->|是| Pass["🟢 绿灯放行：解除投递锁定，准许官网网申"]
 ```
 
-### 1. 运行算法底座检查
-首先执行本地极速算法打分工具：
+### 1. 第一阶段：运行本地算法底座检查 (Fail-Fast 快速熔断)
+首先执行本地极速算法打分工具（耗时 0.2 秒，0 Token 成本）：
 ```bash
 python bin/ats_matcher.py --resume <简历路径> --jd-title "<岗位名称>" --jd-text "<JD文本>" --json
 ```
-获取关键词匹配率、首屏出现率、Missing Keywords 清单及 Rule 316 意向单一性校验结果。
+- **🚨 熔断门禁（Fail-Fast）**：
+  - 若触发一票否决（如意向复合）或算法得分 < 70 分，**流水线当场熔断终止，禁止唤起后续 Agent！**
+  - 直接向用户输出致命硬伤和 Missing Keywords 清单，要求修改简历后重新从第 1 步开始。
+  - **只有当脚本评测通过（无硬伤且得分 ≥ 70 分）时，才准许进入第二阶段。**
 
-### 2. 派发三方子 Agent（严格保证上下文纯净性）
-分别加载各自独立的 Prompt，禁止跨 Agent 交叉泄露评审指标，独立获取三方评分与结构化 JSON：
-- **`ats-scanner`**（读取 `references/ats-scanner-prompt.md`）：只看机器分词、Rule 316 意向单一性、A4 单页字符容量；
+### 2. 第二阶段：派发三方子 Agent（数据注入 + 严格上下文隔离）
+将第 1 阶段脚本提取出的**客观量化事实（如 Missing Keywords、字符数、余弦相似度）**注入上下文，分别加载各自独立的 Prompt，禁止跨 Agent 交叉泄露评审指标，独立获取三方评分与结构化 JSON：
+- **`ats-scanner`**（读取 `references/ats-scanner-prompt.md`）：核对机器分词、Rule 316 意向单一性、A4 单页字符容量；
 - **`campus-hr`**（读取 `references/campus-hr-prompt.md`）：只看 5 秒初筛第一眼印象、海投标签识别、求职诚意度；
 - **`tech-lead`**（读取 `references/tech-lead-prompt.md`）：只看第一项目对位深度、STAR 量化真实度、一线踩坑证据。
 
