@@ -32,7 +32,10 @@ trigger:
 - **待审简历**：目标 PDF 文件路径，或 `data/cv/` 下的 Markdown 源码
 - **目标 JD**：企业官方网申 JD 全称、职责与任职要求文本（或 `data/career_jobs.sqlite` 中的 `job_id`）
 - **底层算法工具**：[`bin/ats_matcher.py`](file:///d:/ADLINK/Myproject/career-os/bin/ats_matcher.py)
-- **子 Agent 提示词与规范**：`references/agent-prompts.md`
+- **子 Agent 独立提示词（严格上下文隔离）**：
+  - `references/ats-scanner-prompt.md`（无情规则分词器）
+  - `references/campus-hr-prompt.md`（5秒初筛校招HR）
+  - `references/tech-lead-prompt.md`（一线资深技术面官）
 - **仲裁与一票否决规约**：`references/consensus-rules.md`
 
 ---
@@ -43,12 +46,12 @@ trigger:
 flowchart TD
     Start["发起投前多 Agent 会审"] --> Step1["1. 提取目标 JD 与简历原文"]
     Step1 --> Step2["2. 运行 bin/ats_matcher.py 提取算法硬指标"]
-    Step2 --> Step3["3. 并发派发 3 个评审子 Agent"]
+    Step2 --> Step3["3. 并发派发 3 个评审子 Agent (上下文完全纯净)"]
     
     subgraph 并发独立审查
-        Step3 --> P1["Subagent A: ats-scanner (算法分词与硬门槛)"]
-        Step3 --> P2["Subagent B: campus-hr (5秒初筛与海投标签)"]
-        Step3 --> P3["Subagent C: tech-lead (技术深度与STAR拷打)"]
+        Step3 --> P1["Subagent A: ats-scanner (仅加载 ats-scanner-prompt.md)"]
+        Step3 --> P2["Subagent B: campus-hr (仅加载 campus-hr-prompt.md)"]
+        Step3 --> P3["Subagent C: tech-lead (仅加载 tech-lead-prompt.md)"]
     end
 
     P1 --> Step4["4. 综合仲裁与共识计算"]
@@ -67,11 +70,11 @@ python bin/ats_matcher.py --resume <简历路径> --jd-title "<岗位名称>" --
 ```
 获取关键词匹配率、首屏出现率、Missing Keywords 清单及 Rule 316 意向单一性校验结果。
 
-### 2. 派发三方子 Agent
-按照 `references/agent-prompts.md` 的角色设定，独立获取三方评分与诊断：
-- **`ats-scanner`**：重点审视机器解析友好度与词频缺陷；
-- **`campus-hr`**：重点给出 5 秒第一印象（是否像海投？是否具备专属性？排版是否舒服？）；
-- **`tech-lead`**：重点挑剔项目经历（是玩具项目还是工程实践？踩坑细节是否充分？）。
+### 2. 派发三方子 Agent（严格保证上下文纯净性）
+分别加载各自独立的 Prompt，禁止跨 Agent 交叉泄露评审指标，独立获取三方评分与结构化 JSON：
+- **`ats-scanner`**（读取 `references/ats-scanner-prompt.md`）：只看机器分词、Rule 316 意向单一性、A4 单页字符容量；
+- **`campus-hr`**（读取 `references/campus-hr-prompt.md`）：只看 5 秒初筛第一眼印象、海投标签识别、求职诚意度；
+- **`tech-lead`**（读取 `references/tech-lead-prompt.md`）：只看第一项目对位深度、STAR 量化真实度、一线踩坑证据。
 
 ### 3. 输出《三方联合会审诊断书》
 严格按照以下格式呈现给用户：
