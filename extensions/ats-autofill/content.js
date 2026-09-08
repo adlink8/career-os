@@ -246,11 +246,11 @@
       return setNativeValue(el, p.email);
     }
 
-    // 10. 身份证 / 民族 / 健康状况
+    // 10. 身份证 / 民族 / 健康状况（不做 ^$ 锚定：真实页面上上下文总是混入 input 的 id/placeholder，锚定会导致永不命中）
     if (/(身份证号码|证件号码|身份证号|证件号)/.test(ctx)) {
       return setNativeValue(el, p.id_card);
     }
-    if (/(^民族$)/.test(ctx)) {
+    if (/(民族)/.test(ctx)) {
       return setNativeValue(el, p.ethnicity);
     }
     if (/(健康状况|^健康$)/.test(ctx)) {
@@ -289,7 +289,7 @@
     if (/(现居住地|当前所在地|现所在城市|^现居地$|^现居$)/.test(ctx)) {
       return setNativeValue(el, p.current_city);
     }
-    if (/(^籍贯$|生源地|户口所在地|^户籍$)/.test(ctx)) {
+    if (/(籍贯|生源地|户口所在地|户籍)/.test(ctx)) {
       return setNativeValue(el, p.native_place);
     }
     if (/(政治面貌)/.test(ctx)) {
@@ -307,12 +307,12 @@
       return setNativeValue(el, p.days_per_week);
     }
 
-    // 15. 紧急联系人
-    if (/(紧急联系人姓名|紧急联系人)/.test(ctx)) {
-      return setNativeValue(el, p.emergency_contact);
-    }
-    if (/(紧急联系人电话|紧急电话|紧急联系电话)/.test(ctx)) {
+    // 15. 紧急联系人（电话规则必须先于姓名规则，否则“紧急联系人电话”会被“紧急联系人”子串抢先匹配）
+    if (/(紧急联系人电话|紧急联系电话|紧急电话)/.test(ctx)) {
       return setNativeValue(el, p.emergency_phone);
+    }
+    if (/(紧急联系人姓名|紧急联系人(?!电话|手机))/.test(ctx)) {
+      return setNativeValue(el, p.emergency_contact);
     }
     if (/(与紧急联系人关系|与本人关系|亲属关系|家庭关系|^关系$)/.test(ctx)) {
       return setNativeValue(el, p.emergency_relation);
@@ -489,6 +489,10 @@
       updateUI();
       showToast(`已切换至【${tracks[currentTrackId].name}】版本`);
     });
+
+    // 关键：面板注入完成后立即同步一次 UI 状态，
+    // 否则智能轨道匹配(autoDetectTrack)先于 UI 注入完成时，面板会一直显示硬编码的默认 ops/DevOps 值
+    updateUI();
   }
 
   // 11. 刷新 UI 状态
