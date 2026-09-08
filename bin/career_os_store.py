@@ -29,8 +29,12 @@ def _columns(conn: sqlite3.Connection, table: str) -> set[str]:
     return {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
 
 
+def _table_exists(conn: sqlite3.Connection, table: str) -> bool:
+    return conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone() is not None
+
+
 def _add_column(conn: sqlite3.Connection, table: str, name: str, definition: str) -> None:
-    if name not in _columns(conn, table):
+    if _table_exists(conn, table) and name not in _columns(conn, table):
         conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {definition}")
 
 
@@ -362,10 +366,11 @@ def migrate(conn: sqlite3.Connection) -> None:
         "CREATE UNIQUE INDEX IF NOT EXISTS idx_applications_job_artifact "
         "ON applications(job_id, submitted_artifact_id)"
     )
-    conn.execute(
-        "CREATE INDEX IF NOT EXISTS idx_application_timeline_application "
-        "ON application_timeline(application_id, event_date)"
-    )
+    if _table_exists(conn, "application_timeline"):
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_application_timeline_application "
+            "ON application_timeline(application_id, event_date)"
+        )
 
     # JD 驱动的 GitHub 项目候选库。候选与简历提案分表，避免外部仓库
     # 在未核验许可证、贡献边界和个人证据前进入简历。
@@ -690,10 +695,11 @@ def migrate(conn: sqlite3.Connection) -> None:
     _add_column(conn, "jobs", "recommendation_weight", "REAL")
     _add_column(conn, "jobs", "recommendation_rank", "INTEGER")
     _add_column(conn, "jobs", "recommendation_reason", "TEXT")
-    conn.execute(
-        "CREATE INDEX IF NOT EXISTS idx_jobs_company_rank "
-        "ON jobs(company_id, recommendation_rank)"
-    )
+    if "company_id" in _columns(conn, "jobs"):
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_jobs_company_rank "
+            "ON jobs(company_id, recommendation_rank)"
+        )
 
     # v14 简历生成规则与硬红线契约库 (resume_generation_rules)
     conn.execute(

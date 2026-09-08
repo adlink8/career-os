@@ -9,6 +9,11 @@ except ModuleNotFoundError:
     from bin.career_os_store import add_timeline_event, get_db
 
 try:
+    from services.job_service import JobService
+except ImportError:
+    from bin.services.job_service import JobService
+
+try:
     from ats_matcher import ATSScorer, extract_text_from_file, print_report, extract_jd_from_db
 except ModuleNotFoundError:
     from bin.ats_matcher import ATSScorer, extract_text_from_file, print_report, extract_jd_from_db
@@ -18,15 +23,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 def list_jobs():
-    conn = get_db()
-    c = conn.cursor()
-    c.execute("""
-        SELECT j.id, j.company_name, j.job_title, j.category, j.city, j.salary_text, j.match_level, j.status
-        FROM jobs j
-        ORDER BY j.priority ASC, j.id ASC
-    """)
-    rows = c.fetchall()
-    conn.close()
+    rows = JobService.list_jobs()
 
     print("\n" + "="*110)
     print(f"💼 【2027届校招精选与高价值擦边岗位全景清单】 (共收录 {len(rows)} 个岗位)")
@@ -52,60 +49,27 @@ def list_jobs():
     print("💡 使用 'python career_jobs_cli.py track' 查看求职全流程看板\n")
 
 def show_job_detail(job_id):
-    conn = get_db()
-    c = conn.cursor()
-    c.execute("""
-        SELECT j.id, j.company_name, j.job_title, j.category, j.city, j.salary_text, j.education_req, 
-               j.english_req, j.match_level, j.responsibilities, j.requirements, j.matching_analysis, 
-               j.application_url, j.status, c.website, c.campus_url, c.welfare_summary
-        FROM jobs j
-        JOIN companies c ON j.company_id = c.id
-        WHERE j.id = ?
-    """, (job_id,))
-    row = c.fetchone()
-    conn.close()
-
-    if not row:
+    job = JobService.get_job_detail(int(job_id))
+    if not job:
         print(f"❌ 未找到 ID 为 {job_id} 的岗位")
         return
 
-    (jid, cname, title, cat, city, sal, edu, eng, match, resp, req, analysis, app_url, status, web, campus, welfare) = row
-
     print("\n" + "="*90)
-    print(f"🎯 【岗位详情与匹配度分析】: {cname} - {title} (ID: {jid})")
+    print(f"🎯 【岗位详情与匹配度分析】: {job['company_name']} - {job['job_title']} (ID: {job['id']})")
     print("="*90)
-    print(f"🏢 目标企业: {cname} ({web})")
-    print(f"📍 工作地点: {city} | 薪资: {sal} | 学历: {edu} | 英语: {eng}")
-    print(f"🌟 契合评级: {match} | 当前状态: 【{status}】")
-    print(f"🎁 企业福利: {welfare}")
-    print(f"🔗 校招网申直达: {app_url or campus}")
+    print(f"🏢 目标企业: {job['company_name']} ({job['website']})")
+    print(f"📍 工作地点: {job['city']} | 薪资: {job['salary_text']} | 学历: {job['education_req']} | 英语: {job['english_req']}")
+    print(f"🌟 契合评级: {job['match_level']} | 当前状态: 【{job['status']}】")
+    print(f"🎁 企业福利: {job['welfare_summary']}")
+    print(f"🔗 校招网申直达: {job['application_url'] or job['campus_url']}")
     print("-" * 90)
-    print("📋 【核心职责】:\n" + (resp or "暂无详细描述"))
-    print("\n📝 【任职要求】:\n" + (req or "暂无详细要求"))
-    print("\n💡 【高价值匹配度分析与破局思路】:\n" + (analysis or "暂无分析"))
+    print("📋 【核心职责】:\n" + (job['responsibilities'] or "暂无详细描述"))
+    print("\n📝 【任职要求】:\n" + (job['requirements'] or "暂无详细要求"))
+    print("\n💡 【高价值匹配度分析与破局思路】:\n" + (job['matching_analysis'] or "暂无分析"))
     print("="*90 + "\n")
 
 def show_interview_guide(target):
-    conn = get_db()
-    c = conn.cursor()
-    if str(target).isdigit():
-        c.execute("""
-            SELECT c.id, c.name, g.recruitment_process, g.resume_criteria, g.interview_rounds, g.typical_questions, g.score_weights, g.avoid_pitfalls, g.authentic_sources
-            FROM companies c
-            LEFT JOIN company_interview_guides g ON c.id = g.company_id
-            WHERE c.id = ?
-        """, (int(target),))
-    else:
-        c.execute("""
-            SELECT c.id, c.name, g.recruitment_process, g.resume_criteria, g.interview_rounds, g.typical_questions, g.score_weights, g.avoid_pitfalls, g.authentic_sources
-            FROM companies c
-            LEFT JOIN company_interview_guides g ON c.id = g.company_id
-            WHERE c.name LIKE ? OR c.alias LIKE ?
-        """, (f"%{target}%", f"%{target}%"))
-    
-    rows = c.fetchall()
-    conn.close()
-
+    rows = JobService.get_company_interview_guides(target)
     if not rows:
         print(f"❌ 未找到匹配的企业面试指南: '{target}'")
         return
@@ -126,23 +90,9 @@ def show_interview_guide(target):
 
 def track_pipeline():
     """查看求职全流程管线看板"""
-    conn = get_db()
-    c = conn.cursor()
-    c.execute("""
-        SELECT j.status, COUNT(j.id)
-        FROM jobs j
-        GROUP BY j.status
-    """)
-    status_counts = dict(c.fetchall())
-
-    c.execute("""
-        SELECT j.id, j.company_name, j.job_title, j.city, j.salary_text, j.status
-        FROM jobs j
-        WHERE j.status != '待投递'
-        ORDER BY j.updated_at DESC
-    """)
-    active_rows = c.fetchall()
-    conn.close()
+    summary = JobService.get_pipeline_summary()
+    status_counts = summary["counts"]
+    active_rows = summary["active_jobs"]
 
     print("\n" + "="*85)
     print("📊 【2027 届校招全流程动态追踪管线 (Pipeline Tracker)】")
@@ -173,12 +123,8 @@ def run_preflight_check(job_id: int, resume_path: str) -> bool:
     return True
 
 def mark_apply(job_id, resume_path=None, force=False):
-    conn = get_db()
-    c = conn.cursor()
-    c.execute("SELECT company_name, job_title FROM jobs WHERE id = ?", (job_id,))
-    job = c.fetchone()
+    job = JobService.get_job(int(job_id))
     if not job:
-        conn.close()
         print(f"❌ 未找到岗位 ID {job_id}")
         return
 
@@ -186,9 +132,8 @@ def mark_apply(job_id, resume_path=None, force=False):
         print(f"\n🔍 正在对拟投简历 [{os.path.basename(resume_path)}] 执行投前常态化门禁核验...")
         passed = run_preflight_check(job_id, resume_path)
         if not passed and not force:
-            conn.close()
             print("🚨 【投前门禁熔断·严禁盲投】")
-            print(f"   拟投简历在岗位 ID {job_id} ({job[0]} - {job[1]}) 评测未达 70 分合格线或触发一票否决！")
+            print(f"   拟投简历在岗位 ID {job_id} ({job['company_name']} - {job['job_title']}) 评测未达 70 分合格线或触发一票否决！")
             print("   已自动阻断标记为【已投递】。请根据上方看板调整项目正文与关键词后重试，或使用 --force 强制标记。\n")
             return
         elif not passed and force:
@@ -196,52 +141,26 @@ def mark_apply(job_id, resume_path=None, force=False):
     else:
         print("💡 提示: 未指定 --resume 自动核验。强烈建议投递前运行 'python bin/career_jobs_cli.py preflight <ID> <简历路径>' 严控质量！")
 
-    c.execute("UPDATE jobs SET status = '已投递', updated_at = CURRENT_TIMESTAMP WHERE id = ?", (job_id,))
     notes_text = f"通过 Career OS CLI 标记 (附简历: {os.path.basename(resume_path)})" if resume_path else "通过 Career OS CLI 标记"
-    add_timeline_event(conn, job_id=int(job_id), company_name=job[0], job_title=job[1],
-                       event_type="已投递", notes=notes_text)
-    conn.commit()
-    conn.close()
+    JobService.transition_job_status(int(job_id), "已投递", resume_path=resume_path, notes=notes_text)
     print(f"\n✅ 岗位 ID {job_id} 已成功标记为【已投递】并加入动态追踪管线！")
     track_pipeline()
 
 def show_stats():
-    conn = get_db()
-    c = conn.cursor()
-    c.execute("SELECT COUNT(*) FROM companies")
-    total_companies = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM jobs")
-    total_jobs = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM company_interview_guides")
-    total_guides = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM mock_questions")
-    total_questions = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM mock_questions WHERE question_type = 'personality'")
-    personality_questions = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM mock_questions WHERE question_type = 'personality' AND source_plugin LIKE 'github-%'")
-    github_questions = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM mock_questions WHERE question_type = 'personality' AND assessment_kind = 'career-personality-v1'")
-    quick_personality_questions = c.fetchone()[0]
-    c.execute("SELECT COUNT(*) FROM mock_questions WHERE question_type = 'personality' AND assessment_kind = 'career-personality-ipip-neo-120'")
-    full_personality_questions = c.fetchone()[0]
-    source_counts = c.execute(
-        "SELECT COALESCE(NULLIF(source_plugin, ''), 'legacy/未标注') AS source, COUNT(*) FROM mock_questions GROUP BY source ORDER BY COUNT(*) DESC, source"
-    ).fetchall()
-    conn.close()
-
+    stats = JobService.get_global_stats()
     print("\n" + "="*60)
     print("📊 【Career OS 求职全景资产大盘统计】")
     print("="*60)
-    print(f"🏢 目标企业总数: {total_companies} 家 (100% 连通)")
-    print(f"💼 精选对口岗位: {total_jobs} 个")
-    print(f"📚 逐一面试指南: {total_guides} 份 (100% 覆盖)")
-    print(f"🎯 笔试与沙箱题: {total_questions} 题 (客观题 + 手撕代码 + 性格题)")
-    print(f"🧭 职业性格/工作风格题: {personality_questions} 题")
-    print(f"  ├─ 快速模式: {quick_personality_questions} 题")
-    print(f"  ├─ IPIP-NEO-120 完整模式: {full_personality_questions} 题")
-    print(f"  └─ GitHub 来源合计: {github_questions} 题")
+    print(f"🏢 目标企业总数: {stats['total_companies']} 家 (100% 连通)")
+    print(f"💼 精选对口岗位: {stats['total_jobs']} 个")
+    print(f"📚 逐一面试指南: {stats['total_guides']} 份 (100% 覆盖)")
+    print(f"🎯 笔试与沙箱题: {stats['total_questions']} 题 (客观题 + 手撕代码 + 性格题)")
+    print(f"🧭 职业性格/工作风格题: {stats['personality_questions']} 题")
+    print(f"  ├─ 快速模式: {stats['quick_personality_questions']} 题")
+    print(f"  ├─ IPIP-NEO-120 完整模式: {stats['full_personality_questions']} 题")
+    print(f"  └─ GitHub 来源合计: {stats['github_questions']} 题")
     print("📦 题库来源分布:")
-    for source, count in source_counts:
+    for source, count in stats['source_counts']:
         print(f"  ├─ {source}: {count} 题")
     print("="*60 + "\n")
 
@@ -295,15 +214,7 @@ def show_job_assessment_profile(job_id):
     except (TypeError, ValueError):
         print(f"❌ job_id 必须是数字: {job_id}")
         return
-    conn = get_db()
-    row = conn.execute(
-        """
-        SELECT id, company_name, job_title, category, responsibilities, requirements, english_req
-        FROM jobs WHERE id = ?
-        """,
-        (job_id,),
-    ).fetchone()
-    conn.close()
+    row = JobService.get_job(job_id)
     if not row:
         print(f"❌ 未找到岗位 ID {job_id}")
         return
@@ -335,11 +246,7 @@ def show_all_job_assessment_summary():
         from jd_assessment_mapper import profiles_for_jobs, summarize_profiles
     except ModuleNotFoundError:
         from bin.jd_assessment_mapper import profiles_for_jobs, summarize_profiles
-    conn = get_db()
-    rows = conn.execute(
-        "SELECT id, company_name, job_title, category, responsibilities, requirements, english_req FROM jobs"
-    ).fetchall()
-    conn.close()
+    rows = JobService.get_all_jobs()
     profiles = profiles_for_jobs(rows)
     counts = summarize_profiles(profiles)
     print("\n" + "=" * 72)

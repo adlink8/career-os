@@ -31,7 +31,10 @@ except ModuleNotFoundError:
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-RUBRIC_VERSION = "interview-v1"
+try:
+    from services.interview_scorer import score_answer, RUBRIC_VERSION
+except ImportError:
+    from bin.services.interview_scorer import score_answer, RUBRIC_VERSION
 
 
 def _clean(value: object) -> str:
@@ -54,36 +57,6 @@ def _split_questions(raw: str | None) -> list[str]:
     if len(chunks) == 1:
         chunks = [piece.strip() for piece in re.split(r"[。！？；]", chunks[0]) if len(piece.strip()) >= 8]
     return chunks[:4]
-
-
-def score_answer(question: str, answer: str, *, follow_up: bool = False) -> dict[str, int | str]:
-    """可解释的离线评分器，维度与 career-interview-master 保持一致。"""
-
-    text = answer.strip()
-    length = len(text)
-    technical_terms = ("Linux", "SQLite", "SQL", "MQTT", "HTTP", "TCP", "Docker", "Kubernetes", "Python", "日志", "事务", "索引", "并发", "监控", "故障")
-    evidence_terms = ("我负责", "实现", "部署", "指标", "延迟", "吞吐", "数据", "线上", "复盘", "测试", "百分", "%", "秒", "条")
-    structure_terms = ("首先", "然后", "最后", "因为", "所以", "但是", "取舍", "结论", "风险", "验证")
-    tech_hits = sum(1 for term in technical_terms if term.lower() in text.lower())
-    evidence_hits = sum(1 for term in evidence_terms if term in text)
-    structure_hits = sum(1 for term in structure_terms if term in text)
-    technical = min(100, 35 + tech_hits * 8 + evidence_hits * 4 + (10 if length >= 80 else 0))
-    expression = min(100, 35 + (15 if 45 <= length <= 500 else 5 if length else 0) + structure_hits * 7 + (8 if re.search(r"[。！？]", text) else 0))
-    project = min(100, 30 + evidence_hits * 9 + (12 if "项目" in text or "系统" in text else 0) + (8 if length >= 100 else 0))
-    followup_score = min(100, 30 + structure_hits * 10 + (15 if any(x in text for x in ("为什么", "取舍", "边界", "回滚", "监控")) else 0) + (10 if length >= 80 else 0))
-    overall = round(technical * 0.4 + expression * 0.3 + project * 0.2 + followup_score * 0.1)
-    weakest = min((technical, expression, project, followup_score))
-    focus = "技术细节" if weakest == technical else "表达结构" if weakest == expression else "项目证据" if weakest == project else "追问与取舍"
-    return {
-        "technical": technical,
-        "expression": expression,
-        "project": project,
-        "follow_up": followup_score,
-        "overall": overall,
-        "focus": focus,
-        "provider": "local-rubric",
-        "follow_up_turn": "yes" if follow_up else "no",
-    }
 
 
 def _grade(score: int) -> str:

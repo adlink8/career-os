@@ -40,6 +40,21 @@ for cat, words in TECH_DICTIONARY.items():
     for w in words:
         ALL_TECH_KEYWORDS[w.lower()] = w
 
+# Reusable STAR evidence and discourse structure lexicons
+EVIDENCE_TERMS = (
+    "我负责", "实现", "部署", "指标", "延迟", "吞吐", "数据", "线上", "复盘", "测试",
+    "百分", "%", "秒", "ms", "条", "降幅", "压降", "提升", "QPS", "倍"
+)
+
+STRUCTURE_TERMS = (
+    "首先", "然后", "最后", "因为", "所以", "但是", "取舍", "结论", "风险", "验证", "对比", "权衡"
+)
+
+ENGINEERING_BATTLE_SCARS = (
+    "索引", "重连", "指数退避", "心跳", "超时", "回滚", "熔断", "快照", "血缘",
+    "抓包", "排障", "防篡改", "缓存", "增量", "切片", "时序对齐", "门禁", "E2E", "单测"
+)
+
 def match_keyword_in_text(kw: str, text: str) -> bool:
     """Accurately match English words (with ASCII lookaround) or Chinese substrings in mixed text."""
     if re.search(r'[\u4e00-\u9fa5]', kw):

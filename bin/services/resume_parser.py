@@ -33,29 +33,58 @@ def extract_text_from_file(file_path: str) -> str:
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
             return f.read().strip()
 
+try:
+    from .job_service import JobService
+except (ImportError, ValueError):
+    try:
+        from services.job_service import JobService
+    except ImportError:
+        JobService = None
+
 def extract_jd_from_db(job_id: int, db_path: str = "data/career_jobs.sqlite") -> Dict[str, str]:
-    """Retrieve job details from Career OS sqlite database."""
-    if not os.path.exists(db_path):
-        raise FileNotFoundError(f"数据库未找到: {db_path}")
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT company_name, job_title, city, responsibilities, requirements, category
-        FROM jobs WHERE id = ?
-    """, (job_id,))
-    row = cursor.fetchone()
-    conn.close()
-    if not row:
-        raise ValueError(f"数据库中未找到 ID 为 {job_id} 的岗位")
-    return {
-        "company": row[0],
-        "title": row[1],
-        "city": row[2],
-        "responsibilities": row[3] or "",
-        "requirements": row[4] or "",
-        "category": row[5] or "",
-        "full_text": f"{row[1]}\n{row[3]}\n{row[4]}"
-    }
+    """Retrieve job details from Career OS sqlite database via JobService."""
+    if JobService is not None:
+        conn = None
+        if db_path != "data/career_jobs.sqlite" and os.path.exists(db_path):
+            conn = sqlite3.connect(db_path)
+        try:
+            job = JobService.get_job(job_id, conn=conn)
+            if not job:
+                raise ValueError(f"数据库中未找到 ID 为 {job_id} 的岗位")
+            return {
+                "company": job["company_name"],
+                "title": job["job_title"],
+                "city": job["city"],
+                "responsibilities": job["responsibilities"],
+                "requirements": job["requirements"],
+                "category": job["category"],
+                "full_text": job["full_text"],
+            }
+        finally:
+            if conn:
+                conn.close()
+    else:
+        if not os.path.exists(db_path):
+            raise FileNotFoundError(f"数据库未找到: {db_path}")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT company_name, job_title, city, responsibilities, requirements, category
+            FROM jobs WHERE id = ?
+        """, (job_id,))
+        row = cursor.fetchone()
+        conn.close()
+        if not row:
+            raise ValueError(f"数据库中未找到 ID 为 {job_id} 的岗位")
+        return {
+            "company": row[0],
+            "title": row[1],
+            "city": row[2],
+            "responsibilities": row[3] or "",
+            "requirements": row[4] or "",
+            "category": row[5] or "",
+            "full_text": f"{row[1]}\n{row[3]}\n{row[4]}"
+        }
 
 def parse_resume_sections(text: str) -> Dict[str, str]:
     """

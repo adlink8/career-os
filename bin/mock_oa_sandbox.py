@@ -17,10 +17,12 @@ try:
     from career_os_store import add_timeline_event, get_db
     from code_runner import configured_runner
     from jd_assessment_mapper import infer_assessment_profile
+    from services.job_service import JobService
 except ModuleNotFoundError:
     from bin.career_os_store import add_timeline_event, get_db
     from bin.code_runner import configured_runner
     from bin.jd_assessment_mapper import infer_assessment_profile
+    from bin.services.job_service import JobService
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -34,7 +36,7 @@ def _now() -> str:
 def _job_context(conn, job_id: int | None):
     if not job_id:
         return None
-    return conn.execute("SELECT id, company_name, job_title FROM jobs WHERE id = ?", (job_id,)).fetchone()
+    return JobService.get_job(int(job_id), conn=conn)
 
 
 def _job_question_tracks(conn, job_id: int | None) -> list[str]:
@@ -42,13 +44,7 @@ def _job_question_tracks(conn, job_id: int | None) -> list[str]:
 
     if not job_id:
         return []
-    row = conn.execute(
-        """
-        SELECT id, company_name, job_title, category, responsibilities, requirements, english_req
-        FROM jobs WHERE id = ?
-        """,
-        (job_id,),
-    ).fetchone()
+    row = JobService.get_job(int(job_id), conn=conn)
     if not row:
         return []
     profile = infer_assessment_profile(row)
