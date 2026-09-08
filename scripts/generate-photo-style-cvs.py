@@ -23,6 +23,8 @@ STYLE_PATH = ROOT / "config" / "resume-style-photo.json"
 EDGE_EXE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
 
 SOURCE_FILES = {
+    "cv-tech-support-ops-star": "cv__tech-support-ops__v1.1__star.md",
+    "cv-smart-hardware-iot-star": "cv__smart-hardware-iot__v1.0__star.md",
     "cv-ops-photo-style": "cv-ops-v2-draft.md",
     "cv-iot-photo-style": "cv-iot-v2-draft.md",
     "cv-ai-infra-photo-style": "cv-ai-infra-v2-draft.md",
@@ -73,6 +75,8 @@ def parse_resume(path: Path) -> dict[str, object]:
         "summary": [],
         "skills": [],
         "projects": [],
+        "competitions": [],
+        "competition_title": "",
         "experience": [],
         "education": [],
         "certs": [],
@@ -93,12 +97,20 @@ def parse_resume(path: Path) -> dict[str, object]:
             section = strip_markdown(line[3:]).strip()
             project = None
             experience = None
+            if any(k in section for k in ["成就", "竞赛", "荣誉"]) and "证书" not in section:
+                data["competition_title"] = section
             continue
         if line.startswith("### "):
             if "项目" in section:
                 title = strip_markdown(line[4:])
                 project = {"title": title, "tag": "", "duty": "", "bullets": [], "github": ""}
                 data["projects"].append(project)
+                continue
+            if any(k in section for k in ["成就", "竞赛", "荣誉"]) and "证书" not in section:
+                title = strip_markdown(line[4:])
+                project = {"title": title, "tag": "", "duty": "", "bullets": [], "github": ""}
+                data["competitions"].append(project)
+                continue
             continue
 
         label, value = split_label(line)
@@ -129,7 +141,7 @@ def parse_resume(path: Path) -> dict[str, object]:
                 data["education"].append(value)
             continue
 
-        if "证书" in section or "竞赛" in section:
+        if section in {"证书与竞赛", "证书与荣誉", "证书", "荣誉与证书", "资格证书"}:
             if line.startswith("-"):
                 data["certs"].append(strip_markdown(line[1:].strip()))
             continue
@@ -151,7 +163,7 @@ def parse_resume(path: Path) -> dict[str, object]:
                 experience["bullets"].append(strip_markdown(line[1:].strip()))
             continue
 
-        if project is not None and "项目" in section:
+        if project is not None and ("项目" in section or any(k in section for k in ["成就", "竞赛", "荣誉"])):
             tag_match = re.match(r"`([^`]+)`", line)
             if tag_match:
                 project["tag"] = strip_markdown(tag_match.group(1))
@@ -177,8 +189,18 @@ def parse_resume(path: Path) -> dict[str, object]:
 def render_bold_label(value: str) -> str:
     match = re.match(r"\*\*(.+?)\*\*\s*[:：]\s*(.*)$", value)
     if match:
-        return f"<b>{esc(match.group(1))}：</b>{esc(strip_markdown(match.group(2)))}"
-    return esc(strip_markdown(value))
+        label = match.group(1).strip()
+        body = match.group(2).strip()
+        body = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", body)
+        body = body.replace("`", "")
+        body = html.escape(body, quote=True)
+        body = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", body)
+        return f"<b>{esc(label)}：</b>{body}"
+    body = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", value)
+    body = body.replace("`", "")
+    body = html.escape(body, quote=True)
+    body = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", body)
+    return body
 
 
 def build_css(style: dict[str, object]) -> str:
@@ -215,22 +237,22 @@ body {{
 .main {{ width: {metrics['main_width_mm']}mm; height: {style['page']['height_mm']}mm;
   padding: {metrics['main_padding']}; display: flex; flex-direction: column; background: #FFFFFF; }}
 .sec-ribbon {{ background: {colors['ribbon']}; color: {colors['ribbon_text']};
-  font-size: {metrics['ribbon_px']}px; font-weight: bold; padding: 5px 12px; border-radius: 1px;
-  margin-top: 15px; margin-bottom: 8px; letter-spacing: 1px; display: flex; align-items: center; }}
+  font-size: {metrics['ribbon_px']}px; font-weight: bold; padding: 3.5px 10px; border-radius: 1px;
+  margin-top: 10px; margin-bottom: 5px; letter-spacing: 1px; display: flex; align-items: center; }}
 .first-ribbon {{ margin-top: 0; }}
 .exp-header {{ display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;
-  color: #1E293B; margin-top: 4px; margin-bottom: 7px; gap: 8px; }}
+  color: #1E293B; margin-top: 4px; margin-bottom: 6px; gap: 8px; }}
 .exp-header .company {{ flex: 1; margin-left: 10px; }}
-.bullet-item {{ font-size: {metrics['body_px']}px; line-height: {metrics['body_line']}; color: {colors['main_text']};
-  margin-bottom: 6px; position: relative; padding-left: 13px; text-align: justify; }}
+.bullet-item {{ font-size: {metrics['body_px']}px; line-height: 1.54; color: {colors['main_text']};
+  margin-bottom: 4.5px; position: relative; padding-left: 13px; text-align: justify; }}
 .bullet-item::before {{ content: '■'; position: absolute; left: 0; top: 1px; font-size: 7.5px; color: {colors['main_text']}; }}
 .bullet-item b {{ color: {colors['main_strong']}; font-weight: bold; }}
 .proj-title-row {{ display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
-  font-size: {metrics['project_title_px']}px; font-weight: bold; color: #1E293B; margin-top: 12px; margin-bottom: 3.5px; }}
+  font-size: {metrics['project_title_px']}px; font-weight: bold; color: #1E293B; margin-top: 7.5px; margin-bottom: 2.5px; }}
 .proj-github {{ font-size: 9.8px; color: {colors['link']}; font-family: '{fonts['mono']}', monospace;
   font-weight: normal; text-decoration: none; word-break: break-all; }}
-.proj-duty {{ font-size: {metrics['project_duty_px']}px; line-height: {metrics['project_duty_line']};
-  color: #475569; margin-bottom: 5px; padding-left: 2px; }}
+.proj-duty {{ font-size: {metrics['project_duty_px']}px; line-height: 1.44;
+  color: #475569; margin-bottom: 3.5px; padding-left: 2px; }}
 .education-line {{ font-size: {metrics['side_item_px']}px; line-height: {metrics['side_item_line']}; margin-bottom: 5px; color: {colors['sidebar_text']}; }}
 """
 
@@ -299,6 +321,19 @@ def build_html(data: dict[str, object], style: dict[str, object], title: str) ->
     if projects:
         right_parts.append(f'<div class="sec-ribbon{" first-ribbon" if not right_parts else ""}">核心项目经历</div>')
         for item in projects:
+            github = str(item.get("github") or "")
+            github_html = f'<a class="proj-github" href="{esc(github)}">{esc(github)}</a>' if github else ""
+            right_parts.append(f'<div class="proj-title-row"><span>{esc(str(item["title"]))}</span>{github_html}</div>')
+            if item.get("tag"):
+                right_parts.append(f'<div class="proj-duty">{esc(str(item["tag"]))}</div>')
+            if item.get("duty"):
+                right_parts.append(f'<div class="proj-duty"><b>职务职责：</b>{esc(str(item["duty"]))}</div>')
+            right_parts.extend(f'<div class="bullet-item">{render_bold_label(str(bullet))}</div>' for bullet in item["bullets"])
+    competitions = data.get("competitions", [])
+    comp_title = str(data.get("competition_title") or "个人成就与竞赛")
+    if competitions:
+        right_parts.append(f'<div class="sec-ribbon">{esc(comp_title)}</div>')
+        for item in competitions:
             github = str(item.get("github") or "")
             github_html = f'<a class="proj-github" href="{esc(github)}">{esc(github)}</a>' if github else ""
             right_parts.append(f'<div class="proj-title-row"><span>{esc(str(item["title"]))}</span>{github_html}</div>')

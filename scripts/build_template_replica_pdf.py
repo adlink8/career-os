@@ -241,7 +241,7 @@ HTML_TEMPLATE = f"""<!DOCTYPE html>
     <div class="side-skill-item">▪ <b>设备上云与系统运维：</b>精通新大陆 NLECloud 设备接入协议、串口服务器与 Linux/Docker。</div>
 
     <div class="side-sec-title">个人荣誉</div>
-    <div class="side-item">2024 江苏省职业院校技能大赛（省级获奖）</div>
+    <div class="side-item">2024 江苏省技能大赛（省级获奖）</div>
   </aside>
 
   <!-- RIGHT MAIN AREA -->

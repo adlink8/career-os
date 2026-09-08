@@ -1,9 +1,11 @@
 {
-  "name": "photo-style",
-  "description": "A4 one-page two-column resume style based on cv-newland-photo-edition",
+  "name": "photo_two_column_balanced_v3",
+  "description": "A4单页双栏经典照片版-垂直韵律均衡版(v3)，彻底杜绝上半太挤下半太空，底部留白严格控制在18mm~28mm",
   "page": {
     "width_mm": 210,
-    "height_mm": 297
+    "height_mm": 297,
+    "bottom_margin_min_mm": 18.0,
+    "bottom_margin_max_mm": 28.0
   },
   "fonts": {
     "body": "Microsoft YaHei",
@@ -16,29 +18,40 @@
     "sidebar_muted": "#E2E8F0",
     "main_text": "#334155",
     "main_strong": "#0F172A",
-    "ribbon": "#DDE3EA",
-    "ribbon_text": "#2C3E50",
-    "link": "#1D4ED8"
+    "ribbon": "#E2E8F0",
+    "ribbon_text": "#0F172A",
+    "ribbon_border": "#3E4D5E",
+    "link": "#2563EB"
   },
   "metrics": {
     "sidebar_width_mm": 65,
     "main_width_mm": 145,
-    "sidebar_padding": "14mm 5.5mm 12mm 6.5mm",
-    "main_padding": "13mm 9mm 12mm 9mm",
+    "sidebar_padding": "13mm 6.5mm 13mm 7.5mm",
+    "main_padding": "12mm 9.5mm 10mm 9.5mm",
     "name_px": 28,
     "intent_px": 11.5,
-    "side_heading_px": 13.5,
-    "side_item_px": 10.8,
-    "side_item_line": 1.68,
-    "side_skill_px": 9.8,
-    "side_skill_line": 1.56,
-    "ribbon_px": 14.5,
-    "body_px": 10.5,
-    "body_line": 1.58,
-    "project_title_px": 12.5,
-    "project_duty_px": 9.8,
-    "project_duty_line": 1.48,
-    "photo_width_mm": 44,
-    "photo_height_mm": 58
+    "side_heading_px": 12.2,
+    "side_item_px": 10.0,
+    "side_item_line": 1.55,
+    "side_skill_px": 9.3,
+    "side_skill_line": 1.50,
+    "side_skill_margin_bottom_px": 7.2,
+    "ribbon_px": 12.8,
+    "ribbon_padding": "4px 8.5px",
+    "ribbon_margin_top_px": 10.5,
+    "ribbon_margin_bottom_px": 5.5,
+    "body_px": 9.9,
+    "body_line": 1.50,
+    "bullet_margin_bottom_px": 4.8,
+    "bullet_padding_left_px": 11,
+    "project_title_px": 11.8,
+    "project_title_margin_top_px": 9.0,
+    "project_title_margin_bottom_px": 2.8,
+    "project_duty_px": 9.3,
+    "project_duty_line": 1.42,
+    "project_duty_margin_bottom_px": 4.6,
+    "photo_width_mm": 46,
+    "photo_height_mm": 60
   }
 }
+
