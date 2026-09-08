@@ -1,6 +1,6 @@
 # 数据库与文档关系图（data-model）
 
-> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v14，31 张业务表）。
+> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v16，32 张业务表）。
 > md 文档分三类：**描述数据库的**（docs/）、**被数据库引用或导出的**（data/*.md）、**与数据库无关的参考层**（knowledge/）。本文是它们与数据库关系的单一事实源。
 
 ## 0. 权威原则（2026-09-05 确定）
@@ -14,7 +14,7 @@
 
 - **文件**：`data/career_jobs.sqlite`
 - **唯一迁移/访问入口**：`bin/career_os_store.py`（`DB_PATH` 常量，可用 `CAREER_OS_DB_PATH` 环境变量覆盖）
-- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v14
+- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v16
 - **简历二进制不进库**：PDF/DOCX/MD 原文件留在 `data/cv/`，库里只存元数据（SHA-256 为内容身份），见 `docs/resume-registry.md`
 
 ## 2. 业务表分域
@@ -39,7 +39,8 @@
 | `resume_versions` | 19 | 简历版本（role/company/label/state） |
 | `resume_artifacts` | 158 | 简历文件元数据（SHA-256、file_state: source/draft/ready/submitted） |
 | `resume_artifact_locations` | 58 | 文件路径登记（`data/cv/` 中实际位置的映射） |
-| `resume_generation_rules` | 10 | 简历生成规则与硬红线契约库（去目标地点、严格A4单页饱满、去夸大几千几万数字、聚焦做了什么与具体提升、AI技能首位去Prompt、禁止强扣AI、禁止虚假MES包装等 10 项核心红线）(v14) |
+| `resume_generation_rules` | 14 | 简历生成规则与硬红线契约库（去目标地点、严格A4单页饱满、去夸大几千几万数字、聚焦做了什么与具体提升、AI技能首位去Prompt、禁止强扣AI、禁止虚假MES包装、核心项目四点起步、工程成果真实量化、版面垂直韵律均衡防上半挤下半空等 14 项核心红线）(v15) |
+| `resume_layout_templates` | 1 | 简历排版模板与样式契约库（存储 A4 页面尺寸、垂直留白上下限阈值、侧栏/主栏比例、证件照尺寸、全套 CSS 样式表与 JSON 布局参数，默认内置经典双栏照片版-垂直韵律均衡版 v3）(v16) |
 
 ### C. 测评 / 面试域
 

@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 15
+SCHEMA_VERSION = 17
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -806,6 +806,30 @@ def migrate(conn: sqlite3.Connection) -> None:
             "保证简历模块标题严谨清晰，杜绝画蛇添足的自造标题",
             1,
         ),
+        (
+            "project",
+            "min_four_bullets_per_project",
+            "核心项目经历每项至少四点起步",
+            "核心工程项目经历每项必须至少包含 4 个要点（bullet points），从架构/数据建模、核心技术实现/协议、性能优化/缓存加速、自动化测试/质量门禁等多个工程维度展开，严禁少于 4 点。",
+            "参考历史高水准简历规范，四点起步能系统化展现工程深度、全链路掌控力与闭环能力，避免内容单薄",
+            1,
+        ),
+        (
+            "quantification",
+            "quantified_engineering_metrics",
+            "工程成果必须包含真实量化指标",
+            "项目与经历描述必须具备真实、可信、有依据的量化指标支撑（如延迟从 280ms 压降至 38ms、缓存复用率 82%、回归耗时缩减 60%、14,031 条结论悬空率 0.00%、指数退避 1s~60s、20+ 篇深度技术长文等），严禁无量化的纯抽象叙述。",
+            "量化指标能给面试官提供具体、可检验的工程价值证据，强化说服力与严谨度",
+            1,
+        ),
+        (
+            "layout",
+            "balanced_vertical_rhythm_no_crowding",
+            "版面垂直韵律均衡（严禁上半太挤、下半太空）",
+            "A4 单页简历必须实现上下垂直韵律均衡分布。严禁将正文内容、字号与行距过度压缩堆叠在上半部而导致下半部大面积留白（底部留白严禁超过 25mm）；正文字号需维持在 9.8px~10.2px、行高 1.50~1.55、列表项间距 4.5px~5.5px，标题与模块间距舒展大方，左右侧栏与主栏高度协调，实现全页呼吸感与饱满度统一。",
+            "避免因过度防跨页导致字体过小、行距过挤，给面试官造成压抑紧凑感，同时彻底杜绝页面下半部产生明显空洞与排版松垮",
+            1,
+        ),
     ]
     for cat, key, title, content, rat, pri in rules_seed:
         conn.execute(
@@ -822,6 +846,378 @@ def migrate(conn: sqlite3.Connection) -> None:
                 updated_at = CURRENT_TIMESTAMP
             """,
             (cat, key, title, content, rat, pri),
+        )
+
+    # v16 简历排版模板契约库 (resume_layout_templates)
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS resume_layout_templates (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            template_key TEXT NOT NULL UNIQUE,
+            template_name TEXT NOT NULL,
+            description TEXT NOT NULL DEFAULT '',
+            page_width_mm REAL NOT NULL DEFAULT 210.0,
+            page_height_mm REAL NOT NULL DEFAULT 297.0,
+            bottom_margin_min_mm REAL NOT NULL DEFAULT 18.0,
+            bottom_margin_max_mm REAL NOT NULL DEFAULT 28.0,
+            sidebar_width_mm REAL NOT NULL DEFAULT 65.0,
+            main_width_mm REAL NOT NULL DEFAULT 145.0,
+            photo_width_mm REAL NOT NULL DEFAULT 46.0,
+            photo_height_mm REAL NOT NULL DEFAULT 60.0,
+            css_content TEXT NOT NULL,
+            layout_config_json TEXT NOT NULL DEFAULT '{}',
+            is_default INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+
+    v3_css = """@page {
+  size: A4 portrait;
+  margin: 0;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  width: 210mm;
+  height: 297mm;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #334155;
+  display: flex;
+  overflow: hidden;
+}
+.sidebar {
+  width: 65mm;
+  height: 297mm;
+  background-color: #3E4D5E;
+  color: #FFFFFF;
+  padding: 13mm 6.5mm 13mm 7.5mm;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.name {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #FFFFFF;
+  margin-bottom: 5px;
+}
+.intent {
+  font-size: 11.5px;
+  color: #E2E8F0;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+.photo-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+.photo-img {
+  width: 46mm;
+  height: 60mm;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  background-color: #2D3748;
+}
+.side-sec-title {
+  font-size: 12.2px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-top: 13px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid rgba(255,255,255,0.35);
+}
+.side-item {
+  font-size: 10px;
+  line-height: 1.55;
+  color: #F1F5F9;
+  margin-bottom: 3.5px;
+  word-break: normal;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+.side-item b, .side-skill-item b {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.side-skill-item {
+  font-size: 9.3px;
+  line-height: 1.50;
+  color: #F8FAFC;
+  margin-bottom: 7.2px;
+  word-break: normal;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+.main {
+  width: 145mm;
+  height: 297mm;
+  padding: 12mm 9.5mm 12mm 9.5mm;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+}
+.sec-ribbon {
+  background-color: #E2E8F0;
+  color: #0F172A;
+  font-size: 12.8px;
+  font-weight: bold;
+  padding: 4px 8.5px;
+  margin-top: 10.5px;
+  margin-bottom: 5.5px;
+  border-left: 4px solid #3E4D5E;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+}
+.first-ribbon {
+  margin-top: 0;
+}
+.bullet-item {
+  font-size: 9.9px;
+  line-height: 1.50;
+  color: #334155;
+  margin-bottom: 4.8px;
+  text-align: left;
+  padding-left: 11px;
+  position: relative;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.bullet-item::before {
+  content: "▪";
+  position: absolute;
+  left: 1px;
+  top: -0.5px;
+  color: #3E4D5E;
+  font-size: 10px;
+}
+.bullet-item b {
+  color: #0F172A;
+  font-weight: 600;
+}
+.proj-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11.8px;
+  font-weight: bold;
+  color: #0F172A;
+  margin-top: 9px;
+  margin-bottom: 2.8px;
+}
+.proj-github {
+  font-size: 9.1px;
+  color: #2563EB;
+  font-family: 'Consolas', monospace;
+  font-weight: normal;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.proj-duty {
+  font-size: 9.3px;
+  line-height: 1.42;
+  color: #475569;
+  margin-bottom: 4.6px;
+  padding-left: 2px;
+}"""
+
+    v3_config = """{
+  "name": "photo_two_column_balanced_v3",
+  "description": "A4单页双栏经典照片版-垂直韵律均衡版(v3)，彻底杜绝上半太挤下半太空，底部留白严格控制在18mm~28mm",
+  "page": {
+    "width_mm": 210.0,
+    "height_mm": 297.0,
+    "bottom_margin_min_mm": 18.0,
+    "bottom_margin_max_mm": 28.0
+  },
+  "fonts": {
+    "body": "Microsoft YaHei",
+    "latin": "Arial",
+    "mono": "Consolas"
+  },
+  "colors": {
+    "sidebar": "#3E4D5E",
+    "sidebar_text": "#F1F5F9",
+    "sidebar_muted": "#E2E8F0",
+    "main_text": "#334155",
+    "main_strong": "#0F172A",
+    "ribbon": "#E2E8F0",
+    "ribbon_text": "#0F172A",
+    "ribbon_border": "#3E4D5E",
+    "link": "#2563EB"
+  },
+  "metrics": {
+    "sidebar_width_mm": 65.0,
+    "main_width_mm": 145.0,
+    "sidebar_padding": "13mm 6.5mm 13mm 7.5mm",
+    "main_padding": "12mm 9.5mm 10mm 9.5mm",
+    "name_px": 28,
+    "intent_px": 11.5,
+    "photo_width_mm": 46.0,
+    "photo_height_mm": 60.0,
+    "side_sec_title_px": 12.2,
+    "side_item_px": 10.0,
+    "side_item_line": 1.55,
+    "side_skill_px": 9.3,
+    "side_skill_line": 1.50,
+    "side_skill_margin_bottom_px": 7.2,
+    "ribbon_px": 12.8,
+    "ribbon_padding": "4px 8.5px",
+    "ribbon_margin_top_px": 10.5,
+    "ribbon_margin_bottom_px": 5.5,
+    "bullet_px": 9.9,
+    "bullet_line": 1.50,
+    "bullet_margin_bottom_px": 4.8,
+    "bullet_padding_left_px": 11,
+    "proj_title_px": 11.8,
+    "proj_title_margin_top_px": 9.0,
+    "proj_title_margin_bottom_px": 2.8,
+    "proj_duty_px": 9.3,
+    "proj_duty_line": 1.42,
+    "proj_duty_margin_bottom_px": 4.6
+  }
+}"""
+
+    conn.execute(
+        """
+        INSERT INTO resume_layout_templates
+            (template_key, template_name, description, page_width_mm, page_height_mm,
+             bottom_margin_min_mm, bottom_margin_max_mm, sidebar_width_mm, main_width_mm,
+             photo_width_mm, photo_height_mm, css_content, layout_config_json, is_default, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(template_key) DO UPDATE SET
+            template_name = excluded.template_name,
+            description = excluded.description,
+            page_width_mm = excluded.page_width_mm,
+            page_height_mm = excluded.page_height_mm,
+            bottom_margin_min_mm = excluded.bottom_margin_min_mm,
+            bottom_margin_max_mm = excluded.bottom_margin_max_mm,
+            sidebar_width_mm = excluded.sidebar_width_mm,
+            main_width_mm = excluded.main_width_mm,
+            photo_width_mm = excluded.photo_width_mm,
+            photo_height_mm = excluded.photo_height_mm,
+            css_content = excluded.css_content,
+            layout_config_json = excluded.layout_config_json,
+            is_default = excluded.is_default,
+            updated_at = CURRENT_TIMESTAMP
+        """,
+        (
+            "photo_two_column_balanced_v3",
+            "经典双栏照片版-垂直韵律均衡版(v3)",
+            "A4单页双栏经典照片版-垂直韵律均衡版(v3)，彻底杜绝上半太挤下半太空，底部留白严格控制在18mm~28mm",
+            210.0,
+            297.0,
+            18.0,
+            28.0,
+            65.0,
+            145.0,
+            46.0,
+            60.0,
+            v3_css,
+            v3_config,
+            1,
+        ),
+    )
+
+    # -------------------------------------------------------------------------
+    # Schema v17: 注册第15条简历规则（根据JD动态裁剪物联网项目展示侧重点）
+    # 及入库物联网技能大赛权威项目事实与双分支（Python上位机/Android移动端）证据库
+    # -------------------------------------------------------------------------
+    conn.execute(
+        """
+        INSERT INTO resume_generation_rules (
+            rule_category, rule_key, rule_title, rule_content, rationale, priority, is_active, updated_at
+        ) VALUES (
+            'content_matching',
+            'jd_tailored_project_emphasis',
+            '根据JD岗位职责动态裁剪物联网项目展示侧重点',
+            '在生成定制简历时，必须根据目标企业与JD的侧重点选择项目展现形态：(1) 工业上位机/软件/自动化岗位：突出Python (PyQt5) 上位机监控开发、Modbus协议与串口服务器通信；(2) 移动端/客户端/Android岗位：突出Android 原生应用开发 (Java)、多传感器数据采集与云平台API对接；(3) 数据开发/网络协议/爬虫岗位：突出Wireshark深度抓包、TCP/IP握手分析与网络通信排障；(4) 系统交付/运维岗位：突出局域网组网、消息网关部署与故障自动化自愈。严禁一刀切使用单一版本。',
+            '竞赛知识库涵盖上位机、移动端、网络组网与云平台完整技术栈，且均为真实实操内容；针对性匹配JD能最大化契合面试官画像，提升简历通过率与专业技术可信度。',
+            1,
+            1,
+            CURRENT_TIMESTAMP
+        )
+        ON CONFLICT(rule_key) DO UPDATE SET
+            rule_title = excluded.rule_title,
+            rule_content = excluded.rule_content,
+            rationale = excluded.rationale,
+            updated_at = CURRENT_TIMESTAMP
+        """
+    )
+
+    conn.execute(
+        """
+        INSERT INTO resume_evidence_projects (
+            project_key, display_name, repo_url, positioning, started_on, ended_on, scale_summary, source_report, updated_at
+        ) VALUES (
+            'iot-skills-competition',
+            '江苏省物联网技能大赛（网络规划与多设备协同联调）',
+            'https://github.com/adlink8/iot-skills-competition',
+            '江苏省职业技能大赛省级获奖成果：涵盖 Python (PyQt5) 上位机监控、Android 原生应用研发、局域网组网部署与 Wireshark 网络抓包排障；支持根据目标企业与JD职责动态切换展示侧重点（上位机工控/移动端开发/网络协议调试/系统服务交付）。',
+            '2023-09-01',
+            '2024-05-30',
+            '2,609 个核心代码与解析文档，50 套实战工程源码；涵盖 PyQt5 上位机开发、Android Java 原生应用、Modbus 协议解析、新大陆云平台 API 对接、工业串口服务器 USR-TCP232 现场组网',
+            'github.com/adlink8/iot-skills-competition',
+            CURRENT_TIMESTAMP
+        )
+        ON CONFLICT(project_key) DO UPDATE SET
+            display_name = excluded.display_name,
+            repo_url = excluded.repo_url,
+            positioning = excluded.positioning,
+            scale_summary = excluded.scale_summary,
+            updated_at = CURRENT_TIMESTAMP
+        """
+    )
+
+    iot_proj_row = conn.execute("SELECT id FROM resume_evidence_projects WHERE project_key = 'iot-skills-competition'").fetchone()
+    if iot_proj_row:
+        iot_proj_id = iot_proj_row[0]
+        bullets_data = [
+            (iot_proj_id, 1, '工业上位机监控系统研发：使用 Python (PyQt5) 开发工业数据监控上位机；编写协议适配逻辑，实现底层 Modbus 二进制数据流与网络层标准 JSON 协议的双向转换与实时解析。', '机制钩', 'Python (PyQt5) 上位机', '适配工业自动化现场 Modbus 传感器', '高频串口接收卡顿', 'PyQt5 源码工程与 Modbus 驱动', 'supported', 1, '针对工业软件/自动化/上位机岗位'),
+            (iot_proj_id, 2, '工业网关部署与链路打通：负责工业串口服务器（USR-TCP232）现场部署与局域网 IP/端口划分（打通端口 1884/502），配置静态路由与通信参数调优，打通底层传感器与上位机双向高可靠通信链路。', '工程纪律钩', 'USR-TCP232 串口服务器部署', '打通传感器端到端采集通道', '端口冲突与静态IP配置', '网络拓扑与现场配置文档', 'supported', 1, '针对工控/嵌入式网络岗位'),
+            (iot_proj_id, 3, 'Wireshark 深度抓包与丢包排障：针对通信过程中的偶发网络丢包与报文冲突，运用 Wireshark 抓包定位参数冲突与 Keepalive 超时；设计指数退避重试算法（1s 渐进重试至 60s），通信在线率由 85% 提升至 99.2%。', '数字钩+机制钩', 'Wireshark 网络抓包排障', '消除网络偶发拥塞与瞬断', '掉线重连风暴导致网关过载', 'Wireshark 抓包报文与重试算法源码', 'supported', 1, '针对网络通信/数据开发/协议分析岗位'),
+            (iot_proj_id, 4, '多线程通信隔离与异常容错：上位机采用多线程与队列异步解耦数据采集与 UI 渲染，杜绝高频报文导致的界面卡死；配置心跳健康检测与串口自动重连机制，故障自愈恢复时间压缩在 2 秒以内。', '机制钩+数字钩', '多线程异步队列解耦', '保证 UI 渲染与数据流隔离', '界面无响应与线程安全冲突', 'PyQt5 QThread与事件循环源码', 'supported', 1, '针对系统稳定性/高可用架构岗位'),
+            (iot_proj_id, 5, 'Android 原生物联网管控客户端开发：基于 Java 原生研发 Android 移动端应用，采用 MVC 分层架构与自定义仪表盘 UI，实现感知节点实时遥测数据显示、设备异常阈值声光报警与远程继电器控制联动。', '名词钩+机制钩', 'Android Java 原生客户端', '提供现场手持移动端交互能力', '主线程阻塞与界面卡顿', 'Android 源码工程与 UI 布局文件', 'supported', 1, '针对 Android 开发/移动客户端/智能终端岗位'),
+            (iot_proj_id, 6, '多感知终端数据统一采集与解析：编写多传感器采集模块，完成温湿度、光照、水浸、RFID 射频与 UWB 定位等异构传感器数据帧的高效解析与时序对齐，配置线程池与环形缓冲区防止移动端 ANR。', '机制钩', '异构传感器数据统一解析', '支持 5+ 种感知终端并发接入', '高频广播导致内存抖动与 ANR', '传感器通信驱动与测试用例', 'supported', 1, '针对嵌入式终端应用/传感器集成岗位'),
+            (iot_proj_id, 7, '云端与本地网关双通道通信封装：封装 HTTP RESTful 与 Socket 双通信通道，对接新大陆物联网云平台 API 实现传感器实时数据上报；设计本地 SQLite 离线弱网数据缓存与补偿机制，补偿后数据丢失率压降至 0。', '数字钩+反常细节钩', '云平台 API 对接与弱网补偿', '保障移动端在现场弱网下的数据完整性', '现场无线信号差导致数据丢失', '云平台接口通信类与弱网测试记录', 'supported', 1, '针对端云协同/物联网全栈岗位'),
+            (iot_proj_id, 8, '现场通信故障联合攻坚与团队斩获省级荣誉：在紧张赛制环境下排查 Android 端、硬件网关与感知终端间的通信冲突，以毫秒级响应调优通信波特率与数据帧间隔，保障端到端全链路高可靠联调，团队荣获省级技能大赛奖项。', '工程纪律钩', '现场多设备联合排障与协同攻坚', '跨设备通信对齐与综合实操', '软硬件接口规范不一致', '技能大赛获奖证书与现场工程配置', 'supported', 1, '针对综合工程素养/团队攻坚')
+        ]
+        conn.executemany(
+            """
+            INSERT INTO resume_evidence_bullets (
+                project_id, sort_order, bullet_text, hook_type, what_it_is, why_this_choice, pitfall_detail, evidence_chain, evidence_status, is_public_verifiable, notes
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(project_id, sort_order) DO UPDATE SET
+                bullet_text = excluded.bullet_text,
+                hook_type = excluded.hook_type,
+                what_it_is = excluded.what_it_is,
+                why_this_choice = excluded.why_this_choice,
+                pitfall_detail = excluded.pitfall_detail,
+                evidence_chain = excluded.evidence_chain,
+                evidence_status = excluded.evidence_status,
+                is_public_verifiable = excluded.is_public_verifiable,
+                notes = excluded.notes,
+                updated_at = CURRENT_TIMESTAMP
+            """,
+            bullets_data
         )
 
     conn.execute(
