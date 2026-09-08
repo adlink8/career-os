@@ -463,13 +463,13 @@ RESUMES = [
         "key": "whalecloud",
         "company_name": "浩鲸科技",
         "role_slug": "whalecloud-ai-delivery",
-        "role_intent": "AI应用开发 / 交付工程师<br>2027届统招本科",
+        "role_intent": "AI应用开发工程师<br>2027届统招本科",
         "html_filename": "cv-whalecloud-ai-delivery.html",
-        "pdf_filename": "李硕研-浩鲸科技-AI应用与交付工程师-常州大学-2027届.pdf",
+        "pdf_filename": "李硕研-浩鲸科技-AI应用开发工程师-常州大学-2027届.pdf",
         "png_filename": "cv-whalecloud-balanced-v3.png",
         "canonical_filename": "whalecloud__ai-delivery__cv__v1.0__ready.pdf",
         "skills": [
-            "▪ <b>AI Native 与智能体工程：</b>熟练运用 Codex、Claude Code、Gemini 等工具；掌握 RAG 知识检索、向量切片对齐、Agent 编排与大模型 API 接口封装。",
+            "▪ <b>AI Native 与大模型微调工程：</b>掌握 RAG 检索分层、向量切片对齐与 Agent 编排；掌握基于 PEFT/QLoRA 的大模型轻量微调与 Adapter 适配，具备大模型 API 封装与落地能力。",
             "▪ <b>系统交付与网络通信：</b>掌握 Linux/Ubuntu 系统操作与运维、TCP/IP 协议栈、局域网 IP/VLAN 划分与跨设备通信连通性调试。",
             "▪ <b>容器化部署与网关运维：</b>掌握 Docker 容器化部署、端口映射与鉴权配置，具备生产环境系统交付、服务迁移与系统日志诊断能力。",
             "▪ <b>Python 数据与自动化脚本：</b>掌握 Python 自动化脚本编写、Pytest 自动化测试套件与日常系统故障自动化巡检脚本开发。",
@@ -481,16 +481,16 @@ RESUMES = [
             "<b>工程作风与规范：</b>具备出色的学习领悟能力与抗压沟通素养，崇尚“标准交付、规则先行与问题闭环”，能够快速融入跨团队协同与现场交付保障。"
         ],
         "projects": """
-    <!-- 1. NovelMind 大模型检索与 AI Native 工程 (4 bullets) -->
+    <!-- 1. NovelMind 大模型应用与智能体组件工程 (4 bullets) -->
     <div class="proj-title-row">
-      <span>1. NovelMind 大模型 RAG 分层检索系统</span>
+      <span>1. NovelMind 数字化大模型应用与智能体组件系统</span>
       <a class="proj-github" href="https://github.com/adlink8/novel-mind">github.com/adlink8/novel-mind</a>
     </div>
-    <div class="proj-duty">Python / FastAPI / ChromaDB / Docker | <b>角色职责：</b>AI Native 架构探索、大模型 API 调用与 RAG 检索分层服务搭建</div>
-    <div class="bullet-item"><b>AI Native 分层建模与 RAG 架构落地：</b>针对长文本问答场景，构建 L0~L4 五级语义分层切片模型，结合 ChromaDB 向量数据库实现高精准语义检索匹配，将特定长文本场景漏检率降低至 0，有效抑制大模型上下文错乱与回答幻觉。</div>
-    <div class="bullet-item"><b>大模型服务 API 封装与增量计算提效：</b>使用 FastAPI 将核心检索与智能体能力封装为高可用 REST 接口，引入基于 Checksum 签名的增量计算缓存机制，使未变更模块复用率达 82%，显著提升接口并发吞吐性能与周转效率。</div>
+    <div class="proj-duty">Python / FastAPI / ChromaDB / Docker | <b>角色职责：</b>数字化大模型应用与智能体组件开发、模型微调选型与系统落地</div>
+    <div class="bullet-item"><b>AI Native 分层建模与 RAG 系统落地：</b>针对数字化长文本问答业务场景，构建 L0~L4 五级语义分层切片模型，结合 ChromaDB 向量数据库实现高精准语义检索匹配，将特定场景漏检率降低至 0，有效抑制大模型回答幻觉。</div>
+    <div class="bullet-item"><b>大模型服务 API 封装与增量计算提效：</b>使用 FastAPI 将核心检索与智能体组件封装为高可用 REST 接口，引入基于 Checksum 签名的增量计算缓存机制，使未变更模块复用率达 82%，显著提升接口并发吞吐性能与周转效率。</div>
     <div class="bullet-item"><b>自动化质检门禁与持续交付全流程保障：</b>编写全套自动化回归测试脚本并接入持续交付流程，基准回归测试执行耗时从 4.5 分钟缩减至 1.8 分钟（耗时缩短 60%），确保接口参数迭代与检索策略调优时系统整体零性能退化。</div>
-    <div class="bullet-item"><b>Playwright 端到端质量验证矩阵构建：</b>构建 Playwright E2E 自动化测试用例，严格隔离前端 Mock 与真实交付环境职责边界，将 CI 偶发误报率（Flaky Rate）压降至 0%，全面提升交付系统与智能体交互的鲁棒性。</div>
+    <div class="bullet-item"><b>业务场景模型微调 (QLoRA) 选型与系统落地 PoC：</b>针对业务场景特定问答格式对齐瓶颈，在实验分支主导 QLoRA 轻量模型微调预研；通过 PEFT 注入 LoRA adapter 仅训练 0.4% 参数，结合 4-bit 量化与梯度检查点将显存峰值压降至 6.8GB，完成单测与选型备忘沉淀。</div>
 
     <!-- 2. 系统交付、网关部署与网络抓包排障 (4 bullets) -->
     <div class="proj-title-row">
@@ -687,18 +687,26 @@ def main():
             
         # 3. Upsert resume_artifact_locations
         rel_path = f"final/{g['pdf_filename']}"
-        existing_loc = cur.execute("SELECT id FROM resume_artifact_locations WHERE artifact_id=?", (art_id,)).fetchone()
+        existing_loc = cur.execute("SELECT id FROM resume_artifact_locations WHERE relative_path=?", (rel_path,)).fetchone()
         if existing_loc:
             cur.execute("""
                 UPDATE resume_artifact_locations SET
-                    artifact_id=?, relative_path=?, original_filename=?, is_current=1, last_seen_at=?
+                    artifact_id=?, original_filename=?, is_current=1, last_seen_at=?
                 WHERE id=?
-            """, (art_id, rel_path, g["pdf_filename"], now_iso, existing_loc["id"]))
+            """, (art_id, g["pdf_filename"], now_iso, existing_loc["id"]))
         else:
-            cur.execute("""
-                INSERT INTO resume_artifact_locations (artifact_id, relative_path, original_filename, is_current, first_seen_at, last_seen_at)
-                VALUES (?, ?, ?, 1, ?, ?)
-            """, (art_id, rel_path, g["pdf_filename"], now_iso, now_iso))
+            existing_by_art = cur.execute("SELECT id FROM resume_artifact_locations WHERE artifact_id=?", (art_id,)).fetchone()
+            if existing_by_art:
+                cur.execute("""
+                    UPDATE resume_artifact_locations SET
+                        relative_path=?, original_filename=?, is_current=1, last_seen_at=?
+                    WHERE id=?
+                """, (rel_path, g["pdf_filename"], now_iso, existing_by_art["id"]))
+            else:
+                cur.execute("""
+                    INSERT INTO resume_artifact_locations (artifact_id, relative_path, original_filename, is_current, first_seen_at, last_seen_at)
+                    VALUES (?, ?, ?, 1, ?, ?)
+                """, (art_id, rel_path, g["pdf_filename"], now_iso, now_iso))
             
         print(f"Registered {g['key']} in DB: version_id={vid}, artifact_id={art_id}")
 
