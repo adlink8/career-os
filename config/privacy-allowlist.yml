@@ -1,0 +1,14 @@
+# 隐私扫描白名单（DATA-03 例外登记）
+# 机制：
+#   paths     - 路径前缀放行，整文件豁免。登记必须附理由（行尾 # 注释）。
+#   line_hash - 单行 sha1 前 10 位豁免，防止测试画像误伤。生成方式：
+#               python -c "import hashlib;print(hashlib.sha1('该行文本'.strip().encode()).hexdigest()[:10])"
+# 原则：白名单是欠账清单，每条都要有清理计划；新增条目需在 commit message 说明理由。
+# 注意：scripts/sync_resume_registry.py 有意不在白名单——工作区版本含真实投递记录，必须拦截。
+
+paths:
+  - scripts/ats-engine-smoke.py          # 存量：测试画像 fixture（OPS_RESUME 含真名），计划换假名后移除
+  - scripts/build_aispeech_pdf.py        # ⚠️ 存量已公开：真名/真手机/真邮箱在 HEAD（已在 GitHub 公开），待用户决策脱敏或迁 data/cv/
+
+line_hash:
+  # —— 无 ——

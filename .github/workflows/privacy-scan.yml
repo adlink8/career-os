@@ -1,0 +1,29 @@
+name: privacy-scan
+
+# DATA-03 隐私防线：所有 PR 与 main 直推必须通过隐私扫描
+# 扫描与 base 分支的差异文件，命中隐私内容（真名/手机号/身份证/个人邮箱/简历路径）即失败
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  privacy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 需要完整历史以 diff base...HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 隐私内容扫描
+        env:
+          PRIVACY_SCAN_BASE: ${{ github.base_ref != '' && format('origin/{0}', github.base_ref) || 'origin/main' }}
+        run: python bin/scan_privacy.py --ci

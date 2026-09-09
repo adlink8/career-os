@@ -1,0 +1,19 @@
+#!/bin/sh
+# pre-commit 隐私扫描（DATA-03 防线）
+# 启用方式（仓库根目录执行一次）：
+#   git config core.hooksPath .githooks
+# 扫描暂存区文件，命中隐私内容则拒绝提交。紧急绕过：git commit --no-verify（不建议）。
+
+PRIVACY_SCAN="python bin/scan_privacy.py"
+
+# 优先用仓库 venv 的 python
+if [ -x "C:/Users/li/.workbuddy/binaries/python/versions/3.13.12/python.exe" ]; then
+  PRIVACY_SCAN="C:/Users/li/.workbuddy/binaries/python/versions/3.13.12/python.exe bin/scan_privacy.py"
+fi
+
+$PRIVACY_SCAN || {
+  echo ""
+  echo "❌ 提交被拒绝：暂存区包含隐私内容（详见上方清单）。"
+  echo "   清理后重新 git add；确属误报请在 config/privacy-allowlist.yml 登记豁免（附理由）。"
+  exit 1
+}
