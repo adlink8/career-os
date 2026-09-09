@@ -15,6 +15,8 @@ trigger:
 
 # 投前三方多 Agent 联合会审 (Career Multi-Agent Evaluation)
 
+走单岗闭环时由 `career-apply-orchestrator` 派发本 Skill 的三个 prompt；主会话禁止直接会审。独立「只审这一份」仍可按下方流程。
+
 把每一次正式投递当成一次“防空演练”。坚决杜绝“拿一份大杂烩简历硬塞多个岗位”的虚假勤奋海投。
 
 ## 核心设计理念：三权分立，一票否决
