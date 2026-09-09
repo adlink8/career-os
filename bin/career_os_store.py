@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 20
+SCHEMA_VERSION = 21
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -1287,6 +1287,63 @@ body {
             """,
             bullets_data
         )
+
+    # v21: 单岗投递编排器。阶段与分数以本表为准；LLM 对话不当真相。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS job_apply_runs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id INTEGER,
+            context_id INTEGER,
+            job_ad_id TEXT NOT NULL DEFAULT '',
+            stage TEXT NOT NULL DEFAULT 'captured',
+            iteration INTEGER NOT NULL DEFAULT 1,
+            resume_path TEXT NOT NULL DEFAULT '',
+            resume_version_id INTEGER,
+            ats_score REAL,
+            ats_verdict TEXT NOT NULL DEFAULT '',
+            ats_json_path TEXT NOT NULL DEFAULT '',
+            review_score REAL,
+            review_verdict TEXT NOT NULL DEFAULT '',
+            hr_json_path TEXT NOT NULL DEFAULT '',
+            tech_json_path TEXT NOT NULL DEFAULT '',
+            ats_llm_json_path TEXT NOT NULL DEFAULT '',
+            bounce_json_path TEXT NOT NULL DEFAULT '',
+            autofill_json_path TEXT NOT NULL DEFAULT '',
+            context_json_path TEXT NOT NULL DEFAULT '',
+            application_id INTEGER,
+            notes TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY (context_id) REFERENCES job_page_contexts(id)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_job_apply_runs_stage ON job_apply_runs(stage, updated_at)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_job_apply_runs_job_ad ON job_apply_runs(job_ad_id, id)"
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS job_apply_run_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            run_id INTEGER NOT NULL,
+            stage TEXT NOT NULL,
+            actor TEXT NOT NULL,
+            artifact_path TEXT NOT NULL DEFAULT '',
+            input_sha256 TEXT NOT NULL DEFAULT '',
+            notes TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (run_id) REFERENCES job_apply_runs(id)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_job_apply_run_events_run "
+        "ON job_apply_run_events(run_id, id)"
+    )
 
     conn.execute(
         "INSERT OR IGNORE INTO career_os_schema_migrations(version, applied_at) VALUES (?, ?)",

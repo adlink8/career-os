@@ -78,6 +78,7 @@ data/job_discovery/screenshots/
 data/job_discovery/captures/*.json
 data/job_discovery/logs/*.jsonl
 data/job_discovery/logs/*.json
+data/job_discovery/runs/*/
 
 # 临时调试与环境辅助目录
 scratch/
