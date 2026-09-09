@@ -46,6 +46,15 @@ skills:
     - "{{技能 3}}"
   learning:      # 学习中:知道是什么 + 在学 + 还没独立用过
     - "{{技能 4}}"
+  # 技能-项目双向呼应映射（规则 skill_project_echo，2026-09-09）：
+  # (1) 技能区每项必须能在 project_backing 找到项目佐证，无佐证不上简历（防空中楼阁）
+  # (2) 项目 bullet 必须显式体现技能区列出的技能点（写出框架/协议/工具名）
+  project_backing:
+    "{{项目 key 1}}":    # 对应 resume_evidence_projects.project_key
+      - "{{该项目 bullet 中实际体现的技能点}}"
+      - "{{技能点 2}}"
+    "{{项目 key 2}}":
+      - "{{技能点}}"
 
 projects:
   - name: "{{项目名}}"
