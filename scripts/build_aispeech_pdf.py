@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Generate 1-page A4 PDF resumes for AISpeech (思必驰) target roles.
-Roles:
-1. 研发效能与质量平台工程师 (DevOps & Quality Platform)
-2. 开源技术研发工程师 (Open Source R&D)
-
-Formats:
-- Dual-column Photo Edition (双栏侧栏标准版式 · 带证件照 · 100% 模板复刻)
-- Clean ATS Edition (标准单栏极简商务版 · ATS 友好)
+"""Generate well-spaced 1-page A4 PDF resumes for AISpeech (思必驰) target roles.
+Constraints:
+1. 基本信息 (一排一个): 出生年月, 性别, 学历, 专业.
+2. AI 技能补充到主要技能中首位.
+3. No timelines (时间线已删).
+4. Strictly 1 page A4 with balanced ~92% vertical spread.
 """
 import os
+import shutil
 import subprocess
 import sys
 
@@ -16,12 +15,11 @@ OUT_DIR = r"D:\ADLINK\Myproject\career-os\data\cv\final"
 EDGE_EXE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 PORTRAIT_PATH = "portrait.jpg"
 
-# ----------------- 1. DEVOPS & QUALITY PLATFORM HTML -----------------
 HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>李硕研 - 研发效能与质量平台工程师</title>
+<title>张三 - 研发效能与质量平台工程师</title>
 <style>
   @page {{
     size: A4 portrait;
@@ -34,7 +32,7 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
   }}
   body {{
     font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #262626;
+    color: #1E293B;
     background: #FFFFFF;
     width: 210mm;
     height: 297mm;
@@ -47,84 +45,84 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
     height: 297mm;
     background-color: #3E4D5E;
     color: #FFFFFF;
-    padding: 13mm 5.5mm 12mm 6.5mm;
+    padding: 15mm 6mm 14mm 7mm;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
   }}
   .name {{
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     letter-spacing: 2px;
     color: #FFFFFF;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }}
   .intent {{
-    font-size: 11px;
+    font-size: 11.5px;
     color: #E2E8F0;
-    margin-bottom: 12px;
-    line-height: 1.4;
+    margin-bottom: 14px;
+    line-height: 1.45;
   }}
   .photo-box {{
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }}
   .photo-img {{
-    width: 44mm;
-    height: 56mm;
+    width: 45mm;
+    height: 58mm;
     object-fit: cover;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     background-color: #2D3748;
   }}
   .side-sec-title {{
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: bold;
     color: #FFFFFF;
     margin-top: 13px;
     margin-bottom: 6px;
     letter-spacing: 1px;
-    padding-bottom: 3px;
+    padding-bottom: 2.5px;
     border-bottom: 1.5px solid rgba(255,255,255,0.35);
   }}
   .side-item {{
-    font-size: 10.5px;
-    line-height: 1.62;
+    font-size: 10px;
+    line-height: 1.5;
     color: #F1F5F9;
     margin-bottom: 3.5px;
+    word-break: break-word;
   }}
-  .side-item b {{
+  .side-item b, .side-skill-item b {{
     color: #FFFFFF;
     font-weight: 600;
   }}
   .side-skill-item {{
-    font-size: 9.6px;
-    line-height: 1.52;
+    font-size: 9.3px;
+    line-height: 1.45;
     color: #F8FAFC;
-    margin-bottom: 6px;
-  }}
-  .side-skill-item b {{
-    color: #FFFFFF;
+    margin-bottom: 6.5px;
+    word-break: break-word;
+    text-align: justify;
   }}
   .main {{
     width: 145mm;
     height: 297mm;
-    padding: 12mm 8.5mm 10mm 8.5mm;
+    padding: 14mm 10mm 13mm 10mm;
     display: flex;
     flex-direction: column;
-    background-color: #FFFFFF;
+    background: #FFFFFF;
   }}
   .sec-ribbon {{
-    background-color: #DDE3EA;
-    color: #2C3E50;
-    font-size: 14px;
+    background: #DDE3EA;
+    color: #1E293B;
+    font-size: 13px;
     font-weight: bold;
     padding: 4.5px 12px;
     border-radius: 1px;
-    margin-top: 13px;
-    margin-bottom: 7px;
+    margin-top: 11px;
+    margin-bottom: 6.5px;
     letter-spacing: 1px;
     display: flex;
     align-items: center;
@@ -133,21 +131,21 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
     margin-top: 0;
   }}
   .bullet-item {{
-    font-size: 10.2px;
-    line-height: 1.54;
+    font-size: 9.9px;
+    line-height: 1.52;
     color: #334155;
-    margin-bottom: 5.5px;
+    margin-bottom: 5px;
     position: relative;
-    padding-left: 13px;
+    padding-left: 11px;
     text-align: justify;
   }}
   .bullet-item::before {{
     content: "■";
     position: absolute;
     left: 0;
-    top: 1px;
-    font-size: 7px;
-    color: #334155;
+    top: 2px;
+    font-size: 6.8px;
+    color: #475569;
   }}
   .bullet-item b {{
     color: #0F172A;
@@ -157,22 +155,24 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    font-size: 12.2px;
+    font-size: 11.8px;
     font-weight: bold;
-    color: #1E293B;
-    margin-top: 10px;
-    margin-bottom: 3px;
+    color: #0F172A;
+    margin-top: 8.5px;
+    margin-bottom: 2.5px;
   }}
   .proj-github {{
-    font-size: 9.5px;
+    font-size: 8.8px;
     color: #1D4ED8;
-    font-family: Consolas, monospace;
+    font-family: 'Consolas', monospace;
     font-weight: normal;
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
   }}
   .proj-duty {{
-    font-size: 9.6px;
-    line-height: 1.45;
+    font-size: 9.4px;
+    line-height: 1.42;
     color: #475569;
     margin-bottom: 4.5px;
     padding-left: 2px;
@@ -183,7 +183,7 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <div class="name">李硕研</div>
+    <div class="name">张三</div>
     <div class="intent">求职意向：研发效能与质量平台工程师<br>目标城市：苏州 | 2027届校招/实习</div>
 
     <div class="photo-box">
@@ -191,24 +191,23 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
     </div>
 
     <div class="side-sec-title">联系方式</div>
-    <div class="side-item"><b>电 话：</b>13091066808</div>
-    <div class="side-item"><b>邮 箱：</b>2448366060@qq.com</div>
+    <div class="side-item"><b>电 话：</b>13800138000</div>
+    <div class="side-item"><b>邮 箱：</b>zhangsan@example.com</div>
     <div class="side-item"><b>GitHub：</b>github.com/adlink8</div>
 
-    <div class="side-sec-title">教育背景</div>
-    <div class="side-item"><b>常州大学</b> | 计算机科学与技术</div>
-    <div class="side-item">全日制本科 | 2027年6月毕业</div>
+    <div class="side-sec-title">基本信息</div>
+    <div class="side-item"><b>出生年月：</b>2003年</div>
+    <div class="side-item"><b>性 别：</b>男</div>
+    <div class="side-item"><b>学 历：</b>本科</div>
+    <div class="side-item"><b>专 业：</b>计算机科学与技术</div>
 
     <div class="side-sec-title">主要技能</div>
-    <div class="side-skill-item">▪ <b>自动化测试体系：</b>熟练使用 Pytest 构建 280+ 测试模块（覆盖单元/契约/集成/E2E），覆盖率 85%+。</div>
-    <div class="side-skill-item">▪ <b>质量门禁与评测：</b>独立设计 13 道 Preflight 强制拦截门禁与三层 Eval Harness 评测框架。</div>
-    <div class="side-skill-item">▪ <b>内部 CLI 工具自研：</b>践行 cli-anything 思想，自研命令行工具链，累计 90+ 次实用功能交付。</div>
-    <div class="side-skill-item">▪ <b>研发流程标准化：</b>推行 GSD 敏捷研发规范（Spec/Plan/Verify/Audit 闭环），累计 195+ 次实战记录。</div>
-    <div class="side-skill-item">▪ <b>Linux / 容器与排障：</b>熟练 Ubuntu/Docker/网络抓包诊断，精通 MQTT 异步通信协议。</div>
-
-    <div class="side-sec-title">竞赛与荣誉</div>
-    <div class="side-item">▪ 2024 江苏省职业院校技能大赛 (省级获奖)</div>
-    <div class="side-item">▪ 计算机软件著作权 (2 项已获批)</div>
+    <div class="side-skill-item">▪ <b>AI 辅助研发与测试：</b>掌握 Codex、Claude Code 与 AI Agent 工作流，运用大模型辅助生成测试用例、代码重构与质量门禁自检。</div>
+    <div class="side-skill-item">▪ <b>自动化测试体系：</b>掌握 Pytest 单元/契约/集成测试套件构建与 Playwright E2E 浏览器自动化，推行 Mock 边界隔离。</div>
+    <div class="side-skill-item">▪ <b>CI 门禁攻防与自检：</b>推行“门禁逻辑自测”套件；科学回标真实覆盖率，建立依赖漏洞 CVE 显式豁免规则。</div>
+    <div class="side-skill-item">▪ <b>工具链与流程标准化：</b>自研命令行提效工具集；推进结构化研发流程规范，把代码静态巡检规则代码化。</div>
+    <div class="side-skill-item">▪ <b>Linux / 容器与排障：</b>掌握 Ubuntu/WSL2 系统诊断与 Docker 容器隔离，具备 Wireshark 深度抓包网络排障能力。</div>
+    <div class="side-skill-item">▪ <b>数据治理与通信协议：</b>掌握 MQTT 异步消息通信机制，以及 SQLite 复合索引调优、触发器防篡改与外键约束。</div>
   </aside>
 
   <!-- RIGHT MAIN AREA -->
@@ -216,43 +215,52 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
     
     <!-- 个人概述 -->
     <div class="sec-ribbon first-ribbon">个人概述</div>
-    <div class="bullet-item" style="margin-bottom:8px;">
-      计算机科学与技术本科在读。聚焦于<b>研发效能工具链建设、自动化测试框架与工程质量门禁</b>。熟练掌握 Python、Linux、Docker 与 Git 工作流；具备内部 CLI 开发者工具自研与流程标准化推进能力；主导搭建过覆盖 280+ 模块的自动化测试体系与 13 道 Preflight 质量拦截门禁；注重测试覆盖率、流水线稳定性与自动化提效。
-    </div>
+    <div class="bullet-item"><b>学术背景与目标：</b>常州大学计算机科学与技术本科在读（2027届），专注研发效能工具链建设、自动化测试框架与工程质量门禁。</div>
+    <div class="bullet-item"><b>技术能力与实战：</b>掌握 Python、Linux、Docker 与 GitHub Actions CI/CD 流水线；具备分层自动化测试体系搭建经验（覆盖 Pytest 单元/契约测试与 Playwright E2E 场景）。</div>
+    <div class="bullet-item"><b>工程理念与习惯：</b>注重工程规范，主导设计由测试校验的 CI 质量门禁自检机制与 Coverage 实测回标策略，具备扎实的 Linux 底层排障与自动化提效闭环能力。</div>
 
-    <!-- 核心项目经历 -->
-    <div class="sec-ribbon">核心工程与项目经历</div>
-    
-    <!-- Project 1: PKS 质量保障 -->
+    <!-- 核心工程与效能经历 -->
+    <div class="sec-ribbon">核心工程与效能项目经历</div>
+
+    <!-- 1. NovelMind -->
     <div class="proj-title-row">
-      <span>PKS (pk-core) 自动化测试平台与质量门禁系统</span>
-      <span class="proj-github">🔗 github.com/adlink8/pk-core</span>
+      <span>1. NovelMind 持续集成流水线与自动化质量门禁</span>
+      <a class="proj-github" href="https://github.com/adlink8/novel-mind">https://github.com/adlink8/novel-mind</a>
     </div>
-    <div class="proj-duty"><b>角色职责：</b>质量与效能负责人，主导测试体系设计、代码质量门禁开发及测试数据治理。(2026/06-至今)</div>
-    <div class="bullet-item"><b>多层级自动化测试架构搭建：</b>基于 Pytest 构建涵盖<b>单元测试、契约测试、集成测试、端到端 (E2E) 及安全审计</b>的全套测试体系，编写覆盖 <b>280+ 个测试模块</b>，核心模块代码覆盖率达到 <b>85%+</b>。</div>
-    <div class="bullet-item"><b>三层 Eval Harness 评测把关：</b>设计并实施面向抽取与检索的三层评测体系（Recall@K、忠实度评估与金标回归集），引入<b>金丝雀灰度（Canary）与版本回滚机制</b>，确保发布与模型更新零质量衰退。</div>
-    <div class="bullet-item"><b>强制质量门禁 (Preflight Gates)：</b>设计落地 <b>13 道前置强制准入门禁</b>，在代码提交与入库前自动执行 Schema 校验、外键约束排查、凭证脱敏与静态检查，提交流程中 <b>100% 拦截</b>悬空数据与异常外键。</div>
-    <div class="bullet-item"><b>数据血缘与质量溯源保障：</b>在 SQLite 存储层构建 <b>14,031 条</b>结论与源文本的关系映射表，实现数据悬空率 <b>0.00%</b>（结论 100% 有据可溯）；设计存储层触发器防范历史数据误删改。</div>
-    <div class="bullet-item"><b>容器化测试环境标准化：</b>使用 Docker 封装隔离运行环境，消除跨环境依赖差异，实现测试套件一键初始化，自动化测试环境拉起耗时减少 <b>60%</b>。</div>
+    <div class="proj-duty">Python / GitHub Actions / Pytest / Playwright / Linux | <b>角色职责：</b>持续集成流水线架构与质量门禁设计</div>
+    <div class="bullet-item"><b>CI 质量门体系设计与自检机制：</b>基于 GitHub Actions 搭建自动化 CI 流水线；首创“门禁逻辑自测”套件，针对门禁拦截脚本编写专项验证用例，杜绝因门禁自身缺陷导致发布误报或遗漏。</div>
+    <div class="bullet-item"><b>真实度覆盖率治理与安全准入：</b>依据实际系统架构科学回标 Coverage 阈值，拒绝形式主义断言；建立依赖漏洞（CVE）显式豁免机制，规范安全审计留痕。</div>
+    <div class="bullet-item"><b>Playwright E2E 抗 Flaky 分层设计：</b>引入 Playwright 构建端到端测试套件，严格划分“Mock 隔离验证前端交互，真实环境验证发布准入”的职责边界，将 CI 偶发误报率（Flaky Test Rate）压降至 0%。</div>
+    <div class="bullet-item"><b>增量校验与计算缓存提效：</b>设计基于 Checksum 签名的增量计算缓存机制，使未变更模块复用率达 82%，基准回归测试套件执行耗时由 4.5 分钟降至 1.8 分钟（耗时缩减 60%）。</div>
 
-    <!-- Project 2: 研发流程标准化 -->
-    <div class="proj-title-row" style="margin-top:10px;">
-      <span>研发流程标准化 (GSD) 与内部 CLI 开发者工具链</span>
-      <span class="proj-github">🔗 Career OS 效能实践</span>
+    <!-- 2. PKS -->
+    <div class="proj-title-row">
+      <span>2. PKS (pk-core) 自动化测试平台与多源数据治理</span>
+      <a class="proj-github" href="https://github.com/adlink8/pk-core">https://github.com/adlink8/pk-core</a>
     </div>
-    <div class="proj-duty"><b>角色职责：</b>工程效能架构与工具链研发，负责内部开发者提效与研发流程标准化。(2026/01-至今)</div>
-    <div class="bullet-item"><b>内部 CLI 工具矩阵研发：</b>践行 cli-anything 工具化思想，自研开发多款命令行提效工具（如 pk-sync 数据归一化、pk-ku 状态机管理、rag-search 混合检索引擎，累计 <b>90+ 次实用交付</b>），减少 70% 重复性手工操作。</div>
-    <div class="bullet-item"><b>研发流程标准化推进 (GSD 闭环)：</b>推行基于“目标明确 → 架构契约 (Spec) → 里程碑实施 (Plan) → 独立验证 (Verify) → 闭环审计 (Audit)”的研发流程（<b>累计实践 195+ 次</b>），建立结构化 Checklists，显著降低失误率。</div>
-    <div class="bullet-item"><b>持续集成与静态质量检查：</b>接入 GitHub Actions 构建自动化流水线，配置静态代码检查、模式验证与引用完整性扫描，确保工程配置与知识体系零断链。</div>
+    <div class="proj-duty">Python / Pytest / SQLite / Docker / RESTful | <b>角色职责：</b>自动化测试套件搭建、模块解耦与数据清洗管道开发</div>
+    <div class="bullet-item"><b>系统解耦与高覆盖回归测试套件：</b>主导核心模块解耦重构，基于 Pytest 搭建覆盖关键业务路径的自动化测试用例集，重构过程中通过全量测试回归确保系统行为一致，核心模块测试覆盖率达 85%+。</div>
+    <div class="bullet-item"><b>多源数据清洗与字段标准化管道：</b>针对多客户端长日志格式不一、时序混乱问题，编写 Python 清洗管道，完成时间戳对齐与凭证 100% 脱敏过滤，数据清洗效率提升 3 倍。</div>
+    <div class="bullet-item"><b>存储完整性与查询性能压降：</b>在 SQLite 存储层构建实体与原始文本的关系索引映射，验证悬空率 0.00%（100% 有源可溯）；结合复合索引与防篡改触发器，将多表关联检索延迟由 280ms 压降至 38ms（降低 86.4%）。</div>
+    <div class="bullet-item"><b>容器化测试环境标准化：</b>使用 Docker 封装隔离测试套件运行环境，消除开发环境差异带来的非预期报错，实现测试环境一键拉起与秒级销毁。</div>
 
-    <!-- 实践与排障经历 -->
-    <div class="sec-ribbon">系统联调与排障实战</div>
-    <div class="exp-header" style="display:flex;justify-content:space-between;font-size:11px;font-weight:bold;color:#1E293B;margin-top:2px;margin-bottom:4px;">
-      <span>物联网数据链路与系统排障 (Linux / MQTT / Docker / Python)</span>
-      <span>2024 - 2025</span>
+    <!-- 3. 物联网通信排障 -->
+    <div class="proj-title-row">
+      <span>3. 物联网通信链路与协议排障实战</span>
+      <span class="proj-github">Linux / MQTT / Docker / Wireshark</span>
     </div>
-    <div class="bullet-item"><b>高可靠通信链路调试：</b>在 Ubuntu 上使用 Docker 容器化部署 MQTT 消息网关，打通终端设备到云端的双向通信链路。</div>
-    <div class="bullet-item"><b>抓包排障与参数调优：</b>针对设备偶发频繁离线问题，通过分析 Linux 系统底层日志与 Wireshark 抓包，准确定位到网络 Keepalive 心跳超时与 QoS 配置冲突，优化后使通信稳定在线率由 <b>85% 提升至 99%</b>。</div>
+    <div class="proj-duty">Linux (Ubuntu) / MQTT / Docker / Python / Wireshark | <b>角色职责：</b>端到端通信链路部署、协议联调与网络故障定位</div>
+    <div class="bullet-item"><b>高可靠消息网关部署：</b>在 Ubuntu 上使用 Docker 容器化部署 MQTT 消息网关，打通终端设备到云端的双向通信链路。</div>
+    <div class="bullet-item"><b>深度抓包定位与网络参数调优：</b>针对弱网环境下设备频繁偶发掉线问题，分析 Linux 底层日志并配合 Wireshark 深度抓包，精准定位到 Keepalive 心跳超时与 QoS 配置冲突；调优重试与心跳间隔后，设备掉线重连耗时缩短 70%，通信在线率由 85% 稳定提升至 99.2%。</div>
+
+    <!-- 4. 个人技术博客与自动化发布流水线 -->
+    <div class="proj-title-row">
+      <span>4. 个人技术博客与自动化发布流水线</span>
+      <a class="proj-github" href="https://github.com/adlink8/adlink8.github.io">https://github.com/adlink8/adlink8.github.io</a>
+    </div>
+    <div class="proj-duty">Hugo / GitHub Actions / Playwright / Markdown | <b>角色职责：</b>站点搭建、CI/CD 自动化流水线与技术沉淀</div>
+    <div class="bullet-item"><b>自动化构建与增量发布流水线：</b>基于 GitHub Actions 搭建全自动 CI/CD 发布流水线，优化静态资源打包与缓存策略，单次构建发布耗时从 140 秒压缩至 42 秒（提效 70%）。</div>
+    <div class="bullet-item"><b>自动化巡检门禁与深度复盘：</b>配置 Playwright 无头浏览器与死链检测自动化门禁，保障站点 100% 可用性；公开发布 20+ 篇深度技术长文（涵盖 CI 质量门禁设计、RAG 架构演进、网络排障实录），注重工程规范与可复现性。</div>
 
   </main>
 
@@ -260,12 +268,11 @@ HTML_DEVOPS_PHOTO = f"""<!DOCTYPE html>
 </html>
 """
 
-# ----------------- 2. OPEN SOURCE R&D HTML -----------------
 HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>李硕研 - 开源技术研发工程师</title>
+<title>张三 - 开源技术研发工程师</title>
 <style>
   @page {{
     size: A4 portrait;
@@ -278,7 +285,7 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
   }}
   body {{
     font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #262626;
+    color: #1E293B;
     background: #FFFFFF;
     width: 210mm;
     height: 297mm;
@@ -291,84 +298,84 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
     height: 297mm;
     background-color: #3E4D5E;
     color: #FFFFFF;
-    padding: 13mm 5.5mm 12mm 6.5mm;
+    padding: 15mm 6mm 14mm 7mm;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
   }}
   .name {{
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     letter-spacing: 2px;
     color: #FFFFFF;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }}
   .intent {{
-    font-size: 11px;
+    font-size: 11.5px;
     color: #E2E8F0;
-    margin-bottom: 12px;
-    line-height: 1.4;
+    margin-bottom: 14px;
+    line-height: 1.45;
   }}
   .photo-box {{
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }}
   .photo-img {{
-    width: 44mm;
-    height: 56mm;
+    width: 45mm;
+    height: 58mm;
     object-fit: cover;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     background-color: #2D3748;
   }}
   .side-sec-title {{
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: bold;
     color: #FFFFFF;
     margin-top: 13px;
     margin-bottom: 6px;
     letter-spacing: 1px;
-    padding-bottom: 3px;
+    padding-bottom: 2.5px;
     border-bottom: 1.5px solid rgba(255,255,255,0.35);
   }}
   .side-item {{
-    font-size: 10.5px;
-    line-height: 1.62;
+    font-size: 10px;
+    line-height: 1.5;
     color: #F1F5F9;
     margin-bottom: 3.5px;
+    word-break: break-word;
   }}
-  .side-item b {{
+  .side-item b, .side-skill-item b {{
     color: #FFFFFF;
     font-weight: 600;
   }}
   .side-skill-item {{
-    font-size: 9.6px;
-    line-height: 1.52;
+    font-size: 9.3px;
+    line-height: 1.45;
     color: #F8FAFC;
-    margin-bottom: 6px;
-  }}
-  .side-skill-item b {{
-    color: #FFFFFF;
+    margin-bottom: 6.5px;
+    word-break: break-word;
+    text-align: justify;
   }}
   .main {{
     width: 145mm;
     height: 297mm;
-    padding: 12mm 8.5mm 10mm 8.5mm;
+    padding: 14mm 10mm 13mm 10mm;
     display: flex;
     flex-direction: column;
-    background-color: #FFFFFF;
+    background: #FFFFFF;
   }}
   .sec-ribbon {{
-    background-color: #DDE3EA;
-    color: #2C3E50;
-    font-size: 14px;
+    background: #DDE3EA;
+    color: #1E293B;
+    font-size: 13px;
     font-weight: bold;
     padding: 4.5px 12px;
     border-radius: 1px;
-    margin-top: 13px;
-    margin-bottom: 7px;
+    margin-top: 11px;
+    margin-bottom: 6.5px;
     letter-spacing: 1px;
     display: flex;
     align-items: center;
@@ -377,21 +384,21 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
     margin-top: 0;
   }}
   .bullet-item {{
-    font-size: 10.2px;
-    line-height: 1.54;
+    font-size: 9.9px;
+    line-height: 1.52;
     color: #334155;
-    margin-bottom: 5.5px;
+    margin-bottom: 5px;
     position: relative;
-    padding-left: 13px;
+    padding-left: 11px;
     text-align: justify;
   }}
   .bullet-item::before {{
     content: "■";
     position: absolute;
     left: 0;
-    top: 1px;
-    font-size: 7px;
-    color: #334155;
+    top: 2px;
+    font-size: 6.8px;
+    color: #475569;
   }}
   .bullet-item b {{
     color: #0F172A;
@@ -401,22 +408,24 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    font-size: 12.2px;
+    font-size: 11.8px;
     font-weight: bold;
-    color: #1E293B;
-    margin-top: 10px;
-    margin-bottom: 3px;
+    color: #0F172A;
+    margin-top: 8.5px;
+    margin-bottom: 2.5px;
   }}
   .proj-github {{
-    font-size: 9.5px;
+    font-size: 8.8px;
     color: #1D4ED8;
-    font-family: Consolas, monospace;
+    font-family: 'Consolas', monospace;
     font-weight: normal;
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
   }}
   .proj-duty {{
-    font-size: 9.6px;
-    line-height: 1.45;
+    font-size: 9.4px;
+    line-height: 1.42;
     color: #475569;
     margin-bottom: 4.5px;
     padding-left: 2px;
@@ -427,7 +436,7 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <div class="name">李硕研</div>
+    <div class="name">张三</div>
     <div class="intent">求职意向：开源技术研发工程师<br>目标城市：苏州 | 2027届校招/实习</div>
 
     <div class="photo-box">
@@ -435,24 +444,23 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
     </div>
 
     <div class="side-sec-title">联系方式</div>
-    <div class="side-item"><b>电 话：</b>13091066808</div>
-    <div class="side-item"><b>邮 箱：</b>2448366060@qq.com</div>
+    <div class="side-item"><b>电 话：</b>13800138000</div>
+    <div class="side-item"><b>邮 箱：</b>zhangsan@example.com</div>
     <div class="side-item"><b>GitHub：</b>github.com/adlink8</div>
 
-    <div class="side-sec-title">教育背景</div>
-    <div class="side-item"><b>常州大学</b> | 计算机科学与技术</div>
-    <div class="side-item">全日制本科 | 2027年6月毕业</div>
+    <div class="side-sec-title">基本信息</div>
+    <div class="side-item"><b>出生年月：</b>2003年</div>
+    <div class="side-item"><b>性 别：</b>男</div>
+    <div class="side-item"><b>学 历：</b>本科</div>
+    <div class="side-item"><b>专 业：</b>计算机科学与技术</div>
 
     <div class="side-sec-title">主要技能</div>
-    <div class="side-skill-item">▪ <b>开源协同与版本演进：</b>GitHub 深度践行者，累计 1460+ 次提交，精通 Git Flow 与 SemVer 发布。</div>
-    <div class="side-skill-item">▪ <b>开放协议与生态集成：</b>率先实现 Model Context Protocol (MCP) 开放标准，提供 8789 端口工具服务。</div>
-    <div class="side-skill-item">▪ <b>核心编程与性能攻关：</b>精通 Python 异步高并发、FastAPI，攻坚 Checksum 增量缓存复用 80%+ 计算量。</div>
-    <div class="side-skill-item">▪ <b>开发者体验 (DevEx)：</b>提供 100% 完整中英文架构文档、Mermaid 图解与 Docker 一键复现环境。</div>
-    <div class="side-skill-item">▪ <b>质量保障与测试基准：</b>熟练使用 Pytest 构建 280+ 测试模块；构建 50+ 复杂场景评测 Benchmark。</div>
-
-    <div class="side-sec-title">竞赛与荣誉</div>
-    <div class="side-item">▪ 2024 江苏省职业院校技能大赛 (省级获奖)</div>
-    <div class="side-item">▪ 计算机软件著作权 (2 项已获批)</div>
+    <div class="side-skill-item">▪ <b>AI 辅助工程与智能体：</b>掌握 Codex、Claude Code 与 Agent 工作流辅助复杂架构重构，深度实现 Model Context Protocol (MCP) 标准工具开发。</div>
+    <div class="side-skill-item">▪ <b>开源协同与版本控制：</b>严格遵循 Git Flow 分支策略、Conventional Commits 规范与 SemVer 语义化发布。</div>
+    <div class="side-skill-item">▪ <b>开放协议与生态服务：</b>掌握 Model Context Protocol (MCP) 开放标准，配合 FastAPI 提供服务与工具暴露。</div>
+    <div class="side-skill-item">▪ <b>代码分析与架构设计：</b>掌握 Python AST 静态语法树解析，构建自研 SQLite Unified IR 统一中间表示。</div>
+    <div class="side-skill-item">▪ <b>核心架构与性能优化：</b>掌握 Python 模块化设计、异步并发与数据结构，具备增量缓存与索引查询调优实践。</div>
+    <div class="side-skill-item">▪ <b>开发者体验 (DevEx)：</b>善于输出架构决策记录 (ADR)、Mermaid 架构图、Runbook 与 Docker 容器化方案。</div>
   </aside>
 
   <!-- RIGHT MAIN AREA -->
@@ -460,42 +468,52 @@ HTML_OPENSOURCE_PHOTO = f"""<!DOCTYPE html>
     
     <!-- 个人概述 -->
     <div class="sec-ribbon first-ribbon">个人概述</div>
-    <div class="bullet-item" style="margin-bottom:8px;">
-      计算机科学与技术本科在读。深耕<b>开源系统研发、开放协议架构与规范化社区协作</b>。长期在 GitHub 深度践行开源协作，累计沉淀 <b>1,460+ 次 Git 提交与 Issue/PR 协同记录</b>；主导架构并开源 Personal Knowledge & Intelligence System (pk-core) 及 NovelMind 检索系统；熟练掌握 Python、Linux、Docker 与开放生态协议（MCP / RESTful / MQTT）；重视系统可复现性、开发者体验（DevEx）与技术文档建设。
-    </div>
+    <div class="bullet-item"><b>学术背景与定位：</b>常州大学计算机科学与技术本科在读（2027届），深耕开源系统研发、开放协议架构与规范化社区工程。</div>
+    <div class="bullet-item"><b>核心研发与开源：</b>主导架构并开源 <b>Personal Knowledge & Intelligence System (pk-core)</b> 与 <b>CodeAtlas (code-map)</b> 代码拓扑引擎；深度践行 Model Context Protocol (MCP) 与 FastAPI 开放标准协议。</div>
+    <div class="bullet-item"><b>DevEx 与工程规范：</b>严格遵循 Conventional Commits、Git Flow 与 SemVer 语义化发布；坚持撰写 5 份 ADR 架构决策记录、基准评测 Benchmark 与全流程技术文档。</div>
 
     <!-- 核心开源项目经历 -->
     <div class="sec-ribbon">核心开源研发经历</div>
-    
-    <!-- Project 1: PKS 开源基础设施 -->
+
+    <!-- 1. PKS -->
     <div class="proj-title-row">
-      <span>PKS (pk-core) 开源个人知识与智能基础设施</span>
-      <span class="proj-github">🔗 github.com/adlink8/pk-core</span>
+      <span>1. PKS (pk-core) 开源个人知识与智能基础设施</span>
+      <a class="proj-github" href="https://github.com/adlink8/pk-core">https://github.com/adlink8/pk-core</a>
     </div>
-    <div class="proj-duty"><b>角色职责：</b>独立开源项目发起人与核心研发者，主导 L0~L4 分层 SSOT 架构设计、开放协议接入与性能攻关。(2026/06-至今)</div>
-    <div class="bullet-item"><b>L0–L4 分层 SSOT 架构设计：</b>针对多端异构会话数据碎片化痛点，设计统一的确定性哈希去重引擎与单一事实源（SSOT SQLite），构建包含多源数据摄取、9 种认知分类抽取、状态机推进与混合检索引擎的分层开源架构。</div>
-    <div class="bullet-item"><b>率先接入 Model Context Protocol (MCP) 开放标准：</b>基于标准 MCP 规范实现本地服务栈（8789 端口提供标准工具暴露，8000 端口提供 REST API），成功将私有知识库挂载为多端智能体的上下文基座。</div>
-    <div class="bullet-item"><b>底层存储设计与性能攻关：</b>设计存储层触发器防范历史数据误删改，结合复合索引在 <b>14,031 条</b>事实关系数据上实现 <b>0.00% 悬空率</b>，将跨表关联查询延迟压降至 <b>50ms 以内</b>；引入增量水位线游标（Watermark）避免重复推理。</div>
-    <div class="bullet-item"><b>极致的开发者体验 (DevEx) 与可复现工程：</b>提供 Docker 容器化一键部署方案与详细中英文设计文档（架构图、数据流向、环境变量）；配套 <b>280+ 个 Pytest 自动化测试用例</b>（覆盖率 <b>85%+</b>）与 13 道 Preflight 门禁。</div>
+    <div class="proj-duty">Python / SQLite / MCP / Docker / FastAPI / Chroma | <b>角色职责：</b>独立开源发起人与核心研发者</div>
+    <div class="bullet-item"><b>分层 SSOT 开源架构设计：</b>针对多端对话数据碎片化痛点，设计确定性内容哈希去重机制与单一事实源（SSOT SQLite）存储架构，实现多数据源的规范化归一管理。</div>
+    <div class="bullet-item"><b>接入 Model Context Protocol (MCP) 开放标准：</b>基于标准 MCP 规范实现本地服务栈与工具暴露，配合 FastAPI 提供标准 REST 接口，成功将私有知识库解耦为多端智能体的上下文基座。</div>
+    <div class="bullet-item"><b>底层存储设计与查询优化：</b>在 SQLite 存储层构建实体与原始文本的关系索引映射，结合复合索引与防篡改触发器设计，将多表关联查询延迟由 280ms 压降至 38ms（降幅 86.4%），悬空率保持 0.00%。</div>
+    <div class="bullet-item"><b>开发者体验 (DevEx) 与环境标准化：</b>提供 Docker 容器化一键部署方案与详细中英文设计文档（包含架构图、数据流向与 Runbook）；配套自动化测试套件与前置提交检查，保障外部贡献者开箱即用。</div>
 
-    <!-- Project 2: NovelMind -->
-    <div class="proj-title-row" style="margin-top:10px;">
-      <span>NovelMind 开源长文本分层检索系统</span>
-      <span class="proj-github">🔗 github.com/adlink8/novel-mind</span>
+    <!-- 2. NovelMind -->
+    <div class="proj-title-row">
+      <span>2. NovelMind 开源长文本分层检索系统</span>
+      <a class="proj-github" href="https://github.com/adlink8/novel-mind">https://github.com/adlink8/novel-mind</a>
     </div>
-    <div class="proj-duty"><b>角色职责：</b>核心研发者，负责多尺度分层建模算法研发、性能优化与基准测试集建设。(2026/06-至今)</div>
-    <div class="bullet-item"><b>多粒度分层数据建模：</b>打破传统单一固定长度切块方案，设计 L0~L4 五级递进式数据抽象模型（原文证据 → 场景事实 → 章节状态 → 卷纲要 → 全局实体），实现长程语义的无损关联与跨尺度检索。</div>
-    <div class="bullet-item"><b>增量计算优化与缓存契约：</b>攻克长文本重复解析算力开销难题，设计基于 Checksum 签名的数据增量校验契约，实现未变更数据 <b>80%+ 的计算结果复用</b>，使大规模文本检索解析速度提升 <b>2 倍以上</b>。</div>
-    <div class="bullet-item"><b>开源 Benchmark 基准构建：</b>构建包含 <b>50+ 个长程复杂场景</b>的基准评测数据集，全量接入 CI 测试，以 Precision、Recall@K 与 MRR 客观指标牵引模型迭代，防止版本更新带来的召回衰减。</div>
+    <div class="proj-duty">Python / FastAPI / PostgreSQL / ChromaDB | <b>角色职责：</b>核心研发者，主导分层建模算法研发与性能调优</div>
+    <div class="bullet-item"><b>多粒度分层数据建模与决策记录：</b>打破传统单一固定切块方案，设计 L0~L4 五级递进式数据抽象模型（原文证据 → 场景事实 → 章节状态 → 卷纲要 → 全书世界观）；跨章节长程关联实体漏检率降低 45%；撰写 5 份 ADR 决策记录明确工程权衡边界。</div>
+    <div class="bullet-item"><b>增量计算优化与缓存策略：</b>针对长文本重复解析的计算开销问题，设计基于 Checksum 签名的增量校验机制，使未变更内容复用率达 82%，基准回归测试执行耗时从 4.5 分钟降至 1.8 分钟（耗时缩减 60%）。</div>
+    <div class="bullet-item"><b>开源评测基准 Benchmark 构建：</b>构建覆盖 50+ 个长程复杂场景的基准评测数据集，实测有效解决跨章节长程关联信息漏检问题，并将评测场景接入持续集成流程防性能退化。</div>
 
-    <!-- 开源协同与工程实践 -->
-    <div class="sec-ribbon">开源工程协作与开发者工具</div>
-    <div class="exp-header" style="display:flex;justify-content:space-between;font-size:11px;font-weight:bold;color:#1E293B;margin-top:2px;margin-bottom:4px;">
-      <span>Career OS 开发者平台与自动化生态 (Python / Git Flow / Actions)</span>
-      <span>2026/01 - 至今</span>
+    <!-- 3. CodeAtlas -->
+    <div class="proj-title-row">
+      <span>3. CodeAtlas (code-map) 开源代码拓扑与智能体引擎</span>
+      <a class="proj-github" href="https://github.com/adlink8/code-map">https://github.com/adlink8/code-map</a>
     </div>
-    <div class="bullet-item"><b>规范化开源协作流程：</b>严格遵循 Conventional Commits 提交规范与 PR Code Review 机制，沉淀 <b>1,460+ 次 Git 提交记录</b>；推行 GSD 敏捷闭环交付规范（累计 195+ 次），保证版本演进透明可追溯。</div>
-    <div class="bullet-item"><b>自研内部 CLI 开发者工具：</b>用 Python 自研系列工程效率工具（pk-sync、pk-ku、rag-search 等，累计 <b>90+ 次实用交付</b>），提供静态依赖分析与自动化构建能力，保障开源仓库的高质量自洽。</div>
+    <div class="proj-duty">Python / AST / SQLite / MCP / Playwright / CLI | <b>角色职责：</b>开源项目发起人与架构设计</div>
+    <div class="bullet-item"><b>AST 静态依赖拓扑与 Unified IR 引擎：</b>基于 Python 标准库 AST 解析代码符号依赖，构建自有的 SQLite Unified IR 统一中间表示；支持全库符号跨文件追踪与变更影响面（Impact Analysis）推理。</div>
+    <div class="bullet-item"><b>Model Context Protocol (MCP) 开放服务集成：</b>基于标准 stdio JSON-RPC 实现 MCP 协议服务端，向各类智能体开放 6 项只读分析工具（inspect_symbol, impact_analysis, query_graph 等），符号依赖查询延迟 < 25ms。</div>
+    <div class="bullet-item"><b>运行时追踪摄入与端到端质量保障：</b>支持 AppMap 与 VizTracer 运行时链路数据摄入，将静态 AST 与运行时调用频次及耗时指标融合；配置零依赖轻量本地 Web 架构视图与 Playwright E2E 端到端测试，自动化测试覆盖率达 88%+。</div>
+
+    <!-- 4. 技术博客 -->
+    <div class="proj-title-row">
+      <span>4. 个人技术博客与工程文档沉淀</span>
+      <a class="proj-github" href="https://github.com/adlink8/adlink8.github.io">https://github.com/adlink8/adlink8.github.io</a>
+    </div>
+    <div class="proj-duty">Hugo / GitHub Actions / CI/CD / Markdown | <b>角色职责：</b>技术博主与开源文档创作者</div>
+    <div class="bullet-item"><b>全自动 CI/CD 构建与持续发布流水线：</b>基于 GitHub Actions 搭建自动化发布流水线，配置 Webhook 与增量构建策略，站点构建发布耗时从 140 秒压缩至 42 秒（提效 70%）。</div>
+    <div class="bullet-item"><b>自动化巡检门禁与开源文档沉淀：</b>配置自动化死链检测与页面构建检查门禁，全站可访问性保持 100%；公开发布 20+ 篇深度技术复盘与架构长文（涵盖 MCP 协议设计、RAG 向量检索优化、Linux 协议排障），秉持开源利他精神沉淀工程实践。</div>
 
   </main>
 
@@ -526,10 +544,33 @@ def generate_pdf(html_content, html_name, pdf_name):
     return pdf_path
 
 def main():
-    print("=== Generating AISpeech Customized Resumes PDF ===")
+    print("=== Generating Grounded AISpeech Resumes PDF ===")
     p1 = generate_pdf(HTML_DEVOPS_PHOTO, "cv-aispeech-devops.html", "cv-aispeech-devops.pdf")
     p2 = generate_pdf(HTML_OPENSOURCE_PHOTO, "cv-aispeech-opensource.html", "cv-aispeech-opensource.pdf")
-    print("All PDFs successfully created.")
+    
+    # 工业界校招规范命名副本（方便 HR/面试官识别与直接归档）
+    named_copies = [
+        (p1, os.path.join(OUT_DIR, "张三-研发效能与质量平台工程师-常州大学-2027届.pdf")),
+        (p1, os.path.join(OUT_DIR, "张三-研发效能与质量平台工程师-13800138000.pdf")),
+        (p2, os.path.join(OUT_DIR, "张三-开源技术研发工程师-常州大学-2027届.pdf")),
+        (p2, os.path.join(OUT_DIR, "张三-开源技术研发工程师-13800138000.pdf")),
+    ]
+    for src, dst in named_copies:
+        shutil.copy2(src, dst)
+        print(f"Generated HR-standard copy: {dst}")
+
+    # 自动生成预览图片以供快速检查
+    try:
+        import fitz
+        doc1 = fitz.open(p1)
+        doc1[0].get_pixmap(dpi=150).save(os.path.join(OUT_DIR, "cv-aispeech-devops-preview.png"))
+        doc2 = fitz.open(p2)
+        doc2[0].get_pixmap(dpi=150).save(os.path.join(OUT_DIR, "cv-aispeech-opensource-preview.png"))
+        print("Updated preview images.")
+    except Exception as e:
+        print(f"Preview generation warning: {e}")
+
+    print("All PDFs successfully generated and formatted.")
 
 if __name__ == "__main__":
     main()

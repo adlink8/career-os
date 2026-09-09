@@ -8,7 +8,6 @@
 
 paths:
   - scripts/ats-engine-smoke.py          # 存量：测试画像 fixture（OPS_RESUME 含真名），计划换假名后移除
-  - scripts/build_aispeech_pdf.py        # ⚠️ 存量已公开：真名/真手机/真邮箱在 HEAD（已在 GitHub 公开），待用户决策脱敏或迁 data/cv/
 
 line_hash:
   # —— 无 ——
