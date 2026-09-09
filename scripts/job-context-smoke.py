@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.join(ROOT, "bin"))
 
 from services.job_context import (  # noqa: E402
     extract_hard_filters,
+    extract_job_ad_id,
     load_context_file,
     merge_contexts,
     to_jd_info,
@@ -81,6 +82,13 @@ def main() -> int:
     check("合流保留报名表格子", any(f.get("label") == "请输入 姓名" for f in merged["form_schema"]))
     check("合流抽出硕士门槛", "硕士" in merged["hard_filters"]["education"])
     check("合流 title 用岗位名", "管培生" in merged["title"])
+    check(
+        "moka hash 抽出 job id",
+        extract_job_ad_id(
+            "https://app.mokahr.com/apply/focus/148405#/job/d96fd833-7473-49fa-a959-171412a34bee/apply"
+        )
+        == "d96fd833-7473-49fa-a959-171412a34bee",
+    )
     print("[OK] job-context-smoke")
     return 0
 

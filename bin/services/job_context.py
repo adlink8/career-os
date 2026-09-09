@@ -23,12 +23,16 @@ except (ImportError, ValueError):
 
 
 _JOB_AD_RE = re.compile(r"jobAdId=([0-9a-fA-F-]{8,})", re.I)
+_MOKA_JOB_RE = re.compile(r"/job/([0-9a-fA-F-]{8,})", re.I)
 _JD_MARKERS = re.compile(r"工作职责|任职资格|任职要求|岗位职责|职位描述")
 _FORM_MARKERS = re.compile(r"你正在投递职位|预览并提交|上传简历|Career OS 填表")
 
 
 def extract_job_ad_id(url: str) -> str:
     m = _JOB_AD_RE.search(url or "")
+    if m:
+        return m.group(1).lower()
+    m = _MOKA_JOB_RE.search(url or "")
     return m.group(1).lower() if m else ""
 
 
@@ -42,6 +46,10 @@ def looks_like_form_page(text: str) -> bool:
 
 def refine_title(ctx: Dict[str, Any]) -> str:
     jd = ctx.get("jd_text") or ""
+    blob = f"{ctx.get('title') or ''}\n{jd}"
+    m = re.search(r"【优先】\s*([^\n]+)", blob)
+    if m:
+        return m.group(1).strip()[:160]
     m = re.search(r"你正在投递职位[:：]\s*([^\n]+)", jd)
     if m:
         return m.group(1).strip()[:160]
@@ -108,9 +116,12 @@ def merge_contexts(base: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, 
             urls.append(u)
     detail_url = next((u for u in urls if "/detail" in u or "/campus/" in u), "")
     form_url = next((u for u in urls if "/form" in u), "")
-    title_src = {"title": a.get("title") or b.get("title") or "", "jd_text": jd_text}
-    if looks_like_jd(str(b.get("jd_text") or "")):
-        title_src["title"] = b.get("title") or a.get("title") or ""
+    title_src = {
+        "title": a.get("title") or b.get("title") or "",
+        "jd_text": "\n".join(
+            [str(a.get("title") or ""), str(b.get("title") or ""), str(a.get("jd_text") or ""), str(b.get("jd_text") or "")]
+        ),
+    }
     merged = {
         "version": CONTEXT_VERSION,
         "captured_at": max(str(a.get("captured_at") or ""), str(b.get("captured_at") or "")),
