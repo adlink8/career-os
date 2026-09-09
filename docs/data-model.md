@@ -1,6 +1,6 @@
 # 数据库与文档关系图（data-model）
 
-> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v11，29 张业务表）。
+> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v19）。
 > md 文档分三类：**描述数据库的**（docs/）、**被数据库引用或导出的**（data/*.md）、**与数据库无关的参考层**（knowledge/）。本文是它们与数据库关系的单一事实源。
 
 ## 0. 权威原则（2026-09-05 确定）
@@ -14,7 +14,7 @@
 
 - **文件**：`data/career_jobs.sqlite`
 - **唯一迁移/访问入口**：`bin/career_os_store.py`（`DB_PATH` 常量，可用 `CAREER_OS_DB_PATH` 环境变量覆盖）
-- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v11
+- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v19
 - **简历二进制不进库**：PDF/DOCX/MD 原文件留在 `data/cv/`，库里只存元数据（SHA-256 为内容身份），见 `docs/resume-registry.md`
 
 ## 2. 业务表分域
@@ -23,11 +23,13 @@
 
 | 表 | 行数(约) | 作用 |
 |---|---:|---|
-| `companies` | 61 | 企业档案：行业、类型、城市、官网、校招 URL |
-| `jobs` | 95 | 具体岗位：薪资、学历/英语要求、匹配度 |
+| `companies` | 61 | 企业档案：行业、类型、城市、官网、校招 URL、校招限投数 `max_campus_applications`、投递规则 `campus_application_rules` (v13) |
+| `jobs` | 193 | 具体岗位：薪资、要求、匹配度、推荐权重 `recommendation_weight`、企业内推荐排名 `recommendation_rank`、推荐理由 `recommendation_reason` (v13) |
 | `job_targets` | 500 | 目标企业清单（打分排序后的建档） |
 | `job_target_recruitment_checks` | 214 | 目标企业校招/实习状态核查记录 |
-| `platform_recruitment_leads` | 24 | 招聘平台爬取的岗位线索 |
+| `platform_recruitment_leads` | 99 | 招聘平台/官网爬取的在招岗位线索 |
+| `job_page_contexts` | 0 | 网申页实时快照（v19）：url/JD 正文/硬门槛/表单 schema。扩展捕获 JSON 后经 `bin/ingest_job_context.py` 入库；有快照时 ATS/会审 JD 以本表为准 |
+
 | `applications` | 2 | 正式投递记录（关联简历版本与提交物） |
 | `application_timeline` | 2 | 投递后流程事件（笔试/面试/offer） |
 
@@ -38,6 +40,8 @@
 | `resume_versions` | 19 | 简历版本（role/company/label/state） |
 | `resume_artifacts` | 158 | 简历文件元数据（SHA-256、file_state: source/draft/ready/submitted） |
 | `resume_artifact_locations` | 58 | 文件路径登记（`data/cv/` 中实际位置的映射） |
+| `resume_generation_rules` | 14 | 简历生成规则与硬红线契约库（去目标地点、严格A4单页饱满、去夸大几千几万数字、聚焦做了什么与具体提升、AI技能首位去Prompt、禁止强扣AI、禁止虚假MES包装、核心项目四点起步、工程成果真实量化、版面垂直韵律均衡防上半挤下半空等 14 项核心红线）(v15) |
+| `resume_layout_templates` | 1 | 简历排版模板与样式契约库（存储 A4 页面尺寸、垂直留白上下限阈值、侧栏/主栏比例、证件照尺寸、全套 CSS 样式表与 JSON 布局参数，默认内置经典双栏照片版-垂直韵律均衡版 v3）(v16) |
 
 ### C. 测评 / 面试域
 
@@ -73,7 +77,7 @@
 |---|---:|---|
 | `resume_evidence_projects` | 15 | 全部仓库的简历价值判定（A/B/C 级 + fork 排雷记录）：定位、时间跨度、规模 |
 | `resume_evidence_bullets` | 28 | bullet 候选：钩子类型 + 三层拷打答案（是什么/为什么/踩坑）+ 证据链 + 五档证据状态 |
-| `resume_evidence_milestones` | 21 | 开发里程碑（日期 + 会话/commit 证据），按 (project_id, milestone_date) upsert 增量导入 |
+| `resume_evidence_milestones` | 29 | 开发里程碑（日期 + 会话/commit 证据），按 (project_id, milestone_date) upsert 增量导入 |
 | `resume_evidence_numbers` | 23 | 可验证数字清单（验证方式 + 是否公开 + 是否可上简历） |
 | `resume_evidence_interview_qa` | 10 | 面试拷打预演：最可能追问 + 回答要点 |
 
@@ -90,6 +94,17 @@
 
 - 来源：`data/analysis/jd-evidence-packages-2026-09.json`；导入 `python scripts/import_jd_evidence_packages.py`
 - 用法：面试准备时按 `jd_key` 查包，先读 `hook_strategy`，再按 layer 拉对应 bullet 的三层拷打答案；`gap_notes` 是不能硬凑的诚实边界
+
+### H. 面试拷打域（v12，2026-09-05 首次导入 + 同日补挖）
+
+| 表 | 行数(约) | 作用 |
+|---|---:|---|
+| `interview_drill_points` | 185 | 按项目逐功能下钻的问答卡：feature/phase/depth（1=是什么 2=为什么取舍 3=踩坑细节）/question/answer_points/my_thinking（项目主人当时的原始思考）/evidence（session/commit/ADR 溯源） |
+
+- 覆盖 8 个项目 72 个功能：novel-mind 50 点、数据分析系统 38、t5ai 34、career-os 30、pet-hospital 14、yanzi 7、博客双线各 6；howtocookskills 会话库零命中不硬编
+- 185 点中 122 条带 my_thinking（用户原话+会话号）；空缺点位多为 08 月下旬~09 月会话（晚于会话备份截点）或 verifier/编排驱动决策——诚实留白不编造
+- 来源：首轮 7 个并行子 agent + 同日补挖 3 个子 agent 与主 Agent 亲挖（t5ai 82 条 user 消息全量人工审读）；载荷 `data/analysis/interview-drill-2026-09.json` 与 `drill-gap-*.json`
+- 导入：`python scripts/import_interview_drill.py`（按 project_key+feature+question 幂等，单项目载荷需包 `{"projects":[...]}`）
 
 ## 3. md 文档 ↔ 数据库关系
 

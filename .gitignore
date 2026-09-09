@@ -10,6 +10,9 @@ data/jobs/
 # skill 运行时读取 config/profile.yml;提交时用 config/profile.example.yml 脱敏样本
 config/profile.yml
 
+# 填表扩展编译产物（含姓名等，由 bin/sync_autofill_profile.py 生成）
+extensions/ats-autofill/profile.json
+
 # 本机数据仓库路径（含绝对路径）
 config/personal-data-warehouse.yml
 
@@ -68,3 +71,13 @@ __pycache__/
 # Local Judge0 deployment secrets/runtime env
 deploy/judge0/judge0.conf
 deploy/judge0/runtime.env
+
+# 岗位截图管道：浏览器会话含登录 cookie，严禁入库
+data/job_discovery/browser_profiles/
+data/job_discovery/screenshots/
+data/job_discovery/captures/*.json
+
+# 临时调试与环境辅助目录
+scratch/
+.workbuddy/
+.git.broken-*/

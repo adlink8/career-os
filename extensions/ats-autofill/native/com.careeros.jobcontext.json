@@ -1,0 +1,9 @@
+{
+  "name": "com.careeros.jobcontext",
+  "description": "Career OS JobContext saver",
+  "path": "D:\\ADLINK\\Myproject\\career-os\\extensions\\ats-autofill\\native\\job_context_host.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://ghjjmidlmgimhjocafflngfcmiopenie/"
+  ]
+}

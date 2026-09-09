@@ -1,0 +1,132 @@
+---
+name: career-multi-agent-eval
+displayName: 投前三方多Agent联合会审 (ATS/HR/技术官)
+version: 1.0.0
+agent_created: true
+description: >-
+  在简历投递前，模拟招聘链条中的三权分立角色（ATS机器算法、校招5秒初筛HR、资深技术面试官），
+  并发执行多维度严苛诊断。只要有一方触发一票否决或总分不达标，强制阻断盲目海投，
+  并输出明确的缺失关键词与改写建议。
+trigger:
+  - 多Agent会审 / 三方简历评审 / 投前多维度打分 / 模拟HR和面试官审查
+  - 帮我模拟ATS打分 / HR会怎么看这份简历 / 技术面试官会挑什么毛病
+  - 投递前三方把关 / 评审委员会 / 会审这份简历
+---
+
+# 投前三方多 Agent 联合会审 (Career Multi-Agent Evaluation)
+
+把每一次正式投递当成一次“防空演练”。坚决杜绝“拿一份大杂烩简历硬塞多个岗位”的虚假勤奋海投。
+
+## 核心设计理念：三权分立，一票否决
+
+真实招聘流程绝不是单一角色做决策，而是三个利益立场相互对立的关卡：
+
+1. **🤖 关卡一：ATS 算法审查员 (`ats-scanner`)** —— 只认冷酷的规则、分词匹配率与硬门槛（Rule 316 复合意向一票否决）；
+2. **👩‍💼 关卡二：校招初筛 HR (`campus-hr`)** —— 每天扫 500 份简历、耐心只有 5 秒，极度厌恶“海投标签”与“意向不专一”；
+3. **👨‍💻 关卡三：资深技术负责人 (`tech-lead`)** —— 警惕“只会调包的假项目”，逐句拷打 STAR 逻辑、真实踩坑细节与工程量化指标。
+
+---
+
+## 启动时必须读取
+
+- **待审简历**：目标 PDF 文件路径，或 `data/cv/` 下的 Markdown 源码
+- **目标 JD（优先页面快照）**：扩展「捕获当前岗位」得到的 JobContext JSON，或库表 `job_page_contexts` 最近一条。有快照时 JD 以快照 `jd_text`/`title` 为准，禁止用记忆中的通用岗。入库：`python bin/ingest_job_context.py <json>`；ATS：`python bin/ats_matcher.py --resume <简历> --job-context <json>`
+- **目标 JD（回退）**：`data/career_jobs.sqlite` 的 `job_id`，或用户粘贴的官方 JD 文本
+- **底层算法工具**：[`bin/ats_matcher.py`](file:///d:/ADLINK/Myproject/career-os/bin/ats_matcher.py)
+- **子 Agent 独立提示词（严格上下文隔离）**：
+  - `references/ats-scanner-prompt.md`（无情规则分词器）
+  - `references/campus-hr-prompt.md`（5秒初筛校招HR）
+  - `references/tech-lead-prompt.md`（一线资深技术面官）
+- **仲裁与一票否决规约**：`references/consensus-rules.md`
+
+---
+
+## 标准工作流
+
+```mermaid
+flowchart TD
+    Start["发起投前多 Agent 会审"] --> Step1["1. 提取目标 JD 与简历原文"]
+    Step1 --> Step2["2. 运行 bin/ats_matcher.py 提取算法硬指标"]
+    Step2 --> Step3["3. 并发派发 3 个评审子 Agent (上下文完全纯净)"]
+    
+    subgraph 并发独立审查
+        Step3 --> P1["Subagent A: ats-scanner (仅加载 ats-scanner-prompt.md)"]
+        Step3 --> P2["Subagent B: campus-hr (仅加载 campus-hr-prompt.md)"]
+        Step3 --> P3["Subagent C: tech-lead (仅加载 tech-lead-prompt.md)"]
+    end
+
+    P1 --> Step4["4. 综合仲裁与共识计算"]
+    P2 --> Step4
+    P3 --> Step4
+
+    Step4 --> Check{"是否全票通过 & 综合分 ≥ 85?"}
+    Check -->|否| Block["🔴 强制拦截：指出致命硬伤与 Missing Keywords，禁止投递"]
+    Check -->|是| Pass["🟢 绿灯放行：准许官网网申（结论不锁定浏览器）"]
+```
+
+### 1. 第一阶段：运行本地算法底座检查 (Fail-Fast 快速熔断)
+首先执行本地极速算法打分工具（耗时 0.2 秒，0 Token 成本）：
+```bash
+python bin/ats_matcher.py --resume <简历路径> --jd-title "<岗位名称>" --jd-text "<JD文本>" --json
+```
+- **🚨 熔断门禁（Fail-Fast）**：
+  - 若触发一票否决（如意向复合）或算法得分 < 70 分，**流水线当场熔断终止，禁止唤起后续 Agent！**
+  - 直接向用户输出致命硬伤和 Missing Keywords 清单，要求修改简历后重新从第 1 步开始。
+  - **只有当脚本评测通过（无硬伤且得分 ≥ 70 分）时，才准许进入第二阶段。**
+
+### 2. 第二阶段：派发三方子 Agent（数据注入 + 严格上下文隔离）
+将第 1 阶段脚本提取出的**客观量化事实（如 Missing Keywords、字符数、余弦相似度）**注入上下文，分别加载各自独立的 Prompt，禁止跨 Agent 交叉泄露评审指标，独立获取三方评分与结构化 JSON：
+- **`ats-scanner`**（读取 `references/ats-scanner-prompt.md`）：核对机器分词、Rule 316 意向单一性、A4 单页字符容量；
+- **`campus-hr`**（读取 `references/campus-hr-prompt.md`）：只看 5 秒初筛第一眼印象、海投标签识别、求职诚意度；
+- **`tech-lead`**（读取 `references/tech-lead-prompt.md`）：只看第一项目对位深度、STAR 量化真实度、一线踩坑证据。
+
+### 3. 输出《三方联合会审诊断书》
+严格按照以下格式呈现给用户：
+
+```text
+===========================================================================
+ 🎯 Career OS — 三方多 Agent 联合会审诊断书
+===========================================================================
+📌 目标岗位 : {企业名称} · {岗位全称}
+📄 审查简历 : {简历文件名}
+🏆 综合指数 : {总分} / 100 分  |  结论: {🟢 放行 / 🟡 警告 / 🔴 拦截}
+---------------------------------------------------------------------------
+📊 三方阵营裁决:
+  🤖 ATS 算法审查员 : {分数} 分 [{Pass / Warn / Fail}]
+  👩‍💼 校招初筛 HR    : {分数} 分 [{Pass / Warn / Fail}]
+  👨‍💻 资深技术面官   : {分数} 分 [{Pass / Warn / Fail}]
+---------------------------------------------------------------------------
+🚨 【致命一票否决项】(如有):
+  • ❌ {触发的硬性否决原因，如复合求职意向/严重缺词}
+
+❌ 【ATS 致命缺失关键词】:
+  • 👉 {Missing Keywords 清单}
+
+👩‍💼 【HR 5秒第一眼体检】:
+  • 第一印象: {专精候选人 / 明显海投摇摆}
+  • 视觉排版: {舒适饱满 / 上挤下空 / 字符超标}
+
+👨‍💻 【技术主管深度拷打指引】:
+  • 亮点项目: {具备真实工程价值的条目}
+  • 薄弱漏洞: {缺少踩坑细节或数据无基线的条目}
+
+💡 【投前 10 分钟必改行动清单】:
+  1. ...
+  2. ...
+===========================================================================
+```
+
+### 4. 缺词下游处置（自动衔接）
+
+诊断书输出后，将【ATS 致命缺失关键词】清单交给 `career-jd-gap-branch`
+Skill 做缺口分诊（改简历 / 开分支补能力 / 放弃），严禁直接往技能栏堆词了事。
+
+---
+
+## 仲裁红线（一票否决场景）
+
+满足以下任一条件，**直接判定为 🔴 FAIL，严禁网申**：
+1. **求职意向写成多个职位**（Rule 316）：如「运维工程师 / 开发工程师」。方向说明里的「与」（如「Linux与容器」）不触发；
+2. **ATS 项目正文技术词覆盖率 < 60%**（与 `bin/services/ats_engine.py` 的 grounded/missing 口径一致，不是「前 5 大词」另算一套）；
+3. **HR 判定为“明显跨岗位套用、有海投嫌疑”**；
+4. **技术面官判定为“项目与目标岗位完全不对口”**。

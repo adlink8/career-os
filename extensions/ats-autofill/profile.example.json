@@ -1,0 +1,61 @@
+{
+  "version": "3.0-single-intent",
+  "universal": {
+    "personal": {
+      "name": "",
+      "gender": "",
+      "birth_year": "",
+      "birth_date": "",
+      "age": "",
+      "phone": "",
+      "email": "",
+      "id_card": "",
+      "current_city": "",
+      "current_address": "",
+      "native_place": "",
+      "political_status": "",
+      "marriage": "",
+      "ethnicity": "",
+      "health": "",
+      "emergency_contact": "",
+      "emergency_phone": "",
+      "emergency_relation": "",
+      "available_time": "",
+      "internship_duration": "",
+      "days_per_week": ""
+    },
+    "education": {
+      "undergraduate": {
+        "school": "",
+        "degree": "",
+        "major": "",
+        "graduation": "",
+        "start_date": "",
+        "end_date": "",
+        "education_type": ""
+      },
+      "junior_college": {
+        "school": "",
+        "degree": "",
+        "major": "",
+        "start_date": "",
+        "end_date": "",
+        "graduation": ""
+      }
+    },
+    "hobbies": "",
+    "awards": "",
+    "certificates": "",
+    "languages": ""
+  },
+  "application": {
+    "target_position": "",
+    "target_cities": "",
+    "expected_salary": "",
+    "self_evaluation": "",
+    "skills_summary": "",
+    "skills_proficient": "",
+    "skills_familiar": "",
+    "projects": []
+  }
+}

@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 18
+SCHEMA_VERSION = 19
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -80,6 +80,29 @@ def migrate(conn: sqlite3.Connection) -> None:
 
     # v18: 项目分层契约 —— flagship（每份简历必选）/ normal（按 JD 择取）/ excluded（排雷，不上简历）
     _add_column(conn, "resume_evidence_projects", "priority", "TEXT NOT NULL DEFAULT 'normal'")
+
+    # v19: 网申页实时快照（扩展捕获的 JobContext，ATS/会审的权威 JD 输入）
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS job_page_contexts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            captured_at TEXT NOT NULL,
+            url TEXT NOT NULL,
+            host TEXT,
+            company TEXT,
+            title TEXT NOT NULL DEFAULT '',
+            jd_text TEXT NOT NULL DEFAULT '',
+            hard_filters_json TEXT NOT NULL DEFAULT '{}',
+            keywords_json TEXT NOT NULL DEFAULT '[]',
+            form_schema_json TEXT NOT NULL DEFAULT '[]',
+            raw_json TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_job_page_contexts_url ON job_page_contexts(url, captured_at)"
+    )
 
     conn.execute(
         """

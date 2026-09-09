@@ -36,7 +36,7 @@ def main() -> int:
         conn.execute("select max(version) from career_os_schema_migrations").fetchone()[0]
         == SCHEMA_VERSION,
     )
-    for table in ("mock_exam_answers", "interview_turns", "github_project_candidates", "resume_project_proposals"):
+    for table in ("mock_exam_answers", "interview_turns", "github_project_candidates", "resume_project_proposals", "job_page_contexts"):
         check(f"table {table} exists", conn.execute("select 1 from sqlite_master where type='table' and name=?", (table,)).fetchone() is not None)
     for table, column in (("mock_exam_records", "provider"), ("mock_interview_reports", "rubric_version"), ("mock_questions", "source_plugin"), ("mock_questions", "assessment_kind"), ("mock_questions", "dimension"), ("jobs", "source_plugin"), ("github_project_candidates", "license_spdx"), ("github_project_candidates", "matched_terms_json"), ("resume_project_proposals", "evidence_text")):
         check(f"column {table}.{column} exists", column in {r[1] for r in conn.execute(f"pragma table_info({table})")})
