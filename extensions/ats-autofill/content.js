@@ -10,7 +10,11 @@
 
   const isTop = window === window.top;
   let profile = null;
+  let fillCtx = null;
   let isPanelOpen = false;
+  let pickMode = false;
+  let lastFieldEl = null;
+  let lastCoverage = null;
 
   function requestProfile() {
     return new Promise((resolve, reject) => {
@@ -26,6 +30,33 @@
         resolve(res);
       });
     });
+  }
+
+  function requestFillContext() {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({ action: 'GET_FILL_PAYLOAD', url: location.href }, (res) => {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+        if (!res || (res.ok === false && !res.mode)) {
+          reject(new Error((res && (res.error || res.reason)) || '填写载荷加载失败'));
+          return;
+        }
+        resolve(res);
+      });
+    });
+  }
+
+  function applyFillContext(ctx) {
+    fillCtx = ctx || null;
+    if (ctx && ctx.profile) profile = ctx.profile;
+    if (ctx && ctx.autofill && ctx.autofill.target_position && profile && profile.application) {
+      profile.application.target_position = ctx.autofill.target_position;
+    }
+    if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
+      self.CareerOsFieldMap.setRules((ctx && ctx.field_rules) || []);
+    }
   }
 
   function setNativeValue(element, value) {
@@ -205,44 +236,97 @@
     };
   }
 
-  async function executeAutofill() {
+  function fieldCurrentValue(el) {
+    if (!el) return '';
+    if (el.type === 'checkbox' || el.type === 'radio') return el.checked ? '1' : '';
+    return String(el.value || '').trim();
+  }
+
+  function summarizeCoverage(events, collected) {
+    const requiredEmpty = [];
+    const widgetFail = [];
+    const unmapped = [];
+    (collected.fields || []).forEach((field, i) => {
+      const el = collected.nodes[i];
+      const required = !!field.required;
+      const noise = self.CareerOsFieldMap && self.CareerOsFieldMap.isNoiseLabel(field.label);
+      if (noise) return;
+      const ev = events.filter((e) => e.label === field.label).pop();
+      const filledNow = fieldCurrentValue(el);
+      if (required && !field.slot && !filledNow) unmapped.push(field.label);
+      if (required && !filledNow) requiredEmpty.push(field.label);
+      if (ev && ev.reason === 'no_match' && required) widgetFail.push(field.label);
+    });
+    return {
+      filled: events.filter((e) => e.ok).length,
+      attempted: events.length,
+      required_empty: requiredEmpty,
+      widget_fail: widgetFail,
+      unmapped: unmapped,
+      ready: requiredEmpty.length === 0 && widgetFail.length === 0
+    };
+  }
+
+  async function executeAutofill(opts) {
+    opts = opts || {};
     const fmap = self.CareerOsFieldMap;
     if (!fmap) {
       showToast('字段映射未加载，请重载扩展');
-      return 0;
+      return { count: 0 };
     }
     try {
-      const bundle = await requestProfile();
-      profile = bundle.data || bundle;
-      if (fmap.setRules) fmap.setRules(bundle.field_rules || []);
+      if (opts.fill) applyFillContext(opts.fill);
+      else applyFillContext(await requestFillContext());
       if (isTop) updateUI();
     } catch (err) {
       showToast(String(err && err.message ? err.message : err));
-      return 0;
+      return { count: 0 };
+    }
+    if (!fillCtx || !fillCtx.allow_fill) {
+      showToast((fillCtx && fillCtx.reason) || '未放行，禁止填充');
+      return { count: 0, blocked: true };
+    }
+    if (fillCtx.mode !== 'released' && fillCtx.mode !== 'volume' && fillCtx.mode !== 'overlay' && fillCtx.mode !== 'test') {
+      showToast(fillCtx.reason || '未放行，禁止填充');
+      return { count: 0, blocked: true };
     }
     if (!profile || !profile.universal || !profile.application) {
       showToast('画像未加载，请运行 python bin/sync_autofill_profile.py');
-      return 0;
+      return { count: 0 };
     }
-    if (isTop) showToast('正在一键填充（含下拉/日期）…');
+    const blankOnly = !!opts.blankOnly;
+    if (isTop) showToast(blankOnly ? '仅填空白字段…' : '正在一键填充（含下拉/日期）…');
     const log = self.CareerOsLog;
     const events = [];
     const collected = collectFormFields();
+    const autofill = fillCtx.autofill;
     let count = 0;
     const projectNameEls = [];
     collected.fields.forEach((field, i) => {
       const el = collected.nodes[i];
       if (!el || el.disabled || el.readOnly) return;
       if (el.type === 'radio' || el.type === 'checkbox') return;
+      if (blankOnly && fieldCurrentValue(el)) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'already', ok: true });
+        return;
+      }
+      if (fmap.isNoiseLabel(field.label) && !field.slot) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'noise', ok: false });
+        return;
+      }
       if (field.slot === 'application.projects.name') {
         projectNameEls.push(el);
         return;
       }
-      if (!field.slot) {
+      let value = fmap.matchAutofillValue(field, autofill);
+      if (!value && field.slot) value = fmap.valueForSlot(field.slot, profile, 0);
+      if (field.slot === 'application.target_position' && autofill && autofill.target_position) {
+        value = autofill.target_position;
+      }
+      if (!field.slot && !value) {
         events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
         return;
       }
-      const value = fmap.valueForSlot(field.slot, profile, 0);
       if (field.slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) {
         events.push({ op: 'fill_native', label: field.label, slot: field.slot, reason: 'skip_id', ok: false });
         return;
@@ -262,9 +346,9 @@
       });
       if (ok) count++;
     });
-    const projects = profile.application.projects || [];
+    const projects = (profile.application && profile.application.projects) || [];
     projects.forEach((proj, i) => {
-      if (projectNameEls[i] && setNativeValue(projectNameEls[i], proj.name)) {
+      if (projectNameEls[i] && !(blankOnly && fieldCurrentValue(projectNameEls[i])) && setNativeValue(projectNameEls[i], proj.name)) {
         count++;
         events.push({ op: 'fill_native', slot: 'application.projects.name', reason: 'input', ok: true, preview: proj.name });
       }
@@ -283,23 +367,30 @@
         events.push({ op: 'beisen_fill', reason: 'error', ok: false, error: String(err && err.message ? err.message : err) });
       }
     }
+    const coverage = summarizeCoverage(events, collected);
+    lastCoverage = coverage;
     const summary = {
       op: 'autofill',
       url: location.href,
       host: location.hostname,
+      mode: fillCtx.mode,
+      run_id: fillCtx.run_id || null,
       profile: (profile.universal && profile.universal.personal && profile.universal.personal.name) || '',
-      test_only: !!profile.test_only,
+      test_only: fillCtx.mode === 'test',
       filled: count,
       attempted: events.length,
       ok: events.filter((e) => e.ok).length,
       skipped: events.filter((e) => !e.ok).length,
+      coverage: coverage,
       items: events
     };
     if (log) log.send(summary);
     if (isTop) {
-      showToast('一键填充完成：写入 ' + count + ' 项。日志见 data/job_discovery/logs/');
+      renderCoverage(coverage);
+      const gap = (coverage.required_empty || []).length + (coverage.widget_fail || []).length;
+      showToast('写入 ' + count + ' 项' + (gap ? '，必填缺口 ' + gap : '，必填已清'));
     }
-    return count;
+    return { count: count, coverage: coverage };
   }
 
   function fillRadios(univ) {
@@ -387,41 +478,58 @@
     fillBtn.id = 'career-os-fill-btn';
     fillBtn.textContent = '一键填充当前页面表单';
 
+    const settingsBtn = document.createElement('button');
+    settingsBtn.className = 'career-os-btn-secondary';
+    settingsBtn.id = 'career-os-settings-btn';
+    settingsBtn.textContent = '打开设置（只装插件也走这里）';
+
+    const blankBtn = document.createElement('button');
+    blankBtn.className = 'career-os-btn-secondary';
+    blankBtn.id = 'career-os-blank-btn';
+    blankBtn.textContent = '仅填空白';
+
     const captureBtn = document.createElement('button');
     captureBtn.className = 'career-os-btn-secondary';
     captureBtn.id = 'career-os-capture-btn';
     captureBtn.textContent = '捕获当前岗位 JD + 表单';
 
+    const markBtn = document.createElement('button');
+    markBtn.className = 'career-os-btn-secondary';
+    markBtn.id = 'career-os-mark-btn';
+    markBtn.textContent = '标记网页已提交';
+    markBtn.disabled = true;
+
     const info = document.createElement('div');
     info.className = 'career-os-info-card';
     info.id = 'career-os-info-card';
 
-    const copyTitle = document.createElement('div');
-    copyTitle.className = 'career-os-section-title';
-    copyTitle.textContent = '快捷复制';
-    const copyList = document.createElement('div');
-    copyList.className = 'career-os-copy-list';
-    copyList.id = 'career-os-copy-container';
+    const coverage = document.createElement('div');
+    coverage.className = 'career-os-coverage';
+    coverage.id = 'career-os-coverage';
+
+    const hint = document.createElement('div');
+    hint.className = 'career-os-section-title';
+    hint.textContent = '点页面格子：旁边会出现填入/复制，不用滚回这里';
 
     body.appendChild(fillBtn);
+    body.appendChild(settingsBtn);
+    body.appendChild(blankBtn);
     body.appendChild(captureBtn);
+    body.appendChild(markBtn);
     body.appendChild(info);
-    body.appendChild(copyTitle);
-    body.appendChild(copyList);
+    body.appendChild(coverage);
+    body.appendChild(hint);
     panel.appendChild(header);
     panel.appendChild(body);
 
     const fab = document.createElement('div');
     fab.className = 'career-os-fab';
     fab.id = 'career-os-fab';
-    fab.title = 'Career OS 自动填表';
+    fab.title = '填表菜单（格子旁可直接填/复制）';
     const fabIcon = document.createElement('span');
     fabIcon.className = 'career-os-fab-icon';
     fabIcon.textContent = '⚡';
-    const fabText = document.createElement('span');
-    fabText.textContent = 'Career OS 填表';
     fab.appendChild(fabIcon);
-    fab.appendChild(fabText);
 
     root.appendChild(panel);
     root.appendChild(fab);
@@ -437,7 +545,35 @@
       panel.style.display = 'none';
     });
     fillBtn.addEventListener('click', () => {
-      executeAutofill();
+      executeAutofill({ blankOnly: false });
+    });
+    settingsBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ action: 'OPEN_OPTIONS' });
+    });
+    blankBtn.addEventListener('click', () => {
+      executeAutofill({ blankOnly: true });
+    });
+    markBtn.addEventListener('click', () => {
+      if (!fillCtx || (fillCtx.mode !== 'released' && fillCtx.mode !== 'volume') || !fillCtx.run_id) {
+        showToast(fillCtx && fillCtx.mode === 'overlay'
+          ? '设置页画像可填表，但投递记录请走海投/专投 run'
+          : '没有已放行/海投载荷，不能标记已提交');
+        return;
+      }
+      if (!lastCoverage || !lastCoverage.ready) {
+        showToast('必填未清零，不能标记网页已提交');
+        return;
+      }
+      chrome.runtime.sendMessage(
+        { action: 'MARK_APPLIED', run_id: fillCtx.run_id, coverage: lastCoverage },
+        (res) => {
+          if (!res || !res.ok) {
+            showToast((res && res.error) || '回写失败');
+            return;
+          }
+          showToast('已记网页提交（未自动点按钮）');
+        }
+      );
     });
     captureBtn.addEventListener('click', () => {
       chrome.runtime.sendMessage({ action: 'CAPTURE_ACTIVE_TAB' }, (res) => {
@@ -474,17 +610,34 @@
 
   function updateUI() {
     const card = document.getElementById('career-os-info-card');
-    if (!card || !profile) return;
+    if (!card) return;
     card.textContent = '';
-    const univ = profile.universal || {};
-    const app = profile.application || {};
-    const p = univ.personal || {};
-    const edu = (univ.education && univ.education.undergraduate) || {};
-    setInfoRow(card, '候选人', p.name);
+    const mode = (fillCtx && fillCtx.mode) || 'unknown';
+    const name = profile && profile.universal && profile.universal.personal
+      ? profile.universal.personal.name : '';
+    const edu = profile && profile.universal && profile.universal.education
+      ? profile.universal.education.undergraduate || {} : {};
+    const title = (fillCtx && fillCtx.autofill && fillCtx.autofill.target_position)
+      || (fillCtx && fillCtx.autofill && fillCtx.autofill.title)
+      || (profile && profile.application && profile.application.target_position)
+      || '';
+    const modeLabel = mode === 'released'
+      ? ('专投 released #' + (fillCtx.run_id || ''))
+      : (mode === 'volume'
+        ? ('海投 #' + (fillCtx.run_id || '') + ' ' + ((fillCtx.autofill && fillCtx.autofill.track) || ''))
+        : (mode === 'overlay'
+          ? '设置页画像'
+          : (mode === 'test' ? '测试画像' : (mode === 'setup' ? '待设置底稿' : '未放行'))));
+    setInfoRow(card, '模式', modeLabel);
+    setInfoRow(card, '候选人', name + (mode === 'test' ? '（测试）' : ''));
     setInfoRow(card, '院校', [edu.school, edu.degree].filter(Boolean).join(' · '));
-    setInfoRow(card, '求职意向', app.target_position);
-    const proj0 = app.projects && app.projects[0];
-    setInfoRow(card, '首个项目', proj0 ? proj0.name : '');
+    setInfoRow(card, '求职意向', title);
+    const fillBtn = document.getElementById('career-os-fill-btn');
+    const blankBtn = document.getElementById('career-os-blank-btn');
+    const blocked = !fillCtx || !fillCtx.allow_fill;
+    if (fillBtn) fillBtn.disabled = blocked;
+    if (blankBtn) blankBtn.disabled = blocked;
+    if (blocked && fillCtx && fillCtx.reason) setInfoRow(card, '原因', fillCtx.reason);
     chrome.storage.local.get(['lastJobContext'], (stored) => {
       const last = stored.lastJobContext;
       if (last) {
@@ -492,7 +645,40 @@
         setInfoRow(card, '本页表单格子', String((last.form_schema || []).length));
       }
     });
-    renderCopyList();
+    if (lastCoverage) renderCoverage(lastCoverage);
+  }
+
+  function renderCoverage(coverage) {
+    const box = document.getElementById('career-os-coverage');
+    const markBtn = document.getElementById('career-os-mark-btn');
+    if (!box) return;
+    lastCoverage = coverage;
+    box.textContent = '';
+    if (!coverage) return;
+    const rows = [
+      ['已写入', String(coverage.filled || 0)],
+      ['必填已填清', coverage.ready ? '是' : '否'],
+      ['必填空', (coverage.required_empty || []).slice(0, 6).join('、') || '无'],
+      ['控件失败', (coverage.widget_fail || []).slice(0, 6).join('、') || '无'],
+      ['未映射必填', (coverage.unmapped || []).slice(0, 6).join('、') || '无']
+    ];
+    rows.forEach((pair) => {
+      const row = document.createElement('div');
+      row.className = 'career-os-info-row';
+      const l = document.createElement('span');
+      l.className = 'career-os-info-label';
+      l.textContent = pair[0];
+      const v = document.createElement('span');
+      v.className = 'career-os-info-val' + (pair[0] !== '已写入' && pair[1] !== '无' && pair[1] !== '是' ? ' career-os-warn' : '');
+      v.textContent = pair[1];
+      row.appendChild(l);
+      row.appendChild(v);
+      box.appendChild(row);
+    });
+    if (markBtn) {
+      const fillReady = fillCtx && (fillCtx.mode === 'released' || fillCtx.mode === 'volume' || fillCtx.mode === 'overlay');
+      markBtn.disabled = !(fillReady && coverage.ready);
+    }
   }
 
   function renderCopyList() {
@@ -507,12 +693,18 @@
       { label: '专业技能', val: app.skills_summary },
       { label: '项目1', val: proj1.full_text || proj1.description },
       { label: '项目2', val: proj2.full_text || proj2.description },
-      { label: '学历', val: [univ.education.undergraduate.school, univ.education.undergraduate.major].filter(Boolean).join(' ') },
+      { label: '学历', val: univ.education && univ.education.undergraduate
+        ? [univ.education.undergraduate.school, univ.education.undergraduate.major].filter(Boolean).join(' ')
+        : '' },
       { label: '外语', val: univ.languages }
-    ].filter((x) => x.val);
+    ];
+    ((fillCtx && fillCtx.autofill && fillCtx.autofill.open_answers) || []).forEach((ans) => {
+      if (ans && ans.value) items.push({ label: ans.label || ans.key || '开放题', val: ans.value });
+    });
+    const ready = items.filter((x) => x.val);
 
     container.textContent = '';
-    items.forEach((item) => {
+    ready.forEach((item) => {
       const row = document.createElement('div');
       row.className = 'career-os-copy-item';
       const name = document.createElement('span');
@@ -520,8 +712,16 @@
       name.textContent = item.label;
       const btn = document.createElement('button');
       btn.className = 'career-os-copy-btn';
-      btn.textContent = '复制';
-      btn.addEventListener('click', () => copyToClipboard(item.val, item.label));
+      btn.textContent = pickMode ? '填入' : '复制';
+      btn.addEventListener('click', () => {
+        if (pickMode && lastFieldEl) {
+          const ok = setNativeValue(lastFieldEl, item.val);
+          showToast(ok ? ('已填入: ' + item.label) : '该控件写不进去，已复制到剪贴板');
+          if (!ok) copyToClipboard(item.val, item.label);
+          return;
+        }
+        copyToClipboard(item.val, item.label);
+      });
       row.appendChild(name);
       row.appendChild(btn);
       container.appendChild(row);
@@ -545,41 +745,192 @@
       sendResponse({ ok: true, context: capturePageContext() });
       return;
     }
+    if (req && req.action === 'READ_FIELD_VALUES') {
+      const collected = collectFormFields();
+      const fields = collected.fields.map((field, i) => {
+        const el = collected.nodes[i];
+        let value = '';
+        if (el) {
+          if (el.type === 'checkbox' || el.type === 'radio') value = el.checked ? (el.value || '1') : '';
+          else value = String(el.value || '').trim();
+        }
+        return {
+          label: field.label,
+          slot: field.slot || '',
+          value: value,
+          required: !!field.required
+        };
+      }).filter((f) => f.value);
+      sendResponse({ ok: true, fields: fields });
+      return;
+    }
     if (req && req.action === 'AUTOFILL') {
       if (isTop) injectFloatingUI();
-      const run = () => executeAutofill().then((count) => {
-        sendResponse({ success: true, count: count });
+      executeAutofill({ fill: req.fill, blankOnly: !!req.blankOnly }).then((result) => {
+        sendResponse({
+          success: true,
+          count: (result && result.count) || 0,
+          coverage: result && result.coverage,
+          blocked: !!(result && result.blocked)
+        });
       }).catch((err) => {
         sendResponse({ success: false, count: 0, error: String(err && err.message ? err.message : err) });
       });
-      if (!profile) {
-        requestProfile().then((bundle) => {
-          profile = bundle.data || bundle;
-          if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
-            self.CareerOsFieldMap.setRules(bundle.field_rules || []);
-          }
-          if (isTop) updateUI();
-          run();
-        }).catch((err) => {
-          showToast(String(err.message || err));
-          sendResponse({ success: false, count: 0, error: String(err.message || err) });
-        });
-        return true;
-      }
-      run();
       return true;
     }
   });
 
-  requestProfile().then((bundle) => {
-    profile = bundle.data || bundle;
-    if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
-      self.CareerOsFieldMap.setRules(bundle.field_rules || []);
+  function resolveValueForEl(el) {
+    const fmap = self.CareerOsFieldMap;
+    if (!fmap || !el) return null;
+    const ctx = getFieldContext(el);
+    const isTextarea = el.tagName && el.tagName.toLowerCase() === 'textarea';
+    const slot = fmap.resolveSlot(ctx, { isTextarea: isTextarea });
+    let value = fmap.matchAutofillValue({ label: ctx, slot: slot }, fillCtx && fillCtx.autofill);
+    if (!value && slot && profile) value = fmap.valueForSlot(slot, profile, 0);
+    if (!value && fillCtx && fillCtx.autofill && fillCtx.autofill.target_position && slot === 'application.target_position') {
+      value = fillCtx.autofill.target_position;
     }
+    const shortLabel = (ctx || slot || '当前格子').replace(/\s+/g, ' ').trim().slice(0, 24);
+    return { label: shortLabel, slot: slot, value: value || '' };
+  }
+
+  function hideFieldChip() {
+    const chip = document.getElementById('career-os-field-chip');
+    if (chip) chip.style.display = 'none';
+  }
+
+  function placeChip(chip, el) {
+    const r = el.getBoundingClientRect();
+    const w = Math.min(320, window.innerWidth - 16);
+    let left = r.left;
+    if (left + w > window.innerWidth - 8) left = window.innerWidth - w - 8;
+    if (left < 8) left = 8;
+    let top = r.bottom + 6;
+    chip.style.display = 'flex';
+    const h = chip.offsetHeight || 48;
+    if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 6);
+    chip.style.left = left + 'px';
+    chip.style.top = top + 'px';
+    chip.style.width = w + 'px';
+  }
+
+  function showFieldChip(el) {
+    if (!el || el.closest && el.closest('#career-os-floating-root, #career-os-field-chip')) return;
+    const hit = resolveValueForEl(el);
+    if (!hit) return;
+    lastFieldEl = el;
+    let chip = document.getElementById('career-os-field-chip');
+    if (!chip) {
+      chip = document.createElement('div');
+      chip.id = 'career-os-field-chip';
+      document.documentElement.appendChild(chip);
+    }
+    chip.textContent = '';
+    const meta = document.createElement('div');
+    meta.className = 'career-os-chip-meta';
+    const name = document.createElement('div');
+    name.className = 'career-os-chip-label';
+    name.textContent = hit.label || '当前格子';
+    const preview = document.createElement('div');
+    preview.className = 'career-os-chip-preview';
+    preview.textContent = hit.value ? String(hit.value).slice(0, 80) : '（底稿里没有对应内容）';
+    meta.appendChild(name);
+    meta.appendChild(preview);
+    const actions = document.createElement('div');
+    actions.className = 'career-os-chip-actions';
+    const fillBtn = document.createElement('button');
+    fillBtn.type = 'button';
+    fillBtn.textContent = '填入';
+    fillBtn.disabled = !hit.value;
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.textContent = '复制';
+    copyBtn.disabled = !hit.value;
+    fillBtn.addEventListener('mousedown', (e) => e.preventDefault());
+    copyBtn.addEventListener('mousedown', (e) => e.preventDefault());
+    fillBtn.addEventListener('click', () => {
+      const ok = setNativeValue(el, hit.value);
+      showToast(ok ? '已填入: ' + hit.label : '控件写不进，已复制');
+      if (!ok) copyToClipboard(hit.value, hit.label);
+    });
+    copyBtn.addEventListener('click', () => copyToClipboard(hit.value, hit.label));
+    actions.appendChild(fillBtn);
+    actions.appendChild(copyBtn);
+    chip.appendChild(meta);
+    chip.appendChild(actions);
+    placeChip(chip, el);
+  }
+
+  function bindPageShortcuts() {
+    const api = self.CareerOsShortcuts;
+    if (!api) return;
+    let map = null;
+    api.load().then((s) => { map = s; });
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.careerOsShortcuts) api.load().then((s) => { map = s; });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!map) return;
+      if (api.match(e, map.fill)) {
+        e.preventDefault();
+        executeAutofill({ blankOnly: false });
+      } else if (api.match(e, map.blank)) {
+        e.preventDefault();
+        executeAutofill({ blankOnly: true });
+      } else if (api.match(e, map.capture)) {
+        e.preventDefault();
+        chrome.runtime.sendMessage({ action: 'CAPTURE_ACTIVE_TAB' });
+      } else if (api.match(e, map.focused)) {
+        e.preventDefault();
+        const el = lastFieldEl || document.activeElement;
+        const hit = resolveValueForEl(el);
+        if (hit && hit.value) {
+          const ok = setNativeValue(el, hit.value);
+          showToast(ok ? '已填入当前格子' : '写不进，已复制');
+          if (!ok) copyToClipboard(hit.value, hit.label);
+        } else showToast('当前格子没有对应底稿');
+      } else if (api.match(e, map.copy)) {
+        e.preventDefault();
+        const el = lastFieldEl || document.activeElement;
+        const hit = resolveValueForEl(el);
+        if (hit && hit.value) copyToClipboard(hit.value, hit.label);
+        else showToast('当前格子没有对应底稿');
+      }
+    }, true);
+  }
+
+  document.addEventListener('focusin', (ev) => {
+    const el = ev.target;
+    if (!el || !el.tagName) return;
+    const tag = el.tagName.toLowerCase();
+    if (tag !== 'input' && tag !== 'textarea' && tag !== 'select') return;
+    if (el.type === 'hidden' || el.type === 'file' || el.type === 'checkbox' || el.type === 'radio') return;
+    showFieldChip(el);
+  });
+  document.addEventListener('scroll', () => {
+    if (lastFieldEl && document.activeElement === lastFieldEl) {
+      const chip = document.getElementById('career-os-field-chip');
+      if (chip && chip.style.display !== 'none') placeChip(chip, lastFieldEl);
+    } else hideFieldChip();
+  }, true);
+
+  bindPageShortcuts();
+
+  requestFillContext().then((ctx) => {
+    applyFillContext(ctx);
     if (isTop) injectFloatingUI();
-  }).catch((err) => {
-    if (isTop) {
-      console.warn('[Career OS] 画像未加载:', err.message || err);
-    }
+  }).catch(() => {
+    requestProfile().then((bundle) => {
+      profile = bundle.data || bundle;
+      if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
+        self.CareerOsFieldMap.setRules(bundle.field_rules || []);
+      }
+      if (isTop) injectFloatingUI();
+    }).catch((err) => {
+      if (isTop) {
+        console.warn('[Career OS] 画像未加载:', err.message || err);
+      }
+    });
   });
 })();

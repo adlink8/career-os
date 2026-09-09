@@ -23,6 +23,11 @@ except ModuleNotFoundError:
     from bin.career_os_store import get_db, ROOT
 
 try:
+    from services.job_service import JobService
+except ImportError:
+    from bin.services.job_service import JobService
+
+try:
     from jd_assessment_mapper import infer_assessment_profile
 except ModuleNotFoundError:
     from bin.jd_assessment_mapper import infer_assessment_profile
@@ -403,10 +408,7 @@ def apply_proposal(conn: Any, *, proposal_id: int, confirm: bool = False, cv_roo
 
 
 def get_job(conn: Any, job_id: int) -> Any:
-    row = conn.execute(
-        "SELECT id, company_name, job_title, category, responsibilities, requirements, english_req FROM jobs WHERE id=?",
-        (job_id,),
-    ).fetchone()
+    row = JobService.get_job(int(job_id), conn=conn)
     if not row:
         raise ValueError(f"岗位不存在: {job_id}")
     return row

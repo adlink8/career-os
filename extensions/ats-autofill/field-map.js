@@ -84,10 +84,42 @@
     return /^\d{17}[\dXx]$/.test(String(value || '').trim());
   }
 
+  function isNoiseLabel(label) {
+    var raw = String(label || '').replace(/\s+/g, ' ').trim();
+    return /^(请选择|请输入|请填写|\+86|\+86 \+86|moka-version|验证码|captcha)$/i.test(raw);
+  }
+
+  function matchAutofillValue(field, autofill) {
+    if (!field || !autofill) return '';
+    var rows = autofill.fields || [];
+    var label = String(field.label || '').replace(/\s+/g, ' ').trim();
+    var i;
+    for (i = 0; i < rows.length; i++) {
+      if (String(rows[i].label || '').replace(/\s+/g, ' ').trim() === label && rows[i].value) {
+        return String(rows[i].value);
+      }
+    }
+    if (field.slot) {
+      for (i = 0; i < rows.length; i++) {
+        if (rows[i].slot === field.slot && rows[i].value) return String(rows[i].value);
+      }
+    }
+    var answers = autofill.open_answers || [];
+    for (i = 0; i < answers.length; i++) {
+      var a = answers[i];
+      if (a && a.value && a.label && String(a.label).replace(/\s+/g, ' ').trim() === label) {
+        return String(a.value);
+      }
+    }
+    return '';
+  }
+
   root.CareerOsFieldMap = {
     setRules: setRules,
     resolveSlot: resolveSlot,
     valueForSlot: valueForSlot,
-    isRealIdCard: isRealIdCard
+    isRealIdCard: isRealIdCard,
+    isNoiseLabel: isNoiseLabel,
+    matchAutofillValue: matchAutofillValue
   };
 })(typeof self !== 'undefined' ? self : this);

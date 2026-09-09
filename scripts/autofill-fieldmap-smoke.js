@@ -78,6 +78,33 @@ check('假身份证不填', !filled.some((r) => r.slot === 'universal.personal.i
 check('学校名称能映射', fmap.resolveSlot('学校名称', { isTextarea: false }) === 'universal.education.undergraduate.school');
 check('学习形式能映射', fmap.resolveSlot('学习形式', { isTextarea: false }) === 'universal.education.undergraduate.education_type');
 check('期望工作城市能映射', fmap.resolveSlot('期望工作城市', { isTextarea: false }) === 'application.expected_city');
+check('请选择是噪声标签', fmap.isNoiseLabel('请选择'));
+const overlaySrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8');
+vm.runInNewContext(overlaySrc, sandbox);
+const overlay = sandbox.self.CareerOsOverlay;
+const scSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/shortcuts.js'), 'utf8');
+vm.runInNewContext(scSrc, sandbox);
+const sc = sandbox.self.CareerOsShortcuts;
+check('shortcuts 加载', !!sc);
+check('默认填表快捷键含 Alt+Shift', sc.format(sc.DEFAULTS.fill).indexOf('Alt') >= 0 && sc.format(sc.DEFAULTS.fill).indexOf('F') >= 0);
+
+check('overlay store 加载', !!overlay);
+const ov = overlay.emptyProfile();
+overlay.setByPath(ov, 'universal.personal.name', '设置页姓名');
+overlay.setByPath(ov, 'application.projects.0.name', '网关项目');
+check('overlay 姓名路径', overlay.getByPath(ov, 'universal.personal.name') === '设置页姓名');
+check('overlay 项目数组路径', overlay.getByPath(ov, 'application.projects.0.name') === '网关项目');
+const imported = overlay.normalizeImport({
+  fields: [{ slot: 'universal.personal.name', value: '拖入姓名' }],
+  target_position: '运维工程师'
+});
+check('拖入 fields JSON 能归一', overlay.getByPath(imported, 'universal.personal.name') === '拖入姓名');
+check('AI 提示词含模板 version', overlay.buildAiPrompt().indexOf('3.0-overlay') >= 0);
+
+check('按岗载荷覆盖意向', fmap.matchAutofillValue(
+  { label: '求职意向', slot: 'application.target_position' },
+  { fields: [{ label: '求职意向', slot: 'application.target_position', value: 'Java开发工程师（AI应用部）' }] }
+) === 'Java开发工程师（AI应用部）');
 check('专业排名能映射', fmap.resolveSlot('专业排名', { isTextarea: false }) === 'universal.education.undergraduate.rank');
 check('实践名称能映射', fmap.resolveSlot('实践名称', { isTextarea: false }) === 'application.campus_practices.name');
 check('职务名称能映射', fmap.resolveSlot('职务名称', { isTextarea: false }) === 'application.campus_roles.name');

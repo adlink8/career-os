@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 21
+SCHEMA_VERSION = 22
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -1313,12 +1313,14 @@ body {
             context_json_path TEXT NOT NULL DEFAULT '',
             application_id INTEGER,
             notes TEXT NOT NULL DEFAULT '',
+            apply_mode TEXT NOT NULL DEFAULT 'precision',
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             FOREIGN KEY (context_id) REFERENCES job_page_contexts(id)
         )
         """
     )
+    _add_column(conn, "job_apply_runs", "apply_mode", "TEXT NOT NULL DEFAULT 'precision'")
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_job_apply_runs_stage ON job_apply_runs(stage, updated_at)"
     )

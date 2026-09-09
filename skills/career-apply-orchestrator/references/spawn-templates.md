@@ -44,7 +44,9 @@ pack 里的 suggested 可作初值，但必须按立项三门槛复核。不要�
 {pack_path}
 
 规则：关键词必须落在项目正文（动作+指标）；禁止只堆技能栏；bounce_facts 是事实不是话术。
-输出 JSON：role=optimize, resume_md（完整 Markdown 简历）, resume_path（若已有 PDF 则填路径否则空串）。
+求职意向必须等于 pack.title（官网 JD 全称）。
+若 pack.open_prompts 非空，为每条写 open_answers[{key,label,value}]，不要把开放题糊进自我评价栏。
+输出 JSON：role=optimize, resume_md（完整 Markdown 简历）, resume_path（若已有 PDF 则填路径否则空串）, open_answers。
 不要自评 ATS，不要扮演 HR/面试官。
 ```
 

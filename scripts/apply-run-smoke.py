@@ -78,14 +78,21 @@ def main() -> int:
         ApplyRunError,
         arbitrate,
         ingest,
+        lookup_fill_payload,
+        mark_applied,
         next_action,
+        pick_volume_track,
         release,
         run_ats,
         start_run,
     )
 
     conn = get_db()
-    check("schema v21", SCHEMA_VERSION == 21)
+    check("schema v22", SCHEMA_VERSION == 22)
+    check(
+        "apply_mode column",
+        "apply_mode" in {r[1] for r in conn.execute("PRAGMA table_info(job_apply_runs)")},
+    )
     check(
         "job_apply_runs exists",
         conn.execute(
@@ -106,6 +113,8 @@ def main() -> int:
             "form_schema": [
                 {"label": "姓名", "required": True},
                 {"label": "求职意向", "required": True},
+                {"label": "为什么选择本公司", "required": True, "type": "textarea"},
+                {"label": "请选择", "required": False},
             ],
         },
     )
@@ -191,7 +200,18 @@ def main() -> int:
         conn,
         run_id,
         "optimize",
-        str(_write(tmp / "opt2.json", {"role": "optimize", "resume_md": resume_md})),
+        str(
+            _write(
+                tmp / "opt2.json",
+                {
+                    "role": "optimize",
+                    "resume_md": resume_md,
+                    "open_answers": [
+                        {"key": "why_us", "value": "因为 Linux 运维与岗位职责对口。"}
+                    ],
+                },
+            )
+        ),
     )
     ats_engine.ATSEngine = _fake_ats(88, "PASS")
     ats_run = run_ats(conn, run_id, str(resume_file))
@@ -230,6 +250,26 @@ def main() -> int:
     check("released", released["stage"] == "released")
     autofill = json.loads(Path(released["autofill_json_path"]).read_text(encoding="utf-8"))
     check("autofill has fields", len(autofill.get("fields") or []) >= 2)
+    by_label = {str(f.get("label")): f for f in (autofill.get("fields") or [])}
+    check("target_position equals context title", bool(autofill.get("target_position")) and autofill.get("target_position") == autofill.get("title"))
+    check("求职意向用官网标题", (by_label.get("求职意向") or {}).get("value") == autofill.get("target_position"))
+    check("开放题写入 why_us", (by_label.get("为什么选择本公司") or {}).get("value", "").find("Linux") >= 0)
+    check("请选择记为 noise", (by_label.get("请选择") or {}).get("kind") == "noise")
+    check("coverage 含 required_empty", "required_empty" in (autofill.get("coverage") or {}))
+
+    looked = lookup_fill_payload(
+        conn,
+        url="https://example.zhiye.com/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    )
+    check("lookup released by jobAdId", looked.get("mode") == "released" and looked.get("run_id") == run_id)
+
+    try:
+        mark_applied(conn, run_id, coverage={"required_empty": ["手机号"], "widget_fail": []})
+        check("mark-applied blocked when required empty", False)
+    except ApplyRunError:
+        check("mark-applied blocked when required empty", True)
+    marked = mark_applied(conn, run_id, coverage={"required_empty": [], "widget_fail": []})
+    check("mark-applied ok when coverage ready", bool((marked.get("fill_coverage") or {}).get("ready")))
 
     # fail review cannot release
     run2 = start_run(conn, context_path=str(ctx_path))
@@ -247,6 +287,21 @@ def main() -> int:
         "knockout_check": {"has_composite_intent_violation": False}
     }))))
     arb2 = arbitrate(conn, rid2)
+    vol = start_run(conn, context_path=str(ctx_path), mode="volume", allow_test_profile=True)
+    check("volume skips decompose", vol["stage"] == "volume_ready")
+    check("volume apply_mode", vol.get("apply_mode") == "volume")
+    vol_af = json.loads(Path(vol["autofill_json_path"]).read_text(encoding="utf-8"))
+    check("volume 意向=官网标题", bool(vol_af.get("target_position")) and vol_af.get("target_position") == vol_af.get("title"))
+    check("volume 选了分轨", vol_af.get("track") in {"ops", "ai", "iot"})
+    check("ops 轨命中运维", pick_volume_track("运维工程师", "Linux Docker")["track"] == "ops")
+    nxt_vol = next_action(conn, int(vol["id"]))
+    check("volume next is done", nxt_vol.get("done") is True)
+    looked_vol = lookup_fill_payload(
+        conn,
+        url="https://example.zhiye.com/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    )
+    check("lookup prefers released over volume", looked_vol.get("run_id") == run_id and looked_vol.get("mode") == "released")
+
     check("hr veto -> review_failed", arb2["stage"] == "review_failed")
     try:
         release(conn, rid2, allow_test_profile=True)

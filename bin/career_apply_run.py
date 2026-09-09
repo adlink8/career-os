@@ -22,7 +22,10 @@ from career_os_store import get_db  # noqa: E402
 from services.apply_run import (  # noqa: E402
     ApplyRunError,
     arbitrate,
+    arm_volume,
     ingest,
+    lookup_fill_payload,
+    mark_applied,
     next_action,
     release,
     run_ats,
@@ -45,6 +48,17 @@ def main() -> int:
     p_start.add_argument("--job-context", help="JobContext JSON 路径")
     p_start.add_argument("--job-id", type=int, help="可选，关联 jobs.id")
     p_start.add_argument("--latest", action="store_true", help="使用库中最近一条 JobContext")
+    p_start.add_argument(
+        "--mode",
+        default="precision",
+        choices=["precision", "volume", "专投", "海投"],
+        help="precision=专投全流程；volume=海投分轨简历+官网意向",
+    )
+    p_start.add_argument("--allow-test-profile", action="store_true", help="冒烟用")
+
+    p_vol = sub.add_parser("arm-volume", help="已捕获的岗改海投：选分轨简历并出 autofill.json")
+    p_vol.add_argument("run_id", type=int)
+    p_vol.add_argument("--allow-test-profile", action="store_true")
 
     p_next = sub.add_parser("next", help="计算下一动作并按需写 pack")
     p_next.add_argument("run_id", type=int)
@@ -76,6 +90,14 @@ def main() -> int:
     p_gap.add_argument("run_id", type=int)
     p_gap.add_argument("--ingest", action="store_true", help="直接写入 gap-triage 并跃迁")
 
+    p_fill = sub.add_parser("fill-payload", help="按 URL/jobAdId 查找 released 填写载荷")
+    p_fill.add_argument("--url", default="")
+    p_fill.add_argument("--job-ad-id", default="")
+
+    p_mark = sub.add_parser("mark-applied", help="仅 released 且必填清零：记录网页已提交")
+    p_mark.add_argument("run_id", type=int)
+    p_mark.add_argument("--coverage", help="扩展写出的 fill-coverage JSON")
+
     args = parser.parse_args()
     conn = get_db()
     try:
@@ -85,8 +107,33 @@ def main() -> int:
                 context_path=args.job_context,
                 job_id=args.job_id,
                 latest=bool(args.latest),
+                mode=args.mode,
+                allow_test_profile=bool(args.allow_test_profile),
             )
-            _print({"ok": True, "run_id": run["id"], "stage": run["stage"], "job_ad_id": run["job_ad_id"]})
+            _print(
+                {
+                    "ok": True,
+                    "run_id": run["id"],
+                    "stage": run["stage"],
+                    "apply_mode": run.get("apply_mode"),
+                    "job_ad_id": run["job_ad_id"],
+                    "autofill_json_path": run.get("autofill_json_path"),
+                    "track": (run.get("track") or {}).get("track"),
+                }
+            )
+            return 0
+        if args.cmd == "arm-volume":
+            run = arm_volume(conn, args.run_id, allow_test_profile=bool(args.allow_test_profile))
+            _print(
+                {
+                    "ok": True,
+                    "run_id": run["id"],
+                    "stage": run["stage"],
+                    "apply_mode": "volume",
+                    "autofill_json_path": run.get("autofill_json_path"),
+                    "track": (run.get("track") or {}).get("track"),
+                }
+            )
             return 0
         if args.cmd == "next":
             _print(next_action(conn, args.run_id))
@@ -159,6 +206,28 @@ def main() -> int:
                 )
                 return 0
             _print({"ok": True, "suggested": suggested, "path": str(out)})
+            return 0
+        if args.cmd == "fill-payload":
+            payload = lookup_fill_payload(
+                conn,
+                url=args.url,
+                job_ad_id=args.job_ad_id,
+            )
+            _print({"ok": True, **payload})
+            return 0 if payload.get("allow_fill") else 1
+        if args.cmd == "mark-applied":
+            coverage = None
+            if args.coverage:
+                coverage = json.loads(Path(args.coverage).read_text(encoding="utf-8"))
+            run = mark_applied(conn, args.run_id, coverage=coverage)
+            _print(
+                {
+                    "ok": True,
+                    "run_id": run["id"],
+                    "fill_coverage": run.get("fill_coverage"),
+                    "note": "已记网页提交，未自动点网页按钮",
+                }
+            )
             return 0
         parser.error("unknown command")
         return 2

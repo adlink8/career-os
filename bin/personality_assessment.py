@@ -19,8 +19,10 @@ if hasattr(sys.stdout, "reconfigure"):
 
 try:
     from career_os_store import add_timeline_event, get_db
+    from services.job_service import JobService
 except ModuleNotFoundError:
     from bin.career_os_store import add_timeline_event, get_db
+    from bin.services.job_service import JobService
 
 
 DEFAULT_ASSESSMENT_KIND = "career-personality-v1"
@@ -196,7 +198,7 @@ def run_personality_assessment(
     report = score_personality(rows, selected)
     job = None
     if job_id:
-        job = conn.execute("SELECT id, company_name, job_title FROM jobs WHERE id = ?", (job_id,)).fetchone()
+        job = JobService.get_job(int(job_id), conn=conn)
     cur = conn.execute(
         """
         INSERT INTO mock_exam_records

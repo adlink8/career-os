@@ -35,7 +35,9 @@ trigger:
 - 禁止在 `review_passed` 前说「去投吧」。
 - 禁止用 LLM 重算五维 ATS 或会审加权总分。
 - 测试画像（`profile.test.json` / 「测一填」）禁止 `release`。
-- 浏览器不自动点提交。`release` 只写库 + `autofill.json`。
+- 浏览器不自动点提交。`release` / `arm-volume` 只写库 + `autofill.json`。真表填充必须命中该 run；必填未清零不能 `mark-applied`。
+- **海投**（`--mode volume`）：选已有分轨简历 + 求职意向改官网标题，跳过拆解/ATS/会审。不改项目正文、不写开放题。硬门槛或复合意向直接放弃。
+- **专投**（`--mode precision`，默认）：完整拆解→对照→定制→ATS→会审。高价值/高匹配岗才走这条。
 
 ## 标准循环
 
@@ -47,12 +49,15 @@ start → 反复 next
 ```
 
 ```bash
-python bin/career_apply_run.py start --job-context <JobContext.json> [--job-id N]
+python bin/career_apply_run.py start --job-context <JobContext.json> [--job-id N] [--mode volume|precision]
+python bin/career_apply_run.py arm-volume <run_id>
 python bin/career_apply_run.py next <run_id>
 python bin/career_apply_run.py ingest <run_id> --role <role> --file <json>
 python bin/career_apply_run.py ats <run_id> --resume <pdf或md>
 python bin/career_apply_run.py arbitrate <run_id>
 python bin/career_apply_run.py release <run_id>
+python bin/career_apply_run.py fill-payload --url <网申URL>
+python bin/career_apply_run.py mark-applied <run_id> [--coverage fill-coverage.json]
 python bin/career_apply_run.py status <run_id>
 ```
 
@@ -106,7 +111,8 @@ ATS 打回**禁止**直接再改简历。先分诊：词已在项目里 → 漏�
 {
   "role": "optimize",
   "resume_md": "...",
-  "resume_path": ""
+  "resume_path": "",
+  "open_answers": [{"key": "why_us", "label": "", "value": ""}]
 }
 ```
 

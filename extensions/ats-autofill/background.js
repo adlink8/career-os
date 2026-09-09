@@ -4,8 +4,9 @@
  */
 
 try { importScripts('runtime-log.js'); } catch (_) { /* ignore */ }
+try { importScripts('overlay-store.js'); } catch (_) { /* ignore */ }
 
-const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'beisen-fill.js', 'content.js'];
+const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'shortcuts.js', 'beisen-fill.js', 'content.js'];
 const CONTENT_CSS = ['content.css'];
 
 function mergeCaptures(results) {
@@ -187,6 +188,113 @@ async function persistContext(ctx) {
   };
 }
 
+function isTestProfile(data) {
+  if (!data || typeof data !== 'object') return false;
+  const version = String(data.version || '').toLowerCase();
+  const name = (((data.universal || {}).personal || {}).name) || '';
+  return !!data.test_only || version.indexOf('test') >= 0 || name === '测一填';
+}
+
+async function loadOverlay() {
+  const Overlay = self.CareerOsOverlay;
+  if (!Overlay) return { enabled: false, profile: null };
+  return Overlay.loadState();
+}
+
+async function loadPackagedJson(name) {
+  const url = chrome.runtime.getURL(name) + '?t=' + Date.now();
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(name);
+  return res.json();
+}
+
+async function loadFieldRules() {
+  try {
+    const rules = await loadPackagedJson('field-map-rules.json');
+    return Array.isArray(rules) ? rules : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+async function loadFillPayload(url) {
+  const overlay = await loadOverlay();
+  const field_rules = await loadFieldRules();
+  let bundle = { data: null, field_rules: field_rules };
+  try {
+    bundle = await loadProfile();
+    if (!bundle.field_rules || !bundle.field_rules.length) bundle.field_rules = field_rules;
+  } catch (_) {
+    bundle = { data: null, field_rules: field_rules };
+  }
+
+  if (overlay.enabled && overlay.profile) {
+    const name = (((overlay.profile.universal || {}).personal || {}).name) || '';
+    if (!name) {
+      return {
+        ok: true,
+        mode: 'setup',
+        allow_fill: false,
+        reason: '设置页已打开开关但未填姓名。点齿轮填底稿后点「一键导入并启用」。',
+        autofill: null,
+        profile: overlay.profile,
+        field_rules: bundle.field_rules,
+        run_id: null,
+        overlay: true
+      };
+    }
+    return {
+      ok: true,
+      mode: 'overlay',
+      apply_mode: 'overlay',
+      allow_fill: true,
+      reason: '',
+      autofill: null,
+      profile: overlay.profile,
+      field_rules: bundle.field_rules,
+      run_id: null,
+      overlay: true,
+      name: name
+    };
+  }
+
+  try {
+    const msg = await sendNative({ action: 'get_fill_payload', url: url || '' });
+    if (msg && (msg.ok || msg.mode) && msg.mode !== 'blocked') {
+      if (!msg.field_rules) msg.field_rules = bundle.field_rules;
+      if (!msg.profile) msg.profile = bundle.data;
+      return msg;
+    }
+  } catch (_) {
+    /* 没装 Career OS / Native Host：插件单独用设置页即可 */
+  }
+
+  const test = isTestProfile(bundle.data);
+  if (test) {
+    return {
+      ok: true,
+      mode: 'test',
+      allow_fill: true,
+      reason: '测试画像，仅试控件',
+      autofill: null,
+      profile: bundle.data,
+      field_rules: bundle.field_rules,
+      run_id: null
+    };
+  }
+
+  return {
+    ok: true,
+    mode: 'setup',
+    allow_fill: false,
+    reason: '只装插件时：点齿轮打开设置，填写或拖入 JSON，再点「一键导入并启用」。不必安装 Career OS。',
+    autofill: null,
+    profile: bundle.data,
+    field_rules: bundle.field_rules,
+    run_id: null
+  };
+}
+
 async function loadProfile() {
   try {
     const msg = await sendNative({ action: 'get_profile' });
@@ -194,21 +302,24 @@ async function loadProfile() {
       return { data: msg.data, field_rules: msg.field_rules || [] };
     }
   } catch (_) {
-    /* fall back to packaged file */
+    /* 单独用插件时没有 Native Host */
   }
-  const stamp = Date.now();
-  const url = chrome.runtime.getURL('profile.json') + '?t=' + stamp;
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error('缺少 profile.json，请运行 python bin/sync_autofill_profile.py');
-  }
-  const data = await res.json();
-  let field_rules = [];
   try {
-    const rr = await fetch(chrome.runtime.getURL('field-map-rules.json') + '?t=' + stamp, { cache: 'no-store' });
-    if (rr.ok) field_rules = await rr.json();
-  } catch (_) { /* optional */ }
-  return { data: data, field_rules: field_rules };
+    const data = await loadPackagedJson('profile.json');
+    return { data: data, field_rules: await loadFieldRules() };
+  } catch (_) {
+    /* 未打包个人画像 */
+  }
+  const overlay = await loadOverlay();
+  if (overlay.profile) {
+    return { data: overlay.profile, field_rules: await loadFieldRules() };
+  }
+  try {
+    const data = await loadPackagedJson('profile.example.json');
+    return { data: data, field_rules: await loadFieldRules() };
+  } catch (_) {
+    throw new Error('没有画像。请打开设置页填写，或拖入 JSON。');
+  }
 }
 
 async function injectContent(tabId) {
@@ -256,6 +367,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true;
   }
 
+  if (msg && msg.action === 'OPEN_OPTIONS') {
+    chrome.runtime.openOptionsPage();
+    sendResponse({ ok: true });
+    return true;
+  }
+
   if (msg && msg.action === 'GET_PROFILE') {
     loadProfile()
       .then((bundle) => sendResponse({
@@ -264,6 +381,59 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         field_rules: bundle.field_rules || [],
         hot: true
       }))
+      .catch((err) => sendResponse({ ok: false, error: String(err && err.message ? err.message : err) }));
+    return true;
+  }
+
+  if (msg && msg.action === 'GET_FILL_PAYLOAD') {
+    chrome.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
+      const tab = tabs && tabs[0];
+      const url = msg.url || (tab && tab.url) || '';
+      try {
+        const payload = await loadFillPayload(url);
+        sendResponse(payload);
+      } catch (err) {
+        sendResponse({ ok: false, mode: 'blocked', allow_fill: false, error: String(err && err.message ? err.message : err) });
+      }
+    });
+    return true;
+  }
+
+  if (msg && msg.action === 'IMPORT_FROM_ACTIVE_TAB') {
+    const atsRe = /zhiye\.com|italent\.cn|beisen\.com|mokahr\.com|moka\.com|dayee\.com|hotjob\.cn/;
+    chrome.tabs.query({}).then(async (all) => {
+      const active = (all || []).filter((t) => t.active);
+      let tab = active.find((t) => atsRe.test(t.url || ''));
+      if (!tab) tab = (all || []).find((t) => atsRe.test(t.url || ''));
+      if (!tab || !tab.id) {
+        sendResponse({ ok: false, error: '没有打开的北森/Moka 网申页。请先打开报名表再点导入。' });
+        return;
+      }
+      await injectContent(tab.id);
+      const results = await broadcast(tab.id, { action: 'READ_FIELD_VALUES' });
+      const fields = [];
+      results.forEach((r) => {
+        if (r && r.ok && Array.isArray(r.fields)) {
+          r.fields.forEach((f) => fields.push(f));
+        }
+      });
+      sendResponse({
+        ok: fields.length > 0,
+        fields: fields,
+        count: fields.length,
+        title: tab.title || '',
+        url: tab.url || ''
+      });
+    });
+    return true;
+  }
+
+  if (msg && msg.action === 'MARK_APPLIED') {
+    sendNative({
+      action: 'mark_applied',
+      run_id: msg.run_id,
+      coverage: msg.coverage || {}
+    }).then((reply) => sendResponse(reply))
       .catch((err) => sendResponse({ ok: false, error: String(err && err.message ? err.message : err) }));
     return true;
   }
@@ -332,12 +502,35 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         return;
       }
       await injectContent(tab.id);
-      const results = await broadcast(tab.id, { action: 'AUTOFILL' });
+      const payload = await loadFillPayload(tab.url || '');
+      if (!payload.allow_fill) {
+        sendResponse({ ok: false, error: payload.reason || '未放行，禁止填充', mode: payload.mode });
+        return;
+      }
+      const results = await broadcast(tab.id, {
+        action: 'AUTOFILL',
+        fill: payload,
+        blankOnly: !!msg.blankOnly
+      });
       const filled = results.reduce((n, r) => n + (r && r.count ? r.count : 0), 0);
-      sendResponse({ ok: true, filled, frames: results.length });
+      const coverage = (results.find((r) => r && r.coverage) || {}).coverage || null;
+      sendResponse({
+        ok: true,
+        filled,
+        frames: results.length,
+        mode: payload.mode,
+        run_id: payload.run_id,
+        coverage: coverage
+      });
     });
     return true;
   }
 
   return false;
+});
+
+chrome.runtime.onInstalled.addListener((info) => {
+  if (info && info.reason === 'install') {
+    chrome.runtime.openOptionsPage();
+  }
 });

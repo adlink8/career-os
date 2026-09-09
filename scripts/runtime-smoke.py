@@ -38,7 +38,7 @@ def main() -> int:
     )
     for table in ("mock_exam_answers", "interview_turns", "github_project_candidates", "resume_project_proposals", "job_page_contexts", "job_apply_runs", "job_apply_run_events"):
         check(f"table {table} exists", conn.execute("select 1 from sqlite_master where type='table' and name=?", (table,)).fetchone() is not None)
-    for table, column in (("mock_exam_records", "provider"), ("mock_interview_reports", "rubric_version"), ("mock_questions", "source_plugin"), ("mock_questions", "assessment_kind"), ("mock_questions", "dimension"), ("jobs", "source_plugin"), ("github_project_candidates", "license_spdx"), ("github_project_candidates", "matched_terms_json"), ("resume_project_proposals", "evidence_text")):
+    for table, column in (("mock_exam_records", "provider"), ("mock_interview_reports", "rubric_version"), ("mock_questions", "source_plugin"), ("mock_questions", "assessment_kind"), ("mock_questions", "dimension"), ("jobs", "source_plugin"), ("github_project_candidates", "license_spdx"), ("github_project_candidates", "matched_terms_json"), ("resume_project_proposals", "evidence_text"), ("job_apply_runs", "apply_mode")):
         check(f"column {table}.{column} exists", column in {r[1] for r in conn.execute(f"pragma table_info({table})")})
     check(
         "active personality bank is GitHub/IPIP sourced",

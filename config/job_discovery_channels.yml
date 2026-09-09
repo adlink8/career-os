@@ -1,0 +1,81 @@
+# 岗位搜寻渠道配置（模拟真人浏览 + 截图提取）
+# 用法：python scripts/job_discovery_screenshot.py --channel boss
+#
+# 字段说明：
+#   needs_login: true 时自动弹窗扫码（轮询登录态，最长 180s；cookie 持久化一次扫码多日免登）
+#   login_detect_selector: 出现该元素 = 已登录（来源 get_jobs 8.3k★ 实测选择器）
+#   search_url_template / search_input_selector: 二选一，URL 直达优先
+#   detail_link_selector: 列表页岗位链接（详情页阶段用，新标签页打开 + 全页截图）
+#
+# 反算法搜索策略（社区实践 + get_jobs/jobclaw 源码调研，2026-09）：
+#   1. 多关键词交叉轮换 —— 突破单一岗位名的推荐池盲区
+#   2. 详情页全页截图含 HR 活跃时间 —— 提取阶段跳过 7 天未活跃的僵尸岗
+#   3. PC 网页端岗位池与 APP 不互通 —— 本管道即 PC 侧补盲
+#   4. 刷新窗口：早 8 点 / 午 2 点 / 晚 6 点岗位最新、HR 在线高峰
+#   5. 首次使用 BOSS 前人工一次性设置：关闭个性化推荐（我的→设置→隐私）、
+#      筛选「精选公司」、屏蔽保险/直播/加盟关键词
+#
+# 待实测校准：boss/zhilian 的 city 码按天气码惯例填常州，首次运行如城市不对，
+# 在弹出页面手动选一次城市，URL 里的真实城市码回填到这里即可。
+
+defaults:
+  pages: 1                # 每个关键词翻几页
+  scroll_steps: 5         # 每页模拟滚动几屏（触发懒加载）
+  keyword: "运维工程师"
+
+channels:
+  - id: guopin
+    name: 国聘
+    needs_login: false
+    headless: true
+    entry_url: "https://www.iguopin.com/"
+    # 国聘是 SPA：卡片无 href，点击弹新标签到 /job/detail?id=xxx（实测未登录可看）
+    detail_click_selector: ".job-card"
+    search_input_selector: "input[placeholder*='关键词']"
+    keywords: ["运维工程师", "技术支持工程师", "平台运维"]
+
+  - id: boss
+    name: BOSS直聘
+    needs_login: true
+    headless: false
+    # ===== CDP 附加模式（社区正统方案，get_jobs 8.3k★ 同款）=====
+    # BOSS 检测"自动化方式启动的浏览器"→ 强制刷新/打回匿名/封号。
+    # 真实 Edge 常驻启动（9222 调试端口），脚本只附加操作，浏览器跨运行复用；
+    # 首次运行人工登录一次，之后长期免登
+    attach_cdp: true
+    cdp_port: 9222
+    browser_channel: msedge
+    # 真实 Edge 直连家宽（不走 Clash），机场出口 IP 会被 BOSS 压制
+    no_proxy: true
+    entry_url: "https://www.zhipin.com/"
+    # 不直接拼搜索 URL：BOSS 对自动化拼 URL 访问会挂起连接，且高频触发 IP 限流。
+    # 改为首页搜索框真人输入回车，URL 由前端安全 JS 生成（get_jobs 实测 selector）
+    search_input_selector: "input[name='query']"
+    login_detect_selector: "//li[@class='nav-figure']"   # 头像入口=已登录
+    detail_link_selector: "a.job-card-left"              # 岗位卡片链接 → /job_detail/xxx.html
+    keywords: ["运维工程师", "技术支持工程师", "IT运维", "桌面运维", "系统运维"]
+
+  - id: zhilian
+    name: 智联招聘
+    needs_login: true
+    headless: false
+    entry_url: "https://www.zhaopin.com/"
+    # get_jobs 实测：/sou/jl{城市码}/p{页码} 格式；551 待校准
+    search_url_template: "https://www.zhaopin.com/sou/jl551/p1?q={kw}"
+    login_detect_selector: "//div[@class='pcMain']//a[contains(@class,'pc-nav__item')]"   # 待校准：导航栏=已登录
+    detail_link_selector: "a.jobinfo__name"              # 岗位名链接 → jobdetail/xxx.htm
+    keywords: ["运维工程师", "技术支持"]
+
+  - id: changzhou_rsj
+    name: 常州本地渠道（人社/人才网）
+    needs_login: false
+    headless: true
+    entry_url: "https://www.czrc.com.cn/"
+    keywords: ["运维"]
+
+  - id: czu_jiuye
+    name: 常州大学就业信息网
+    needs_login: false
+    headless: true
+    entry_url: "https://jyw.cczu.edu.cn/"
+    keywords: []

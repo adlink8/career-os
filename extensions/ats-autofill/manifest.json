@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Career OS 网申自动填表助手",
-  "version": "1.4.1",
-  "description": "捕获当前岗位 JD 与表单格子，按本页 schema 填充。画像不暴露给网页。",
+  "version": "1.8.0",
+  "description": "可单独使用的网申填表助手。设置页底稿即可填北森/Moka，不必安装 Career OS。不自动提交。",
   "permissions": [
     "storage",
     "activeTab",
@@ -18,6 +18,10 @@
   ],
   "background": {
     "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
   },
   "action": {
     "default_popup": "popup.html",
@@ -45,6 +49,7 @@
       "js": [
         "field-map.js",
         "runtime-log.js",
+        "shortcuts.js",
         "beisen-fill.js",
         "content.js"
       ],

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Career OS 填表设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+<div class="page">
+<div class="shell">
+  <header class="top">
+    <div>
+      <h1>北森式填表底稿</h1>
+      <p class="sub">只装本插件就能用：填底稿或拖入 JSON，打开开关即可填网申。Career OS 是可选增强，关掉开关才去读它。</p>
+    </div>
+    <label class="switch-wrap">
+      <span id="switch-label">关闭 · 读本地 JSON</span>
+      <input type="checkbox" id="overlay-enabled">
+      <span class="switch"></span>
+    </label>
+  </header>
+
+  <div class="toolbar">
+    <button type="button" class="btn primary" id="btn-import">一键导入并启用</button>
+    <button type="button" class="btn" id="btn-from-json">从本地 JSON 填入本页</button>
+    <button type="button" class="btn" id="btn-from-page">从当前网申页导入</button>
+    <button type="button" class="btn danger" id="btn-clear">清空本页</button>
+  </div>
+  <div class="msg" id="msg" hidden></div>
+
+  <div class="dropzone" id="sec-import">
+    <input type="file" id="file-json" accept="application/json,.json" hidden>
+    <strong>把 JSON 拖到这里导入</strong>
+    <span>也可点击选择文件。支持设置页画像，或带 fields[].slot 的 autofill.json。</span>
+    <div class="drop-actions">
+      <button type="button" class="btn" id="btn-pick-json">选择 JSON 文件</button>
+      <button type="button" class="btn primary" id="btn-copy-prompt">一键复制 AI 提示词</button>
+    </div>
+  </div>
+
+  <section class="shortcuts" id="sec-keys">
+    <h2>快捷键（网申页生效）</h2>
+    <p class="sub" style="margin-bottom:10px;">点输入框后按下组合键录制。填入/复制都针对<strong>当前格子</strong>，不用滚到右下角。</p>
+    <div id="shortcut-editor"></div>
+    <button type="button" class="btn" id="btn-shortcut-reset">恢复默认快捷键</button>
+  </section>
+
+  <form id="overlay-form">
+    <section id="sec-personal">
+      <h2>个人信息</h2>
+      <div class="grid">
+        <label>姓名 <input name="universal.personal.name"></label>
+        <label>性别 <input name="universal.personal.gender" placeholder="男 / 女"></label>
+        <label>手机号 <input name="universal.personal.phone"></label>
+        <label>邮箱 <input name="universal.personal.email"></label>
+        <label>出生日期 <input name="universal.personal.birth_date" placeholder="YYYY-MM-DD"></label>
+        <label>民族 <input name="universal.personal.ethnicity"></label>
+        <label>政治面貌 <input name="universal.personal.political_status"></label>
+        <label>籍贯 <input name="universal.personal.native_place"></label>
+        <label>现居住地 <input name="universal.personal.current_city"></label>
+        <label>婚姻 <input name="universal.personal.marriage"></label>
+        <label>健康状况 <input name="universal.personal.health"></label>
+        <label>身份证号 <input name="universal.personal.id_card"></label>
+        <label class="wide">详细地址 <input name="universal.personal.current_address"></label>
+        <label>紧急联系人 <input name="universal.personal.emergency_contact"></label>
+        <label>紧急电话 <input name="universal.personal.emergency_phone"></label>
+        <label>与本人关系 <input name="universal.personal.emergency_relation"></label>
+      </div>
+    </section>
+
+    <section id="sec-edu">
+      <h2>教育经历</h2>
+      <div class="grid">
+        <label>学校名称 <input name="universal.education.undergraduate.school"></label>
+        <label>学院 <input name="universal.education.undergraduate.college"></label>
+        <label>专业 <input name="universal.education.undergraduate.major"></label>
+        <label>学历 <input name="universal.education.undergraduate.degree" placeholder="本科"></label>
+        <label>学习形式 <input name="universal.education.undergraduate.education_type" placeholder="全日制"></label>
+        <label>入学时间 <input name="universal.education.undergraduate.start_date" placeholder="YYYY-MM"></label>
+        <label>毕业时间 <input name="universal.education.undergraduate.graduation" placeholder="YYYY-MM"></label>
+        <label>GPA <input name="universal.education.undergraduate.gpa"></label>
+        <label>专业排名 <input name="universal.education.undergraduate.rank"></label>
+      </div>
+    </section>
+
+    <section id="sec-intent">
+      <h2>求职意向</h2>
+      <div class="grid">
+        <label class="wide">应聘职位 / 求职意向 <input name="application.target_position" placeholder="填官网岗位全称"></label>
+        <label>期望城市 <input name="application.expected_city"></label>
+        <label>期望薪资 <input name="application.expected_salary"></label>
+        <label>到岗时间 <input name="universal.personal.available_time"></label>
+        <label>实习周期 <input name="universal.personal.internship_duration"></label>
+      </div>
+    </section>
+
+    <section id="sec-intern">
+      <h2>实习经历</h2>
+      <div class="grid">
+        <label>单位名称 <input name="application.internships.0.name"></label>
+        <label>职位名称 <input name="application.internships.0.role"></label>
+        <label>开始时间 <input name="application.internships.0.start_date"></label>
+        <label>结束时间 <input name="application.internships.0.end_date"></label>
+        <label class="wide">实习内容 <textarea name="application.internships.0.duty" rows="3"></textarea></label>
+      </div>
+    </section>
+
+    <section id="sec-proj1">
+      <h2>项目经历 1</h2>
+      <div class="grid">
+        <label>项目名称 <input name="application.projects.0.name"></label>
+        <label>担任角色 <input name="application.projects.0.role"></label>
+        <label>技术栈 <input name="application.projects.0.keywords"></label>
+        <label>开始时间 <input name="application.projects.0.start_date"></label>
+        <label>结束时间 <input name="application.projects.0.end_date"></label>
+        <label class="wide">项目描述 <textarea name="application.projects.0.full_text" rows="4"></textarea></label>
+      </div>
+    </section>
+
+    <section id="sec-proj2">
+      <h2>项目经历 2</h2>
+      <div class="grid">
+        <label>项目名称 <input name="application.projects.1.name"></label>
+        <label>担任角色 <input name="application.projects.1.role"></label>
+        <label>技术栈 <input name="application.projects.1.keywords"></label>
+        <label>开始时间 <input name="application.projects.1.start_date"></label>
+        <label>结束时间 <input name="application.projects.1.end_date"></label>
+        <label class="wide">项目描述 <textarea name="application.projects.1.full_text" rows="4"></textarea></label>
+      </div>
+    </section>
+
+    <section id="sec-campus">
+      <h2>在校职务 / 实践</h2>
+      <div class="grid">
+        <label>职务名称 <input name="application.campus_roles.0.name"></label>
+        <label class="wide">职务描述 <textarea name="application.campus_roles.0.description" rows="2"></textarea></label>
+        <label>实践名称 <input name="application.campus_practices.0.name"></label>
+        <label class="wide">实践描述 <textarea name="application.campus_practices.0.description" rows="2"></textarea></label>
+      </div>
+    </section>
+
+    <section id="sec-award">
+      <h2>获奖 / 证书 / 外语</h2>
+      <div class="grid">
+        <label>获奖项 <input name="application.award_records.0.name"></label>
+        <label>获奖时间 <input name="application.award_records.0.date"></label>
+        <label>获奖级别 <input name="application.award_records.0.level"></label>
+        <label class="wide">获奖描述 <textarea name="application.award_records.0.description" rows="2"></textarea></label>
+        <label>证书名称 <input name="application.certificate_records.0.name"></label>
+        <label>获得时间 <input name="application.certificate_records.0.date"></label>
+        <label>外语能力 <input name="universal.languages" placeholder="CET-4 / CET-6"></label>
+        <label>语言类型 <input name="application.languages.0.type" placeholder="英语"></label>
+        <label>掌握程度 <input name="application.languages.0.level"></label>
+      </div>
+    </section>
+
+    <section id="sec-eval">
+      <h2>自我评价 / 技能</h2>
+      <div class="grid">
+        <label class="wide">自我评价 <textarea name="application.self_evaluation" rows="4"></textarea></label>
+        <label class="wide">专业技能 <textarea name="application.skills_summary" rows="3"></textarea></label>
+        <label>熟练技能 <input name="application.skills_proficient"></label>
+        <label>熟悉技能 <input name="application.skills_familiar"></label>
+        <label class="wide">兴趣爱好 <input name="universal.hobbies"></label>
+      </div>
+    </section>
+  </form>
+
+  <p class="foot">不自动点网申提交。开关打开时优先用本页；关闭时走 Career OS 本地 profile.json / released / 海投载荷。</p>
+</div>
+<nav class="toc" id="toc" aria-label="填写导航">
+  <div class="toc-title">填写导航</div>
+  <a href="#sec-import">导入 JSON</a>
+  <a href="#sec-keys">快捷键</a>
+  <a href="#sec-personal">个人信息</a>
+  <a href="#sec-edu">教育经历</a>
+  <a href="#sec-intent">求职意向</a>
+  <a href="#sec-intern">实习经历</a>
+  <a href="#sec-proj1">项目经历 1</a>
+  <a href="#sec-proj2">项目经历 2</a>
+  <a href="#sec-campus">职务 / 实践</a>
+  <a href="#sec-award">获奖 / 证书</a>
+  <a href="#sec-eval">自我评价</a>
+</nav>
+</div>
+  <script src="overlay-store.js"></script>
+  <script src="shortcuts.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

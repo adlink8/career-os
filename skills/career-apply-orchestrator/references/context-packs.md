@@ -18,7 +18,7 @@
 
 ### optimize
 
-`pack_role, run_id, iteration, breakdown, clause_map, current_resume, bounce_facts`
+`pack_role, run_id, iteration, company, title, breakdown, identity, clause_map, current_resume, bounce_facts, open_prompts`
 
 `bounce_facts` 仅含：
 

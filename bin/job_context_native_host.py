@@ -109,6 +109,49 @@ def main() -> int:
                 "path": str(PROFILE_JSON),
             })
             return 0
+        if action == "get_fill_payload":
+            from career_os_store import get_db
+            from services.apply_run import lookup_fill_payload
+
+            rules = []
+            if FIELD_RULES_JSON.exists():
+                rules = json.loads(FIELD_RULES_JSON.read_text(encoding="utf-8"))
+            profile = None
+            if PROFILE_JSON.exists():
+                profile = json.loads(PROFILE_JSON.read_text(encoding="utf-8"))
+            conn = get_db()
+            try:
+                payload = lookup_fill_payload(
+                    conn,
+                    url=str(msg.get("url") or ""),
+                    job_ad_id=str(msg.get("job_ad_id") or ""),
+                )
+            finally:
+                conn.close()
+            if payload.get("mode") == "test" and profile is not None:
+                payload["profile"] = profile
+            elif profile is not None and "profile" not in payload:
+                payload["profile"] = profile
+            payload["ok"] = True
+            payload["field_rules"] = rules
+            send_message(payload)
+            return 0
+        if action == "mark_applied":
+            from career_os_store import get_db
+            from services.apply_run import mark_applied
+
+            run_id = int(msg.get("run_id") or 0)
+            if run_id <= 0:
+                send_message({"ok": False, "error": "missing run_id"})
+                return 1
+            coverage = msg.get("coverage") if isinstance(msg.get("coverage"), dict) else {}
+            conn = get_db()
+            try:
+                run = mark_applied(conn, run_id, coverage=coverage)
+            finally:
+                conn.close()
+            send_message({"ok": True, "run_id": run["id"], "fill_coverage": run.get("fill_coverage")})
+            return 0
         if action in ("log", "append_log"):
             event = msg.get("event")
             if not isinstance(event, dict):

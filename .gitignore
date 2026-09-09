@@ -13,6 +13,9 @@ config/profile.yml
 # 填表扩展编译产物（含姓名等，由 bin/sync_autofill_profile.py 生成）
 extensions/ats-autofill/profile.json
 
+# 插件分发包（本地打包产物）
+dist/
+
 # 本机数据仓库路径（含绝对路径）
 config/personal-data-warehouse.yml
 
@@ -34,6 +37,15 @@ data/*.bak
 data/tianyancha/
 data/aispeech_campus_jobs_*.json
 data/job_target_*.json
+data/jd/
+data/job_discovery/extracts/
+data/job_discovery/manifests/
+
+# 中小厂外联清单（含电话/邮箱列与投递备注），仅本地
+data/sme-outreach*
+
+# 含真实姓名/邮箱的简历生成一次性脚本，仅本地
+scripts/generate_customized_resumes.py
 
 # 临时目录与临时脚本/调试参数
 tmp/

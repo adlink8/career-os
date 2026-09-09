@@ -37,7 +37,16 @@ STAGES = (
     "review_failed",
     "review_passed",
     "released",
+    "volume_ready",
     "abandoned",
+)
+
+APPLY_MODES = ("precision", "volume")
+FILL_READY_STAGES = ("released", "volume_ready")
+VOLUME_TRACKS = (
+    ("ai", "data/cv/cv-ai-infra.md", ("ai", "大模型", "智能体", "rag", "llm", "数据开发", "算法")),
+    ("iot", "data/cv/cv-iot.md", ("iot", "物联网", "嵌入式", "mqtt", "技术支持", "fae", "现场")),
+    ("ops", "data/cv/cv-ops.md", ("运维", "devops", "sre", "linux", "监控", "交付")),
 )
 
 ROLE_ALIASES = {
@@ -189,12 +198,22 @@ def load_context_for_run(conn: sqlite3.Connection, run: Dict[str, Any]) -> Dict[
     raise ApplyRunError("缺少 JobContext：context_json_path / context_id 都不可用")
 
 
+def _norm_mode(mode: str) -> str:
+    key = (mode or "precision").strip().lower()
+    aliases = {"precision": "precision", "专投": "precision", "volume": "volume", "海投": "volume"}
+    if key not in aliases:
+        raise ApplyRunError(f"未知投递模式: {mode}（precision/volume）")
+    return aliases[key]
+
+
 def start_run(
     conn: sqlite3.Connection,
     *,
     context_path: Optional[str] = None,
     job_id: Optional[int] = None,
     latest: bool = False,
+    mode: str = "precision",
+    allow_test_profile: bool = False,
 ) -> Dict[str, Any]:
     try:
         from services.job_context import latest_context, load_context_file, save_context
@@ -227,18 +246,20 @@ def start_run(
         if not row:
             raise ApplyRunError(f"找不到 job_id={job_id}")
 
+    apply_mode = _norm_mode(mode)
     now = _utc_now()
     cur = conn.execute(
         """
         INSERT INTO job_apply_runs (
-            job_id, context_id, job_ad_id, stage, iteration,
+            job_id, context_id, job_ad_id, stage, iteration, apply_mode,
             created_at, updated_at
-        ) VALUES (?, ?, ?, 'captured', 1, ?, ?)
+        ) VALUES (?, ?, ?, 'captured', 1, ?, ?, ?)
         """,
         (
             int(job_id) if job_id is not None else None,
             context_id,
             str(ctx.get("job_ad_id") or ""),
+            apply_mode,
             now,
             now,
         ),
@@ -246,9 +267,83 @@ def start_run(
     run_id = int(cur.lastrowid)
     dest = run_dir(run_id) / "job-context.json"
     _dump(dest, ctx)
-    run = _update_run(conn, run_id, context_json_path=str(dest))
-    _add_event(conn, run_id, stage="captured", actor="orchestrator", artifact_path=str(dest))
+    run = _update_run(conn, run_id, context_json_path=str(dest), apply_mode=apply_mode)
+    _add_event(conn, run_id, stage="captured", actor="orchestrator", artifact_path=str(dest), notes=apply_mode)
     conn.commit()
+    if apply_mode == "volume":
+        return arm_volume(conn, run_id, allow_test_profile=allow_test_profile)
+    return run
+
+
+def pick_volume_track(title: str, jd_text: str) -> Dict[str, str]:
+    blob = f"{title or ''}\n{jd_text or ''}".lower()
+    for track, resume, keywords in VOLUME_TRACKS:
+        if any(k.lower() in blob for k in keywords):
+            path = ROOT / resume
+            return {"track": track, "resume_path": str(path) if path.is_file() else resume, "label": track}
+    path = ROOT / "data/cv/cv-ops.md"
+    return {"track": "ops", "resume_path": str(path) if path.is_file() else "data/cv/cv-ops.md", "label": "ops"}
+
+
+def _volume_knockout(ctx: Dict[str, Any]) -> str:
+    title = str(ctx.get("title") or "")
+    try:
+        from services.ats_engine import is_composite_intent
+    except ImportError:
+        from bin.services.ats_engine import is_composite_intent
+    if is_composite_intent(title):
+        return "复合意向，海投禁止（专投或拆成单岗）"
+    filters = ctx.get("hard_filters") or {}
+    required = filters.get("education") or []
+    if "硕士" in required and "本科" not in required:
+        degree = str(_identity_excerpt().get("degree") or "") + str(_identity_excerpt().get("education_current") or "")
+        if "硕士" not in degree and "研究生" not in degree:
+            return "学历硬门槛硕士，海投直接放弃"
+    return ""
+
+
+def arm_volume(conn: sqlite3.Connection, run_id: int, *, allow_test_profile: bool = False) -> Dict[str, Any]:
+    """海投：选分轨简历 + 官网意向，跳过拆解/ATS/会审。"""
+    run = get_run(conn, run_id)
+    if run["stage"] not in ("captured", "volume_ready"):
+        raise ApplyRunError(f"阶段 {run['stage']} 不能进入海投（需要 captured）")
+    ctx = load_context_for_run(conn, run)
+    reason = _volume_knockout(ctx)
+    if reason:
+        run = _update_run(conn, run_id, stage="abandoned", apply_mode="volume", notes=reason)
+        _add_event(conn, run_id, stage="abandoned", actor="volume", notes=reason)
+        conn.commit()
+        raise ApplyRunError(reason)
+
+    profile = _load_profile(allow_test=allow_test_profile)
+    if _is_test_profile(profile) and not allow_test_profile:
+        raise ApplyRunError("测试画像不得用于海投真表")
+
+    track = pick_volume_track(str(ctx.get("title") or ""), str(ctx.get("jd_text") or ""))
+    autofill = build_autofill(ctx, profile, run=run)
+    autofill["apply_mode"] = "volume"
+    autofill["track"] = track["track"]
+    autofill["resume_path"] = track["resume_path"]
+    stored = run_dir(run_id) / "artifacts" / "autofill.json"
+    _dump(stored, autofill)
+    run = _update_run(
+        conn,
+        run_id,
+        stage="volume_ready",
+        apply_mode="volume",
+        resume_path=track["resume_path"],
+        autofill_json_path=str(stored),
+        notes=f"海投 {track['track']} · 意向={autofill.get('target_position')}",
+    )
+    _add_event(conn, run_id, stage="volume_ready", actor="volume", artifact_path=str(stored), notes=track["track"])
+    conn.commit()
+    run["autofill"] = {
+        "path": str(stored),
+        "track": track["track"],
+        "coverage": autofill.get("coverage") or {},
+        "target_position": autofill.get("target_position") or "",
+    }
+    run["track"] = track
     return run
 
 
@@ -472,11 +567,14 @@ def write_pack(conn: sqlite3.Connection, run_id: int, role: str) -> Dict[str, An
             "pack_role": "optimize",
             "run_id": int(run_id),
             "iteration": run["iteration"],
+            "company": ctx.get("company") or "",
+            "title": ctx.get("title") or "",
             "breakdown": _breakdown(run_id),
             "identity": _identity_excerpt(),
             "clause_map": _clause_map(run_id),
             "current_resume": _resume_text(run),
             "bounce_facts": _bounce(run),
+            "open_prompts": _open_prompts(ctx),
         }
         for bad in OPTIMIZE_FORBIDDEN_KEYS:
             payload.pop(bad, None)
@@ -563,11 +661,19 @@ def next_action(conn: sqlite3.Connection, run_id: int) -> Dict[str, Any]:
         "iteration": iteration,
         "done": False,
     }
-    if stage == "released":
-        return {**base, "action": "done", "done": True, "autofill_json_path": run.get("autofill_json_path")}
+    if stage in FILL_READY_STAGES:
+        return {
+            **base,
+            "action": "done",
+            "done": True,
+            "apply_mode": run.get("apply_mode") or "precision",
+            "autofill_json_path": run.get("autofill_json_path"),
+        }
     if stage == "abandoned":
         return {**base, "action": "stop", "done": True, "reason": run.get("notes") or "abandoned"}
     if stage == "captured":
+        if (run.get("apply_mode") or "precision") == "volume":
+            return {**base, "action": "arm_volume", "command": f"python bin/career_apply_run.py arm-volume {run_id}"}
         packs = write_pack(conn, run_id, "decompose")
         return {**base, "action": "spawn", "role": "decompose", "packs": packs["packs"]}
     if stage == "decomposed":
@@ -689,6 +795,9 @@ def ingest(conn: sqlite3.Connection, run_id: int, role: str, file_path: str) -> 
         stored = dest / "resume.md"
         if md_text:
             stored.write_text(md_text, encoding="utf-8")
+        answers = _normalize_open_answers(payload.get("open_answers"))
+        if answers:
+            _dump(dest / "open-answers.json", {"role": "optimize", "open_answers": answers})
         resume_path = str(payload.get("resume_path") or run.get("resume_path") or "")
         if md_text and not resume_path:
             resume_path = str(stored)
@@ -1032,29 +1141,334 @@ def _value_for_slot(slot: str, profile: Dict[str, Any]) -> str:
     return str(raw).strip()
 
 
-def build_autofill(ctx: Dict[str, Any], profile: Dict[str, Any]) -> Dict[str, Any]:
+NOISE_LABEL_RE = re.compile(
+    r"^(请选择|请输入|请填写|\+86|\+86 \+86|moka-version|验证码|captcha)$",
+    re.I,
+)
+
+OPEN_ANSWER_SPECS = (
+    {"key": "why_us", "re": re.compile(r"为什么|为何选择|加入.{0,8}原因|选择本公司|选择我们"), "prompt": "为什么投这家/这个岗"},
+    {"key": "career_plan", "re": re.compile(r"职业规划|发展规划|未来三年|三年规划"), "prompt": "职业规划"},
+    {"key": "self_intro", "re": re.compile(r"自我介绍|请介绍一下自己"), "prompt": "一分钟自我介绍（开放题）"},
+    {"key": "project_deep", "re": re.compile(r"最有成就|印象最深|最深的坑|代表性项目"), "prompt": "项目深挖"},
+)
+
+
+def _normalize_label(label: str) -> str:
+    text = re.sub(r"请输入\d*位?", " ", label or "")
+    text = re.sub(r"请输入|请选择|请填写", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _is_noise_label(label: str) -> bool:
+    raw = re.sub(r"\s+", " ", (label or "").strip())
+    if not raw:
+        return True
+    if NOISE_LABEL_RE.match(raw):
+        return True
+    return not _normalize_label(raw) and len(raw) <= 8
+
+
+def _open_key_for_label(label: str) -> str:
+    text = _normalize_label(label)
+    if not text:
+        return ""
+    for spec in OPEN_ANSWER_SPECS:
+        if spec["re"].search(text):
+            return str(spec["key"])
+    return ""
+
+
+def _normalize_open_answers(raw: Any) -> List[Dict[str, str]]:
+    out: List[Dict[str, str]] = []
+    if not isinstance(raw, list):
+        return out
+    for item in raw:
+        if not isinstance(item, dict):
+            continue
+        value = str(item.get("value") or item.get("text") or "").strip()
+        if not value:
+            continue
+        key = str(item.get("key") or "").strip()
+        label = str(item.get("label") or "").strip()
+        if not key:
+            key = _open_key_for_label(label) or re.sub(r"\W+", "_", label)[:32]
+        if not key:
+            continue
+        out.append({"key": key, "label": label, "value": value})
+    return out
+
+
+def _load_open_answers(run: Optional[Dict[str, Any]]) -> List[Dict[str, str]]:
+    if not run:
+        return []
+    path = run_dir(int(run["id"])) / "artifacts" / "open-answers.json"
+    if not path.is_file():
+        return []
+    payload = _load(path)
+    if isinstance(payload, dict):
+        return _normalize_open_answers(payload.get("open_answers") or payload.get("items") or [])
+    if isinstance(payload, list):
+        return _normalize_open_answers(payload)
+    return []
+
+
+def _open_prompts(ctx: Dict[str, Any]) -> List[Dict[str, str]]:
+    seen = set()
+    prompts: List[Dict[str, str]] = []
+    for spec in OPEN_ANSWER_SPECS:
+        prompts.append({"key": spec["key"], "prompt": spec["prompt"], "label": ""})
+        seen.add(spec["key"])
+    for item in ctx.get("form_schema") or []:
+        label = str(item.get("label") or "")
+        key = _open_key_for_label(label)
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        prompts.append({"key": key, "prompt": label, "label": label})
+    for item in ctx.get("form_schema") or []:
+        label = str(item.get("label") or "")
+        key = _open_key_for_label(label)
+        if not key:
+            continue
+        for row in prompts:
+            if row["key"] == key and not row.get("label"):
+                row["label"] = label
+    return prompts
+
+
+def _open_value(answers: List[Dict[str, str]], *, key: str = "", label: str = "") -> str:
+    if key:
+        for item in answers:
+            if item.get("key") == key and item.get("value"):
+                return item["value"]
+    if label:
+        norm = _normalize_label(label)
+        for item in answers:
+            if _normalize_label(item.get("label") or "") == norm and item.get("value"):
+                return item["value"]
+            if key and item.get("key") == key:
+                continue
+            if _open_key_for_label(item.get("label") or "") == _open_key_for_label(label):
+                return item.get("value") or ""
+    return ""
+
+
+def _coverage_from_fields(fields: List[Dict[str, Any]]) -> Dict[str, Any]:
+    required = [f for f in fields if f.get("required") and f.get("kind") != "noise"]
+    required_empty = [f["label"] for f in required if f.get("empty")]
+    unmapped = [f["label"] for f in fields if f.get("kind") == "unmapped" and f.get("required")]
+    return {
+        "total": len(fields),
+        "mapped": sum(1 for f in fields if f.get("kind") == "mapped"),
+        "open": sum(1 for f in fields if f.get("kind") == "open"),
+        "noise": sum(1 for f in fields if f.get("kind") == "noise"),
+        "unmapped": unmapped,
+        "required_total": len(required),
+        "required_filled": len(required) - len(required_empty),
+        "required_empty": required_empty,
+        "ready": not required_empty,
+    }
+
+
+def build_autofill(
+    ctx: Dict[str, Any],
+    profile: Dict[str, Any],
+    *,
+    run: Optional[Dict[str, Any]] = None,
+    open_answers: Optional[List[Dict[str, str]]] = None,
+) -> Dict[str, Any]:
     rules = _compile_rules()
+    official_title = str(ctx.get("title") or "").strip()
+    answers = open_answers if open_answers is not None else _load_open_answers(run)
     fields = []
     for item in ctx.get("form_schema") or []:
         label = str(item.get("label") or "")
         is_textarea = bool(item.get("textarea") or item.get("type") == "textarea")
+        required = bool(item.get("required"))
+        open_key = _open_key_for_label(label)
         slot = str(item.get("slot") or "") or _resolve_slot(label, rules, is_textarea)
-        value = _value_for_slot(slot, profile)
+        if slot == "application.target_position" and official_title:
+            value = official_title
+            kind = "mapped"
+        elif open_key:
+            value = _open_value(answers, key=open_key, label=label)
+            kind = "open"
+            slot = slot or f"open.{open_key}"
+        elif _is_noise_label(label) and not slot:
+            value = ""
+            kind = "noise"
+        elif slot:
+            value = _value_for_slot(slot, profile)
+            kind = "mapped"
+        else:
+            value = ""
+            kind = "unmapped"
         fields.append(
             {
                 "label": label,
                 "slot": slot,
                 "value": value,
-                "required": bool(item.get("required")),
+                "required": required,
                 "empty": not bool(value),
+                "kind": kind,
+                "open_key": open_key,
             }
         )
+    coverage = _coverage_from_fields(fields)
     return {
+        "run_id": int(run["id"]) if run and run.get("id") is not None else None,
         "job_ad_id": ctx.get("job_ad_id") or "",
         "url": ctx.get("url") or "",
-        "title": ctx.get("title") or "",
+        "host": ctx.get("host") or "",
+        "company": ctx.get("company") or "",
+        "title": official_title,
+        "target_position": official_title,
+        "resume_path": str((run or {}).get("resume_path") or ""),
         "fields": fields,
+        "open_answers": answers,
+        "coverage": coverage,
     }
+
+
+def lookup_fill_payload(
+    conn: sqlite3.Connection,
+    *,
+    url: str = "",
+    job_ad_id: str = "",
+    allow_test_profile: bool = False,
+) -> Dict[str, Any]:
+    try:
+        from services.job_context import extract_job_ad_id
+    except ImportError:
+        from bin.services.job_context import extract_job_ad_id
+
+    ad = (job_ad_id or "").strip().lower() or extract_job_ad_id(url)
+    row = None
+    if ad:
+        row = conn.execute(
+            """
+            SELECT id, stage, autofill_json_path, job_ad_id, resume_path, apply_mode
+            FROM job_apply_runs
+            WHERE stage IN ('released', 'volume_ready') AND job_ad_id=? AND autofill_json_path!=''
+            ORDER BY CASE stage WHEN 'released' THEN 0 ELSE 1 END, id DESC LIMIT 1
+            """,
+            (ad,),
+        ).fetchone()
+    if row is None and url:
+        row = conn.execute(
+            """
+            SELECT r.id, r.stage, r.autofill_json_path, r.job_ad_id, r.resume_path, r.apply_mode
+            FROM job_apply_runs r
+            JOIN job_page_contexts c ON c.id = r.context_id
+            WHERE r.stage IN ('released', 'volume_ready') AND r.autofill_json_path!=''
+              AND (c.url=? OR instr(?, c.url)>0)
+            ORDER BY CASE r.stage WHEN 'released' THEN 0 ELSE 1 END, r.id DESC LIMIT 1
+            """,
+            (url, url),
+        ).fetchone()
+
+    if row is not None:
+        path = Path(row["autofill_json_path"])
+        autofill = _load(path) if path.is_file() else {}
+        apply_mode = "volume" if row["stage"] == "volume_ready" else "precision"
+        try:
+            apply_mode = row["apply_mode"] or apply_mode
+        except (KeyError, IndexError):
+            pass
+        ui_mode = "volume" if apply_mode == "volume" else "released"
+        return {
+            "mode": ui_mode,
+            "apply_mode": apply_mode,
+            "reason": "",
+            "run_id": int(row["id"]),
+            "autofill": autofill,
+            "autofill_json_path": str(path),
+            "allow_fill": True,
+        }
+
+    try:
+        profile = _load_profile(allow_test=True)
+    except ApplyRunError as exc:
+        return {"mode": "blocked", "reason": str(exc), "allow_fill": False, "autofill": None}
+
+    if _is_test_profile(profile) or allow_test_profile:
+        return {
+            "mode": "test",
+            "reason": "无 released 载荷，仅测试画像可填表",
+            "run_id": None,
+            "autofill": None,
+            "profile": profile,
+            "allow_fill": True,
+        }
+    return {
+        "mode": "blocked",
+        "reason": "本页没有 released 的 apply-run，禁止用通用画像填真表。先走编排器 release。",
+        "run_id": None,
+        "autofill": None,
+        "allow_fill": False,
+    }
+
+
+def mark_applied(
+    conn: sqlite3.Connection,
+    run_id: int,
+    coverage: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    run = get_run(conn, run_id)
+    if run["stage"] not in FILL_READY_STAGES:
+        raise ApplyRunError(f"阶段 {run['stage']} 不能标记网页已提交（需要 released 或 volume_ready）")
+    cov = coverage if isinstance(coverage, dict) else {}
+    required_empty = [x for x in (cov.get("required_empty") or []) if x]
+    widget_fail = [x for x in (cov.get("widget_fail") or []) if x]
+    ready = not required_empty and not widget_fail
+    if cov and not ready:
+        raise ApplyRunError(
+            "必填未清零，不能标记网页已提交："
+            + "；".join(
+                (["空: " + "、".join(required_empty[:8])] if required_empty else [])
+                + (["控件失败: " + "、".join(widget_fail[:8])] if widget_fail else [])
+            )
+        )
+    stored = run_dir(run_id) / "artifacts" / "fill-coverage.json"
+    payload = {
+        "run_id": int(run_id),
+        "required_empty": required_empty,
+        "widget_fail": widget_fail,
+        "unmapped": cov.get("unmapped") or [],
+        "ready": True,
+        "filled": cov.get("filled"),
+        "attempted": cov.get("attempted"),
+    }
+    _dump(stored, payload)
+    _add_event(
+        conn,
+        run_id,
+        stage="released",
+        actor="mark-applied",
+        artifact_path=str(stored),
+        notes="网页已提交（人工确认，非自动点提交）",
+    )
+    job_id = run.get("job_id")
+    if job_id or run.get("application_id"):
+        ctx = load_context_for_run(conn, run)
+        try:
+            from career_os_store import add_timeline_event
+        except ImportError:
+            from bin.career_os_store import add_timeline_event
+        add_timeline_event(
+            conn,
+            application_id=run.get("application_id"),
+            job_id=int(job_id) if job_id else None,
+            company_name=str(ctx.get("company") or ""),
+            job_title=str(ctx.get("title") or ""),
+            event_type="网页已提交",
+            notes=f"apply-run {run_id} 覆盖率已清零",
+        )
+    conn.commit()
+    run = get_run(conn, run_id)
+    run["fill_coverage"] = payload
+    return run
 
 
 def release(
@@ -1071,7 +1485,7 @@ def release(
     if _is_test_profile(profile) and not allow_test_profile:
         raise ApplyRunError("测试画像不得用于真实投递")
 
-    autofill = build_autofill(ctx, profile)
+    autofill = build_autofill(ctx, profile, run=run)
     stored = run_dir(run_id) / "artifacts" / "autofill.json"
     _dump(stored, autofill)
 
@@ -1114,7 +1528,12 @@ def release(
     )
     _add_event(conn, run_id, stage="released", actor="release", artifact_path=str(stored))
     conn.commit()
-    run["autofill"] = {"path": str(stored), "field_count": len(autofill.get("fields") or [])}
+    run["autofill"] = {
+        "path": str(stored),
+        "field_count": len(autofill.get("fields") or []),
+        "coverage": autofill.get("coverage") or {},
+        "target_position": autofill.get("target_position") or "",
+    }
     return run
 
 
