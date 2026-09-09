@@ -1,0 +1,92 @@
+import pytest
+
+from services.job_context import (
+    extract_hard_filters,
+    extract_job_ad_id,
+    looks_like_form_page,
+    looks_like_jd,
+    merge_contexts,
+    pick_jd_text,
+    refine_title,
+)
+
+pytestmark = pytest.mark.unit
+
+
+def test_extract_job_ad_id_beisen_and_moka():
+    assert (
+        extract_job_ad_id(
+            "https://example.zhiye.com/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+        )
+        == "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    )
+    assert extract_job_ad_id("https://app.mokahr.com/job/11111111-2222-3333-4444-555555555555") == (
+        "11111111-2222-3333-4444-555555555555"
+    )
+
+
+def test_hard_filters():
+    filters = extract_hard_filters(
+        "运维工程师（苏州）2027届",
+        "本科及以上，可实习6个月，英语四级，工作地点苏州、上海。熟悉 Linux Docker。",
+    )
+    assert "2027届" in filters["graduation_cohorts"]
+    assert "本科" in filters["education"]
+    assert "苏州" in filters["cities"]
+    assert filters["internship_months_min"] == 6
+    assert "CET-4" in filters["english"]
+
+
+def test_refine_title_does_not_steal_duty_line():
+    title = refine_title(
+        {
+            "title": "运维工程师",
+            "jd_text": "岗位职责：负责 Linux Docker Kubernetes 运维。\n任职要求：本科。",
+        }
+    )
+    assert title == "运维工程师"
+    # 单行 JD 里带「运维」也不能覆盖官网标题
+    title2 = refine_title(
+        {
+            "title": "运维工程师",
+            "jd_text": "岗位职责：负责 Linux Docker Kubernetes 运维。任职要求：本科 2027届。",
+        }
+    )
+    assert title2 == "运维工程师"
+
+
+def test_refine_title_priority_marker():
+    title = refine_title({"title": "校园招聘", "jd_text": "【优先】Linux运维工程师\n岗位职责：…"})
+    assert "Linux运维工程师" in title
+
+
+def test_pick_jd_prefers_duty_text_over_form():
+    form = "你正在投递职位：运维工程师\n预览并提交"
+    jd = "岗位职责：负责 Linux。任职要求：本科。"
+    assert pick_jd_text(form, jd) == jd
+    assert looks_like_jd(jd)
+    assert looks_like_form_page(form)
+
+
+def test_merge_contexts_keeps_detail_url_and_form_fields():
+    detail = {
+        "url": "https://example.zhiye.com/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        "title": "运维工程师",
+        "company": "示例公司",
+        "jd_text": "岗位职责：负责 Linux。任职要求：本科。",
+        "form_schema": [],
+        "captured_at": "2026-09-01T00:00:00Z",
+    }
+    form = {
+        "url": "https://example.zhiye.com/campus/form?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        "title": "运维工程师",
+        "jd_text": "你正在投递职位：运维工程师\n预览并提交",
+        "form_schema": [{"label": "姓名", "required": True}],
+        "captured_at": "2026-09-02T00:00:00Z",
+        "host": "example.zhiye.com",
+    }
+    merged = merge_contexts(detail, form)
+    assert "detail" in merged["url"]
+    assert merged["form_schema"][0]["label"] == "姓名"
+    assert "Linux" in merged["jd_text"]
+    assert merged["job_ad_id"] == "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"

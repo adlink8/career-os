@@ -71,7 +71,20 @@ cd career-os
 copy config\profile.example.yml config\profile.yml
 ```
 
-4. 冒烟（可选）：
+4. 跑测试（可选，不碰你的真实投递库）：
+
+```powershell
+python -m pytest tests -q
+python scripts/run-tests.py --layer unit
+python scripts/run-tests.py --layer integration
+python scripts/run-tests.py --layer regression
+```
+
+- **单元**：模式别名、分轨、会审权重、ATS 复合意向、字段映射、隐私规则。  
+- **集成**：临时 SQLite 上走完专投/海投编排器；打包 zip 不含 `profile.json`。  
+- **回归**：不自动提交、schema v22、`released` 优先于 `volume_ready`，以及既有 `scripts/*-smoke.py`。
+
+本机题库冒烟（需要已有 `data/career_jobs.sqlite`）：
 
 ```powershell
 python scripts/runtime-smoke.py

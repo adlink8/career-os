@@ -59,7 +59,7 @@ def refine_title(ctx: Dict[str, Any]) -> str:
         and "有限公司" not in first
         and first not in ("首页", "校园招聘")
         and len(first) < 80
-        and not re.match(r"负责|具备|熟悉|参与|协助|基于", first)
+        and not re.match(r"负责|具备|熟悉|参与|协助|基于|岗位职责|任职要求|任职资格|职位描述|工作职责", first)
         and re.search(r"工程师|实习|管培|专员|经理|开发|运维|支持|助理", first)
     ):
         return first
