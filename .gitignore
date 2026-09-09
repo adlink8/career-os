@@ -76,6 +76,8 @@ deploy/judge0/runtime.env
 data/job_discovery/browser_profiles/
 data/job_discovery/screenshots/
 data/job_discovery/captures/*.json
+data/job_discovery/logs/*.jsonl
+data/job_discovery/logs/*.json
 
 # 临时调试与环境辅助目录
 scratch/

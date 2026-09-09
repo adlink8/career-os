@@ -17,6 +17,9 @@ if str(ROOT / "bin") not in sys.path:
     sys.path.insert(0, str(ROOT / "bin"))
 
 CAPTURE_DIR = ROOT / "data" / "job_discovery" / "captures"
+LOG_DIR = ROOT / "data" / "job_discovery" / "logs"
+PROFILE_JSON = ROOT / "extensions" / "ats-autofill" / "profile.json"
+FIELD_RULES_JSON = ROOT / "extensions" / "ats-autofill" / "field-map-rules.json"
 
 if sys.platform == "win32":
     import msvcrt
@@ -52,6 +55,21 @@ def filename_for(ctx: dict) -> str:
     return f"job-context-{host}-{stamp}.json"
 
 
+def append_log(event: dict) -> str:
+    from datetime import datetime, timezone
+
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    path = LOG_DIR / f"runtime-{day}.jsonl"
+    if "ts" not in event:
+        event["ts"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(event, ensure_ascii=False) + "\n")
+    latest = LOG_DIR / "runtime-latest.json"
+    latest.write_text(json.dumps(event, ensure_ascii=False, indent=2), encoding="utf-8")
+    return str(path)
+
+
 def save(ctx: dict) -> str:
     from services.job_context import latest_context, save_context, write_capture_file
     from career_os_store import get_db
@@ -74,11 +92,35 @@ def main() -> int:
     if not msg:
         send_message({"ok": False, "error": "empty native message"})
         return 1
-    ctx = msg.get("context") if isinstance(msg, dict) else None
-    if not isinstance(ctx, dict):
-        send_message({"ok": False, "error": "missing context"})
-        return 1
+    action = str(msg.get("action") or "save")
     try:
+        if action == "get_profile":
+            if not PROFILE_JSON.exists():
+                send_message({"ok": False, "error": f"missing {PROFILE_JSON}"})
+                return 1
+            data = json.loads(PROFILE_JSON.read_text(encoding="utf-8"))
+            rules = []
+            if FIELD_RULES_JSON.exists():
+                rules = json.loads(FIELD_RULES_JSON.read_text(encoding="utf-8"))
+            send_message({
+                "ok": True,
+                "data": data,
+                "field_rules": rules,
+                "path": str(PROFILE_JSON),
+            })
+            return 0
+        if action in ("log", "append_log"):
+            event = msg.get("event")
+            if not isinstance(event, dict):
+                send_message({"ok": False, "error": "missing event"})
+                return 1
+            path = append_log(event)
+            send_message({"ok": True, "path": path})
+            return 0
+        ctx = msg.get("context")
+        if not isinstance(ctx, dict):
+            send_message({"ok": False, "error": "missing context"})
+            return 1
         path = save(ctx)
         send_message({"ok": True, "path": path})
         return 0

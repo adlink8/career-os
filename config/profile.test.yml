@@ -1,0 +1,127 @@
+# Career OS — 自动填表【测试专用】画像
+# 全部为虚构数据，禁止提交到真实网申。
+# 启用：python bin/sync_autofill_profile.py --test
+# 恢复真实画像：python bin/sync_autofill_profile.py
+
+personal:
+  name: "测一填"
+  gender: "男"
+  birth_year: 2003
+  birth_date: "2003-10-25"
+  age: 23
+  phone: "13800138000"
+  email: "filltest@example.com"
+  current_city: "常州市"
+  current_address: "江苏省常州市武进区测试路 1 号"
+  native_province: "江苏省"
+  native_city: "常州市"
+  native_place: "江苏省常州市"
+  political_status: "共青团员"
+  marriage: "未婚"
+  ethnicity: "汉族"
+  health: "健康"
+  emergency_contact: "测父"
+  emergency_phone: "13900139000"
+  emergency_relation: "父子"
+  available_time: "随时到岗"
+  internship_duration: "6个月以上"
+  days_per_week: "每周5天"
+  hobbies: "跑步、硬件折腾、技术博客（测试数据）"
+  awards: "2024年 测试省物联网技能竞赛三等奖（虚构）"
+  certificates: "普通话二级甲等（测试）"
+
+education:
+  current: "统招专升本"
+  school: "常州大学"
+  college: "计算机与人工智能学院"
+  major: "计算机科学与技术"
+  graduation: "2027-06"
+  degree: "本科"
+  start_date: "2025-09"
+  gpa: "3.5/4.0"
+  rank: "前 20%"
+  education_type: "统招专升本"
+  previous:
+    - school: "江苏信息职业技术学院"
+      period: "2022-09 ~ 2025-06"
+      focus: "物联网应用技术"
+
+career_target:
+  primary:
+    - 运维工程师
+  cities:
+    - 南京市
+    - 苏州市
+    - 无锡市
+    - 常州市
+  expected_city: "南京市"
+  expected_salary: "6001～8000"
+
+skills:
+  proficient:
+    - Linux
+    - Python
+    - Docker
+    - Git
+    - MQTT
+  familiar:
+    - FastAPI
+    - SQLite
+
+projects:
+  - name: "测试项目·网关联调平台"
+    year: 2026
+    start_date: "2026-03"
+    end_date: "2026-08"
+    role: "核心开发"
+    keywords:
+      - MQTT
+      - Linux
+      - Python
+    highlight: "完成设备上报与断线重连，联调时延从 800ms 降到 120ms（测试数据）"
+    description: "虚构的网关联调项目，仅用于自动填表联调。"
+
+internships:
+  - name: "测试科技有限公司"
+    role: "运维实习生"
+    start_date: "2025-07"
+    end_date: "2025-09"
+    duty: "协助巡检 Linux 主机与编写巡检脚本（测试数据）。"
+
+campus_practices:
+  - name: "测试·暑期社会实践"
+    start_date: "2024-07"
+    end_date: "2024-08"
+    description: "参与社区网络义诊与设备排查，撰写实践报告（测试数据）。"
+
+campus_roles:
+  - name: "测试社团技术委员"
+    start_date: "2023-09"
+    end_date: "2024-06"
+    description: "组织技术分享与实验室设备维护（测试数据）。"
+
+award_records:
+  - name: "测试省物联网技能竞赛三等奖"
+    date: "2024-12"
+    level: "省级"
+    description: "负责组网与现场排障，获三等奖（虚构）。"
+
+certificate_records:
+  - name: "普通话二级甲等（测试）"
+    date: "2023-06"
+
+languages:
+  - type: "中文"
+    level: "母语"
+    listen: "母语"
+    speak: "母语"
+    read: "母语"
+    write: "母语"
+  - type: "英语"
+    level: "一般"
+    listen: "一般"
+    speak: "一般"
+    read: "良好"
+    write: "一般"
+
+english_level: "英语四级（测试）"

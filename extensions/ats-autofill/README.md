@@ -22,7 +22,9 @@
   python bin/ingest_job_context.py D:\path\career-os-job-context-zhiye.com.json
   python bin/ats_matcher.py --resume <简历.pdf> --job-context D:\path\career-os-job-context-zhiye.com.json
   ```
-- 再点「一键填充」：按本页表单 label 匹配画像槽位，不按岗位分类切换话术。
+- 再点「一键填充」：普通输入、北森下拉、日期会按本页表单项逐个写入画像里有的值。
+- 运行日志：`data/job_discovery/logs/runtime-YYYY-MM-DD.jsonl`（最近一次还有 `runtime-latest.json`）。F12 控制台过滤 `[Career OS]`。
+- **热加载**：画像 `profile.json` 和字段规则 `field-map-rules.json` 每次填充都从磁盘读，改完再点填充即可。下拉点击等 JS 引擎仍受浏览器限制，改脚本才要点「重载扩展脚本」。
 - 其它域名可点工具栏图标捕获/填充（注入全部 iframe）。
 - 手机、邮箱、身份证：只有 `profile.yml` 里有值才填。
 - 北森的 `el-select`、省市区级联、日期组件仍可能填不上，用快捷复制。

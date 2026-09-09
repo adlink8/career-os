@@ -6,6 +6,8 @@ Career OS — ATS 网申自动填表数据同步
 单一求职意向，不再生成多岗位轨道。联系方式只复制 yaml 里已有字段，不编造。
 """
 
+from __future__ import annotations
+
 import json
 import re
 import sys
@@ -22,15 +24,18 @@ if sys.platform == "win32":
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 PROFILE_YAML = ROOT_DIR / "config" / "profile.yml"
+PROFILE_TEST_YAML = ROOT_DIR / "config" / "profile.test.yml"
 OUTPUT_DIR = ROOT_DIR / "extensions" / "ats-autofill"
 OUTPUT_JSON = OUTPUT_DIR / "profile.json"
+OUTPUT_TEST_JSON = OUTPUT_DIR / "profile.test.json"
 
-def load_profile():
-    if not PROFILE_YAML.exists():
-        print(f"[Error] 未找到画像文件: {PROFILE_YAML}")
-        print("请先复制 config/profile.example.yml 为 config/profile.yml")
+
+def load_profile(path: Path | None = None):
+    src = path or PROFILE_YAML
+    if not src.exists():
+        print(f"[Error] 未找到画像文件: {src}")
         sys.exit(1)
-    with open(PROFILE_YAML, "r", encoding="utf-8") as f:
+    with open(src, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
 
@@ -102,12 +107,15 @@ def _education_block(edu):
     return {
         "undergraduate": {
             "school": edu.get("school") or "",
+            "college": edu.get("college") or "",
             "degree": edu.get("degree") or "",
             "major": edu.get("major") or "",
             "graduation": edu.get("graduation") or "",
             "start_date": edu.get("start_date") or "",
             "end_date": edu.get("graduation") or "",
-            "education_type": edu.get("current") or "",
+            "education_type": edu.get("education_type") or edu.get("current") or "",
+            "gpa": str(edu.get("gpa") or ""),
+            "rank": str(edu.get("rank") or ""),
         },
         "junior_college": {
             "school": prev.get("school") or "",
@@ -153,13 +161,42 @@ def _projects(profile):
     return out
 
 
+def _internships(profile):
+    out = []
+    for item in profile.get("internships") or []:
+        name = (item.get("name") or "").strip()
+        if not name:
+            continue
+        out.append(
+            {
+                "name": name,
+                "role": item.get("role") or "",
+                "start_date": str(item.get("start_date") or ""),
+                "end_date": str(item.get("end_date") or ""),
+                "duty": item.get("duty") or item.get("description") or "",
+            }
+        )
+    return out
+
+
+def _records(profile, key, fields):
+    out = []
+    for item in profile.get(key) or []:
+        row = {}
+        for field in fields:
+            row[field] = str(item.get(field) or "").strip()
+        if any(row.values()):
+            out.append(row)
+    return out
+
+
 def build_application(profile):
     skills = profile.get("skills") or {}
     career = profile.get("career_target") or {}
     edu = profile.get("education") or {}
     proficient = _join(skills.get("proficient") or [])
     familiar = _join(skills.get("familiar") or [])
-    target = single_job_title(career)
+    target = str(career.get("apply_title") or "").strip() or single_job_title(career)
     school = edu.get("school") or ""
     major = edu.get("major") or ""
     degree = edu.get("degree") or ""
@@ -176,7 +213,8 @@ def build_application(profile):
     return {
         "target_position": target,
         "target_cities": _join(career.get("cities") or []),
-        "expected_salary": "",
+        "expected_city": str(career.get("expected_city") or ((career.get("cities") or [""])[0] if career.get("cities") else "")),
+        "expected_salary": str(career.get("expected_salary") or ""),
         "self_evaluation": "".join(self_eval_parts).strip(),
         "skills_summary": (
             (f"【熟练】{proficient}\n" if proficient else "")
@@ -185,6 +223,12 @@ def build_application(profile):
         "skills_proficient": proficient,
         "skills_familiar": familiar,
         "projects": projects,
+        "internships": _internships(profile),
+        "campus_practices": _records(profile, "campus_practices", ("name", "start_date", "end_date", "description")),
+        "campus_roles": _records(profile, "campus_roles", ("name", "start_date", "end_date", "description")),
+        "award_records": _records(profile, "award_records", ("name", "date", "level", "description")),
+        "certificate_records": _records(profile, "certificate_records", ("name", "date")),
+        "languages": _records(profile, "languages", ("type", "level", "listen", "speak", "read", "write")),
     }
 
 
@@ -207,24 +251,34 @@ def build_payload(profile):
 
 
 def main():
-    print(f"[1/3] 读取配置文件: {PROFILE_YAML}")
-    profile = load_profile()
+    test_mode = "--test" in sys.argv
+    src = PROFILE_TEST_YAML if test_mode else PROFILE_YAML
+    print(f"[1/3] 读取配置文件: {src}" + ("  【测试模式】" if test_mode else ""))
+    profile = load_profile(src)
 
     print("[2/3] 编译单一意向填表画像（不生成岗位轨道）...")
     payload = build_payload(profile)
+    if test_mode:
+        payload["version"] = "3.0-test-fixture"
+        payload["test_only"] = True
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+    if test_mode:
+        with open(OUTPUT_TEST_JSON, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
 
     app = payload["application"]
     print(f"[3/3] 已写入: {OUTPUT_JSON}")
     print("=" * 60)
+    if test_mode:
+        print("[TEST] 测试画像已启用，禁止提交到真实网申。")
+        print("恢复真实画像: python bin/sync_autofill_profile.py")
     print("[OK] 数据同步完成！")
     print(f"候选人: {payload['universal']['personal']['name']}")
     print(f"单一求职意向: {app['target_position'] or '(yaml 未提供可解析岗位名)'}")
-    print(f"项目条数: {len(app['projects'])}")
-    print("联系方式仅在 profile.yml 的 personal.phone/email 有值时才会填入网申。")
+    print(f"项目条数: {len(app['projects'])} | 实习条数: {len(app.get('internships') or [])}")
     print("=" * 60)
 
 

@@ -15,16 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('disp-job').textContent = label;
   }
 
-  chrome.runtime.sendMessage({ action: 'GET_PROFILE' }, (res) => {
-    if (chrome.runtime.lastError) {
-      showError(chrome.runtime.lastError.message);
-      return;
-    }
-    if (!res || !res.ok) {
-      showError((res && res.error) || '未找到 profile.json，请运行 python bin/sync_autofill_profile.py 后重载扩展');
-      return;
-    }
-    const data = res.data;
+  function applyProfile(data) {
     const univ = data.universal || {};
     const app = data.application || {};
     const p = univ.personal || {};
@@ -32,7 +23,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('disp-name').textContent = p.name || '—';
     document.getElementById('disp-school').textContent = [edu.school, edu.degree].filter(Boolean).join(' · ') || '—';
     document.getElementById('disp-target').textContent = app.target_position || '—';
-  });
+    if (data.test_only) {
+      document.getElementById('disp-name').textContent = (p.name || '') + '（测试）';
+    }
+  }
+
+  function loadProfileView() {
+    chrome.runtime.sendMessage({ action: 'GET_PROFILE' }, (res) => {
+      if (chrome.runtime.lastError) {
+        showError(chrome.runtime.lastError.message);
+        return;
+      }
+      if (!res || !res.ok) {
+        showError((res && res.error) || '未找到 profile.json，请运行 python bin/sync_autofill_profile.py');
+        return;
+      }
+      applyProfile(res.data);
+    });
+  }
+  loadProfileView();
 
   chrome.storage.local.get(['lastJobContext'], (stored) => {
     showLastJob(stored.lastJobContext);
@@ -57,7 +66,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         : '未绑定（会落到浏览器下载）';
     });
   }
+  document.getElementById('btn-hot-profile').addEventListener('click', () => {
+    loadProfileView();
+  });
+  document.getElementById('btn-reload-ext').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ action: 'RELOAD_EXTENSION' });
+  });
   refreshSaveStatus();
+  chrome.storage.local.get(['lastLogPath'], (stored) => {
+    const el = document.getElementById('disp-log');
+    if (el && stored.lastLogPath) {
+      el.textContent = stored.lastLogPath.replace(/^.*[\\/]/, '');
+      el.title = stored.lastLogPath;
+    }
+  });
 
   btnBind.addEventListener('click', async () => {
     try {

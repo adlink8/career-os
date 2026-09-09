@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Career OS 网申自动填表助手",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "description": "捕获当前岗位 JD 与表单格子，按本页 schema 填充。画像不暴露给网页。",
   "permissions": [
     "storage",
@@ -44,6 +44,8 @@
       ],
       "js": [
         "field-map.js",
+        "runtime-log.js",
+        "beisen-fill.js",
         "content.js"
       ],
       "css": [

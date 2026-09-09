@@ -23,7 +23,7 @@
           reject(new Error((res && res.error) || '画像加载失败'));
           return;
         }
-        resolve(res.data);
+        resolve(res);
       });
     });
   }
@@ -86,11 +86,11 @@
 
     let parent = el.parentElement;
     let depth = 0;
-    while (parent && depth < 4) {
+    while (parent && depth < 6) {
       const labelEl = parent.querySelector(
         'label, .el-form-item__label, .ant-form-item-label, .bs-form-item-label, .title, .item-label, th'
       );
-      if (labelEl) {
+      if (labelEl && labelEl !== el) {
         context += ' ' + labelEl.textContent;
         break;
       }
@@ -205,16 +205,28 @@
     };
   }
 
-  function executeAutofill() {
-    if (!profile || !profile.universal || !profile.application) {
-      showToast('画像未加载，请先运行 sync_autofill_profile.py 后重载扩展');
-      return 0;
-    }
+  async function executeAutofill() {
     const fmap = self.CareerOsFieldMap;
     if (!fmap) {
       showToast('字段映射未加载，请重载扩展');
       return 0;
     }
+    try {
+      const bundle = await requestProfile();
+      profile = bundle.data || bundle;
+      if (fmap.setRules) fmap.setRules(bundle.field_rules || []);
+      if (isTop) updateUI();
+    } catch (err) {
+      showToast(String(err && err.message ? err.message : err));
+      return 0;
+    }
+    if (!profile || !profile.universal || !profile.application) {
+      showToast('画像未加载，请运行 python bin/sync_autofill_profile.py');
+      return 0;
+    }
+    if (isTop) showToast('正在一键填充（含下拉/日期）…');
+    const log = self.CareerOsLog;
+    const events = [];
     const collected = collectFormFields();
     let count = 0;
     const projectNameEls = [];
@@ -226,18 +238,66 @@
         projectNameEls.push(el);
         return;
       }
-      if (!field.slot) return;
+      if (!field.slot) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
+        return;
+      }
       const value = fmap.valueForSlot(field.slot, profile, 0);
-      if (field.slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) return;
-      if (setNativeValue(el, value)) count++;
+      if (field.slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) {
+        events.push({ op: 'fill_native', label: field.label, slot: field.slot, reason: 'skip_id', ok: false });
+        return;
+      }
+      if (!value) {
+        events.push({ op: 'fill_native', label: field.label, slot: field.slot, reason: 'empty', ok: false });
+        return;
+      }
+      const ok = setNativeValue(el, value);
+      events.push({
+        op: 'fill_native',
+        label: field.label,
+        slot: field.slot,
+        reason: ok ? 'input' : 'no_match',
+        preview: log ? log.preview(value, field.slot) : '',
+        ok: ok
+      });
+      if (ok) count++;
     });
     const projects = profile.application.projects || [];
     projects.forEach((proj, i) => {
-      if (projectNameEls[i] && setNativeValue(projectNameEls[i], proj.name)) count++;
+      if (projectNameEls[i] && setNativeValue(projectNameEls[i], proj.name)) {
+        count++;
+        events.push({ op: 'fill_native', slot: 'application.projects.name', reason: 'input', ok: true, preview: proj.name });
+      }
     });
     count += fillRadios(profile.universal);
+    if (self.CareerOsBeisenFill && self.CareerOsBeisenFill.fill) {
+      try {
+        const extra = await self.CareerOsBeisenFill.fill(profile);
+        if (extra && typeof extra === 'object') {
+          count += extra.count || 0;
+          (extra.events || []).forEach((ev) => events.push(ev));
+        } else {
+          count += extra || 0;
+        }
+      } catch (err) {
+        events.push({ op: 'beisen_fill', reason: 'error', ok: false, error: String(err && err.message ? err.message : err) });
+      }
+    }
+    const summary = {
+      op: 'autofill',
+      url: location.href,
+      host: location.hostname,
+      profile: (profile.universal && profile.universal.personal && profile.universal.personal.name) || '',
+      test_only: !!profile.test_only,
+      filled: count,
+      attempted: events.length,
+      ok: events.filter((e) => e.ok).length,
+      skipped: events.filter((e) => !e.ok).length,
+      items: events
+    };
+    if (log) log.send(summary);
     if (isTop) {
-      showToast('已按本页 ' + collected.fields.length + ' 个格子填入 ' + count + ' 项');
+      showToast('一键填充完成：写入 ' + count + ' 项。日志见 data/job_discovery/logs/');
     }
     return count;
   }
@@ -487,13 +547,17 @@
     }
     if (req && req.action === 'AUTOFILL') {
       if (isTop) injectFloatingUI();
-      const run = () => {
-        const count = executeAutofill();
+      const run = () => executeAutofill().then((count) => {
         sendResponse({ success: true, count: count });
-      };
+      }).catch((err) => {
+        sendResponse({ success: false, count: 0, error: String(err && err.message ? err.message : err) });
+      });
       if (!profile) {
-        requestProfile().then((data) => {
-          profile = data;
+        requestProfile().then((bundle) => {
+          profile = bundle.data || bundle;
+          if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
+            self.CareerOsFieldMap.setRules(bundle.field_rules || []);
+          }
           if (isTop) updateUI();
           run();
         }).catch((err) => {
@@ -503,11 +567,15 @@
         return true;
       }
       run();
+      return true;
     }
   });
 
-  requestProfile().then((data) => {
-    profile = data;
+  requestProfile().then((bundle) => {
+    profile = bundle.data || bundle;
+    if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
+      self.CareerOsFieldMap.setRules(bundle.field_rules || []);
+    }
     if (isTop) injectFloatingUI();
   }).catch((err) => {
     if (isTop) {

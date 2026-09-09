@@ -3,7 +3,9 @@
  * 填表指令广播到当前标签全部 iframe（北森表单常在子帧）。
  */
 
-const CONTENT_JS = ['field-map.js', 'content.js'];
+try { importScripts('runtime-log.js'); } catch (_) { /* ignore */ }
+
+const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'beisen-fill.js', 'content.js'];
 const CONTENT_CSS = ['content.css'];
 
 function mergeCaptures(results) {
@@ -104,8 +106,7 @@ async function saveToBoundFolder(ctx) {
   return { text: text, path: reply.path, via: 'folder' };
 }
 
-function saveToNative(ctx) {
-  const text = JSON.stringify(ctx, null, 2);
+function sendNative(payload) {
   return new Promise((resolve, reject) => {
     let settled = false;
     const port = chrome.runtime.connectNative('com.careeros.jobcontext');
@@ -120,7 +121,7 @@ function saveToNative(ctx) {
       settled = true;
       clearTimeout(timer);
       try { port.disconnect(); } catch (_) {}
-      if (msg && msg.ok) resolve({ text: text, path: msg.path, via: 'project' });
+      if (msg && msg.ok) resolve(msg);
       else reject(new Error((msg && msg.error) || 'native failed'));
     });
     port.onDisconnect.addListener(() => {
@@ -130,8 +131,35 @@ function saveToNative(ctx) {
       const err = (chrome.runtime.lastError && chrome.runtime.lastError.message) || 'native disconnected';
       reject(new Error(err));
     });
-    port.postMessage({ action: 'save', context: ctx });
+    port.postMessage(payload);
   });
+}
+
+function saveToNative(ctx) {
+  const text = JSON.stringify(ctx, null, 2);
+  return sendNative({ action: 'save', context: ctx }).then((msg) => ({
+    text: text,
+    path: msg.path,
+    via: 'project'
+  }));
+}
+
+async function appendRuntimeLog(event) {
+  const payload = event && typeof event === 'object' ? event : { op: 'log', raw: String(event) };
+  try {
+    const reply = await sendNative({ action: 'log', event: payload });
+    if (reply && reply.path) {
+      chrome.storage.local.set({ lastLogPath: reply.path });
+    }
+    return { ok: true, path: reply.path, via: 'native' };
+  } catch (err) {
+    const row = Object.assign({ persist_error: String(err && err.message ? err.message : err) }, payload);
+    chrome.storage.local.get({ runtimeLogs: [] }, (stored) => {
+      const logs = (stored.runtimeLogs || []).concat(row).slice(-80);
+      chrome.storage.local.set({ runtimeLogs: logs });
+    });
+    return { ok: false, via: 'storage', error: String(err && err.message ? err.message : err) };
+  }
 }
 
 async function persistContext(ctx) {
@@ -159,14 +187,28 @@ async function persistContext(ctx) {
   };
 }
 
-function loadProfile() {
-  return fetch(chrome.runtime.getURL('profile.json'))
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('缺少 profile.json，请在仓库根目录运行 python bin/sync_autofill_profile.py');
-      }
-      return res.json();
-    });
+async function loadProfile() {
+  try {
+    const msg = await sendNative({ action: 'get_profile' });
+    if (msg && msg.data) {
+      return { data: msg.data, field_rules: msg.field_rules || [] };
+    }
+  } catch (_) {
+    /* fall back to packaged file */
+  }
+  const stamp = Date.now();
+  const url = chrome.runtime.getURL('profile.json') + '?t=' + stamp;
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('缺少 profile.json，请运行 python bin/sync_autofill_profile.py');
+  }
+  const data = await res.json();
+  let field_rules = [];
+  try {
+    const rr = await fetch(chrome.runtime.getURL('field-map-rules.json') + '?t=' + stamp, { cache: 'no-store' });
+    if (rr.ok) field_rules = await rr.json();
+  } catch (_) { /* optional */ }
+  return { data: data, field_rules: field_rules };
 }
 
 async function injectContent(tabId) {
@@ -209,10 +251,26 @@ async function broadcast(tabId, message) {
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg && msg.action === 'APPEND_LOG') {
+    appendRuntimeLog(msg.event || {}).then((res) => sendResponse(res));
+    return true;
+  }
+
   if (msg && msg.action === 'GET_PROFILE') {
     loadProfile()
-      .then((data) => sendResponse({ ok: true, data }))
+      .then((bundle) => sendResponse({
+        ok: true,
+        data: bundle.data,
+        field_rules: bundle.field_rules || [],
+        hot: true
+      }))
       .catch((err) => sendResponse({ ok: false, error: String(err && err.message ? err.message : err) }));
+    return true;
+  }
+
+  if (msg && msg.action === 'RELOAD_EXTENSION') {
+    sendResponse({ ok: true });
+    setTimeout(() => chrome.runtime.reload(), 50);
     return true;
   }
 
@@ -233,6 +291,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (tab.url && !ctx.url) ctx.url = tab.url;
       await chrome.storage.local.set({ lastJobContext: ctx });
       const saved = await persistContext(ctx);
+      await appendRuntimeLog({
+        op: 'capture',
+        via: saved.via,
+        path: saved.path || '',
+        error: saved.error || '',
+        title: ctx.title || '',
+        url: ctx.url || '',
+        fields: (ctx.form_schema || []).length,
+        jd_chars: (ctx.jd_text || '').length
+      });
       try {
         await chrome.tabs.sendMessage(
           tab.id,
