@@ -23,9 +23,9 @@ except (ImportError, ValueError):
 
 
 _JOB_AD_RE = re.compile(r"jobAdId=([0-9a-fA-F-]{8,})", re.I)
-_MOKA_JOB_RE = re.compile(r"/job/([0-9a-fA-F-]{8,})", re.I)
+_MOKA_JOB_RE = re.compile(r"[#/]job/([0-9a-fA-F-]{8,})", re.I)
 _JD_MARKERS = re.compile(r"工作职责|任职资格|任职要求|岗位职责|职位描述")
-_FORM_MARKERS = re.compile(r"你正在投递职位|预览并提交|上传简历|Career OS 填表")
+_FORM_MARKERS = re.compile(r"你正在投递职位|预览并提交|上传简历|职位申请|Career OS 填表")
 
 
 def extract_job_ad_id(url: str) -> str:

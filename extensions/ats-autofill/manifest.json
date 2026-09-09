@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Career OS 网申自动填表助手",
-  "version": "1.8.0",
+  "version": "1.8.9",
   "description": "可单独使用的网申填表助手。设置页底稿即可填北森/Moka，不必安装 Career OS。不自动提交。",
   "permissions": [
     "storage",
@@ -15,6 +15,9 @@
   "host_permissions": [
     "http://127.0.0.1:18765/*",
     "http://localhost:18765/*"
+  ],
+  "optional_host_permissions": [
+    "*://*/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -50,6 +53,8 @@
         "field-map.js",
         "runtime-log.js",
         "shortcuts.js",
+        "fill-policy.js",
+        "fill-runtime.js",
         "beisen-fill.js",
         "content.js"
       ],

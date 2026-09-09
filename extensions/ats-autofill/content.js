@@ -15,6 +15,7 @@
   let pickMode = false;
   let lastFieldEl = null;
   let lastCoverage = null;
+  let fillGroups = null;
 
   function requestProfile() {
     return new Promise((resolve, reject) => {
@@ -57,13 +58,35 @@
     if (self.CareerOsFieldMap && self.CareerOsFieldMap.setRules) {
       self.CareerOsFieldMap.setRules((ctx && ctx.field_rules) || []);
     }
+    if (ctx && ctx.fill_groups) fillGroups = ctx.fill_groups;
+  }
+
+  function policyAllows(slot) {
+    const policy = self.CareerOsFillPolicy;
+    if (!policy) return true;
+    return policy.allowed(slot, fillGroups);
+  }
+
+  if (chrome.storage && chrome.storage.onChanged) {
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.overlayFillGroups) fillGroups = changes.overlayFillGroups.newValue || fillGroups;
+    });
+  }
+
+  function isJunkField(el, label) {
+    if (!el) return true;
+    if (el.id === 'moka-version') return true;
+    const ph = String(el.placeholder || '').trim();
+    if (/^(输入职位关键字|搜索职位关键词|搜索职位)$/.test(ph)) return true;
+    const lab = String(label || '').replace(/\s+/g, ' ').trim();
+    return /^(moka-version|输入职位关键字|搜索职位关键词|搜索职位)$/.test(lab);
   }
 
   function setNativeValue(element, value) {
     if (!element || value === undefined || value === null) return false;
     const str = String(value).trim();
     if (!str) return false;
-    if (element.disabled || element.readOnly) return false;
+    if (element.disabled) return false;
 
     const tag = element.tagName.toLowerCase();
     if (tag === 'select') {
@@ -83,6 +106,11 @@
       return true;
     }
 
+    const wasReadOnly = element.readOnly;
+    if (wasReadOnly) {
+      try { element.readOnly = false; } catch (_) { /* ignore */ }
+    }
+
     const isTextarea = tag === 'textarea';
     const prototype = isTextarea ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
     const valueSetter = Object.getOwnPropertyDescriptor(element, 'value')?.set;
@@ -93,6 +121,9 @@
       writeValue = str + '-01';
     }
 
+    const tracker = element._valueTracker;
+    if (tracker && typeof tracker.setValue === 'function') tracker.setValue('');
+
     if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
       prototypeValueSetter.call(element, writeValue);
     } else if (valueSetter) {
@@ -102,38 +133,41 @@
     }
 
     element.dispatchEvent(new Event('input', { bubbles: true }));
+    try {
+      element.dispatchEvent(new InputEvent('input', {
+        bubbles: true,
+        cancelable: true,
+        data: writeValue,
+        inputType: 'insertText'
+      }));
+    } catch (_) { /* older browsers */ }
     element.dispatchEvent(new Event('change', { bubbles: true }));
-    element.dispatchEvent(new Event('blur', { bubbles: true }));
     return true;
   }
 
+  function nearestFormItem(el) {
+    let n = el && el.parentElement;
+    while (n) {
+      const cls = n.classList;
+      if (cls && (cls.contains('el-form-item') || cls.contains('ant-form-item') || cls.contains('bs-form-item'))) {
+        const lab = n.querySelector(':scope > .el-form-item__label, :scope > .ant-form-item-label, :scope > label');
+        const t = lab ? String(lab.textContent || '').replace(/\s+/g, ' ').trim() : '';
+        if (t && t.length <= 24 && !/搜索职位/.test(t)) return n;
+      }
+      n = n.parentElement;
+    }
+    return null;
+  }
+
   function getFieldContext(el) {
-    let context = '';
+    const runtime = self.CareerOsFillRuntime;
+    const near = runtime && runtime.nearbyLabel ? runtime.nearbyLabel(el) : '';
+    let context = near ? near : '';
     if (el.placeholder) context += ' ' + el.placeholder;
     if (el.name) context += ' ' + el.name;
     if (el.id) context += ' ' + el.id;
     if (el.getAttribute('aria-label')) context += ' ' + el.getAttribute('aria-label');
-    if (el.getAttribute('data-automation')) context += ' ' + el.getAttribute('data-automation');
-
-    let parent = el.parentElement;
-    let depth = 0;
-    while (parent && depth < 6) {
-      const labelEl = parent.querySelector(
-        'label, .el-form-item__label, .ant-form-item-label, .bs-form-item-label, .title, .item-label, th'
-      );
-      if (labelEl && labelEl !== el) {
-        context += ' ' + labelEl.textContent;
-        break;
-      }
-      depth++;
-      parent = parent.parentElement;
-    }
-
-    let prev = el.previousElementSibling;
-    if (prev && (prev.tagName === 'LABEL' || prev.tagName === 'SPAN' || prev.tagName === 'DIV')) {
-      context += ' ' + prev.textContent;
-    }
-    return context.replace(/\s+/g, ' ').trim();
+    return context.replace(/\s+/g, ' ').trim().slice(0, 80);
   }
 
   const JD_SELECTORS = [
@@ -159,6 +193,21 @@
       const ctx = getFieldContext(el);
       const isTextarea = el.tagName.toLowerCase() === 'textarea';
       const slot = fmap ? fmap.resolveSlot(ctx, { isTextarea: isTextarea }) : '';
+      if (isJunkField(el, ctx)) {
+        return {
+          index: index,
+          tag: el.tagName.toLowerCase(),
+          type: el.type || el.tagName.toLowerCase(),
+          name: el.name || '',
+          id: el.id || '',
+          label: ctx.slice(0, 200),
+          required: false,
+          placeholder: el.placeholder || '',
+          slot: '',
+          junk: true,
+          frame: isTop ? 'top' : location.href
+        };
+      }
       const required = !!(
         el.required ||
         el.getAttribute('aria-required') === 'true' ||
@@ -295,68 +344,129 @@
       return { count: 0 };
     }
     const blankOnly = !!opts.blankOnly;
-    if (isTop) showToast(blankOnly ? '仅填空白字段…' : '正在一键填充（含下拉/日期）…');
+    if (!fillGroups && self.CareerOsFillPolicy) {
+      try { fillGroups = await self.CareerOsFillPolicy.load(); } catch (_) { fillGroups = null; }
+    }
+    const runtime = self.CareerOsFillRuntime;
+    const site = runtime
+      ? runtime.detect(location.href, location.hostname, location.hash)
+      : { ats: 'generic', label: '通用' };
+    if (isTop) showToast(blankOnly ? '仅填空白字段…' : ('正在一键填充（' + (site.label || '') + '）…'));
+    if (runtime && runtime.waitForForm) {
+      await runtime.waitForForm(document, 1200);
+    }
+    if (runtime && runtime.expandRepeatable) {
+      try { await runtime.expandRepeatable(document, profile); } catch (_) { /* ignore */ }
+    }
     const log = self.CareerOsLog;
     const events = [];
     const collected = collectFormFields();
     const autofill = fillCtx.autofill;
     let count = 0;
     const projectNameEls = [];
-    collected.fields.forEach((field, i) => {
+    const slotSeen = {};
+    function slotIndex(slot) {
+      const i = slotSeen[slot] || 0;
+      slotSeen[slot] = i + 1;
+      return i;
+    }
+    for (let i = 0; i < collected.fields.length; i++) {
+      const field = collected.fields[i];
       const el = collected.nodes[i];
-      if (!el || el.disabled || el.readOnly) return;
-      if (el.type === 'radio' || el.type === 'checkbox') return;
+      if (!el || el.disabled) continue;
+      if (field.junk || isJunkField(el, field.label)) continue;
+      if (el.type === 'radio' || el.type === 'checkbox') continue;
       if (blankOnly && fieldCurrentValue(el)) {
         events.push({ op: 'fill_native', label: field.label, reason: 'already', ok: true });
-        return;
+        continue;
       }
       if (fmap.isNoiseLabel(field.label) && !field.slot) {
-        events.push({ op: 'fill_native', label: field.label, reason: 'noise', ok: false });
-        return;
+        const near = (self.CareerOsFillRuntime && self.CareerOsFillRuntime.nearbyLabel)
+          ? self.CareerOsFillRuntime.nearbyLabel(el)
+          : '';
+        const recovered = near ? fmap.resolveSlot(near, { isTextarea: false }) : '';
+        if (!recovered) {
+          events.push({ op: 'fill_native', label: field.label, reason: 'noise', ok: false });
+          continue;
+        }
+        field.slot = recovered;
+        field.label = near;
       }
-      if (field.slot === 'application.projects.name') {
+      let slot = field.slot || '';
+      if (!slot && autofill && Array.isArray(autofill.fields)) {
+        const row = (autofill.fields || []).find((r) => {
+          if (!r || !r.slot) return false;
+          return String(r.label || '').replace(/\s+/g, ' ').trim() === String(field.label || '').replace(/\s+/g, ' ').trim();
+        });
+        if (row) slot = row.slot;
+      }
+      if (slot === 'application.projects.name') {
+        if (!policyAllows(slot)) {
+          events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'policy_skip', ok: false });
+          continue;
+        }
         projectNameEls.push(el);
-        return;
+        continue;
       }
       let value = fmap.matchAutofillValue(field, autofill);
-      if (!value && field.slot) value = fmap.valueForSlot(field.slot, profile, 0);
-      if (field.slot === 'application.target_position' && autofill && autofill.target_position) {
+      if (!value && slot) value = fmap.valueForSlot(slot, profile, slotIndex(slot));
+      if (slot === 'application.target_position' && autofill && autofill.target_position) {
         value = autofill.target_position;
       }
-      if (!field.slot && !value) {
-        events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
-        return;
+      if (slot && !policyAllows(slot)) {
+        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'policy_skip', ok: false });
+        continue;
       }
-      if (field.slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) {
-        events.push({ op: 'fill_native', label: field.label, slot: field.slot, reason: 'skip_id', ok: false });
-        return;
+      if (!slot && !value) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
+        continue;
+      }
+      if (slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) {
+        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'skip_id', ok: false });
+        continue;
       }
       if (!value) {
-        events.push({ op: 'fill_native', label: field.label, slot: field.slot, reason: 'empty', ok: false });
-        return;
+        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'empty', ok: false });
+        continue;
       }
-      const ok = setNativeValue(el, value);
+      let ok = setNativeValue(el, value);
+      let how = ok ? 'input' : 'no_match';
+      if (!ok && self.CareerOsBeisenFill) {
+        const item = nearestFormItem(el) || el.parentElement;
+        const looksDate = /时间|日期|年月/.test(field.label || '');
+        try {
+          if (looksDate && self.CareerOsBeisenFill.fillDatePicker) {
+            ok = await self.CareerOsBeisenFill.fillDatePicker(item, value);
+            if (ok) how = 'date';
+          } else if (self.CareerOsBeisenFill.fillDropdown && (el.readOnly || /请选择/.test(el.placeholder || ''))) {
+            ok = await self.CareerOsBeisenFill.fillDropdown(item, value);
+            if (ok) how = 'dropdown';
+          }
+        } catch (_) { /* ignore */ }
+      }
       events.push({
         op: 'fill_native',
         label: field.label,
-        slot: field.slot,
-        reason: ok ? 'input' : 'no_match',
-        preview: log ? log.preview(value, field.slot) : '',
+        slot: slot,
+        reason: how,
+        preview: log ? log.preview(value, slot) : '',
         ok: ok
       });
       if (ok) count++;
-    });
+    }
     const projects = (profile.application && profile.application.projects) || [];
-    projects.forEach((proj, i) => {
-      if (projectNameEls[i] && !(blankOnly && fieldCurrentValue(projectNameEls[i])) && setNativeValue(projectNameEls[i], proj.name)) {
-        count++;
-        events.push({ op: 'fill_native', slot: 'application.projects.name', reason: 'input', ok: true, preview: proj.name });
-      }
-    });
-    count += fillRadios(profile.universal);
+    if (policyAllows('application.projects.name')) {
+      projects.forEach((proj, i) => {
+        if (projectNameEls[i] && !(blankOnly && fieldCurrentValue(projectNameEls[i])) && setNativeValue(projectNameEls[i], proj.name)) {
+          count++;
+          events.push({ op: 'fill_native', slot: 'application.projects.name', reason: 'input', ok: true, preview: proj.name });
+        }
+      });
+    }
+    if (policyAllows('universal.personal.gender')) count += fillRadios(profile.universal);
     if (self.CareerOsBeisenFill && self.CareerOsBeisenFill.fill) {
       try {
-        const extra = await self.CareerOsBeisenFill.fill(profile);
+        const extra = await self.CareerOsBeisenFill.fill(profile, { fillGroups: fillGroups });
         if (extra && typeof extra === 'object') {
           count += extra.count || 0;
           (extra.events || []).forEach((ev) => events.push(ev));
@@ -388,7 +498,20 @@
     if (isTop) {
       renderCoverage(coverage);
       const gap = (coverage.required_empty || []).length + (coverage.widget_fail || []).length;
-      showToast('写入 ' + count + ' 项' + (gap ? '，必填缺口 ' + gap : '，必填已清'));
+      const skipped = events.filter((e) => e.reason === 'policy_skip').length;
+      const onMoka = /mokahr\.com|moka\.com/i.test(location.hostname);
+      const onApply = /\/job\/[^/]+\/apply/i.test(location.hash || '');
+      if (count === 0 && onMoka && !onApply) {
+        showToast('这是 Moka 职位详情。请点「申请」进入报名表（地址带 /apply）再一键填充');
+      } else if (count === 0 && onMoka) {
+        showToast('报名表格子还没出现。请滚到「个人信息」，等姓名框出来后再点一键');
+      } else {
+        showToast(
+          '写入 ' + count + ' 项'
+          + (skipped ? '，按设置跳过 ' + skipped : '')
+          + (gap ? '，必填缺口 ' + gap : '，必填已清')
+        );
+      }
     }
     return { count: count, coverage: coverage };
   }
@@ -869,6 +992,9 @@
     api.load().then((s) => { map = s; });
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.careerOsShortcuts) api.load().then((s) => { map = s; });
+      if (changes.overlayFillGroups) {
+        fillGroups = (changes.overlayFillGroups.newValue) || fillGroups;
+      }
     });
     document.addEventListener('keydown', (e) => {
       if (!map) return;
@@ -916,6 +1042,11 @@
   }, true);
 
   bindPageShortcuts();
+
+  window.addEventListener('hashchange', () => {
+    requestFillContext().then(applyFillContext).catch(function () { /* ignore */ });
+    if (isTop) injectFloatingUI();
+  });
 
   requestFillContext().then((ctx) => {
     applyFillContext(ctx);

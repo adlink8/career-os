@@ -5,8 +5,9 @@
 
 try { importScripts('runtime-log.js'); } catch (_) { /* ignore */ }
 try { importScripts('overlay-store.js'); } catch (_) { /* ignore */ }
+try { importScripts('fill-policy.js'); } catch (_) { /* ignore */ }
 
-const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'shortcuts.js', 'beisen-fill.js', 'content.js'];
+const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'shortcuts.js', 'fill-policy.js', 'fill-runtime.js', 'beisen-fill.js', 'content.js'];
 const CONTENT_CSS = ['content.css'];
 
 function mergeCaptures(results) {
@@ -228,6 +229,9 @@ async function loadFillPayload(url) {
     bundle = { data: null, field_rules: field_rules };
   }
 
+  const Policy = self.CareerOsFillPolicy;
+  const fill_groups = Policy ? await Policy.load() : null;
+
   if (overlay.enabled && overlay.profile) {
     const name = (((overlay.profile.universal || {}).personal || {}).name) || '';
     if (!name) {
@@ -239,6 +243,7 @@ async function loadFillPayload(url) {
         autofill: null,
         profile: overlay.profile,
         field_rules: bundle.field_rules,
+        fill_groups: fill_groups,
         run_id: null,
         overlay: true
       };
@@ -252,6 +257,7 @@ async function loadFillPayload(url) {
       autofill: null,
       profile: overlay.profile,
       field_rules: bundle.field_rules,
+      fill_groups: fill_groups,
       run_id: null,
       overlay: true,
       name: name
@@ -263,6 +269,7 @@ async function loadFillPayload(url) {
     if (msg && (msg.ok || msg.mode) && msg.mode !== 'blocked') {
       if (!msg.field_rules) msg.field_rules = bundle.field_rules;
       if (!msg.profile) msg.profile = bundle.data;
+      if (!msg.fill_groups) msg.fill_groups = fill_groups;
       return msg;
     }
   } catch (_) {
@@ -279,6 +286,7 @@ async function loadFillPayload(url) {
       autofill: null,
       profile: bundle.data,
       field_rules: bundle.field_rules,
+      fill_groups: fill_groups,
       run_id: null
     };
   }
@@ -291,6 +299,7 @@ async function loadFillPayload(url) {
     autofill: null,
     profile: bundle.data,
     field_rules: bundle.field_rules,
+    fill_groups: fill_groups,
     run_id: null
   };
 }
@@ -370,6 +379,21 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.action === 'OPEN_OPTIONS') {
     chrome.runtime.openOptionsPage();
     sendResponse({ ok: true });
+    return true;
+  }
+
+  if (msg && msg.action === 'ENABLE_ON_ACTIVE_TAB') {
+    chrome.tabs.query({ active: true, currentWindow: true }).then(async (tabs) => {
+      const tab = tabs && tabs[0];
+      if (!tab || !tab.id || !/^https?:/i.test(tab.url || '')) {
+        sendResponse({ ok: false, error: '当前页不能注入（请打开 http/https 网申页）' });
+        return;
+      }
+      await injectContent(tab.id);
+      let host = '';
+      try { host = new URL(tab.url).host; } catch (_) { host = tab.url || ''; }
+      sendResponse({ ok: true, host: host });
+    });
     return true;
   }
 

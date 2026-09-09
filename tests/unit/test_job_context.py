@@ -23,6 +23,9 @@ def test_extract_job_ad_id_beisen_and_moka():
     assert extract_job_ad_id("https://app.mokahr.com/job/11111111-2222-3333-4444-555555555555") == (
         "11111111-2222-3333-4444-555555555555"
     )
+    assert extract_job_ad_id(
+        "https://app.mokahr.com/apply/focus/148405?sourceToken=abc#/job/f5bfbd62-fd05-476a-8807-f5bb6b114b53/apply"
+    ) == "f5bfbd62-fd05-476a-8807-f5bb6b114b53"
 
 
 def test_hard_filters():

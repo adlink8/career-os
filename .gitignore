@@ -77,6 +77,8 @@ Thumbs.db
 __pycache__/
 *.pyc
 .pytest_cache/
+tests/js/node_modules/
+tests/js/package-lock.json
 .vscode/
 .idea/
 

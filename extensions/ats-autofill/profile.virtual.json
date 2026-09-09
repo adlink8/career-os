@@ -1,0 +1,163 @@
+{
+  "version": "3.0-overlay",
+  "source": "settings-overlay",
+  "test_only": true,
+  "universal": {
+    "personal": {
+      "name": "测一填",
+      "gender": "男",
+      "birth_year": "2003",
+      "birth_date": "2003-10-25",
+      "age": "23",
+      "phone": "13800138000",
+      "email": "filltest@example.com",
+      "id_card": "",
+      "current_city": "常州市",
+      "current_address": "江苏省常州市武进区测试路 1 号虚拟公寓 3 栋 201",
+      "native_province": "江苏省",
+      "native_city": "常州市",
+      "native_place": "江苏省常州市",
+      "political_status": "共青团员",
+      "marriage": "未婚",
+      "ethnicity": "汉族",
+      "health": "健康",
+      "emergency_contact": "测父",
+      "emergency_phone": "13900139000",
+      "emergency_relation": "父子",
+      "github": "https://github.com/example-filltest",
+      "blog": "https://example.com/filltest",
+      "available_time": "随时到岗",
+      "internship_duration": "6个月以上",
+      "days_per_week": "每周5天"
+    },
+    "education": {
+      "undergraduate": {
+        "school": "常州大学",
+        "college": "计算机与人工智能学院",
+        "degree": "本科",
+        "major": "计算机科学与技术",
+        "graduation": "2027-06",
+        "start_date": "2025-09",
+        "end_date": "2027-06",
+        "education_type": "统招专升本",
+        "gpa": "3.5/4.0",
+        "rank": "前 20%"
+      },
+      "junior_college": {
+        "school": "江苏信息职业技术学院",
+        "degree": "大专",
+        "major": "物联网应用技术",
+        "start_date": "2022-09",
+        "end_date": "2025-06",
+        "graduation": "2025-06"
+      }
+    },
+    "hobbies": "跑步、硬件折腾、写技术笔记（虚拟数据）",
+    "awards": "2024 测试省物联网技能竞赛三等奖；2023 院级优秀学生干部（虚构）",
+    "certificates": "普通话二级甲等；英语四级；计算机二级（测试）",
+    "languages": "英语四级 CET-4（测试）"
+  },
+  "application": {
+    "target_position": "运维工程师",
+    "target_cities": "南京市、苏州市、无锡市、常州市",
+    "expected_city": "南京市",
+    "expected_salary": "6001～8000",
+    "self_evaluation": "常州大学计算机科学与技术本科在读（虚拟画像「测一填」）。求职意向：运维工程师。能独立完成 Linux 巡检、Docker 部署与 Python 小工具。项目上做过网关联调与监控看板；实习期间写过巡检脚本。不编造未做过的量化，下列数字仅供填表联调用。",
+    "skills_summary": "【熟练】Linux、Python、Docker、Git、MQTT\n【熟悉】FastAPI、SQLite、Nginx、Prometheus",
+    "skills_proficient": "Linux、Python、Docker、Git、MQTT",
+    "skills_familiar": "FastAPI、SQLite、Nginx、Prometheus",
+    "internships": [
+      {
+        "name": "测试科技有限公司",
+        "role": "运维实习生",
+        "start_date": "2025-07",
+        "end_date": "2025-09",
+        "duty": "协助巡检 Linux 主机 30+ 台，用 Python 写巡检脚本，把磁盘/负载告警从人工抄表改成定时任务（虚拟数据）。参与测试环境 Docker Compose 部署与日志归档。"
+      }
+    ],
+    "projects": [
+      {
+        "name": "测试项目·网关联调平台",
+        "year": "2026",
+        "start_date": "2026-03",
+        "end_date": "2026-08",
+        "role": "核心开发",
+        "keywords": "MQTT、Linux、Python",
+        "description": "虚构网关联调项目，仅用于自动填表。",
+        "duty": "完成设备上报、断线重连与联调日志，联调时延从 800ms 降到 120ms（测试数据）。",
+        "achievement": "联调时延 800ms→120ms；支持 50 台模拟设备同时在线（测试数据）。",
+        "full_text": "【项目名称】测试项目·网关联调平台\n【核心技术】MQTT、Linux、Python\n【职责】设备上报、断线重连、联调日志\n【业绩】联调时延从 800ms 降到 120ms（虚拟数据）"
+      },
+      {
+        "name": "测试项目·主机监控看板",
+        "year": "2025",
+        "start_date": "2025-10",
+        "end_date": "2026-01",
+        "role": "负责人",
+        "keywords": "Linux、Python、Prometheus",
+        "description": "虚构监控看板，仅用于自动填表。",
+        "duty": "采集 CPU/内存/磁盘指标，做阈值告警与周报导出。",
+        "achievement": "告警从次日发现改为 5 分钟内通知（虚拟数据）。",
+        "full_text": "【项目名称】测试项目·主机监控看板\n【核心技术】Linux、Python、Prometheus\n【职责】指标采集、阈值告警、周报导出\n【业绩】告警时效从次日改为 5 分钟内（虚拟数据）"
+      }
+    ],
+    "campus_roles": [
+      {
+        "name": "测试社团技术委员",
+        "start_date": "2023-09",
+        "end_date": "2024-06",
+        "description": "组织技术分享 6 次，维护实验室电脑与交换机（虚拟数据）。"
+      }
+    ],
+    "campus_practices": [
+      {
+        "name": "测试·暑期社会实践",
+        "start_date": "2024-07",
+        "end_date": "2024-08",
+        "description": "参与社区网络义诊与设备排查，撰写实践报告（虚拟数据）。"
+      }
+    ],
+    "award_records": [
+      {
+        "name": "测试省物联网技能竞赛三等奖",
+        "date": "2024-12",
+        "level": "省级",
+        "description": "负责组网与现场排障，获三等奖（虚构）。"
+      },
+      {
+        "name": "院级优秀学生干部",
+        "date": "2023-12",
+        "level": "院级",
+        "description": "因社团设备维护与分享获评（虚构）。"
+      }
+    ],
+    "certificate_records": [
+      {
+        "name": "普通话二级甲等（测试）",
+        "date": "2023-06"
+      },
+      {
+        "name": "大学英语四级 CET-4（测试）",
+        "date": "2024-06"
+      }
+    ],
+    "languages": [
+      {
+        "type": "中文",
+        "level": "母语",
+        "listen": "母语",
+        "speak": "母语",
+        "read": "母语",
+        "write": "母语"
+      },
+      {
+        "type": "英语",
+        "level": "一般",
+        "listen": "一般",
+        "speak": "一般",
+        "read": "良好",
+        "write": "一般"
+      }
+    ]
+  }
+}

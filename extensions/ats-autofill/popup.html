@@ -26,6 +26,13 @@
     }
     .gear:hover { background: #4338ca; }
     .hint { color: #64748b; margin: 8px 0 10px; line-height: 1.4; }
+    .enable {
+      width: 100%; border: none; border-radius: 8px; padding: 8px 10px;
+      background: #4f46e5; color: #fff; font-weight: 700; cursor: pointer; margin-bottom: 8px;
+    }
+    .enable:hover { background: #4338ca; }
+    .status { color: #047857; margin: 0 0 8px; line-height: 1.4; }
+    .status.err { color: #b91c1c; }
     table { width: 100%; border-collapse: collapse; }
     td { padding: 4px 0; vertical-align: middle; }
     td.k { color: #4338ca; font-weight: 700; font-family: ui-monospace, Consolas, monospace; white-space: nowrap; }
@@ -39,8 +46,10 @@
     <button class="gear" id="btn-gear" title="打开详细设置">⚙</button>
   </div>
   <p class="hint">只装插件即可。点齿轮填底稿并启用；网申页点格子即可在旁边填/复制。</p>
+  <button class="enable" type="button" id="btn-enable">在当前页启用填表</button>
+  <p class="status" id="enable-status" hidden></p>
   <table id="shortcut-table"></table>
-  <p class="foot">默认 Alt+Shift+字母，可在设置页改。</p>
+  <p class="foot">默认 Alt+Shift+字母，可在设置页改。不自动点提交。</p>
   <script src="shortcuts.js"></script>
   <script src="popup.js"></script>
 </body>

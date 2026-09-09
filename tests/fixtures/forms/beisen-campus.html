@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>北森模拟报名表</title></head>
+<body>
+<form id="apply">
+  <h2>个人信息</h2>
+  <div class="el-form-item"><label class="el-form-item__label">姓名</label><div class="el-form-item__content"><input id="name"></div></div>
+  <div class="el-form-item"><label class="el-form-item__label">手机号码</label><div class="el-form-item__content"><input id="phone"></div></div>
+  <div class="el-form-item"><label class="el-form-item__label">邮箱</label><div class="el-form-item__content"><input id="email"></div></div>
+  <div class="el-form-item"><label class="el-form-item__label">籍贯</label><div class="el-form-item__content"><input id="native"></div></div>
+
+  <h2>教育经历</h2>
+  <div class="el-form-item"><label class="el-form-item__label">学校名称</label><div class="el-form-item__content"><input id="school"></div></div>
+  <div class="el-form-item"><label class="el-form-item__label">专业名称</label><div class="el-form-item__content"><input id="major"></div></div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">学历</label>
+    <div class="el-form-item__content">
+      <div class="el-select">
+        <input id="degree" placeholder="请选择" readonly>
+        <ul class="el-select-dropdown">
+          <li class="el-select-dropdown__item">大专</li>
+          <li class="el-select-dropdown__item">本科</li>
+          <li class="el-select-dropdown__item">硕士</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">学习形式</label>
+    <div class="el-form-item__content">
+      <div class="el-select">
+        <input id="edu-type" placeholder="请选择" readonly>
+        <ul class="el-select-dropdown">
+          <li class="el-select-dropdown__item">全日制</li>
+          <li class="el-select-dropdown__item">统招专升本</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">开始时间</label>
+    <div class="el-form-item__content"><div class="el-date-editor"><input id="edu-start" placeholder="请选择"></div></div>
+  </div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">结束时间</label>
+    <div class="el-form-item__content"><div class="el-date-editor"><input id="edu-end" placeholder="请选择"></div></div>
+  </div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">专业排名</label>
+    <div class="el-form-item__content">
+      <div class="el-select">
+        <input id="rank" placeholder="请选择" readonly>
+        <ul class="el-select-dropdown">
+          <li class="el-select-dropdown__item">前10%</li>
+          <li class="el-select-dropdown__item">前20%</li>
+          <li class="el-select-dropdown__item">其他</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>实习经历</h2>
+  <div class="el-form-item"><label class="el-form-item__label">单位名称</label><div class="el-form-item__content"><input id="intern-name"></div></div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">开始时间</label>
+    <div class="el-form-item__content"><div class="el-date-editor"><input id="intern-start" placeholder="请选择"></div></div>
+  </div>
+  <div class="el-form-item">
+    <label class="el-form-item__label">结束时间</label>
+    <div class="el-form-item__content"><div class="el-date-editor"><input id="intern-end" placeholder="请选择"></div></div>
+  </div>
+
+  <h2>项目经历</h2>
+  <div class="el-form-item"><label class="el-form-item__label">项目名称</label><div class="el-form-item__content"><input id="proj-name"></div></div>
+  <div class="el-form-item"><label class="el-form-item__label">项目描述</label><div class="el-form-item__content"><textarea id="proj-desc"></textarea></div></div>
+
+  <h2>语言</h2>
+  <div class="el-form-item">
+    <label class="el-form-item__label">语言类型</label>
+    <div class="el-form-item__content">
+      <div class="el-select">
+        <input id="lang-type" placeholder="请选择" readonly>
+        <ul class="el-select-dropdown">
+          <li class="el-select-dropdown__item">中文</li>
+          <li class="el-select-dropdown__item">英语</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</form>
+</body>
+</html>

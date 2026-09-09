@@ -56,6 +56,9 @@ def test_review_formula_is_fixed():
 def test_plugin_declares_no_auto_submit():
     manifest = json.loads(_read(EXT / "manifest.json"))
     assert "不自动提交" in manifest.get("description", "")
+    assert "fill-policy.js" in json.dumps(manifest)
+    assert "fill-runtime.js" in json.dumps(manifest)
+    assert "optional_host_permissions" in json.dumps(manifest)
     options = _read(EXT / "options.html")
     assert "不自动点网申提交" in options
 

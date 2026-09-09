@@ -45,6 +45,16 @@
     <button type="button" class="btn" id="btn-shortcut-reset">恢复默认快捷键</button>
   </section>
 
+  <section id="sec-fill-policy">
+    <h2>一键填充范围</h2>
+    <p class="sub">只影响网申页的「一键填充 / 仅填空白」。勾选的类别才会写进表单；不勾选就跳过。格子旁「填入」仍可逐项手填。</p>
+    <div class="fill-policy-actions">
+      <button type="button" class="btn" id="btn-fill-all">全选</button>
+      <button type="button" class="btn" id="btn-fill-none">全不选</button>
+    </div>
+    <div class="fill-policy-grid" id="fill-policy-grid"></div>
+  </section>
+
   <form id="overlay-form">
     <section id="sec-personal">
       <h2>个人信息</h2>
@@ -95,63 +105,57 @@
     </section>
 
     <section id="sec-intern">
-      <h2>实习经历</h2>
-      <div class="grid">
-        <label>单位名称 <input name="application.internships.0.name"></label>
-        <label>职位名称 <input name="application.internships.0.role"></label>
-        <label>开始时间 <input name="application.internships.0.start_date"></label>
-        <label>结束时间 <input name="application.internships.0.end_date"></label>
-        <label class="wide">实习内容 <textarea name="application.internships.0.duty" rows="3"></textarea></label>
+      <div class="list-head">
+        <h2>实习经历</h2>
+        <button type="button" class="btn" data-add-list="intern">添加一段</button>
       </div>
+      <p class="sub">没有实习就空着，或删掉卡片。网申要几段就加几段。</p>
+      <div class="repeat-list" id="list-intern"></div>
     </section>
 
-    <section id="sec-proj1">
-      <h2>项目经历 1</h2>
-      <div class="grid">
-        <label>项目名称 <input name="application.projects.0.name"></label>
-        <label>担任角色 <input name="application.projects.0.role"></label>
-        <label>技术栈 <input name="application.projects.0.keywords"></label>
-        <label>开始时间 <input name="application.projects.0.start_date"></label>
-        <label>结束时间 <input name="application.projects.0.end_date"></label>
-        <label class="wide">项目描述 <textarea name="application.projects.0.full_text" rows="4"></textarea></label>
+    <section id="sec-projects">
+      <div class="list-head">
+        <h2>项目经历</h2>
+        <button type="button" class="btn" data-add-list="projects">添加一段</button>
       </div>
-    </section>
-
-    <section id="sec-proj2">
-      <h2>项目经历 2</h2>
-      <div class="grid">
-        <label>项目名称 <input name="application.projects.1.name"></label>
-        <label>担任角色 <input name="application.projects.1.role"></label>
-        <label>技术栈 <input name="application.projects.1.keywords"></label>
-        <label>开始时间 <input name="application.projects.1.start_date"></label>
-        <label>结束时间 <input name="application.projects.1.end_date"></label>
-        <label class="wide">项目描述 <textarea name="application.projects.1.full_text" rows="4"></textarea></label>
-      </div>
+      <p class="sub">默认不预留两段。你有几段项目就加几段，不需要的点删除。</p>
+      <div class="repeat-list" id="list-projects"></div>
     </section>
 
     <section id="sec-campus">
-      <h2>在校职务 / 实践</h2>
-      <div class="grid">
-        <label>职务名称 <input name="application.campus_roles.0.name"></label>
-        <label class="wide">职务描述 <textarea name="application.campus_roles.0.description" rows="2"></textarea></label>
-        <label>实践名称 <input name="application.campus_practices.0.name"></label>
-        <label class="wide">实践描述 <textarea name="application.campus_practices.0.description" rows="2"></textarea></label>
+      <div class="list-head">
+        <h2>在校职务</h2>
+        <button type="button" class="btn" data-add-list="campus_roles">添加一段</button>
       </div>
+      <p class="sub">学生会、班委等。没有就不要添加。</p>
+      <div class="repeat-list" id="list-campus_roles"></div>
+      <div class="list-head" style="margin-top:14px;">
+        <h2>在校实践</h2>
+        <button type="button" class="btn" data-add-list="campus_practices">添加一段</button>
+      </div>
+      <div class="repeat-list" id="list-campus_practices"></div>
     </section>
 
     <section id="sec-award">
-      <h2>获奖 / 证书 / 外语</h2>
-      <div class="grid">
-        <label>获奖项 <input name="application.award_records.0.name"></label>
-        <label>获奖时间 <input name="application.award_records.0.date"></label>
-        <label>获奖级别 <input name="application.award_records.0.level"></label>
-        <label class="wide">获奖描述 <textarea name="application.award_records.0.description" rows="2"></textarea></label>
-        <label>证书名称 <input name="application.certificate_records.0.name"></label>
-        <label>获得时间 <input name="application.certificate_records.0.date"></label>
-        <label>外语能力 <input name="universal.languages" placeholder="CET-4 / CET-6"></label>
-        <label>语言类型 <input name="application.languages.0.type" placeholder="英语"></label>
-        <label>掌握程度 <input name="application.languages.0.level"></label>
+      <div class="list-head">
+        <h2>获奖</h2>
+        <button type="button" class="btn" data-add-list="awards">添加一项</button>
       </div>
+      <div class="repeat-list" id="list-awards"></div>
+      <div class="list-head" style="margin-top:14px;">
+        <h2>证书</h2>
+        <button type="button" class="btn" data-add-list="certs">添加一项</button>
+      </div>
+      <p class="sub">英语四级、计算机等级等，有几本加几项。</p>
+      <div class="repeat-list" id="list-certs"></div>
+      <div class="list-head" style="margin-top:14px;">
+        <h2>外语</h2>
+        <button type="button" class="btn" data-add-list="langs">添加一项</button>
+      </div>
+      <div class="grid" style="margin-bottom:10px;">
+        <label class="wide">外语能力总述 <input name="universal.languages" placeholder="CET-4 / CET-6"></label>
+      </div>
+      <div class="repeat-list" id="list-langs"></div>
     </section>
 
     <section id="sec-eval">
@@ -172,18 +176,19 @@
   <div class="toc-title">填写导航</div>
   <a href="#sec-import">导入 JSON</a>
   <a href="#sec-keys">快捷键</a>
+  <a href="#sec-fill-policy">一键范围</a>
   <a href="#sec-personal">个人信息</a>
   <a href="#sec-edu">教育经历</a>
   <a href="#sec-intent">求职意向</a>
   <a href="#sec-intern">实习经历</a>
-  <a href="#sec-proj1">项目经历 1</a>
-  <a href="#sec-proj2">项目经历 2</a>
+  <a href="#sec-projects">项目经历</a>
   <a href="#sec-campus">职务 / 实践</a>
   <a href="#sec-award">获奖 / 证书</a>
   <a href="#sec-eval">自我评价</a>
 </nav>
 </div>
   <script src="overlay-store.js"></script>
+  <script src="fill-policy.js"></script>
   <script src="shortcuts.js"></script>
   <script src="options.js"></script>
 </body>

@@ -82,15 +82,45 @@
         skills_summary: '',
         skills_proficient: '',
         skills_familiar: '',
-        internships: [emptyRow()],
-        projects: [emptyRow(), emptyRow()],
-        campus_practices: [emptyRow()],
-        campus_roles: [emptyRow()],
-        award_records: [emptyRow()],
-        certificate_records: [emptyRow()],
-        languages: [emptyRow()]
+        internships: [],
+        projects: [],
+        campus_practices: [],
+        campus_roles: [],
+        award_records: [],
+        certificate_records: [],
+        languages: []
       }
     };
+  }
+
+  var LIST_PATHS = [
+    'application.internships',
+    'application.projects',
+    'application.campus_practices',
+    'application.campus_roles',
+    'application.award_records',
+    'application.certificate_records',
+    'application.languages'
+  ];
+
+  function rowHasValue(row) {
+    if (!row || typeof row !== 'object') return false;
+    return Object.keys(row).some(function (k) {
+      return String(row[k] == null ? '' : row[k]).trim() !== '';
+    });
+  }
+
+  function compactList(arr) {
+    return (Array.isArray(arr) ? arr : []).filter(rowHasValue);
+  }
+
+  function compactProfile(profile) {
+    if (!profile || typeof profile !== 'object') return profile;
+    LIST_PATHS.forEach(function (path) {
+      var arr = getByPath(profile, path);
+      if (Array.isArray(arr)) setByPath(profile, path, compactList(arr));
+    });
+    return profile;
   }
 
   function ensureArray(obj, path, minLen) {
@@ -190,7 +220,7 @@
       chrome.storage.local.set(
         {
           overlayEnabled: !!enabled,
-          overlayProfile: profile || emptyProfile()
+          overlayProfile: compactProfile(profile || emptyProfile())
         },
         function () { resolve(true); }
       );
@@ -258,12 +288,16 @@
   root.CareerOsOverlay = {
     KEY_ENABLED: KEY_ENABLED,
     KEY_PROFILE: KEY_PROFILE,
+    LIST_PATHS: LIST_PATHS,
     emptyProfile: emptyProfile,
     emptyRow: emptyRow,
     getByPath: getByPath,
     setByPath: setByPath,
     applySlot: applySlot,
     ensureArray: ensureArray,
+    rowHasValue: rowHasValue,
+    compactList: compactList,
+    compactProfile: compactProfile,
     loadState: loadState,
     saveState: saveState,
     normalizeImport: normalizeImport,

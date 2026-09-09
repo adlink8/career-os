@@ -15,8 +15,178 @@ document.addEventListener('DOMContentLoaded', () => {
     switchLabel.textContent = toggle.checked ? '打开 · 用本页填表（插件单独用）' : '关闭 · 若已装 Career OS 则读编排器';
   }
 
+  const MAX_LIST = 12;
+  const LIST_SPECS = {
+    intern: {
+      path: 'application.internships',
+      mount: 'list-intern',
+      title: '实习',
+      fields: [
+        { key: 'name', label: '单位名称' },
+        { key: 'role', label: '职位名称' },
+        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
+        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
+        { key: 'duty', label: '实习内容', textarea: true, wide: true, rows: 3 }
+      ]
+    },
+    projects: {
+      path: 'application.projects',
+      mount: 'list-projects',
+      title: '项目',
+      fields: [
+        { key: 'name', label: '项目名称' },
+        { key: 'role', label: '担任角色' },
+        { key: 'keywords', label: '技术栈' },
+        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
+        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
+        { key: 'full_text', label: '项目描述', textarea: true, wide: true, rows: 4 }
+      ]
+    },
+    campus_roles: {
+      path: 'application.campus_roles',
+      mount: 'list-campus_roles',
+      title: '职务',
+      fields: [
+        { key: 'name', label: '职务名称' },
+        { key: 'description', label: '职务描述', textarea: true, wide: true, rows: 2 }
+      ]
+    },
+    campus_practices: {
+      path: 'application.campus_practices',
+      mount: 'list-campus_practices',
+      title: '实践',
+      fields: [
+        { key: 'name', label: '实践名称' },
+        { key: 'description', label: '实践描述', textarea: true, wide: true, rows: 2 }
+      ]
+    },
+    awards: {
+      path: 'application.award_records',
+      mount: 'list-awards',
+      title: '获奖',
+      fields: [
+        { key: 'name', label: '获奖项' },
+        { key: 'date', label: '获奖时间', ph: 'YYYY-MM' },
+        { key: 'level', label: '获奖级别' },
+        { key: 'description', label: '获奖描述', textarea: true, wide: true, rows: 2 }
+      ]
+    },
+    certs: {
+      path: 'application.certificate_records',
+      mount: 'list-certs',
+      title: '证书',
+      fields: [
+        { key: 'name', label: '证书名称' },
+        { key: 'date', label: '获得时间', ph: 'YYYY-MM' }
+      ]
+    },
+    langs: {
+      path: 'application.languages',
+      mount: 'list-langs',
+      title: '语种',
+      fields: [
+        { key: 'type', label: '语言类型', ph: '英语' },
+        { key: 'level', label: '掌握程度' }
+      ]
+    }
+  };
+
+  function listCount(id) {
+    const spec = LIST_SPECS[id];
+    const mount = document.getElementById(spec.mount);
+    return mount ? mount.querySelectorAll('.repeat-card').length : 0;
+  }
+
+  function renderList(id, rows) {
+    const spec = LIST_SPECS[id];
+    const mount = document.getElementById(spec.mount);
+    if (!spec || !mount) return;
+    const items = Array.isArray(rows) ? rows.slice() : [];
+    mount.textContent = '';
+    if (!items.length) {
+      const empty = document.createElement('div');
+      empty.className = 'repeat-empty';
+      empty.textContent = '还没有' + spec.title + '。需要几段就点右上角「添加」。';
+      mount.appendChild(empty);
+      return;
+    }
+    items.forEach((row, idx) => {
+      const card = document.createElement('div');
+      card.className = 'repeat-card';
+      const head = document.createElement('div');
+      head.className = 'repeat-card-head';
+      const title = document.createElement('div');
+      title.className = 'repeat-card-title';
+      title.textContent = spec.title + ' ' + (idx + 1);
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'btn danger';
+      del.textContent = '删除';
+      del.addEventListener('click', () => {
+        const current = readList(id);
+        current.splice(idx, 1);
+        renderList(id, current);
+      });
+      head.appendChild(title);
+      head.appendChild(del);
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      spec.fields.forEach((f) => {
+        const lab = document.createElement('label');
+        if (f.wide) lab.className = 'wide';
+        lab.appendChild(document.createTextNode(f.label + ' '));
+        const el = document.createElement(f.textarea ? 'textarea' : 'input');
+        el.name = spec.path + '.' + idx + '.' + f.key;
+        if (f.textarea) el.rows = f.rows || 3;
+        if (f.ph) el.placeholder = f.ph;
+        const val = row && row[f.key];
+        el.value = val == null ? '' : String(val);
+        lab.appendChild(el);
+        grid.appendChild(lab);
+      });
+      card.appendChild(head);
+      card.appendChild(grid);
+      mount.appendChild(card);
+    });
+  }
+
+  function readList(id) {
+    const spec = LIST_SPECS[id];
+    const n = listCount(id);
+    const rows = [];
+    for (let i = 0; i < n; i++) {
+      const row = store.emptyRow();
+      spec.fields.forEach((f) => {
+        const el = form.querySelector('[name="' + spec.path + '.' + i + '.' + f.key + '"]');
+        row[f.key] = el ? (el.value || '').trim() : '';
+      });
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function addListItem(id) {
+    if (listCount(id) >= MAX_LIST) {
+      showMsg('最多 ' + MAX_LIST + ' 段', true);
+      return;
+    }
+    const rows = readList(id);
+    rows.push(store.emptyRow());
+    renderList(id, rows);
+  }
+
+  function fillLists(profile) {
+    Object.keys(LIST_SPECS).forEach((id) => {
+      const spec = LIST_SPECS[id];
+      const rows = store.getByPath(profile, spec.path);
+      renderList(id, Array.isArray(rows) ? rows : []);
+    });
+  }
+
   function fillForm(profile) {
+    fillLists(profile);
     form.querySelectorAll('input[name], textarea[name]').forEach((el) => {
+      if (el.closest('.repeat-list')) return;
       const val = store.getByPath(profile, el.name);
       el.value = val == null ? '' : String(val);
     });
@@ -25,11 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function readForm() {
     const profile = store.emptyProfile();
     form.querySelectorAll('input[name], textarea[name]').forEach((el) => {
+      if (el.closest('.repeat-list')) return;
       const v = (el.value || '').trim();
       if (!v) return;
       store.setByPath(profile, el.name, v);
     });
-    return profile;
+    Object.keys(LIST_SPECS).forEach((id) => {
+      const spec = LIST_SPECS[id];
+      store.setByPath(profile, spec.path, readList(id));
+    });
+    return store.compactProfile(profile);
   }
 
   async function persist(enabled, profile, notice) {
@@ -64,11 +239,59 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsText(file, 'utf-8');
   }
 
+  const policyApi = self.CareerOsFillPolicy;
+  let fillGroups = policyApi ? policyApi.defaults() : {};
+
+  function renderFillPolicy() {
+    const grid = document.getElementById('fill-policy-grid');
+    if (!grid || !policyApi) return;
+    grid.textContent = '';
+    policyApi.GROUPS.forEach((g) => {
+      const lab = document.createElement('label');
+      lab.className = 'fill-policy-item';
+      const box = document.createElement('input');
+      box.type = 'checkbox';
+      box.checked = fillGroups[g.id] !== false;
+      box.addEventListener('change', async () => {
+        fillGroups[g.id] = box.checked;
+        fillGroups = await policyApi.save(fillGroups);
+        const n = policyApi.selectedIds(fillGroups).length;
+        showMsg('一键填充将写入 ' + n + ' / ' + policyApi.GROUPS.length + ' 类。格子旁「填入」不受影响。');
+      });
+      lab.appendChild(box);
+      lab.appendChild(document.createTextNode(g.label));
+      grid.appendChild(lab);
+    });
+  }
+
+  async function setFillPolicyAll(on) {
+    if (!policyApi) return;
+    const next = {};
+    policyApi.GROUPS.forEach((g) => { next[g.id] = !!on; });
+    fillGroups = await policyApi.save(next);
+    renderFillPolicy();
+    showMsg(on ? '已全选：一键填充会写本页能对上的类别' : '已全不选：一键填充不会写任何类别，请用格子旁「填入」');
+  }
+
+  document.querySelectorAll('[data-add-list]').forEach((btn) => {
+    btn.addEventListener('click', () => addListItem(btn.getAttribute('data-add-list')));
+  });
+
   store.loadState().then((state) => {
     toggle.checked = !!state.enabled;
     updateSwitchLabel();
     fillForm(state.profile);
   });
+  if (policyApi) {
+    policyApi.load().then((map) => {
+      fillGroups = map;
+      renderFillPolicy();
+    });
+    const allBtn = document.getElementById('btn-fill-all');
+    const noneBtn = document.getElementById('btn-fill-none');
+    if (allBtn) allBtn.addEventListener('click', () => setFillPolicyAll(true));
+    if (noneBtn) noneBtn.addEventListener('click', () => setFillPolicyAll(false));
+  }
 
   toggle.addEventListener('change', async () => {
     await persist(toggle.checked, readForm(), toggle.checked

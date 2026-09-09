@@ -31,6 +31,7 @@ def test_pack_excludes_profile_and_native(tmp_path, monkeypatch):
         json.dumps({"version": "9.9.9", "name": "test"}, ensure_ascii=False), encoding="utf-8"
     )
     (src / "content.js").write_text("console.log('ok');", encoding="utf-8")
+    (src / "fill-policy.js").write_text("self.CareerOsFillPolicy = {};", encoding="utf-8")
     (src / "profile.json").write_text('{"name":"SECRET"}', encoding="utf-8")
     (src / "profile.test.json").write_text("{}", encoding="utf-8")
     native = src / "native"

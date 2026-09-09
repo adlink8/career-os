@@ -1,0 +1,8 @@
+{
+  "name": "career-os-form-mocks",
+  "private": true,
+  "description": "本地模拟北森/Moka 报名表，供 node 测试用",
+  "dependencies": {
+    "jsdom": "^24.1.3"
+  }
+}
