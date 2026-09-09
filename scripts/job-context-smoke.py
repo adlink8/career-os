@@ -12,7 +12,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "bin"))
 
-from services.job_context import extract_hard_filters, load_context_file, to_jd_info  # noqa: E402
+from services.job_context import (  # noqa: E402
+    extract_hard_filters,
+    load_context_file,
+    merge_contexts,
+    to_jd_info,
+)
 
 
 def check(label: str, cond: bool) -> None:
@@ -54,6 +59,28 @@ def main() -> int:
     jd = to_jd_info(ctx)
     check("to_jd_info 含岗位名", jd["title"] == "运维工程师")
     check("to_jd_info 含 JD 正文", "Docker" in jd["full_text"])
+
+    detail = {
+        "url": "https://leadchina.zhiye.com/campus/detail?jobAdId=ec6ce6c4-501d-476f-a63c-e23285b7b5ce",
+        "title": "无锡先导智能装备股份有限公司",
+        "jd_text": "集团战略管培生-项目运营（2027届校招）\n工作职责\n参与项目全周期管理\n任职资格\n硕士及以上学历，26、27年毕业",
+        "form_schema": [{"label": "搜索职位关键词", "type": "text", "slot": ""}],
+    }
+    form = {
+        "url": "https://leadchina.zhiye.com/form?fromPage=job&jobAdId=ec6ce6c4-501d-476f-a63c-e23285b7b5ce",
+        "title": "无锡先导智能装备股份有限公司",
+        "jd_text": "你正在投递职位: 集团战略管培生-项目运营（2027届校招）\n姓名\n预览并提交\nCareer OS 填表",
+        "form_schema": [
+            {"label": "请输入 姓名", "type": "text", "slot": ""},
+            {"label": "请输入 项目名称", "type": "text", "slot": "application.projects.name"},
+        ],
+    }
+    merged = merge_contexts(form, detail)
+    check("合流保留详情页职责", "工作职责" in merged["jd_text"])
+    check("合流不把报名页当 JD", "预览并提交" not in merged["jd_text"])
+    check("合流保留报名表格子", any(f.get("label") == "请输入 姓名" for f in merged["form_schema"]))
+    check("合流抽出硕士门槛", "硕士" in merged["hard_filters"]["education"])
+    check("合流 title 用岗位名", "管培生" in merged["title"])
     print("[OK] job-context-smoke")
     return 0
 

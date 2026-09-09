@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 19
+SCHEMA_VERSION = 20
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -102,6 +102,10 @@ def migrate(conn: sqlite3.Connection) -> None:
     )
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_job_page_contexts_url ON job_page_contexts(url, captured_at)"
+    )
+    _add_column(conn, "job_page_contexts", "job_ad_id", "TEXT")
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_job_page_contexts_job_ad ON job_page_contexts(job_ad_id)"
     )
 
     conn.execute(

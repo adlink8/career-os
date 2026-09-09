@@ -1,6 +1,6 @@
 # 数据库与文档关系图（data-model）
 
-> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v19）。
+> 结论先行：Career OS 的核心是 `data/career_jobs.sqlite`（schema v20）。
 > md 文档分三类：**描述数据库的**（docs/）、**被数据库引用或导出的**（data/*.md）、**与数据库无关的参考层**（knowledge/）。本文是它们与数据库关系的单一事实源。
 
 ## 0. 权威原则（2026-09-05 确定）
@@ -14,7 +14,7 @@
 
 - **文件**：`data/career_jobs.sqlite`
 - **唯一迁移/访问入口**：`bin/career_os_store.py`（`DB_PATH` 常量，可用 `CAREER_OS_DB_PATH` 环境变量覆盖）
-- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v19
+- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v20
 - **简历二进制不进库**：PDF/DOCX/MD 原文件留在 `data/cv/`，库里只存元数据（SHA-256 为内容身份），见 `docs/resume-registry.md`
 
 ## 2. 业务表分域
@@ -28,7 +28,7 @@
 | `job_targets` | 500 | 目标企业清单（打分排序后的建档） |
 | `job_target_recruitment_checks` | 214 | 目标企业校招/实习状态核查记录 |
 | `platform_recruitment_leads` | 99 | 招聘平台/官网爬取的在招岗位线索 |
-| `job_page_contexts` | 0 | 网申页实时快照（v19）：url/JD 正文/硬门槛/表单 schema。扩展捕获 JSON 后经 `bin/ingest_job_context.py` 入库；有快照时 ATS/会审 JD 以本表为准 |
+| `job_page_contexts` | 0 | 网申页实时快照（v19/v20）：url/JD 正文/硬门槛/表单 schema/`job_ad_id`。同一岗位详情页与报名表按 jobAdId 合流；有快照时 ATS/会审 JD 以本表为准 |
 
 | `applications` | 2 | 正式投递记录（关联简历版本与提交物） |
 | `application_timeline` | 2 | 投递后流程事件（笔试/面试/offer） |

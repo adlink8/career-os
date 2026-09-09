@@ -53,22 +53,20 @@ def filename_for(ctx: dict) -> str:
 
 
 def save(ctx: dict) -> str:
-    from services.job_context import normalize_context, save_context
+    from services.job_context import latest_context, save_context, write_capture_file
     from career_os_store import get_db
 
-    ctx = normalize_context(ctx)
-    CAPTURE_DIR.mkdir(parents=True, exist_ok=True)
-    path = CAPTURE_DIR / filename_for(ctx)
-    path.write_text(json.dumps(ctx, ensure_ascii=False, indent=2), encoding="utf-8")
+    conn = get_db()
     try:
-        conn = get_db()
-        try:
-            save_context(conn, ctx)
-        finally:
-            conn.close()
-    except Exception:
-        pass
-    return str(path)
+        save_context(conn, ctx)
+        merged = latest_context(conn) or ctx
+    finally:
+        conn.close()
+    CAPTURE_DIR.mkdir(parents=True, exist_ok=True)
+    stamp_path = CAPTURE_DIR / filename_for(merged)
+    stamp_path.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
+    canonical = write_capture_file(merged, CAPTURE_DIR)
+    return str(canonical)
 
 
 def main() -> int:
