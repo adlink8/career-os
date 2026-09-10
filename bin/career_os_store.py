@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 22
+SCHEMA_VERSION = 23
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -1346,6 +1346,10 @@ body {
         "CREATE INDEX IF NOT EXISTS idx_job_apply_run_events_run "
         "ON job_apply_run_events(run_id, id)"
     )
+
+    # v23: 公司池分层。active=中小/创业/已投；archive_big=超大厂不主动投。
+    _add_column(conn, "companies", "pool", "TEXT NOT NULL DEFAULT 'unclassified'")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_companies_pool ON companies(pool)")
 
     conn.execute(
         "INSERT OR IGNORE INTO career_os_schema_migrations(version, applied_at) VALUES (?, ?)",
