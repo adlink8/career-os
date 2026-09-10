@@ -144,6 +144,56 @@ def version_spec(path: Path) -> dict[str, str] | None:
             "state": "ready",
         }
 
+    if "研发效能" in stem or stem in {"cv-aispeech-devops", "cv-aispeech-devops-photo-style"}:
+        return {
+            "version_key": "aispeech-devops-v1.0",
+            "role_slug": "aispeech-devops",
+            "company_slug": "aispeech",
+            "job_slug": "rd-quality-2027",
+            "version_label": "v1.0",
+            "state": "submitted",
+        }
+
+    if "开源技术" in stem or stem in {"cv-aispeech-opensource", "cv-aispeech-opensource-photo-style"}:
+        return {
+            "version_key": "aispeech-opensource-v1.0",
+            "role_slug": "aispeech-opensource",
+            "company_slug": "aispeech",
+            "job_slug": "opensource-2027",
+            "version_label": "v1.0",
+            "state": "submitted",
+        }
+
+    if "先导智能" in stem or stem.startswith("cv-leadchina-"):
+        return {
+            "version_key": "leadchina-ai-dev-v1.0",
+            "role_slug": "leadchina-ai-dev",
+            "company_slug": "leadchina",
+            "job_slug": "leadchina-ai-2027",
+            "version_label": "v1.0",
+            "state": "submitted",
+        }
+
+    if "合合信息" in stem or stem.startswith("cv-intsig-"):
+        return {
+            "version_key": "intsig-data-crawler-v1.0",
+            "role_slug": "intsig-data-crawler",
+            "company_slug": "intsig",
+            "job_slug": "intsig-data-2027",
+            "version_label": "v1.0",
+            "state": "submitted",
+        }
+
+    if "浩鲸科技" in stem or stem.startswith("cv-whalecloud-"):
+        return {
+            "version_key": "whalecloud-ai-delivery-v1.0",
+            "role_slug": "whalecloud-ai-delivery",
+            "company_slug": "whalecloud",
+            "job_slug": "whalecloud-ai-2027",
+            "version_label": "v1.0",
+            "state": "submitted",
+        }
+
     if stem in role_files:
         role = role_files[stem]
         return {
@@ -196,10 +246,12 @@ def classify(path: Path, relative_path: str) -> tuple[str, dict[str, str] | None
         return "auxiliary", None
 
     stem = path.stem.casefold()
-    if stem == "cv-newland-photo-edition":
-        return "submitted", spec
     if path.suffix.casefold() == ".md":
-        return spec["state"], spec
+        return "source", spec
+    if (stem in {"cv-newland-photo-edition", "cv-aispeech-devops", "cv-aispeech-opensource"}
+        or any(k in stem for k in ["研发效能", "开源技术", "先导智能", "合合信息", "浩鲸科技"])):
+        if path.suffix.casefold() == ".pdf":
+            return "submitted", spec
     if path.suffix.casefold() in {".docx", ".pdf"}:
         return "ready", spec
     if path.suffix.casefold() in {".png", ".jpg", ".jpeg", ".html"}:
@@ -221,7 +273,14 @@ def canonical_filename(path: Path, state: str, spec: dict[str, str] | None) -> s
     label = spec["version_label"]
     stem = f"{company}__{role}__cv__{label}" if company else f"cv__{role}__{label}"
     if state == "submitted":
-        submitted_date = "20260903" if path.stem.casefold() == "cv-newland-photo-edition" else datetime.fromtimestamp(path.stat().st_mtime).strftime("%Y%m%d")
+        if path.stem.casefold() == "cv-newland-photo-edition":
+            submitted_date = "20260903"
+        elif "aispeech" in (spec["role_slug"] if spec else "") or "研发效能" in path.stem or "开源技术" in path.stem:
+            submitted_date = "20260906"
+        elif any(k in path.stem for k in ["先导智能", "合合信息", "浩鲸科技"]):
+            submitted_date = "20260908"
+        else:
+            submitted_date = datetime.fromtimestamp(path.stat().st_mtime).strftime("%Y%m%d")
         return f"{submitted_date}__{company or role}__{role}__cv__{label}__submitted{suffix}"
     if suffix == ".md":
         return f"{stem}__source.md"
@@ -425,6 +484,137 @@ def sync_registry(conn: sqlite3.Connection) -> dict[str, object]:
                 "UPDATE application_timeline SET application_id=? WHERE job_id=? AND event_type='已投递' AND application_id IS NULL",
                 (application_id, int(job_id)),
             )
+
+    # AISpeech 投递关联 (研发效能与质量平台工程师 job_id=62, 开源技术研发工程师 job_id=63)
+    aispeech_configs = [
+        ("aispeech-devops-v1.0", 62, "思必驰科技股份有限公司", "研发效能与质量平台工程师-2027届", "官网校招网申，投递简历：研发效能与质量平台工程师-常州大学-2027届.pdf", "官网提交申请，等待简历初筛；对位 CI/CD、自动化测试门禁与质量自检"),
+        ("aispeech-opensource-v1.0", 63, "思必驰科技股份有限公司", "开源技术研发工程师-2027届", "官网校招网申，投递简历：开源技术研发工程师-常州大学-2027届.pdf", "官网提交申请，等待简历初筛；对位 开源架构、MCP协议、FastAPI与工程规范"),
+    ]
+    for ver_key, job_id, comp_name, job_title, app_notes, tl_notes in aispeech_configs:
+        sub_art = conn.execute(
+            """
+            SELECT a.id, a.resume_version_id
+            FROM resume_artifacts a
+            JOIN resume_versions v ON v.id=a.resume_version_id
+            WHERE a.file_state='submitted' AND v.version_key=?
+            ORDER BY a.id DESC
+            LIMIT 1
+            """,
+            (ver_key,),
+        ).fetchone()
+        if sub_art:
+            conn.execute("UPDATE jobs SET status='已投递', updated_at=? WHERE id=?", (now, job_id))
+            existing = conn.execute(
+                "SELECT id FROM applications WHERE job_id=? AND submitted_artifact_id=?",
+                (job_id, int(sub_art[0])),
+            ).fetchone()
+            if existing:
+                application_id = int(existing[0])
+                conn.execute(
+                    "UPDATE applications SET resume_version_id=?, submitted_at=COALESCE(submitted_at, '2026-09-06'), status='已投递', updated_at=? WHERE id=?",
+                    (sub_art[1], now, application_id),
+                )
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO applications
+                        (job_id, resume_version_id, submitted_artifact_id,
+                         submitted_at, channel, status, notes)
+                    VALUES (?, ?, ?, '2026-09-06', '思必驰校招官网', '已投递', ?)
+                    """,
+                    (job_id, sub_art[1], int(sub_art[0]), app_notes),
+                )
+                application_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+                linked_applications += 1
+
+            tl_exists = conn.execute(
+                "SELECT id FROM application_timeline WHERE job_id=? AND event_type='已投递'",
+                (job_id,),
+            ).fetchone()
+            if not tl_exists:
+                conn.execute(
+                    """
+                    INSERT INTO application_timeline
+                        (job_id, company_name, job_title, event_date, event_type, notes, application_id)
+                    VALUES (?, ?, ?, '2026-09-06', '已投递', ?, ?)
+                    """,
+                    (job_id, comp_name, job_title, tl_notes, application_id),
+                )
+            else:
+                conn.execute(
+                    "UPDATE application_timeline SET application_id=?, notes=? WHERE id=?",
+                    (application_id, tl_notes, int(tl_exists[0])),
+                )
+
+    # 2026-09-08 批量校招网申投递关联 (先导智能 3个, 合合信息 3个, 浩鲸科技 2个)
+    batch_20260908_configs = [
+        # 先导智能 (LEAD)
+        ("leadchina-ai-dev-v1.0", 266, "先导智能 (LEAD)", "AI应用开发工程师（2027届校招）(J17813)", "先导智能校招官网", "官网校招网申已完成，投递定制简历《先导智能-AI应用开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；对位NovelMind长文本分层检索系统（L0~L4多粒度向量建模+RAG+FastAPI）"),
+        ("leadchina-ai-dev-v1.0", 267, "先导智能 (LEAD)", "软件开发（2027届校招）(J17840)", "先导智能校招官网", "官网校招网申已完成，投递定制简历《先导智能-AI应用开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；对位物联网竞赛与上位机开发经历（PyQt5上位机+串口网口通信调试+Modbus排障）"),
+        ("leadchina-ai-dev-v1.0", 268, "先导智能 (LEAD)", "信息安全工程师（2027届校招）(J17810)", "先导智能校招官网", "官网校招网申已完成，投递定制简历《先导智能-AI应用开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；对位计科本科功底与网络安全基础（PKS接口自动化测试+Preflight安全门禁）"),
+        # 合合信息 (INTSIG)
+        ("intsig-data-crawler-v1.0", 269, "合合信息 (INTSIG)", "27届校招-数据开发工程师(J14428)", "合合信息校招官网", "官网校招网申已完成，投递定制简历《合合信息-数据开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；对标PKS数据挖掘管道（28GB清洗、14,031条SQL血缘映射、数据防篡改门禁）"),
+        ("intsig-data-crawler-v1.0", 270, "合合信息 (INTSIG)", "27届校招-爬虫工程师(J14414)", "合合信息校招官网", "官网校招网申已完成，投递定制简历《合合信息-数据开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；命中官方加分项（Codex/Claude Code），对位Wireshark抓包排障与Python网络协议"),
+        ("intsig-data-crawler-v1.0", 271, "合合信息 (INTSIG)", "27届校招-数据产品经理（质检方向）(J14410)", "合合信息校招官网", "官网校招网申已完成，投递定制简历《合合信息-数据开发工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；纯技术底子降维竞聘数据质检产品，SQL数据一致性排查与数据治理经验"),
+        # 浩鲸科技 (Whale Cloud)
+        ("whalecloud-ai-delivery-v1.0", 272, "浩鲸科技 (Whale Cloud)", "AI应用开发—南京—2027届校招(J18169)", "浩鲸科技校招官网", "官网校招网申已完成，投递定制简历《浩鲸科技-AI应用与交付工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；主力志愿，对位NovelMind分层长文本向量检索与AI Agent工程落地"),
+        ("whalecloud-ai-delivery-v1.0", 273, "浩鲸科技 (Whale Cloud)", "交付工程师—南京—2027届校招(J18084)", "浩鲸科技校招官网", "官网校招网申已完成，投递定制简历《浩鲸科技-AI应用与交付工程师-常州大学-2027届.pdf》", "官网提交网申，等待初筛；稳妥保底志愿，对位网络通信协议（TCP/IP、路由交换）与现场排障交付能力"),
+    ]
+    for ver_key, job_id, comp_name, job_title, channel, app_notes, tl_notes in batch_20260908_configs:
+        sub_art = conn.execute(
+            """
+            SELECT a.id, a.resume_version_id
+            FROM resume_artifacts a
+            JOIN resume_versions v ON v.id=a.resume_version_id
+            WHERE a.file_state='submitted' AND v.version_key=?
+            ORDER BY a.id DESC
+            LIMIT 1
+            """,
+            (ver_key,),
+        ).fetchone()
+        if sub_art:
+            conn.execute("UPDATE jobs SET status='已投递', updated_at=? WHERE id=?", (now, job_id))
+            existing = conn.execute(
+                "SELECT id FROM applications WHERE job_id=? AND submitted_artifact_id=?",
+                (job_id, int(sub_art[0])),
+            ).fetchone()
+            if existing:
+                application_id = int(existing[0])
+                conn.execute(
+                    "UPDATE applications SET resume_version_id=?, submitted_at=COALESCE(submitted_at, '2026-09-08'), channel=?, status='已投递', notes=?, updated_at=? WHERE id=?",
+                    (sub_art[1], channel, app_notes, now, application_id),
+                )
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO applications
+                        (job_id, resume_version_id, submitted_artifact_id,
+                         submitted_at, channel, status, notes)
+                    VALUES (?, ?, ?, '2026-09-08', ?, '已投递', ?)
+                    """,
+                    (job_id, sub_art[1], int(sub_art[0]), channel, app_notes),
+                )
+                application_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+                linked_applications += 1
+
+            tl_exists = conn.execute(
+                "SELECT id FROM application_timeline WHERE job_id=? AND event_type='已投递'",
+                (job_id,),
+            ).fetchone()
+            if not tl_exists:
+                conn.execute(
+                    """
+                    INSERT INTO application_timeline
+                        (job_id, company_name, job_title, event_date, event_type, notes, application_id)
+                    VALUES (?, ?, ?, '2026-09-08', '已投递', ?, ?)
+                    """,
+                    (job_id, comp_name, job_title, tl_notes, application_id),
+                )
+            else:
+                conn.execute(
+                    "UPDATE application_timeline SET application_id=?, notes=? WHERE id=?",
+                    (application_id, tl_notes, int(tl_exists[0])),
+                )
 
     duplicate_hashes = [
         {"sha256": row[0], "locations": int(row[1])}
