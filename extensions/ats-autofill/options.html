@@ -79,18 +79,12 @@
     </section>
 
     <section id="sec-edu">
-      <h2>教育经历</h2>
-      <div class="grid">
-        <label>学校名称 <input name="universal.education.undergraduate.school"></label>
-        <label>学院 <input name="universal.education.undergraduate.college"></label>
-        <label>专业 <input name="universal.education.undergraduate.major"></label>
-        <label>学历 <input name="universal.education.undergraduate.degree" placeholder="本科"></label>
-        <label>学习形式 <input name="universal.education.undergraduate.education_type" placeholder="全日制"></label>
-        <label>入学时间 <input name="universal.education.undergraduate.start_date" placeholder="YYYY-MM"></label>
-        <label>毕业时间 <input name="universal.education.undergraduate.graduation" placeholder="YYYY-MM"></label>
-        <label>GPA <input name="universal.education.undergraduate.gpa"></label>
-        <label>专业排名 <input name="universal.education.undergraduate.rank"></label>
+      <div class="list-head">
+        <h2>教育经历</h2>
+        <button type="button" class="btn" data-add-list="edu">添加一段</button>
       </div>
+      <p class="sub">专升本先加本科再加专科，有几段加几段。旧底稿里的本科/专科会自动拆成两段。</p>
+      <div class="repeat-list" id="list-edu"></div>
     </section>
 
     <section id="sec-intent">
@@ -120,6 +114,24 @@
       </div>
       <p class="sub">默认不预留两段。你有几段项目就加几段，不需要的点删除。</p>
       <div class="repeat-list" id="list-projects"></div>
+    </section>
+
+    <section id="sec-family">
+      <div class="list-head">
+        <h2>家庭成员</h2>
+        <button type="button" class="btn" data-add-list="family">添加一位</button>
+      </div>
+      <p class="sub">网申要填家庭成员时再加。紧急联系人仍在个人信息里。</p>
+      <div class="repeat-list" id="list-family"></div>
+    </section>
+
+    <section id="sec-training">
+      <div class="list-head">
+        <h2>培训经历</h2>
+        <button type="button" class="btn" data-add-list="training">添加一段</button>
+      </div>
+      <p class="sub">没有培训就空着。和实习、项目分开填。</p>
+      <div class="repeat-list" id="list-training"></div>
     </section>
 
     <section id="sec-campus">
@@ -181,6 +193,8 @@
   <a href="#sec-edu">教育经历</a>
   <a href="#sec-intent">求职意向</a>
   <a href="#sec-intern">实习经历</a>
+  <a href="#sec-family">家庭成员</a>
+  <a href="#sec-training">培训经历</a>
   <a href="#sec-projects">项目经历</a>
   <a href="#sec-campus">职务 / 实践</a>
   <a href="#sec-award">获奖 / 证书</a>

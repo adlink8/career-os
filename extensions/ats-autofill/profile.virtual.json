@@ -50,7 +50,29 @@
         "start_date": "2022-09",
         "end_date": "2025-06",
         "graduation": "2025-06"
-      }
+      },
+      "records": [
+        {
+          "school": "常州大学",
+          "college": "计算机与人工智能学院",
+          "degree": "本科",
+          "major": "计算机科学与技术",
+          "graduation": "2027-06",
+          "start_date": "2025-09",
+          "end_date": "2027-06",
+          "education_type": "统招专升本",
+          "gpa": "3.5/4.0",
+          "rank": "前 20%"
+        },
+        {
+          "school": "江苏信息职业技术学院",
+          "degree": "大专",
+          "major": "物联网应用技术",
+          "start_date": "2022-09",
+          "end_date": "2025-06",
+          "graduation": "2025-06"
+        }
+      ]
     },
     "hobbies": "跑步、硬件折腾、写技术笔记（虚拟数据）",
     "awards": "2024 测试省物联网技能竞赛三等奖；2023 院级优秀学生干部（虚构）",

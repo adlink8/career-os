@@ -45,6 +45,8 @@
       s === 'application.target_cities' ||
       s.indexOf('application.expected_') === 0
     ) return 'intent';
+    if (s.indexOf('application.family_members') === 0) return 'personal';
+    if (s.indexOf('application.training_records') === 0) return 'intern';
     if (s.indexOf('application.internships') === 0) return 'intern';
     if (s.indexOf('application.projects') === 0) return 'projects';
     if (s.indexOf('application.campus_') === 0) return 'campus';

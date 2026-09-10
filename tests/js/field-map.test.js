@@ -27,8 +27,16 @@ function check(label, cond) {
 }
 
 check('姓名槽位', fmap.resolveSlot('姓名') === 'universal.personal.name');
-check('学校名称', fmap.resolveSlot('学校名称') === 'universal.education.undergraduate.school');
-check('学习形式', fmap.resolveSlot('学习形式') === 'universal.education.undergraduate.education_type');
+check('学校名称', fmap.resolveSlot('学校名称') === 'universal.education.records.school');
+check('学习形式', fmap.resolveSlot('学习形式') === 'universal.education.records.education_type');
+check(
+  '教育第二段读专科',
+  fmap.valueForSlot('universal.education.records.school', profile, 1) === '江苏信息职业技术学院'
+);
+check(
+  '旧 undergraduate 槽位仍读第一段',
+  fmap.valueForSlot('universal.education.undergraduate.school', profile, 0) === '常州大学'
+);
 check('期望工作城市', fmap.resolveSlot('期望工作城市') === 'application.expected_city');
 check('噪声标签', fmap.isNoiseLabel('请选择') === true);
 check('假身份证不填', fmap.isRealIdCard('') === false);

@@ -46,6 +46,15 @@ const plan = rt.expandPlan({
 check('一段实习不点添加', plan.intern === 0);
 check('两段项目点 1 次添加', plan.projects === 1);
 check('专科+本科教育点 1 次', plan.edu === 1);
+const planRecords = rt.expandPlan({
+  universal: {
+    education: {
+      records: [{ school: '本科校' }, { school: '专科校' }, { school: '高中' }]
+    }
+  },
+  application: {}
+});
+check('三段教育点 2 次添加', planRecords.edu === 2);
 check('空行不算段数', plan.awards === 1);
 check('extraClicks(0)=0', rt.extraClicks(0) === 0);
 

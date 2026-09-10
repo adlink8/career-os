@@ -69,14 +69,14 @@ unmapped.forEach((r) => console.log(r.label.slice(0, 60)));
 
 const bySlot = Object.fromEntries(filled.map((r) => [r.slot, r]));
 check('姓名能填', bySlot['universal.personal.name'] && bySlot['universal.personal.name'].value === '测一填');
-check('专业能填', bySlot['universal.education.undergraduate.major'] && bySlot['universal.education.undergraduate.major'].value.includes('计算机'));
+check('专业能填', bySlot['universal.education.records.major'] && bySlot['universal.education.records.major'].value.includes('计算机'));
 check('项目名称能填', bySlot['application.projects.name'] && bySlot['application.projects.name'].value.includes('网关'));
 check('项目描述能填', bySlot['application.projects.full_text'] && bySlot['application.projects.full_text'].value.length > 20);
 check('测试手机号能填', bySlot['universal.personal.phone'] && bySlot['universal.personal.phone'].value === '13800138000');
 check('测试邮箱能填', bySlot['universal.personal.email'] && bySlot['universal.personal.email'].value.includes('example.com'));
 check('假身份证不填', !filled.some((r) => r.slot === 'universal.personal.id_card'));
-check('学校名称能映射', fmap.resolveSlot('学校名称', { isTextarea: false }) === 'universal.education.undergraduate.school');
-check('学习形式能映射', fmap.resolveSlot('学习形式', { isTextarea: false }) === 'universal.education.undergraduate.education_type');
+check('学校名称能映射', fmap.resolveSlot('学校名称', { isTextarea: false }) === 'universal.education.records.school');
+check('学习形式能映射', fmap.resolveSlot('学习形式', { isTextarea: false }) === 'universal.education.records.education_type');
 check('期望工作城市能映射', fmap.resolveSlot('期望工作城市', { isTextarea: false }) === 'application.expected_city');
 check('请选择是噪声标签', fmap.isNoiseLabel('请选择'));
 const overlaySrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8');
@@ -105,7 +105,7 @@ check('按岗载荷覆盖意向', fmap.matchAutofillValue(
   { label: '求职意向', slot: 'application.target_position' },
   { fields: [{ label: '求职意向', slot: 'application.target_position', value: 'Java开发工程师（AI应用部）' }] }
 ) === 'Java开发工程师（AI应用部）');
-check('专业排名能映射', fmap.resolveSlot('专业排名', { isTextarea: false }) === 'universal.education.undergraduate.rank');
+check('专业排名能映射', fmap.resolveSlot('专业排名', { isTextarea: false }) === 'universal.education.records.rank');
 check('实践名称能映射', fmap.resolveSlot('实践名称', { isTextarea: false }) === 'application.campus_practices.name');
 check('职务名称能映射', fmap.resolveSlot('职务名称', { isTextarea: false }) === 'application.campus_roles.name');
 check('获奖时间能映射', fmap.resolveSlot('获奖时间', { isTextarea: false }) === 'application.award_records.date');

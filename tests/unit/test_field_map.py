@@ -24,8 +24,8 @@ def test_common_beisen_labels():
         "姓名": "universal.personal.name",
         "手机号码": "universal.personal.phone",
         "电子邮箱": "universal.personal.email",
-        "学校名称": "universal.education.undergraduate.school",
-        "学习形式": "universal.education.undergraduate.education_type",
+        "学校名称": "universal.education.records.school",
+        "学习形式": "universal.education.records.education_type",
         "期望工作城市": "application.expected_city",
         "求职意向": "application.target_position",
     }

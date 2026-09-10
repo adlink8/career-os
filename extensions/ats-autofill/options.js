@@ -17,6 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const MAX_LIST = 12;
   const LIST_SPECS = {
+    edu: {
+      path: 'universal.education.records',
+      mount: 'list-edu',
+      title: '教育',
+      fields: [
+        { key: 'school', label: '学校名称' },
+        { key: 'college', label: '学院' },
+        { key: 'major', label: '专业' },
+        { key: 'degree', label: '学历', ph: '本科 / 大专' },
+        { key: 'education_type', label: '学习形式', ph: '全日制' },
+        { key: 'start_date', label: '入学时间', ph: 'YYYY-MM' },
+        { key: 'graduation', label: '毕业时间', ph: 'YYYY-MM' },
+        { key: 'gpa', label: 'GPA' },
+        { key: 'rank', label: '专业排名' }
+      ]
+    },
     intern: {
       path: 'application.internships',
       mount: 'list-intern',
@@ -87,6 +103,29 @@ document.addEventListener('DOMContentLoaded', () => {
       fields: [
         { key: 'type', label: '语言类型', ph: '英语' },
         { key: 'level', label: '掌握程度' }
+      ]
+    },
+    family: {
+      path: 'application.family_members',
+      mount: 'list-family',
+      title: '成员',
+      fields: [
+        { key: 'name', label: '姓名' },
+        { key: 'relation', label: '称谓', ph: '父亲 / 母亲' },
+        { key: 'work', label: '工作单位' },
+        { key: 'phone', label: '电话' }
+      ]
+    },
+    training: {
+      path: 'application.training_records',
+      mount: 'list-training',
+      title: '培训',
+      fields: [
+        { key: 'name', label: '培训名称' },
+        { key: 'org', label: '培训机构' },
+        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
+        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
+        { key: 'description', label: '培训内容', textarea: true, wide: true, rows: 2 }
       ]
     }
   };
@@ -178,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function fillLists(profile) {
     Object.keys(LIST_SPECS).forEach((id) => {
       const spec = LIST_SPECS[id];
-      const rows = store.getByPath(profile, spec.path);
+      let rows = store.getByPath(profile, spec.path);
+      if (id === 'edu' && store.educationRows) rows = store.educationRows(profile);
       renderList(id, Array.isArray(rows) ? rows : []);
     });
   }
@@ -439,17 +479,40 @@ document.addEventListener('DOMContentLoaded', () => {
         a.classList.toggle('active', a.getAttribute('href') === '#' + id);
       });
     }
+    let tocLock = '';
+    let tocUnlockTimer = 0;
+    function headerOffset() {
+      const top = document.querySelector('.top');
+      return (top ? top.getBoundingClientRect().height : 72) + 12;
+    }
+    function unlockToc() {
+      tocLock = '';
+      if (tocUnlockTimer) {
+        clearTimeout(tocUnlockTimer);
+        tocUnlockTimer = 0;
+      }
+    }
     toc.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]');
       if (!a) return;
       e.preventDefault();
       const el = document.getElementById(a.getAttribute('href').slice(1));
       if (!el) return;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setActive(el.id);
+      tocLock = el.id;
+      if (tocUnlockTimer) clearTimeout(tocUnlockTimer);
+      const y = window.scrollY + el.getBoundingClientRect().top - headerOffset();
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      const onEnd = () => {
+        window.removeEventListener('scrollend', onEnd);
+        unlockToc();
+      };
+      window.addEventListener('scrollend', onEnd);
+      tocUnlockTimer = setTimeout(unlockToc, 700);
     });
     if ('IntersectionObserver' in window && targets.length) {
       const io = new IntersectionObserver((entries) => {
+        if (tocLock) return;
         const vis = entries
           .filter((en) => en.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];

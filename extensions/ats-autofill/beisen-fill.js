@@ -77,18 +77,20 @@
       isTextarea: /描述|内容|评价|介绍/.test(label)
     });
     if (/开始时间|起始|就读时间|起止时间|活动时间/.test(label)) {
-      if (section === 'edu') slot = 'universal.education.undergraduate.start_date';
+      if (section === 'edu') slot = 'universal.education.records.start_date';
       else if (section === 'project') slot = 'application.projects.start_date';
       else if (section === 'intern') slot = 'application.internships.start_date';
       else if (section === 'practice') slot = 'application.campus_practices.start_date';
       else if (section === 'campus_role') slot = 'application.campus_roles.start_date';
       else if (section === 'award') slot = 'application.award_records.date';
+      else if (section === 'training') slot = 'application.training_records.start_date';
     } else if (/结束时间|毕业时间/.test(label)) {
-      if (section === 'edu') slot = 'universal.education.undergraduate.graduation';
+      if (section === 'edu') slot = 'universal.education.records.graduation';
       else if (section === 'project') slot = 'application.projects.end_date';
       else if (section === 'intern') slot = 'application.internships.end_date';
       else if (section === 'practice') slot = 'application.campus_practices.end_date';
       else if (section === 'campus_role') slot = 'application.campus_roles.end_date';
+      else if (section === 'training') slot = 'application.training_records.end_date';
     } else if (/^城市$|所在城市/.test(label) && section === 'edu') {
       slot = 'universal.personal.current_city';
     }
@@ -98,6 +100,8 @@
 
   function detectSection(label, prev) {
     if (/教育经历|教育背景|学校名称|所学专业|学习形式|^学历$|专业排名|学院名称|成绩/.test(label)) return 'edu';
+    if (/家庭成员|成员姓名|^称谓$/.test(label)) return 'family';
+    if (/培训经历|培训名称|培训机构/.test(label)) return 'training';
     if (/实习经历|单位名称/.test(label)) return 'intern';
     if (/项目经历|项目经验|项目名称/.test(label)) return 'project';
     if (/在校实践|实践名称|实践描述|活动时间/.test(label)) return 'practice';
@@ -349,7 +353,7 @@
     var item = entry.item;
     var slotHint = fmap.resolveSlot(label, { isTextarea: /描述|内容|评价|介绍/.test(label) });
     var idx = 0;
-    var hit = String(slotHint || '').match(/^(application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages))/);
+    var hit = String(slotHint || '').match(/^(universal\.education\.records|application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages|family_members|training_records))/);
     if (hit) {
       idx = counters[slotHint] || 0;
       counters[slotHint] = idx + 1;

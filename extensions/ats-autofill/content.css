@@ -308,6 +308,28 @@
   font-size: 12px;
   line-height: 1.35;
   pointer-events: auto;
+  box-sizing: border-box;
+}
+#career-os-field-chip.is-collapsed {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  gap: 0;
+  border-radius: 50%;
+  background: #6366f1;
+  box-shadow: 0 0 0 2px #fff, 0 4px 10px rgba(15, 23, 42, 0.35);
+  cursor: pointer;
+  overflow: hidden;
+}
+#career-os-field-chip.is-collapsed.is-empty {
+  background: #94a3b8;
+}
+#career-os-field-chip.is-collapsed .career-os-chip-meta,
+#career-os-field-chip.is-collapsed .career-os-chip-actions {
+  display: none;
+}
+#career-os-field-chip.is-expanded {
+  min-width: 160px;
 }
 .career-os-chip-meta { flex: 1; min-width: 0; }
 .career-os-chip-label { color: #c7d2fe; font-weight: 700; }

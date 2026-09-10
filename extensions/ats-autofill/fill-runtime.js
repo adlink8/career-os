@@ -68,15 +68,21 @@
   function expandPlan(profile) {
     var app = (profile && profile.application) || {};
     var edu = (profile && profile.universal && profile.universal.education) || {};
-    var eduNeed = 1;
-    if (edu.junior_college && (edu.junior_college.school || edu.junior_college.major)) eduNeed = 2;
+    var eduNeed = rowCount(edu.records);
+    if (!eduNeed) {
+      if (edu.undergraduate && (edu.undergraduate.school || edu.undergraduate.major)) eduNeed += 1;
+      if (edu.junior_college && (edu.junior_college.school || edu.junior_college.major)) eduNeed += 1;
+    }
+    if (!eduNeed) eduNeed = 1;
     return {
       edu: extraClicks(eduNeed),
       intern: extraClicks(rowCount(app.internships)),
       projects: extraClicks(rowCount(app.projects)),
       campus: extraClicks(rowCount(app.campus_roles) + rowCount(app.campus_practices)),
       awards: extraClicks(rowCount(app.award_records)),
-      certs: extraClicks(rowCount(app.certificate_records))
+      certs: extraClicks(rowCount(app.certificate_records)),
+      family: extraClicks(rowCount(app.family_members)),
+      training: extraClicks(rowCount(app.training_records))
     };
   }
 
@@ -91,6 +97,8 @@
           if (/项目/.test(t)) return 'projects';
           if (/实习|工作经历/.test(t)) return 'intern';
           if (/教育/.test(t)) return 'edu';
+          if (/家庭/.test(t)) return 'family';
+          if (/培训/.test(t)) return 'training';
           if (/校园|在校|实践|职务/.test(t)) return 'campus';
           if (/证书/.test(t)) return 'certs';
           if (/获奖/.test(t)) return 'awards';
@@ -203,7 +211,9 @@
       projects: plan.projects,
       campus: plan.campus,
       awards: plan.awards,
-      certs: plan.certs
+      certs: plan.certs,
+      family: plan.family,
+      training: plan.training
     };
     var clicks = 0;
     var guard = 0;

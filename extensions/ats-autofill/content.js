@@ -14,6 +14,7 @@
   let isPanelOpen = false;
   let pickMode = false;
   let lastFieldEl = null;
+  let chipExpanded = false;
   let lastCoverage = null;
   let fillGroups = null;
 
@@ -632,7 +633,7 @@
 
     const hint = document.createElement('div');
     hint.className = 'career-os-section-title';
-    hint.textContent = '点页面格子：旁边会出现填入/复制，不用滚回这里';
+    hint.textContent = '点格子旁小圆点展开填入/复制，不用滚回这里';
 
     body.appendChild(fillBtn);
     body.appendChild(settingsBtn);
@@ -816,9 +817,15 @@
       { label: '专业技能', val: app.skills_summary },
       { label: '项目1', val: proj1.full_text || proj1.description },
       { label: '项目2', val: proj2.full_text || proj2.description },
-      { label: '学历', val: univ.education && univ.education.undergraduate
-        ? [univ.education.undergraduate.school, univ.education.undergraduate.major].filter(Boolean).join(' ')
-        : '' },
+      { label: '学历', val: (function () {
+        const edu = univ.education || {};
+        const recs = Array.isArray(edu.records) && edu.records.length
+          ? edu.records
+          : [edu.undergraduate, edu.junior_college].filter(Boolean);
+        return recs.map(function (r) {
+          return r && [r.school, r.major].filter(Boolean).join(' ');
+        }).filter(Boolean).join('；');
+      }()) },
       { label: '外语', val: univ.languages }
     ];
     ((fillCtx && fillCtx.autofill && fillCtx.autofill.open_answers) || []).forEach((ans) => {
@@ -919,18 +926,66 @@
   }
 
   function hideFieldChip() {
+    chipExpanded = false;
     const chip = document.getElementById('career-os-field-chip');
-    if (chip) chip.style.display = 'none';
+    if (chip) {
+      chip.style.display = 'none';
+      chip.classList.remove('is-expanded');
+      chip.classList.add('is-collapsed');
+    }
+  }
+
+  function setChipExpanded(chip, on) {
+    if (!chip) return;
+    chipExpanded = !!on;
+    chip.classList.toggle('is-collapsed', !chipExpanded);
+    chip.classList.toggle('is-expanded', chipExpanded);
+    chip.setAttribute('aria-expanded', chipExpanded ? 'true' : 'false');
+    chip.title = chipExpanded ? '填入 / 复制' : '点开填入/复制';
+    if (lastFieldEl) placeChip(chip, lastFieldEl);
+  }
+
+  function isDropdownControl(el) {
+    if (!el || !el.closest) return false;
+    const tag = String(el.tagName || '').toLowerCase();
+    if (tag === 'select') return true;
+    if (el.closest('.el-select, .el-date-editor, .el-cascader, .el-picker, .el-time-panel, .ant-select, .ant-picker, .rc-select, .el-select-dropdown, .ant-select-dropdown')) {
+      return true;
+    }
+    const role = el.getAttribute('role') || '';
+    if (role === 'combobox' || role === 'listbox' || role === 'option') return true;
+    if (el.getAttribute('aria-haspopup') === 'listbox') return true;
+    const ph = String(el.placeholder || '');
+    if (el.readOnly && /请选择|选择日期|选择时间/.test(ph)) return true;
+    if (/时间|日期|年月/.test(ph) && tag === 'input') {
+      const ctx = getFieldContext(el);
+      if (/时间|日期|年月|学历|学习形式|专业排名|语言类型|政治面貌|性别/.test(ctx + ph)) return true;
+    }
+    return false;
   }
 
   function placeChip(chip, el) {
     const r = el.getBoundingClientRect();
+    chip.style.display = 'flex';
+    if (!chipExpanded) {
+      const size = 12;
+      let left = r.right - size - 4;
+      let top = r.top + Math.max(0, (r.height - size) / 2);
+      if (left + size > window.innerWidth - 8) left = window.innerWidth - size - 8;
+      if (left < 8) left = 8;
+      if (top < 8) top = 8;
+      chip.style.left = left + 'px';
+      chip.style.top = top + 'px';
+      chip.style.width = size + 'px';
+      chip.style.height = size + 'px';
+      return;
+    }
+    chip.style.height = '';
     const w = Math.min(320, window.innerWidth - 16);
     let left = r.left;
     if (left + w > window.innerWidth - 8) left = window.innerWidth - w - 8;
     if (left < 8) left = 8;
     let top = r.bottom + 6;
-    chip.style.display = 'flex';
     const h = chip.offsetHeight || 48;
     if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 6);
     chip.style.left = left + 'px';
@@ -940,16 +995,28 @@
 
   function showFieldChip(el) {
     if (!el || el.closest && el.closest('#career-os-floating-root, #career-os-field-chip')) return;
+    if (isDropdownControl(el)) {
+      hideFieldChip();
+      return;
+    }
     const hit = resolveValueForEl(el);
     if (!hit) return;
     lastFieldEl = el;
+    chipExpanded = false;
     let chip = document.getElementById('career-os-field-chip');
     if (!chip) {
       chip = document.createElement('div');
       chip.id = 'career-os-field-chip';
+      chip.setAttribute('role', 'button');
+      chip.addEventListener('mousedown', (e) => e.preventDefault());
+      chip.addEventListener('click', (e) => {
+        if (e.target && e.target.closest && e.target.closest('button')) return;
+        if (!chipExpanded) setChipExpanded(chip, true);
+      });
       document.documentElement.appendChild(chip);
     }
     chip.textContent = '';
+    chip.classList.toggle('is-empty', !hit.value);
     const meta = document.createElement('div');
     meta.className = 'career-os-chip-meta';
     const name = document.createElement('div');
@@ -970,8 +1037,6 @@
     copyBtn.type = 'button';
     copyBtn.textContent = '复制';
     copyBtn.disabled = !hit.value;
-    fillBtn.addEventListener('mousedown', (e) => e.preventDefault());
-    copyBtn.addEventListener('mousedown', (e) => e.preventDefault());
     fillBtn.addEventListener('click', () => {
       const ok = setNativeValue(el, hit.value);
       showToast(ok ? '已填入: ' + hit.label : '控件写不进，已复制');
@@ -982,7 +1047,7 @@
     actions.appendChild(copyBtn);
     chip.appendChild(meta);
     chip.appendChild(actions);
-    placeChip(chip, el);
+    setChipExpanded(chip, false);
   }
 
   function bindPageShortcuts() {
@@ -1032,8 +1097,20 @@
     const tag = el.tagName.toLowerCase();
     if (tag !== 'input' && tag !== 'textarea' && tag !== 'select') return;
     if (el.type === 'hidden' || el.type === 'file' || el.type === 'checkbox' || el.type === 'radio') return;
+    if (isDropdownControl(el)) {
+      hideFieldChip();
+      return;
+    }
     showFieldChip(el);
   });
+  document.addEventListener('mousedown', (ev) => {
+    const el = ev.target;
+    if (el && isDropdownControl(el)) hideFieldChip();
+    const chip = document.getElementById('career-os-field-chip');
+    if (chip && chipExpanded && chip.style.display !== 'none' && !chip.contains(el)) {
+      setChipExpanded(chip, false);
+    }
+  }, true);
   document.addEventListener('scroll', () => {
     if (lastFieldEl && document.activeElement === lastFieldEl) {
       const chip = document.getElementById('career-os-field-chip');

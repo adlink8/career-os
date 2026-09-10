@@ -55,6 +55,7 @@
           days_per_week: ''
         },
         education: {
+          records: [],
           undergraduate: {
             school: '',
             college: '',
@@ -64,6 +65,18 @@
             start_date: '',
             end_date: '',
             education_type: '',
+            gpa: '',
+            rank: ''
+          },
+          junior_college: {
+            school: '',
+            degree: '',
+            major: '',
+            start_date: '',
+            end_date: '',
+            graduation: '',
+            education_type: '',
+            college: '',
             gpa: '',
             rank: ''
           }
@@ -88,19 +101,24 @@
         campus_roles: [],
         award_records: [],
         certificate_records: [],
-        languages: []
+        languages: [],
+        family_members: [],
+        training_records: []
       }
     };
   }
 
   var LIST_PATHS = [
+    'universal.education.records',
     'application.internships',
     'application.projects',
     'application.campus_practices',
     'application.campus_roles',
     'application.award_records',
     'application.certificate_records',
-    'application.languages'
+    'application.languages',
+    'application.family_members',
+    'application.training_records'
   ];
 
   function rowHasValue(row) {
@@ -114,12 +132,56 @@
     return (Array.isArray(arr) ? arr : []).filter(rowHasValue);
   }
 
+  function educationRows(profile) {
+    var edu = getByPath(profile, 'universal.education') || {};
+    if (Array.isArray(edu.records) && edu.records.some(rowHasValue)) {
+      return compactList(edu.records);
+    }
+    var rows = [];
+    if (rowHasValue(edu.undergraduate)) rows.push(edu.undergraduate);
+    if (rowHasValue(edu.junior_college)) rows.push(edu.junior_college);
+    return rows;
+  }
+
+  function emptyEduRow() {
+    return {
+      school: '',
+      college: '',
+      degree: '',
+      major: '',
+      graduation: '',
+      start_date: '',
+      end_date: '',
+      education_type: '',
+      gpa: '',
+      rank: ''
+    };
+  }
+
+  function syncEducationAliases(profile) {
+    if (!profile || typeof profile !== 'object') return profile;
+    if (!profile.universal || typeof profile.universal !== 'object') profile.universal = {};
+    if (!profile.universal.education || typeof profile.universal.education !== 'object') {
+      profile.universal.education = {};
+    }
+    var rows = educationRows(profile);
+    profile.universal.education.records = rows;
+    var blank = emptyEduRow();
+    profile.universal.education.undergraduate = rows[0] ? Object.assign(emptyEduRow(), rows[0]) : blank;
+    profile.universal.education.junior_college = rows[1]
+      ? Object.assign(emptyEduRow(), rows[1])
+      : emptyEduRow();
+    return profile;
+  }
+
   function compactProfile(profile) {
     if (!profile || typeof profile !== 'object') return profile;
+    syncEducationAliases(profile);
     LIST_PATHS.forEach(function (path) {
       var arr = getByPath(profile, path);
       if (Array.isArray(arr)) setByPath(profile, path, compactList(arr));
     });
+    syncEducationAliases(profile);
     return profile;
   }
 
@@ -177,19 +239,22 @@
   }
 
   var LIST_PREFIX = {
+    'universal.education.records': true,
     'application.projects': true,
     'application.internships': true,
     'application.campus_practices': true,
     'application.campus_roles': true,
     'application.award_records': true,
     'application.certificate_records': true,
-    'application.languages': true
+    'application.languages': true,
+    'application.family_members': true,
+    'application.training_records': true
   };
 
   function applySlot(profile, slot, value, listIndex) {
     if (!slot || value == null || String(value).trim() === '') return;
     var idx = listIndex || 0;
-    var listHit = slot.match(/^(application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages))\.(.+)$/);
+    var listHit = slot.match(/^(universal\.education\.records|application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages|family_members|training_records))\.(.+)$/);
     if (listHit) {
       var arr = ensureArray(profile, listHit[1], idx + 1);
       if (!arr[idx] || typeof arr[idx] !== 'object') arr[idx] = emptyRow();
@@ -275,7 +340,7 @@
       '1. version 固定为 "3.0-overlay"；source 固定为 "settings-overlay"。',
       '2. application.target_position 必须是单一岗位官网全称，禁止「A与B」「A/B」复合意向。',
       '3. 日期只用 YYYY-MM 或 YYYY-MM-DD。',
-      '4. internships / projects 每条至少有 name；项目描述写在 full_text，实习内容写在 duty。',
+      '4. internships / projects / education.records 每条至少有 name 或 school；项目描述写在 full_text，实习内容写在 duty。教育经历本科在前、专科在后，有几段写几段。',
       '5. 禁止编造量化业绩、假手机号、假邮箱、假身份证；用户没给的字段留空。',
       '6. 技能写真实会的，不要堆用户材料里没有的技术词。',
       '',
@@ -298,6 +363,8 @@
     rowHasValue: rowHasValue,
     compactList: compactList,
     compactProfile: compactProfile,
+    educationRows: educationRows,
+    syncEducationAliases: syncEducationAliases,
     loadState: loadState,
     saveState: saveState,
     normalizeImport: normalizeImport,

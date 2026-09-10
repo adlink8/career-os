@@ -20,6 +20,15 @@ check('默认实习为空数组', Array.isArray(empty.application.internships) &
 check('默认项目为空数组', empty.application.projects.length === 0);
 check('默认证书为空数组', empty.application.certificate_records.length === 0);
 check('默认在校职务为空', empty.application.campus_roles.length === 0);
+check('默认教育经历为空数组', empty.universal.education.records.length === 0);
+check('默认家庭成员为空', empty.application.family_members.length === 0);
+check('默认培训经历为空', empty.application.training_records.length === 0);
+
+empty.universal.education.undergraduate = { school: '常州大学', major: '计科' };
+empty.universal.education.junior_college = { school: '某专科', major: '物联网' };
+store.compactProfile(empty);
+check('旧本科专科拆成两段 records', empty.universal.education.records.length === 2);
+check('第一段仍同步 undergraduate', empty.universal.education.undergraduate.school === '常州大学');
 
 empty.application.projects = [
   { name: '网关', role: '开发', keywords: '', start_date: '', end_date: '', full_text: '描述' },

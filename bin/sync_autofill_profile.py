@@ -104,27 +104,59 @@ def _education_block(edu):
     if "~" in period:
         a, b = [x.strip() for x in period.split("~", 1)]
         prev_start, prev_end = a, b
+    ug = {
+        "school": edu.get("school") or "",
+        "college": edu.get("college") or "",
+        "degree": edu.get("degree") or "",
+        "major": edu.get("major") or "",
+        "graduation": edu.get("graduation") or "",
+        "start_date": edu.get("start_date") or "",
+        "end_date": edu.get("graduation") or "",
+        "education_type": edu.get("education_type") or edu.get("current") or "",
+        "gpa": str(edu.get("gpa") or ""),
+        "rank": str(edu.get("rank") or ""),
+    }
+    jc = {
+        "school": prev.get("school") or "",
+        "college": prev.get("college") or "",
+        "degree": "大专" if prev else "",
+        "major": prev.get("focus") or prev.get("major") or "",
+        "start_date": prev_start,
+        "end_date": prev_end,
+        "graduation": prev_end,
+        "education_type": prev.get("education_type") or "",
+        "gpa": str(prev.get("gpa") or ""),
+        "rank": str(prev.get("rank") or ""),
+    }
+    records = []
+    if any(str(ug.get(k) or "").strip() for k in ("school", "major", "degree")):
+        records.append(dict(ug))
+    if any(str(jc.get(k) or "").strip() for k in ("school", "major")):
+        records.append(dict(jc))
+    yaml_records = edu.get("records") or []
+    if isinstance(yaml_records, list) and yaml_records:
+        records = []
+        for item in yaml_records:
+            if not isinstance(item, dict):
+                continue
+            rec = {
+                "school": item.get("school") or "",
+                "college": item.get("college") or "",
+                "degree": item.get("degree") or "",
+                "major": item.get("major") or item.get("focus") or "",
+                "graduation": item.get("graduation") or item.get("end_date") or "",
+                "start_date": item.get("start_date") or "",
+                "end_date": item.get("end_date") or item.get("graduation") or "",
+                "education_type": item.get("education_type") or "",
+                "gpa": str(item.get("gpa") or ""),
+                "rank": str(item.get("rank") or ""),
+            }
+            if any(str(rec.get(k) or "").strip() for k in ("school", "major", "degree")):
+                records.append(rec)
     return {
-        "undergraduate": {
-            "school": edu.get("school") or "",
-            "college": edu.get("college") or "",
-            "degree": edu.get("degree") or "",
-            "major": edu.get("major") or "",
-            "graduation": edu.get("graduation") or "",
-            "start_date": edu.get("start_date") or "",
-            "end_date": edu.get("graduation") or "",
-            "education_type": edu.get("education_type") or edu.get("current") or "",
-            "gpa": str(edu.get("gpa") or ""),
-            "rank": str(edu.get("rank") or ""),
-        },
-        "junior_college": {
-            "school": prev.get("school") or "",
-            "degree": "大专" if prev else "",
-            "major": prev.get("focus") or prev.get("major") or "",
-            "start_date": prev_start,
-            "end_date": prev_end,
-            "graduation": prev_end,
-        },
+        "undergraduate": records[0] if records else ug,
+        "junior_college": records[1] if len(records) > 1 else jc,
+        "records": records,
     }
 
 

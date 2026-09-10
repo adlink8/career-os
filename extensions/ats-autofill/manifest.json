@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Career OS 网申自动填表助手",
-  "version": "1.8.9",
+  "version": "1.9.1",
   "description": "可单独使用的网申填表助手。设置页底稿即可填北森/Moka，不必安装 Career OS。不自动提交。",
   "permissions": [
     "storage",

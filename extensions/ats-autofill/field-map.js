@@ -47,15 +47,37 @@
     return '';
   }
 
-  function projectValue(profile, key, index) {
-    var list = pick(profile, 'application.projects') || [];
-    var item = list[index] || list[0] || {};
-    return item[key] || '';
+  function rowHasValue(row) {
+    if (!row || typeof row !== 'object') return false;
+    return Object.keys(row).some(function (k) {
+      return String(row[k] == null ? '' : row[k]).trim() !== '';
+    });
+  }
+
+  function educationRecords(profile) {
+    var edu = pick(profile, 'universal.education') || {};
+    if (Array.isArray(edu.records) && edu.records.some(rowHasValue)) {
+      return edu.records.filter(rowHasValue);
+    }
+    var out = [];
+    if (rowHasValue(edu.undergraduate)) out.push(edu.undergraduate);
+    if (rowHasValue(edu.junior_college)) out.push(edu.junior_college);
+    return out;
   }
 
   function valueForSlot(slot, profile, projectIndex) {
     if (!slot || !profile) return '';
-    var listHit = slot.match(/^(application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages))\.(.+)$/);
+    var eduHit = String(slot).match(/^universal\.education\.(?:records|undergraduate|junior_college)\.(.+)$/);
+    if (eduHit) {
+      var recs = educationRecords(profile);
+      var eduItem = recs[projectIndex || 0] || {};
+      var eduKey = eduHit[1];
+      var eduRaw = eduItem[eduKey];
+      if ((eduRaw == null || eduRaw === '') && eduKey === 'graduation') eduRaw = eduItem.end_date;
+      if ((eduRaw == null || eduRaw === '') && eduKey === 'end_date') eduRaw = eduItem.graduation;
+      return eduRaw == null ? '' : String(eduRaw).trim();
+    }
+    var listHit = slot.match(/^(application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages|family_members|training_records))\.(.+)$/);
     if (listHit) {
       var item = (pick(profile, listHit[1]) || [])[projectIndex || 0] || {};
       var raw = item[listHit[2]];
@@ -120,6 +142,7 @@
     valueForSlot: valueForSlot,
     isRealIdCard: isRealIdCard,
     isNoiseLabel: isNoiseLabel,
-    matchAutofillValue: matchAutofillValue
+    matchAutofillValue: matchAutofillValue,
+    educationRecords: educationRecords
   };
 })(typeof self !== 'undefined' ? self : this);

@@ -17,6 +17,9 @@ function check(label, cond) {
 
 check('默认 9 类全开', policy.GROUPS.length === 9 && policy.selectedIds(null).length === 9);
 check('姓名归个人信息', policy.groupForSlot('universal.personal.name') === 'personal');
+check('教育 records 归教育', policy.groupForSlot('universal.education.records.school') === 'education');
+check('家庭成员归个人信息', policy.groupForSlot('application.family_members.name') === 'personal');
+check('培训归实习类', policy.groupForSlot('application.training_records.name') === 'intern');
 check('到岗时间归求职意向', policy.groupForSlot('universal.personal.available_time') === 'intent');
 check('项目归项目', policy.groupForSlot('application.projects.full_text') === 'projects');
 check('证书归获奖证书', policy.groupForSlot('application.certificate_records.name') === 'award');
