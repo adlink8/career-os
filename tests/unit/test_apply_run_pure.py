@@ -11,6 +11,7 @@ from services.apply_run import (
     _coverage_from_fields,
     _is_noise_label,
     _is_test_profile,
+    _job_title_queue_score,
     _norm_mode,
     _norm_role,
     _open_key_for_label,
@@ -47,6 +48,8 @@ def test_pick_volume_track_keywords():
     assert pick_volume_track("大模型应用开发", "RAG LLM")["track"] == "ai"
     assert pick_volume_track("物联网工程师", "MQTT 嵌入式")["track"] == "iot"
     assert pick_volume_track("行政专员", "会议纪要")["track"] == "ops"
+    assert pick_volume_track("电信云平台运维工程师 (DevOps/AIOps)", "AIOps 平台")["track"] == "ops"
+    assert pick_volume_track("终端运维实习生", "现场巡检")["track"] == "ops"
 
 
 def test_volume_knockout_composite_title():
@@ -56,6 +59,14 @@ def test_volume_knockout_composite_title():
 
 def test_volume_knockout_single_role_ok():
     assert _volume_knockout({"title": "运维工程师（Linux与容器方向）"}) == ""
+    assert _volume_knockout({"title": "Linux 大数据集群运维与技术支持"}) == ""
+
+
+def test_queue_score_prefers_ops_skips_composite():
+    assert _job_title_queue_score("运维工程师实习") >= 10
+    assert _job_title_queue_score("技术支持工程师 / 运维工程师") is None
+    assert _job_title_queue_score("嵌入式软件工程师") is None
+    assert _job_title_queue_score("FAE 技术支持") >= 10
 
 
 def test_test_profile_gate():
@@ -129,7 +140,7 @@ def test_resolve_slot_from_rules():
     if not rules:
         pytest.skip("field-map-rules.json 缺失")
     assert _resolve_slot("姓名", rules) == "universal.personal.name"
-    assert _resolve_slot("学校名称", rules) == "universal.education.undergraduate.school"
+    assert _resolve_slot("学校名称", rules) == "universal.education.records.school"
 
 
 def _compile_safe():

@@ -22,11 +22,15 @@ from career_os_store import get_db  # noqa: E402
 from services.apply_run import (  # noqa: E402
     ApplyRunError,
     arbitrate,
+    arm_human,
     arm_volume,
+    autoloop_volume,
     ingest,
+    list_human_inbox,
     lookup_fill_payload,
     mark_applied,
     next_action,
+    queue_ready_jobs,
     release,
     run_ats,
     start_run,
@@ -55,6 +59,20 @@ def main() -> int:
         help="precision=专投全流程；volume=海投分轨简历+官网意向",
     )
     p_start.add_argument("--allow-test-profile", action="store_true", help="冒烟用")
+
+    p_q = sub.add_parser("queue", help="列出可无人值守开跑的中小厂待投岗")
+    p_q.add_argument("--limit", type=int, default=5)
+
+    p_auto = sub.add_parser("autoloop", help="海投无人值守到人工审简历门禁，不点提交")
+    p_auto.add_argument("--mode", default="volume", choices=["volume", "海投"])
+    p_auto.add_argument("--limit", type=int, default=3)
+    p_auto.add_argument("--allow-test-profile", action="store_true")
+
+    p_inbox = sub.add_parser("inbox", help="待你审简历/真人评估后投递的队列")
+
+    p_human = sub.add_parser("arm-human", help="会审通过后出填写载荷，不登记已投递")
+    p_human.add_argument("run_id", type=int)
+    p_human.add_argument("--allow-test-profile", action="store_true")
 
     p_vol = sub.add_parser("arm-volume", help="已捕获的岗改海投：选分轨简历并出 autofill.json")
     p_vol.add_argument("run_id", type=int)
@@ -119,6 +137,28 @@ def main() -> int:
                     "job_ad_id": run["job_ad_id"],
                     "autofill_json_path": run.get("autofill_json_path"),
                     "track": (run.get("track") or {}).get("track"),
+                }
+            )
+            return 0
+        if args.cmd == "queue":
+            _print({"ok": True, "jobs": queue_ready_jobs(conn, limit=args.limit)})
+            return 0
+        if args.cmd == "autoloop":
+            _print(autoloop_volume(conn, limit=args.limit, allow_test_profile=bool(args.allow_test_profile)))
+            return 0
+        if args.cmd == "inbox":
+            _print({"ok": True, "inbox": list_human_inbox(conn)})
+            return 0
+        if args.cmd == "arm-human":
+            run = arm_human(conn, args.run_id, allow_test_profile=bool(args.allow_test_profile))
+            _print(
+                {
+                    "ok": True,
+                    "run_id": run["id"],
+                    "stage": run["stage"],
+                    "autofill_json_path": run.get("autofill_json_path"),
+                    "resume_path": run.get("resume_path"),
+                    "note": "待你审简历并真人评估后自行网申，未登记已投递，不会自动点提交",
                 }
             )
             return 0

@@ -1,8 +1,10 @@
 import pytest
 
 from services.job_context import (
+    context_from_job_row,
     extract_hard_filters,
     extract_job_ad_id,
+    first_http_url,
     looks_like_form_page,
     looks_like_jd,
     merge_contexts,
@@ -93,3 +95,27 @@ def test_merge_contexts_keeps_detail_url_and_form_fields():
     assert merged["form_schema"][0]["label"] == "姓名"
     assert "Linux" in merged["jd_text"]
     assert merged["job_ad_id"] == "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+
+def test_first_http_url_strips_trailing_note():
+    assert (
+        first_http_url("https://metaso.cn/ （简历直投：a@b.com）")
+        == "https://metaso.cn/"
+    )
+
+
+def test_context_from_job_row_builds_jd():
+    ctx = context_from_job_row(
+        {
+            "job_title": "运维工程师实习",
+            "company_name": "微测科技",
+            "responsibilities": "负责 Linux 监控与值班。",
+            "requirements": "本科 2027届，熟悉 Docker。",
+            "application_url": "https://micro.example/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+        }
+    )
+    assert ctx["title"] == "运维工程师实习"
+    assert ctx["company"] == "微测科技"
+    assert "岗位职责" in ctx["jd_text"] and "Linux" in ctx["jd_text"]
+    assert ctx["job_ad_id"] == "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    assert ctx["stats"]["jd_chars"] >= 40

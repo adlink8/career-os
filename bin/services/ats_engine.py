@@ -56,6 +56,14 @@ _FAMILY_FLAGSHIP = {
 }
 
 
+def is_dual_role_title(title: str) -> bool:
+    """True when a job title names two roles with slash/顿号, e.g. 运维 / 开发."""
+    if not title:
+        return False
+    stripped = re.sub(r"（.*?）|\(.*?\)", "", title)
+    return bool(_COMPOSITE_INTENT_RE.search(stripped))
+
+
 def is_composite_intent(intent: str) -> bool:
     """True only when the intent line names two job roles, not a tech-direction note."""
     if not intent:

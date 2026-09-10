@@ -88,7 +88,7 @@ def main() -> int:
     )
 
     conn = get_db()
-    check("schema v22", SCHEMA_VERSION == 22)
+    check("schema v23", SCHEMA_VERSION == 23)
     check(
         "apply_mode column",
         "apply_mode" in {r[1] for r in conn.execute("PRAGMA table_info(job_apply_runs)")},

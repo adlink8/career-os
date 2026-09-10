@@ -9,10 +9,14 @@ from services import ats_engine
 from services.apply_run import (
     ApplyRunError,
     arbitrate,
+    arm_human,
+    autoloop_volume,
     ingest,
+    list_human_inbox,
     lookup_fill_payload,
     mark_applied,
     next_action,
+    queue_ready_jobs,
     release,
     run_ats,
     start_run,
@@ -219,6 +223,7 @@ def test_precision_pipeline_then_volume_lookup_prefers_released(
     assert vol_af.get("track") in {"ops", "ai", "iot"}
     nxt_vol = next_action(conn, int(vol["id"]))
     assert nxt_vol.get("done") is True
+    assert nxt_vol.get("action") == "human_review"
 
     looked_vol = lookup_fill_payload(
         conn,
@@ -252,3 +257,99 @@ def test_test_profile_cannot_volume_without_flag(isolated_db, tmp_path, sample_c
     with pytest.raises(ApplyRunError) as exc:
         start_run(isolated_db, context_path=str(ctx_path), mode="volume", allow_test_profile=False)
     assert "测试画像" in str(exc.value)
+
+
+def _seed_sme_job(conn, *, name: str, title: str, url: str) -> int:
+    conn.execute(
+        "INSERT INTO companies (name, pool, campus_url) VALUES (?, 'sme_startup', ?)",
+        (name, url),
+    )
+    cid = conn.execute("SELECT id FROM companies WHERE name=?", (name,)).fetchone()[0]
+    conn.execute(
+        """
+        INSERT INTO jobs (
+            company_id, company_name, job_title, city, responsibilities, requirements,
+            application_url, status, priority
+        ) VALUES (?, ?, ?, '南京', ?, ?, ?, '待投递', 2)
+        """,
+        (
+            cid,
+            name,
+            title,
+            "负责 Linux / Docker 主机与容器的日常巡检、监控告警与值班，处理线上故障并复盘。",
+            "本科 2027届，熟悉 Linux 命令行、Docker 与基础网络，能看懂日志并独立排障。",
+            url,
+        ),
+    )
+    conn.commit()
+    return int(conn.execute("SELECT id FROM jobs WHERE company_id=?", (cid,)).fetchone()[0])
+
+
+def test_start_from_job_id_and_volume_autoloop(isolated_db):
+    conn = isolated_db
+    url = "https://micro.example/campus/detail?jobAdId=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    job_id = _seed_sme_job(conn, name="微测科技", title="运维工程师实习", url=url)
+    _seed_sme_job(
+        conn,
+        name="大厂归档",
+        title="运维工程师",
+        url="https://big.example/campus/detail?jobAdId=bbbbbbbb-bbbb-cccc-dddd-eeeeeeeeeeee",
+    )
+    conn.execute("UPDATE companies SET pool='archive_big' WHERE name='大厂归档'")
+    conn.commit()
+
+    queued = queue_ready_jobs(conn, limit=5)
+    assert [q["job_id"] for q in queued] == [job_id]
+
+    run = start_run(conn, job_id=job_id, mode="volume", allow_test_profile=True)
+    assert run["stage"] == "volume_ready"
+    assert run.get("job_id") == job_id
+    inbox = list_human_inbox(conn)
+    assert inbox and inbox[0]["id"] == run["id"]
+    assert conn.execute("SELECT COUNT(*) FROM applications").fetchone()[0] == 0
+
+    looked = lookup_fill_payload(conn, url=url)
+    assert looked["allow_fill"] is True
+    assert looked["run_id"] == run["id"]
+
+    marked = mark_applied(conn, int(run["id"]), coverage={"required_empty": [], "widget_fail": []})
+    assert marked["stage"] == "released"
+    assert conn.execute("SELECT COUNT(*) FROM applications").fetchone()[0] == 1
+    assert conn.execute("SELECT status FROM jobs WHERE id=?", (job_id,)).fetchone()[0] == "已投递"
+
+
+def test_arm_human_does_not_mark_applied(isolated_db, tmp_path, sample_context_payload):
+    conn = isolated_db
+    url = sample_context_payload["url"]
+    job_id = _seed_sme_job(conn, name="会审微测", title="运维工程师", url=url)
+    ctx_path = write_json(tmp_path / "job-context.json", sample_context_payload)
+    run = start_run(conn, context_path=str(ctx_path), job_id=job_id, allow_test_profile=True)
+    run_id = int(run["id"])
+    from services.apply_run import _update_run
+
+    _update_run(conn, run_id, stage="review_passed")
+    conn.commit()
+    armed = arm_human(conn, run_id, allow_test_profile=True)
+    assert armed["stage"] == "awaiting_human"
+    assert Path(armed["autofill_json_path"]).is_file()
+    assert conn.execute("SELECT COUNT(*) FROM applications").fetchone()[0] == 0
+    assert conn.execute("SELECT status FROM jobs WHERE id=?", (job_id,)).fetchone()[0] == "待投递"
+    nxt = next_action(conn, run_id)
+    assert nxt["action"] == "human_review" and nxt["done"] is True
+    looked = lookup_fill_payload(conn, url=url)
+    assert looked["allow_fill"] is True and looked["run_id"] == run_id
+
+
+def test_autoloop_volume_stops_at_inbox(isolated_db):
+    conn = isolated_db
+    job_id = _seed_sme_job(
+        conn,
+        name="海投微测",
+        title="Linux 运维实习生",
+        url="https://loop.example/campus/detail?jobAdId=cccccccc-bbbb-cccc-dddd-eeeeeeeeeeee",
+    )
+    out = autoloop_volume(conn, limit=3, allow_test_profile=True)
+    assert out["started"] and out["started"][0]["job_id"] == job_id
+    assert out["started"][0]["stage"] == "volume_ready"
+    assert any(i["job_id"] == job_id for i in out["inbox"])
+    assert conn.execute("SELECT COUNT(*) FROM applications").fetchone()[0] == 0

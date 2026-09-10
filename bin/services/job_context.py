@@ -6,8 +6,10 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
+from urllib.parse import urlparse
 
 CONTEXT_VERSION = "1.0"
 
@@ -336,3 +338,63 @@ def latest_context(conn) -> Dict[str, Any] | None:
         return None
     raw = row["raw_json"] if isinstance(row, dict) or hasattr(row, "keys") else row[0]
     return json.loads(raw)
+
+
+_HTTP_URL = re.compile(r"https?://[^\s）)\]】，,；;]+", re.I)
+
+
+def first_http_url(text: str) -> str:
+    m = _HTTP_URL.search(text or "")
+    return m.group(0).rstrip("。．.、") if m else ""
+
+
+def context_from_job_row(row: Dict[str, Any]) -> Dict[str, Any]:
+    """把 jobs 行合成 JobContext，供无插件捕获时开 apply-run。"""
+    url = first_http_url(
+        str(row.get("application_url") or row.get("campus_url") or row.get("website") or "")
+    )
+    title = str(row.get("job_title") or "").strip()
+    resp = str(row.get("responsibilities") or "").strip()
+    req = str(row.get("requirements") or "").strip()
+    parts = [p for p in (title,) if p]
+    if resp:
+        parts.append("岗位职责：\n" + resp)
+    if req:
+        parts.append("任职要求：\n" + req)
+    extra = str(row.get("matching_analysis") or "").strip()
+    if extra:
+        parts.append(extra)
+    company = str(row.get("company_name") or row.get("company_table_name") or row.get("name") or "").strip()
+    return normalize_context(
+        {
+            "captured_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "url": url,
+            "host": urlparse(url).netloc if url else "",
+            "company": company,
+            "title": title,
+            "jd_text": "\n\n".join(parts),
+            "form_schema": [],
+        }
+    )
+
+
+def load_job_as_context(conn, job_id: int) -> Dict[str, Any]:
+    row = conn.execute(
+        """
+        SELECT j.*, c.campus_url AS campus_url, c.website AS website,
+               c.name AS company_table_name
+        FROM jobs j
+        LEFT JOIN companies c ON c.id = j.company_id
+        WHERE j.id=?
+        """,
+        (int(job_id),),
+    ).fetchone()
+    if not row:
+        raise ValueError(f"找不到 job_id={job_id}")
+    data = {k: row[k] for k in row.keys()}
+    if not str(data.get("company_name") or "").strip():
+        data["company_name"] = data.get("company_table_name") or ""
+    ctx = context_from_job_row(data)
+    if int((ctx.get("stats") or {}).get("jd_chars") or 0) < 40:
+        raise ValueError(f"job_id={job_id} 的 JD 过短，不能开 apply-run")
+    return ctx

@@ -36,17 +36,22 @@ STAGES = (
     "ats_passed",
     "review_failed",
     "review_passed",
+    "awaiting_human",
     "released",
     "volume_ready",
     "abandoned",
 )
 
 APPLY_MODES = ("precision", "volume")
-FILL_READY_STAGES = ("released", "volume_ready")
+FILL_READY_STAGES = ("released", "volume_ready", "awaiting_human")
+HUMAN_GATE_STAGES = ("awaiting_human", "volume_ready")
+MIN_QUEUE_JD_CHARS = 80
+QUEUE_PREFERRED = ("运维", "技术支持", "devops", "sre", "fae", "交付", "linux", "实习", "ai")
+QUEUE_SKIP_IF_ONLY = ("嵌入式软件",)
 VOLUME_TRACKS = (
-    ("ai", "data/cv/cv-ai-infra.md", ("ai", "大模型", "智能体", "rag", "llm", "数据开发", "算法")),
-    ("iot", "data/cv/cv-iot.md", ("iot", "物联网", "嵌入式", "mqtt", "技术支持", "fae", "现场")),
     ("ops", "data/cv/cv-ops.md", ("运维", "devops", "sre", "linux", "监控", "交付")),
+    ("iot", "data/cv/cv-iot.md", ("iot", "物联网", "嵌入式", "mqtt", "技术支持", "fae", "现场")),
+    ("ai", "data/cv/cv-ai-infra.md", ("ai", "大模型", "智能体", "rag", "llm", "数据开发", "算法")),
 )
 
 ROLE_ALIASES = {
@@ -231,8 +236,18 @@ def start_run(
             "SELECT id FROM job_page_contexts ORDER BY id DESC LIMIT 1"
         ).fetchone()
         context_id = int(row["id"]) if row else None
+    elif job_id is not None:
+        try:
+            from services.job_context import load_job_as_context
+        except ImportError:
+            from bin.services.job_context import load_job_as_context
+        try:
+            ctx = load_job_as_context(conn, int(job_id))
+        except ValueError as exc:
+            raise ApplyRunError(str(exc)) from exc
+        context_id = save_context(conn, ctx)
     else:
-        raise ApplyRunError("必须提供 --job-context 或 --latest")
+        raise ApplyRunError("必须提供 --job-context、--latest 或 --job-id")
     if not context_id:
         raise ApplyRunError("JobContext 入库失败")
     saved = conn.execute(
@@ -276,11 +291,20 @@ def start_run(
 
 
 def pick_volume_track(title: str, jd_text: str) -> Dict[str, str]:
-    blob = f"{title or ''}\n{jd_text or ''}".lower()
-    for track, resume, keywords in VOLUME_TRACKS:
-        if any(k.lower() in blob for k in keywords):
-            path = ROOT / resume
-            return {"track": track, "resume_path": str(path) if path.is_file() else resume, "label": track}
+    def _hay(text: str) -> str:
+        return (text or "").lower().replace("aiops", "xops")
+
+    title_h = _hay(title)
+    blob = _hay(f"{title or ''}\n{jd_text or ''}")
+    for hay in (title_h, blob):
+        for track, resume, keywords in VOLUME_TRACKS:
+            if any(k.lower() in hay for k in keywords):
+                path = ROOT / resume
+                return {
+                    "track": track,
+                    "resume_path": str(path) if path.is_file() else resume,
+                    "label": track,
+                }
     path = ROOT / "data/cv/cv-ops.md"
     return {"track": "ops", "resume_path": str(path) if path.is_file() else "data/cv/cv-ops.md", "label": "ops"}
 
@@ -288,10 +312,10 @@ def pick_volume_track(title: str, jd_text: str) -> Dict[str, str]:
 def _volume_knockout(ctx: Dict[str, Any]) -> str:
     title = str(ctx.get("title") or "")
     try:
-        from services.ats_engine import is_composite_intent
+        from services.ats_engine import is_dual_role_title
     except ImportError:
-        from bin.services.ats_engine import is_composite_intent
-    if is_composite_intent(title):
+        from bin.services.ats_engine import is_dual_role_title
+    if is_dual_role_title(title):
         return "复合意向，海投禁止（专投或拆成单岗）"
     filters = ctx.get("hard_filters") or {}
     required = filters.get("education") or []
@@ -345,6 +369,176 @@ def arm_volume(conn: sqlite3.Connection, run_id: int, *, allow_test_profile: boo
     }
     run["track"] = track
     return run
+
+
+def _job_title_queue_score(title: str) -> Optional[int]:
+    blob = (title or "").lower()
+    if " / " in (title or "") or "／" in (title or "") or "、" in (title or ""):
+        try:
+            from services.ats_engine import is_dual_role_title
+        except ImportError:
+            from bin.services.ats_engine import is_dual_role_title
+        if is_dual_role_title(title):
+            return None
+    if any(k in (title or "") for k in QUEUE_SKIP_IF_ONLY) and not any(
+        p.lower() in blob for p in ("运维", "支持", "fae", "交付")
+    ):
+        return None
+    score = 0
+    for term in QUEUE_PREFERRED:
+        if term.lower() in blob:
+            score += 10
+    return score
+
+
+def queue_ready_jobs(conn: sqlite3.Connection, *, limit: int = 5) -> List[Dict[str, Any]]:
+    """中小厂待投、有足够 JD、尚无进行中 apply-run 的岗位。"""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(companies)")}
+    pool_sql = "COALESCE(c.pool, 'sme_startup')" if "pool" in cols else "'sme_startup'"
+    rows = conn.execute(
+        f"""
+        SELECT j.id AS job_id, j.company_name, j.job_title, j.city, j.status,
+               j.application_url, j.responsibilities, j.requirements, j.priority,
+               {pool_sql} AS pool,
+               COALESCE(c.campus_url, '') AS campus_url
+        FROM jobs j
+        LEFT JOIN companies c ON c.id = j.company_id
+        WHERE COALESCE(j.status, '') IN ('待投递', '待沟通内推')
+          AND {pool_sql} IN ('applied', 'sme_startup')
+          AND (length(COALESCE(j.responsibilities,'')) + length(COALESCE(j.requirements,'')))
+              >= {int(MIN_QUEUE_JD_CHARS)}
+          AND NOT EXISTS (
+              SELECT 1 FROM job_apply_runs r
+              WHERE r.job_id = j.id AND r.stage NOT IN ('abandoned', 'captured')
+          )
+        ORDER BY j.priority, j.id
+        LIMIT 80
+        """
+    ).fetchall()
+    ranked: List[Dict[str, Any]] = []
+    for row in rows:
+        item = _row_to_dict(row)
+        score = _job_title_queue_score(str(item.get("job_title") or ""))
+        if score is None:
+            continue
+        jd_len = len(str(item.get("responsibilities") or "")) + len(str(item.get("requirements") or ""))
+        item["queue_score"] = score + min(jd_len // 40, 8)
+        item.pop("responsibilities", None)
+        item.pop("requirements", None)
+        ranked.append(item)
+    ranked.sort(key=lambda x: (-int(x["queue_score"]), int(x.get("priority") or 9), int(x["job_id"])))
+    return ranked[: max(1, int(limit))]
+
+
+def arm_human(conn: sqlite3.Connection, run_id: int, *, allow_test_profile: bool = False) -> Dict[str, Any]:
+    """会审通过后只出填写载荷，不登记已投递。"""
+    run = get_run(conn, run_id)
+    if run["stage"] == "awaiting_human" and run.get("autofill_json_path"):
+        return run
+    if run["stage"] != "review_passed":
+        raise ApplyRunError(f"阶段 {run['stage']} 不能进入人工门禁（需要 review_passed）")
+    ctx = load_context_for_run(conn, run)
+    profile = _load_profile(allow_test=allow_test_profile)
+    if _is_test_profile(profile) and not allow_test_profile:
+        raise ApplyRunError("测试画像不得用于真实投递")
+    autofill = build_autofill(ctx, profile, run=run)
+    stored = run_dir(run_id) / "artifacts" / "autofill.json"
+    _dump(stored, autofill)
+    run = _update_run(
+        conn,
+        run_id,
+        stage="awaiting_human",
+        autofill_json_path=str(stored),
+        notes="awaiting_human: 待审简历后投递，未登记已投递",
+    )
+    _add_event(conn, run_id, stage="awaiting_human", actor="arm-human", artifact_path=str(stored))
+    conn.commit()
+    run["autofill"] = {
+        "path": str(stored),
+        "field_count": len(autofill.get("fields") or []),
+        "coverage": autofill.get("coverage") or {},
+        "target_position": autofill.get("target_position") or "",
+    }
+    return run
+
+
+def list_human_inbox(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
+    rows = conn.execute(
+        """
+        SELECT r.id, r.job_id, r.stage, r.apply_mode, r.resume_path,
+               r.autofill_json_path, r.review_score, r.ats_score, r.notes, r.updated_at
+        FROM job_apply_runs r
+        WHERE r.stage IN ('awaiting_human', 'volume_ready')
+        ORDER BY r.updated_at DESC, r.id DESC
+        """
+    ).fetchall()
+    out = []
+    for row in rows:
+        item = _row_to_dict(row)
+        try:
+            ctx = load_context_for_run(conn, get_run(conn, int(item["id"])))
+        except ApplyRunError:
+            ctx = {}
+        item["company"] = ctx.get("company") or ""
+        item["title"] = ctx.get("title") or ""
+        item["url"] = ctx.get("url") or ""
+        out.append(item)
+    return out
+
+
+def autoloop_volume(conn: sqlite3.Connection, *, limit: int = 3, allow_test_profile: bool = False) -> Dict[str, Any]:
+    """无人值守海投：选岗 → 分轨简历 + autofill → 停在人工审简历。不点提交。"""
+    queued = queue_ready_jobs(conn, limit=limit)
+    started: List[Dict[str, Any]] = []
+    errors: List[Dict[str, Any]] = []
+    for item in queued:
+        job_id = int(item["job_id"])
+        try:
+            existing = conn.execute(
+                "SELECT id, stage FROM job_apply_runs WHERE job_id=? ORDER BY id DESC LIMIT 1",
+                (job_id,),
+            ).fetchone()
+            if existing and existing["stage"] == "captured":
+                run = arm_volume(conn, int(existing["id"]), allow_test_profile=allow_test_profile)
+            elif existing and existing["stage"] not in ("abandoned",):
+                errors.append(
+                    {
+                        "job_id": job_id,
+                        "title": item.get("job_title"),
+                        "error": f"已有 run {existing['id']} stage={existing['stage']}",
+                    }
+                )
+                continue
+            else:
+                run = start_run(
+                    conn,
+                    job_id=job_id,
+                    mode="volume",
+                    allow_test_profile=allow_test_profile,
+                )
+            started.append(
+                {
+                    "job_id": job_id,
+                    "run_id": run.get("id"),
+                    "stage": run.get("stage"),
+                    "company": item.get("company_name"),
+                    "title": item.get("job_title"),
+                    "resume_path": run.get("resume_path"),
+                    "autofill_json_path": run.get("autofill_json_path"),
+                    "track": (run.get("track") or {}).get("track"),
+                }
+            )
+        except ApplyRunError as exc:
+            errors.append({"job_id": job_id, "title": item.get("job_title"), "error": str(exc)})
+    return {
+        "ok": True,
+        "mode": "volume",
+        "queued": queued,
+        "started": started,
+        "errors": errors,
+        "inbox": list_human_inbox(conn),
+        "note": "已停在人工门禁。查看简历并真人评估后自行网申；不会自动点提交。",
+    }
 
 
 def _evidence_index(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
@@ -661,7 +855,17 @@ def next_action(conn: sqlite3.Connection, run_id: int) -> Dict[str, Any]:
         "iteration": iteration,
         "done": False,
     }
-    if stage in FILL_READY_STAGES:
+    if stage in HUMAN_GATE_STAGES:
+        return {
+            **base,
+            "action": "human_review",
+            "done": True,
+            "apply_mode": run.get("apply_mode") or "precision",
+            "resume_path": run.get("resume_path") or "",
+            "autofill_json_path": run.get("autofill_json_path"),
+            "note": "停在人工门禁：查看简历并真人评估后再网申，禁止自动点提交",
+        }
+    if stage == "released":
         return {
             **base,
             "action": "done",
@@ -739,8 +943,9 @@ def next_action(conn: sqlite3.Connection, run_id: int) -> Dict[str, Any]:
     if stage == "review_passed":
         return {
             **base,
-            "action": "release",
-            "command": f"python bin/career_apply_run.py release {run_id}",
+            "action": "arm_human",
+            "command": f"python bin/career_apply_run.py arm-human {run_id}",
+            "note": "会审已过：生成填写载荷，不登记已投递",
         }
     raise ApplyRunError(f"未知阶段 {stage}")
 
@@ -1065,17 +1270,34 @@ def _is_test_profile(profile: Dict[str, Any]) -> bool:
     return "test" in version or name in {"测一填"}
 
 
+def _profile_from_yaml() -> Optional[Dict[str, Any]]:
+    yaml_path = ROOT / "config" / "profile.yml"
+    if not yaml_path.is_file():
+        return None
+    try:
+        from sync_autofill_profile import build_payload, load_profile
+    except ImportError:
+        from bin.sync_autofill_profile import build_payload, load_profile
+    payload = build_payload(load_profile(yaml_path))
+    if not isinstance(payload, dict):
+        return None
+    return payload
+
+
 def _load_profile(*, allow_test: bool) -> Dict[str, Any]:
     real = ROOT / "extensions" / "ats-autofill" / "profile.json"
     test = ROOT / "extensions" / "ats-autofill" / "profile.test.json"
+    yaml_profile = _profile_from_yaml()
+    if yaml_profile and not _is_test_profile(yaml_profile):
+        return yaml_profile
     if real.is_file():
         profile = _load(real)
         if _is_test_profile(profile) and not allow_test:
-            raise ApplyRunError("当前 profile.json 是测试画像，拒绝 release")
+            raise ApplyRunError("当前 profile.json 是测试画像，且 config/profile.yml 不是真实画像")
         return profile
     if allow_test and test.is_file():
         return _load(test)
-    raise ApplyRunError("缺少 extensions/ats-autofill/profile.json，不能生成填写载荷")
+    raise ApplyRunError("缺少真实画像（config/profile.yml 或 profile.json），不能生成填写载荷")
 
 
 def _compile_rules() -> List[Dict[str, Any]]:
@@ -1350,8 +1572,8 @@ def lookup_fill_payload(
             """
             SELECT id, stage, autofill_json_path, job_ad_id, resume_path, apply_mode
             FROM job_apply_runs
-            WHERE stage IN ('released', 'volume_ready') AND job_ad_id=? AND autofill_json_path!=''
-            ORDER BY CASE stage WHEN 'released' THEN 0 ELSE 1 END, id DESC LIMIT 1
+            WHERE stage IN ('released', 'volume_ready', 'awaiting_human') AND job_ad_id=? AND autofill_json_path!=''
+            ORDER BY CASE stage WHEN 'released' THEN 0 WHEN 'awaiting_human' THEN 1 ELSE 2 END, id DESC LIMIT 1
             """,
             (ad,),
         ).fetchone()
@@ -1361,9 +1583,9 @@ def lookup_fill_payload(
             SELECT r.id, r.stage, r.autofill_json_path, r.job_ad_id, r.resume_path, r.apply_mode
             FROM job_apply_runs r
             JOIN job_page_contexts c ON c.id = r.context_id
-            WHERE r.stage IN ('released', 'volume_ready') AND r.autofill_json_path!=''
+            WHERE r.stage IN ('released', 'volume_ready', 'awaiting_human') AND r.autofill_json_path!=''
               AND (c.url=? OR instr(?, c.url)>0)
-            ORDER BY CASE r.stage WHEN 'released' THEN 0 ELSE 1 END, r.id DESC LIMIT 1
+            ORDER BY CASE r.stage WHEN 'released' THEN 0 WHEN 'awaiting_human' THEN 1 ELSE 2 END, r.id DESC LIMIT 1
             """,
             (url, url),
         ).fetchone()
@@ -1417,7 +1639,9 @@ def mark_applied(
 ) -> Dict[str, Any]:
     run = get_run(conn, run_id)
     if run["stage"] not in FILL_READY_STAGES:
-        raise ApplyRunError(f"阶段 {run['stage']} 不能标记网页已提交（需要 released 或 volume_ready）")
+        raise ApplyRunError(
+            f"阶段 {run['stage']} 不能标记网页已提交（需要 released / volume_ready / awaiting_human）"
+        )
     cov = coverage if isinstance(coverage, dict) else {}
     required_empty = [x for x in (cov.get("required_empty") or []) if x]
     widget_fail = [x for x in (cov.get("widget_fail") or []) if x]
@@ -1441,6 +1665,14 @@ def mark_applied(
         "attempted": cov.get("attempted"),
     }
     _dump(stored, payload)
+    application_id = _register_application(conn, run, notes=f"apply-run {run_id} 人工确认网页已提交")
+    run = _update_run(
+        conn,
+        run_id,
+        stage="released",
+        application_id=application_id or run.get("application_id"),
+        notes="网页已提交（人工确认，非自动点提交）",
+    )
     _add_event(
         conn,
         run_id,
@@ -1469,6 +1701,35 @@ def mark_applied(
     run = get_run(conn, run_id)
     run["fill_coverage"] = payload
     return run
+
+
+def _register_application(conn: sqlite3.Connection, run: Dict[str, Any], *, notes: str) -> Optional[int]:
+    if run.get("application_id"):
+        return int(run["application_id"])
+    job_id = run.get("job_id")
+    if not job_id:
+        return None
+    now = _utc_now()
+    cur = conn.execute(
+        """
+        INSERT INTO applications (job_id, status, notes, submitted_at, channel, created_at, updated_at)
+        VALUES (?, '已投递', ?, ?, 'apply-run', ?, ?)
+        """,
+        (int(job_id), notes, now, now, now),
+    )
+    application_id = int(cur.lastrowid)
+    try:
+        from services.job_service import JobService
+    except ImportError:
+        from bin.services.job_service import JobService
+    JobService.transition_job_status(
+        int(job_id),
+        "已投递",
+        resume_path=run.get("resume_path") or None,
+        notes=notes,
+        conn=conn,
+    )
+    return application_id
 
 
 def release(

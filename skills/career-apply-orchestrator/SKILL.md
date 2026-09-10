@@ -35,9 +35,10 @@ trigger:
 - 禁止在 `review_passed` 前说「去投吧」。
 - 禁止用 LLM 重算五维 ATS 或会审加权总分。
 - 测试画像（`profile.test.json` / 「测一填」）禁止 `release`。
-- 浏览器不自动点提交。`release` / `arm-volume` 只写库 + `autofill.json`。真表填充必须命中该 run；必填未清零不能 `mark-applied`。
+- 浏览器不自动点提交。`arm-human` / `arm-volume` 只写库 + `autofill.json`，**不登记已投递**。`release` 仍会写 applications（旧路径）；无人值守走 `autoloop`/`arm-human`。真表填充必须命中该 run；必填未清零不能 `mark-applied`。
 - **海投**（`--mode volume`）：选已有分轨简历 + 求职意向改官网标题，跳过拆解/ATS/会审。不改项目正文、不写开放题。硬门槛或复合意向直接放弃。
 - **专投**（`--mode precision`，默认）：完整拆解→对照→定制→ATS→会审。高价值/高匹配岗才走这条。
+- **无人值守到人工门禁**：`autoloop --mode volume` 选中小厂待投岗并预填，停在 `volume_ready`/`awaiting_human`。用户只审简历、真人评估、再网申。`mark-applied` 才记已投递。
 
 ## 标准循环
 
@@ -49,8 +50,13 @@ start → 反复 next
 ```
 
 ```bash
+python bin/career_apply_run.py queue --limit 5
+python bin/career_apply_run.py autoloop --mode volume --limit 3
+python bin/career_apply_run.py inbox
+python bin/career_apply_run.py start --job-id N [--mode volume|precision]
 python bin/career_apply_run.py start --job-context <JobContext.json> [--job-id N] [--mode volume|precision]
 python bin/career_apply_run.py arm-volume <run_id>
+python bin/career_apply_run.py arm-human <run_id>
 python bin/career_apply_run.py next <run_id>
 python bin/career_apply_run.py ingest <run_id> --role <role> --file <json>
 python bin/career_apply_run.py ats <run_id> --resume <pdf或md>
@@ -71,7 +77,9 @@ python bin/career_apply_run.py status <run_id>
 | `spawn` + `gap-triage` | 读 `career-jd-gap-branch`，缺词分流：改简历 / 开分支 / 放弃 |
 | `gap_branch` | 在宿主项目开 `feat/jd-*`，可运行实现+测试+提交，再 `ingest --role gap-done` |
 | `arbitrate` | 只跑 CLI `arbitrate` |
-| `release` | 只跑 CLI `release` |
+| `arm_human` | 只跑 CLI `arm-human`（出载荷，不登记已投递） |
+| `human_review` | **停。**把简历路径交给用户审 + 真人评估；用户网申后再 `mark-applied` |
+| `release` | 旧路径：登记已投递 + 出 autofill。无人值守不要走这条 |
 | `stop` / `done` | 结束并汇报 stage |
 
 ATS 打回**禁止**直接再改简历。先分诊：词已在项目里 → 漏写改简历；能力真缺且过立项门槛 → 开分支补代码；门槛不过 → 放弃该词。开分支的实现必须能跑测试并提交，禁止只改 README。
