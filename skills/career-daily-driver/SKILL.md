@@ -21,7 +21,7 @@ trigger:
 ## 必须读取
 
 1. `data/current-status.md` — 跨会话状态和阻塞项
-2. `data/tracker.tsv` — canonical-v2 岗位与当前状态
+2. `data/career_jobs.sqlite` — **唯一权威投递数据源**，经 `python bin/career_jobs_cli.py track` / `list` 读取岗位与状态
 3. `config/profile.yml` — 目标岗位、城市、时间约束
 4. `references/daily-driver-spec.md` — 行动排序与输出契约
 

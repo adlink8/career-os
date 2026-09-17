@@ -87,7 +87,7 @@ if (Test-FileExists 'knowledge/README.md') { Add-Row 'Knowledge' 'README.md (roo
 
 # ---------- data ----------
 if (Test-FileExists 'config/profile.yml')   { Add-Row 'Data' 'config/profile.yml'   'VERIFIED' '' } else { Add-Row 'Data' 'config/profile.yml' 'MISSING' '' }
-if (Test-FileExists 'data/tracker.tsv')     { Add-Row 'Data' 'data/tracker.tsv'     'VERIFIED' '' } else { Add-Row 'Data' 'data/tracker.tsv' 'MISSING' '' }
+if (Test-FileExists 'data/career_jobs.sqlite') { Add-Row 'Data' 'data/career_jobs.sqlite' 'VERIFIED' '投递唯一权威源' } else { Add-Row 'Data' 'data/career_jobs.sqlite' 'MISSING' '' }
 
 # ---------- templates ----------
 if (Test-FileExists 'templates/cv-template.md') { Add-Row 'Template' 'cv-template.md' 'VERIFIED' '' } else { Add-Row 'Template' 'cv-template.md' 'MISSING' '' }

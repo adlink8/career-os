@@ -21,7 +21,6 @@
 │                  个人数据层                         │
 │  config/profile.yml: 求职画像                       │
 │  data/career_jobs.sqlite: 核心库（权威事实源）       │
-│  data/tracker.tsv: 投递追踪（派生视图，目标态）      │
 │  角色: 个性化上下文，Skill 运行的参数来源            │
 └──────────────────────────────────────────────────┘
 ```
@@ -44,7 +43,7 @@ PluginManager ── discover plugins/*/plugin.json
         └─ job_source     → CareerDesk/CareerSail/career-ops 导出
         │
         ▼
-SQLite 报告与 application_timeline / tracker.tsv
+SQLite 报告与 application_timeline
 ```
 
 插件只能通过稳定 capability 访问数据；默认关闭，加载失败回退到核心实现。岗位导入和状态变更仍需人工确认，外部项目不得自动登录或提交申请。
@@ -64,7 +63,7 @@ SQLite 报告与 application_timeline / tracker.tsv
 └─────────────────────┘
 ```
 
-JD 分析不会自动写入投递表。只有用户确认实际投递后，`career-app-tracker` 才应读取并更新 `data/tracker.tsv`，避免把分析记录误当成真实投递。模拟笔试/面试写入 SQLite 报告表，但不增加真实投递统计。
+JD 分析不会自动写入投递表。只有用户确认实际投递后，`career-app-tracker` 才应经 `bin/career_jobs_cli.py apply` 更新 `applications` / `jobs` 表（唯一权威源），避免把分析记录误当成真实投递。模拟笔试/面试写入 SQLite 报告表，但不增加真实投递统计。
 
 ## 个人数据仓库联动（LLM 中介）
 
@@ -75,7 +74,7 @@ JD 分析不会自动写入投递表。只有用户确认实际投递后，`care
      LLM Agent
         │  推理 + 用户确认
         ▼
-Career OS 个人数据层 (profile.yml / tracker / cv)
+Career OS 个人数据层 (profile.yml / career_jobs.sqlite / cv)
 ```
 
 - 仓库**不**批处理写 Career OS；由 skill `career-personal-data-update` 驱动 LLM 取证并改文件。  

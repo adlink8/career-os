@@ -20,8 +20,7 @@ dist/
 config/personal-data-warehouse.yml
 
 # 真实投递与求职状态（含真实公司、投递进度、内推渠道），仅本地；权威数据在本地 sqlite
-data/tracker.tsv
-data/tracker.tsv.local
+# data/tracker.tsv 已于 2026-09-17 废弃删除，投递数据统一以 data/career_jobs.sqlite 为唯一源
 data/current-status.md
 data/platform_recruitment_jd.md
 

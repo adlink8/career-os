@@ -46,7 +46,9 @@ In these cases, respond directly and keep overhead low.
 - Current phase: Phase 5, Operational Layer（作战层与统一插件运行时已实现；当前重点是真实 Agent/真实投递验证）
 - Truth source: checked local files and smoke verification, not README completion claims.
 - Data authority (2026-09-05): `data/career_jobs.sqlite` 是求职全流程唯一权威事实源；md/TSV 文档只是库的规范描述或派生视图，冲突以库为准。新功能先定库表契约（`bin/career_os_store.py` 迁移），再写 Skill 与文档。详见 `docs/data-model.md`。
-- v1 status: 14 skills passed static verification, 11 knowledge domains populated, runtime-smoke passed, tracker.tsv 尚无真实投递记录
+- TSV retirement (2026-09-17): `data/tracker.tsv` 已删除。投递数据（岗位/状态/时间线）一律以库 `jobs` / `applications` / `application_timeline` 为准，唯一读写入口 `bin/career_jobs_cli.py`，**不再保留任何 TSV 或 markdown 形式的平行投递账本**。skill 层引用已全部改指库。
+- Resume writing authority (2026-09-12): `resume_generation_rules` + `docs/resume-authority.md`；现用母版仅 `data/cv/cv-ops.md` / `cv-iot.md` / `cv-semi.md`。
+- v1 status: 14 skills passed static verification, 11 knowledge domains populated, runtime-smoke passed, 真实投递 19 个岗位（库 `applications` 表）
 - Last audited: 2026-09-02
 
 ## Personal data warehouse (LLM-mediated)

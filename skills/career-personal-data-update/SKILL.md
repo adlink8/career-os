@@ -103,7 +103,7 @@ personal.* / education.*（除非用户明确要求且仓库与用户口述一�
 - 可选：`data/current-status.md`（若存在）  
 - 可选：简历草稿 `data/cv/cv-*.md`（本地文件，注意 gitignore）  
 
-**投递表 `data/tracker.tsv`**：仅当用户确认「真实投递」时由投递 skill 写入，本 skill 不根据仓库臆造投递行。
+**投递记录**：唯一存储是 `data/career_jobs.sqlite` 的 `applications` 表，仅当用户确认「真实投递」时由投递 skill（经 `bin/career_jobs_cli.py apply`）写入。本 skill 不根据仓库臆造投递行，也不写任何 TSV/markdown 投递账本。
 
 ### 6. 回报
 

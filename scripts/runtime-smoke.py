@@ -203,8 +203,19 @@ def main() -> int:
     check("question adapter normalizes personality scale", QuestionBankAdapter._normalize({"id": "p", "type": "likert", "title": "工作题", "dimension": "协作与沟通", "reverse": True}, 1)["question_type"] == "personality")
     check("job adapter requires company and title", JobSourceAdapter._normalize({"company": "示例", "title": "运维"}, 1)["company_name"] == "示例")
 
-    header = "日期\t公司名称\t目标岗位\t目标城市\t薪资范围\t企业官网\t校招网申直达链接\t当前状态\t战略定位与项目匹配备注"
-    check("tracker has canonical-v2 header", header in (ROOT / "data" / "tracker.tsv").read_text(encoding="utf-8"))
+    # 投递数据唯一权威源：库表契约（2026-09-17 起 tracker.tsv 已废弃删除）
+    conn = DB_PATH and sqlite3.connect(str(DB_PATH))
+    try:
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        check("db has applications table", "applications" in tables)
+        check("db has application_timeline table", "application_timeline" in tables)
+        check("applications has submitted_at column",
+              "submitted_at" in {r[1] for r in conn.execute("PRAGMA table_info(applications)")})
+        check("jobs has status column",
+              "status" in {r[1] for r in conn.execute("PRAGMA table_info(jobs)")})
+    finally:
+        conn.close()
+    check("tracker.tsv is retired", not (ROOT / "data" / "tracker.tsv").exists())
     check("database path is inside project", ROOT in DB_PATH.parents)
     print("Runtime smoke: PASS")
     return 0

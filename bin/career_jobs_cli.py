@@ -46,6 +46,7 @@ def list_jobs():
     print("💡 使用 'python bin/career_jobs_cli.py assessment-intel --job <ID>' 根据当前 JD 生成岗位测评准备画像")
     print("💡 使用 'python bin/career_jobs_cli.py project-candidates search --job <ID> --live' 搜索 JD 匹配的 GitHub 项目候选")
     print("💡 候选确认后再用 project-candidates apply <提案ID> --confirm 写入简历草稿")
+    print("💡 使用 'python bin/career_jobs_cli.py status <ID> <新状态>' 更新岗位状态并写入审计时间线")
     print("💡 使用 'python career_jobs_cli.py track' 查看求职全流程看板\n")
 
 def show_job_detail(job_id):
@@ -100,7 +101,8 @@ def track_pipeline():
     print(f"📌 待投递: {status_counts.get('待投递', 0)} | 🚀 已投递: {status_counts.get('已投递', 0)} | 📝 待笔试: {status_counts.get('待笔试', 0)} | 🎙️ 面试中: {status_counts.get('面试中', 0)} | 🏆 Offer: {status_counts.get('Offer', 0)}")
     print("-" * 85)
     if not active_rows:
-        print("💡 当前所有 60 个岗位均为【待投递】就绪状态。使用 'python career_jobs_cli.py apply <ID>' 标记投递！")
+        pending = status_counts.get('待投递', 0)
+        print(f"💡 当前无在途岗位；候选池【待投递】{pending} 个。使用 'python career_jobs_cli.py apply <ID>' 标记投递！")
     else:
         for r in active_rows:
             print(f"  • [ID: {r[0]}] {r[1]} - {r[2]} ({r[3]}) | 状态: 【{r[5]}】")
@@ -145,6 +147,26 @@ def mark_apply(job_id, resume_path=None, force=False):
     JobService.transition_job_status(int(job_id), "已投递", resume_path=resume_path, notes=notes_text)
     print(f"\n✅ 岗位 ID {job_id} 已成功标记为【已投递】并加入动态追踪管线！")
     track_pipeline()
+
+def update_status(job_id, new_status, notes_text=None):
+    """更新岗位状态（唯一权威源=库），并原子写入 application_timeline 审计事件。"""
+    job = JobService.get_job(int(job_id))
+    if not job:
+        print(f"❌ 未找到岗位 ID {job_id}")
+        return
+    old_status = job.get("status")
+    if old_status == new_status:
+        print(f"💡 岗位 ID {job_id} 状态已是【{new_status}】，无需变更。")
+        return
+
+    note = notes_text or f"通过 Career OS CLI 将状态由【{old_status}】更新为【{new_status}】"
+    if JobService.transition_job_status(int(job_id), new_status, notes=note):
+        print(f"\n✅ {job['company_name']} - {job['job_title']}")
+        print(f"   状态已更新：【{old_status}】→【{new_status}】")
+        print(f"   审计事件已写入 application_timeline\n")
+    else:
+        print(f"❌ 岗位 ID {job_id} 状态更新失败")
+
 
 def show_stats():
     stats = JobService.get_global_stats()
@@ -457,6 +479,11 @@ def main():
         job_id = sys.argv[2]
         resume_path = sys.argv[3]
         run_preflight_check(job_id, resume_path)
+    elif cmd == 'status' and len(sys.argv) > 3:
+        job_id = sys.argv[2]
+        new_status = sys.argv[3]
+        notes_text = sys.argv[4] if len(sys.argv) > 4 else None
+        update_status(job_id, new_status, notes_text=notes_text)
     elif cmd == 'stats':
         show_stats()
     elif cmd in {'assessment-intel', 'assessment-intelligence'}:

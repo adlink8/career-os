@@ -156,7 +156,7 @@
 
 - [ ] 整理面试官提到的问题(为复盘准备)
 - [ ] 记录面试官姓名/联系方式(如有)
-- [ ] 在 tracker.tsv 更新状态(转 career-app-tracker)
+- [ ] 更新岗位状态(转 career-app-tracker，经 `bin/career_jobs_cli.py status <job_id> <新状态>` 落库)
 
 ### 面试后 3-5 天无反馈
 

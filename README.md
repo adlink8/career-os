@@ -24,7 +24,7 @@
 
 - 真实求职画像 `config/profile.yml`（请从 `config/profile.example.yml` 复制后自己填）
 - 简历 PDF/DOCX、证件照
-- 投递数据库 `data/career_jobs.sqlite`、`data/tracker.tsv`
+- 投递数据库 `data/career_jobs.sqlite`（唯一权威源，含投递记录）
 - 网申截图、浏览器登录会话、外联电话清单
 
 提交前会跑 `python bin/scan_privacy.py`。不要把姓名、手机、身份证、个人邮箱写进要公开的文件。

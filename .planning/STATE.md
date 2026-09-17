@@ -1,5 +1,7 @@
 # State: Career OS
 
+> **2026-09-17 更新（数据层）**：`data/tracker.tsv` 已废弃删除。投递数据（岗位/状态/时间线）的唯一权威源是 `data/career_jobs.sqlite` 的 `jobs` / `applications` / `application_timeline` 表，唯一读写入口 `bin/career_jobs_cli.py`（含新增 `status` 子命令）。本文件下方各处"tracker.tsv"措辞为历史记录，其数据含义现由库表承担。
+
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-09-02)
@@ -55,7 +57,7 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 - **14 skills**: all 16 job-search steps covered and pass static structure verification.
 - All skills platform-neutral: zero hard-coded agent platform.
 - Knowledge layer: 11 domains, 46 files.
-- Data layer: `profile.yml`, canonical-v2 `tracker.tsv`, `current-status.md`, `lessons-learned.md`, `data/cv/cv-real.md` (gitignored), `templates/cv-template.md` (placeholder).
+- Data layer: `profile.yml`, `data/career_jobs.sqlite`（权威库：`jobs`/`applications`/`application_timeline`）, `current-status.md`, `lessons-learned.md`, `data/cv/cv-real.md` (gitignored), `templates/cv-template.md` (placeholder).
 - Runtime layer: SQLite report persistence, unified plugin manager, question/job/code/interview adapters, stratified 30-question/30-minute exam assembly, 15-question quick + 120-question IPIP-NEO full personality modes, and opt-in OpenAI-compatible interview scoring; project-native question banks remain available; runtime, expansion, interview, provider and personality smoke tests pass.
 - Scripts: `audit.ps1`, `smoke-test.ps1`, `runtime-smoke.py`.
 
@@ -82,7 +84,7 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 
 ## Current Focus（2026-07-05 更新）
 
-**Phase 5: Operational Layer** — 作战层和可插拔练习运行时已落地；tracker.tsv 真实投递数仍为 0，不能把候选岗位当成转化结果。
+**Phase 5: Operational Layer** — 作战层和可插拔练习运行时已落地。真实投递数据以库 `applications` 表为准（2026-09-17 实为 19 个岗位，其中 1 个已推进到"测评已完成"、4 个初筛未通过）；原 tracker.tsv 已删除。
 
 详见 `.planning/ROADMAP.md` Phase 5 和 `.planning/REQUIREMENTS.md` OPS-01~OPS-05。
 
@@ -103,7 +105,7 @@ MISSING=0. Static verification passes for all 14 skills; runtime smoke also pass
 | C3：career-self-assessment 的 profile 匹配可进一步深化 | 🟡 低 | 未缓解 |
 | C4：薪资数据最后核对 2026-06 | 🟡 低 | 有 refresh 标签 |
 | C5：多 agent 分发手动操作 | 🟡 低 | 未缓解 |
-| C7：tracker.tsv = 0，系统未实战 | 🔴 高 | **新增** |
+| C7：~~tracker.tsv = 0，系统未实战~~ → **已缓解（2026-09-17）**：库 `applications` 表已有 19 个真实投递岗位（1 个测评已完成、4 个初筛未通过）；tracker.tsv 已退役删除，数据层统一以库为准 | ✅ 缓解 | 2026-09-17 |
 | C8：每日驱动 skill 未在真实 Agent 触发 | 🟠 中 | 已实现，待 C1 |
 | C9：反馈回路未积累真实面试样本 | 🟠 中 | 已建文件，待真实数据 |
 | C10：英语面试 skill 未做真实语音验证 | 🟠 中 | 文本链路已实现 |

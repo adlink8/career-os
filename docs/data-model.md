@@ -5,7 +5,7 @@
 
 ## 0. 权威原则（2026-09-05 确定）
 
-- `data/career_jobs.sqlite` 是求职全流程的**唯一权威事实源**：企业、岗位、目标、投递、简历版本、题库、测评与模拟面试的状态，一律以库为准。
+- `data/career_jobs.sqlite` 是求职全流程的**唯一权威事实源**：企业、岗位、目标、投递、简历版本、题库、测评与模拟面试的状态，一律以库为准。简历**写法**以表 `resume_generation_rules` 为准，地图见 `docs/resume-authority.md`。
 - md/TSV 文件只承担三种角色：**规范**（描述库怎么用，如 docs/）、**派生视图**（由库导出的报告与清单，可随时重建，不作为事实来源）、**参考层**（knowledge/ 等静态方法论）。
 - 文档与库冲突时：以库为准，修文档、不改数据。
 - 新功能先设计库表契约（进 `bin/career_os_store.py` 迁移），再写 Skill 和文档；报告类产物一律做成导出物。
@@ -42,7 +42,7 @@
 | `resume_versions` | 19 | 简历版本（role/company/label/state） |
 | `resume_artifacts` | 158 | 简历文件元数据（SHA-256、file_state: source/draft/ready/submitted） |
 | `resume_artifact_locations` | 58 | 文件路径登记（`data/cv/` 中实际位置的映射） |
-| `resume_generation_rules` | 14 | 简历生成规则与硬红线契约库（去目标地点、严格A4单页饱满、去夸大几千几万数字、聚焦做了什么与具体提升、AI技能首位去Prompt、禁止强扣AI、禁止虚假MES包装、核心项目四点起步、工程成果真实量化、版面垂直韵律均衡防上半挤下半空等 14 项核心红线）(v15) |
+| `resume_generation_rules` | 22 | 简历写法唯一红线（单一意向、3 项目、STAR、至少 3 点、AI 首位、全写熟练、省奖、海投不改正文、先 MD 后照片双栏、江苏优先去深圳等）。副本见 `docs/resume-authority.md`。 |
 | `resume_layout_templates` | 1 | 简历排版模板与样式契约库（存储 A4 页面尺寸、垂直留白上下限阈值、侧栏/主栏比例、证件照尺寸、全套 CSS 样式表与 JSON 布局参数，默认内置经典双栏照片版-垂直韵律均衡版 v3）(v16) |
 
 ### C. 测评 / 面试域
@@ -115,7 +115,7 @@
 | 文档 | 与库的关系 |
 |---|---|
 | `docs/data-model.md`（本文） | 库结构 + 文档关系的单一事实源 |
-| `docs/architecture.md` | 三层模型总览；**注意其"个人数据层"一节仍写 profile.yml + tracker.tsv，库级细节以本文为准** |
+| `docs/architecture.md` | 三层模型总览；**其"个人数据层"节已与本文对齐（2026-09-17 起投递数据统一指向库）** |
 | `docs/resume-registry.md` | B 域（resume_* 三表）的操作规范：命名、file_state、SHA-256 口径 |
 | `docs/how-to-use.md` | 用户操作入口，含 CLI 与 skill 的使用路径 |
 | `docs/personal-data-warehouse.md` | 个人数据仓库 → LLM → `config/profile.yml` 的链路；**仓库数据不直接进 sqlite** |
@@ -129,7 +129,7 @@
 | `data/aispeech_campus_jobs_*.json` | 岗位导入源，经 `scripts/import_aispeech_campus_jobs.py` 进 `jobs` |
 | `data/platform_recruitment_jd.md` | `platform_recruitment_leads` 的**导出报告**（由 `scripts/export_platform_recruitment_jd.py` 生成），是库的产物而非事实源 |
 | `data/job_target_recruitment_report.json` / `job_target_verification.json` | `job_target_recruitment_checks` / `job_targets` 核查流程的导出物 |
-| `data/tracker.tsv` | **派生视图（目标态）**：应从 `applications`/`jobs`/`job_targets` 导出生成；当前仍为手工维护的平行线，改为导出物的迁移工作待放行 |
+| `data/tracker.tsv` | **已废弃删除（2026-09-17）**：原为手工维护的平行账本，无任何写入方，实测漂移（浩鲸交付岗库内"测评已完成"、TSV 仍"已投递"）。已按用户决定统一指向库，文件删除，字段语义转记于 `skills/career-app-tracker/references/tracker-spec.md` |
 | `data/current-status.md` / `lessons-learned.md` | 自由笔记，与库无结构化关联 |
 | `data/career_os.db` | **空库，遗留物**，无表，可忽略（删除前需用户确认） |
 | `data/career_jobs.sqlite.pre-*.bak` | 四次大迁移前的备份快照 |
@@ -162,6 +162,6 @@ scripts/sync_github_data.py ──(gh CLI 已认证)──► github_profile / g
 
 ## 5. 已知缺口
 
-1. `tracker.tsv` 目前仍是手工维护；按权威原则其目标态是库的导出物（生成脚本待实现，实施待放行）。
+1. ~~`tracker.tsv` 手工维护~~ **已解决（2026-09-17）**：经用户决定，投递数据统一以 `data/career_jobs.sqlite` 为唯一事实源，`data/tracker.tsv` 已删除；18 处引用（3 校验脚本 + 6 skill 文件 + 6 文档 + README/AGENTS）全部改指库。
 2. `docs/architecture.md` 的数据层描述已指向本文，三层图仍保留历史措辞。
 3. ~~`career_os.db` 空文件与 4 个 `.bak` 属遗留物~~ 已清理（2026-09-05）：空库无表无引用，bak 为 v8 之前的旧 schema 快照，经核验后删除；主库迁移前的备份今后由 `.bak` 之外的机制或用户自行决定。

@@ -9,7 +9,7 @@
     2. SKILL.md 中声明引用的 references/* 文件真实存在
     3. SKILL.md 中声明的 config/data/knowledge 输入文件真实存在
     4. SKILL.md 有"输出规范"或"输出格式"章节
-    5. 输出位置(如 tracker.tsv)的 schema 与 spec 一致
+    5. 输出位置(如数据库表)的 schema 与 spec 一致
 
 .USAGE
   pwsh scripts/smoke-test.ps1
@@ -42,13 +42,13 @@ $requiredFront = 'name','displayName','description','trigger'
 
 $skills = @(
   @{ name='career-personal-data-update'; expectsRef='update-rules.md';            expectsInput=@('config/profile.yml') }
-  @{ name='career-daily-driver';        expectsRef='daily-driver-spec.md';         expectsInput=@('config/profile.yml','data/current-status.md','data/tracker.tsv') }
+  @{ name='career-daily-driver';        expectsRef='daily-driver-spec.md';         expectsInput=@('config/profile.yml','data/current-status.md','data/career_jobs.sqlite') }
   @{ name='career-self-assessment';     expectsRef='direction-matrix.md';          expectsInput=@('config/profile.yml') }
   @{ name='career-industry-research';   expectsRef='research-method.md';           expectsInput=@('config/profile.yml') }
   @{ name='career-learning-path';       expectsRef='learning-strategy.md';         expectsInput=@('config/profile.yml') }
   @{ name='career-general-recruit';     expectsRef='recruit-workflow.md';          expectsInput=@('config/profile.yml','templates/cv-template.md') }
   @{ name='career-company-check';       expectsRef='company-check-checklist.md';   expectsInput=@('config/profile.yml') }
-  @{ name='career-app-tracker';         expectsRef='tracker-spec.md';              expectsInput=@('data/tracker.tsv') }
+  @{ name='career-app-tracker';         expectsRef='tracker-spec.md';              expectsInput=@('data/career_jobs.sqlite') }
   @{ name='career-assessment-prep';     expectsRef='assessment-systems.md';        expectsInput=@('config/profile.yml') }
   @{ name='career-interview-master';    expectsRef='interview-flow.md';            expectsInput=@('config/profile.yml') }
   @{ name='career-onboarding-prep';     expectsRef='onboarding-checklist.md';      expectsInput=@('config/profile.yml') }
@@ -101,8 +101,9 @@ foreach ($s in $skills) {
   $refMentions = [regex]::Matches($content, 'references/([A-Za-z0-9_\-\.]+\.md)')
   foreach ($m in $refMentions) {
     $refName = $m.Groups[1].Value
-    $refFull = "skills/$($s.name)/references/$refName"
-    Check "$($s.name): referenced $refName exists" (Test-Path (Join-Path $root $refFull)) "SKILL.md cites $refName but file absent"
+    $refFull = "skills/" + $s.name + "/references/" + $refName
+    $refOk = Test-Path (Join-Path $root $refFull)
+    Check "$($s.name): referenced $refName exists" $refOk "SKILL.md cites $refName but file absent"
   }
   Write-Host ''
 }
@@ -110,16 +111,14 @@ foreach ($s in $skills) {
 # ---------- 跨 skill 一致性检查 ----------
 Write-Host '▶ Cross-skill consistency' -ForegroundColor White
 
-# career-app-tracker 的 TSV header 必须与 tracker-spec.md 字段一致
-$tsv = Get-Content (Join-Path $root 'data/tracker.tsv') -Encoding UTF8
-$headerLine = ($tsv | Where-Object { $_ -match '^日期\t公司名称\t目标岗位\t目标城市\t薪资范围\t企业官网\t校招网申直达链接\t当前状态\t战略定位与项目匹配备注$' } | Select-Object -First 1)
+# career-app-tracker 的存储契约：唯一数据源是库，tracker.tsv 已废弃
+$dbPath = Join-Path $root 'data/career_jobs.sqlite'
+Check 'authoritative db data/career_jobs.sqlite exists' (Test-Path $dbPath) 'database missing'
+Check 'tracker.tsv is retired (must not exist)' (-not (Test-Path (Join-Path $root 'data/tracker.tsv'))) 'legacy TSV still present'
+
 $specContent = Get-Content (Join-Path $root 'skills/career-app-tracker/references/tracker-spec.md') -Raw -Encoding UTF8
-$expectedCols = '日期','公司名称','目标岗位','目标城市','薪资范围','企业官网','校招网申直达链接','当前状态','战略定位与项目匹配备注'
-$allMatch = $true
-foreach ($c in $expectedCols) {
-  if (-not ($headerLine -and $headerLine.Contains($c))) { $allMatch = $false }
-}
-Check 'tracker.tsv header matches tracker-spec.md fields' $allMatch "TSV header out of sync with spec"
+Check 'tracker-spec.md points to the database' ($specContent -match 'career_jobs\.sqlite') 'spec does not reference the authoritative database'
+Check 'tracker-spec.md has no stale TSV storage claim' (-not ($specContent -match '(?m)^Tab 分隔')) 'spec still describes TSV storage'
 
 # profile.yml (或脱敏样本 profile.example.yml) 必须包含 career-app-tracker/self-assessment 等都依赖的关键字段
 $profileFile = Join-Path $root 'config/profile.yml'

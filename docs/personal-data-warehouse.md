@@ -19,7 +19,7 @@
 ┌──────────────────────────┐
 │  Career OS 个人数据层     │
 │  config/profile.yml       │
-│  data/tracker.tsv         │
+│  data/career_jobs.sqlite  │
 │  data/cv/cv-*.md             │
 └──────────────────────────┘
 ```
@@ -92,7 +92,7 @@ Agent 应按 skill 流程：
 |----------|----------|----------|
 | 姓名/学历/出生年 | profile.yml | 仅交叉核对，默认不覆盖 |
 | 技能栈/项目亮点 | profile + 用户确认 | 可提议增补 |
-| 投递记录 | tracker.tsv + 用户确认 | 仓库一般不直接产生投递行 |
+| 投递记录 | `career_jobs.sqlite` 的 `applications` 表 + 用户确认 | 仓库一般不直接产生投递行 |
 | 工具偏好/工作方式 | 可被仓库记忆强化 | 可写 work_style / tooling |
 | evidence_summary | LLM 根据仓库刷新 | 推荐每次更新后重写 |
 

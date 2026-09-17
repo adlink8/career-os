@@ -120,7 +120,7 @@ role 取值:
 
 ### 下游协同
 
-- 投递后 → 调用 `career-app-tracker` 写入 tracker.tsv
+- 投递后 → 调用 `career-app-tracker` 写入库（`applications` 表）
 - 收到笔试 → 提示用户切换 `career-assessment-prep`
 - 收到面试 → 提示用户切换 `career-interview-master`
 
