@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
-"""解析三份定稿简历 md,生成正式 docx + PDF,以及项目 Portfolio(docx/pdf/html)。
+"""历史 Word/PDF 线（读 v2-draft）。新稿不要走这里。
+
+权威：docs/resume-authority.md
+现用母版：data/cv/cv-ops.md、cv-iot.md、cv-semi.md
+出 PDF：python scripts/generate-photo-style-cvs.py
+
+原说明：解析三份定稿简历 md,生成正式 docx + PDF,以及项目 Portfolio(docx/pdf/html)。
 
 用法:
     python scripts/generate-cv-final.py

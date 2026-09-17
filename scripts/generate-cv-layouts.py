@@ -30,16 +30,16 @@ GRAY_TAG = "595959"
 GRAY_NOTE = "808080"
 LIGHT_GRAY_BG = "F2F2F2"
 
+# 历史 Word 布局线。新稿不要走这里：先定稿三份母版 MD，再用 generate-photo-style-cvs.py。
+# 权威：docs/resume-authority.md
 # ---------------------------------------------------------------- 内容占位符
 
 NAME = "{{name}}"
-INTENT = "求职意向:{{target_primary}} | {{target_cities}} | 期望薪资 {{salary_min}}-{{salary_max}}k"
+INTENT = "求职意向:{{target_primary}} | 2027届统招本科"
 CONTACT = "[手机号] | [邮箱]"
 EDU_LINE = "{{school}} | {{major}} | {{degree}} | {{graduation}}毕业"
 SKILLS = [
     ("熟练", "{{skills_proficient}}"),
-    ("掌握", "{{skills_familiar}}"),
-    ("学习中", "{{skills_learning}}"),
 ]
 # (名称, 年份, 技术标签行(方案B/D用), [bullet...])
 BULLET_DUTY = "[一句话职责]"

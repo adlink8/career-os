@@ -757,9 +757,9 @@ def migrate(conn: sqlite3.Connection) -> None:
         (
             "layout_intent",
             "no_target_location",
-            "求职意向去目标地点",
-            "求职意向严禁携带具体目标地点（如'常州武进区/新北区'），仅保留'岗位名称 + 2027届统招本科'。",
-            "避免地域标签过早限定求职范围，提升简历泛化通用性",
+            "求职意向可写但必须单一",
+            "简历可以写求职意向，文字为「官网岗位全称 + 2027届统招本科」。严禁多个意向、复合词（与/及/斜杠兼岗），避免看起来什么都想干。意向行不写城市。",
+            "2026-09-12 用户裁定：意向可写、不能多意向",
             1,
         ),
         (
@@ -790,8 +790,8 @@ def migrate(conn: sqlite3.Connection) -> None:
             "skill",
             "ai_skill_first_no_prompt",
             "AI技能首位与彻底禁用Prompt",
-            "主要技能第一条必须是AI技能：熟练使用 Codex、Claude Code、Gemini 等大模型工具；掌握 MCP 协议规范与 Skill 自动化应用，具备 RAG 知识检索与 Agent 工作流能力。全篇严禁出现 Prompt / Prompt 工程等词汇。技能项禁用精通/熟悉等分级标签。",
-            "突显先进开发工具链与协议理解，杜绝空泛无意义的Prompt标签",
+            "每份简历主要技能第一条必须是 AI 技能：熟练使用 Codex、Claude Code、Gemini 等大模型工具，熟练使用 MCP 与 Skill，具备 RAG / Agent 工作流能力。全篇严禁出现 Prompt / Prompt 工程。技能条目一律用「熟练」，不用精通/熟悉/掌握混用。无项目佐证的技能不上简历；K8s、英语等 learning 项不包装成熟练。",
+            "2026-09-12 用户裁定：AI 技能每份都放且放首位；技能全写熟练",
             1,
         ),
         (
@@ -822,8 +822,8 @@ def migrate(conn: sqlite3.Connection) -> None:
             "project",
             "focus_what_done_and_lift",
             "务实说明做了什么与具体提升",
-            "项目描述必须采用'业务痛点/背景 + 做了什么模块/技术手段 + 具体带来哪些实在提升'的叙事结构。例如：通过复合索引将查询延迟由 280ms 降低至 38ms；通过指数退避（1s至60s）解决瞬断重连网关堵塞；通过 Checksum 增量缓存缩短回归耗时；通过时间戳归一化消除多源数据时序错乱。",
-            "以真实工程方案和实测改变量化价值，逻辑闭环",
+            "项目与竞赛叙述以 STAR 为准：情境、任务、行动、结果。可写成「痛点 + 做法 + 结果」，能量化再量化。不要另用主钩/次钩条数替代 STAR。",
+            "2026-09-12 用户裁定：STAR 为准",
             1,
         ),
         (
@@ -845,9 +845,9 @@ def migrate(conn: sqlite3.Connection) -> None:
         (
             "project",
             "min_four_bullets_per_project",
-            "核心项目经历每项必须恰好四点",
-            "核心工程项目经历每项必须恰好包含 4 个要点（bullet points），不多不少。四个要点按固定维度分配：(1) 架构/数据建模，(2) 核心技术实现/协议，(3) 性能优化/疑难排障，(4) 自动化测试/质量门禁或量化成果。严禁少于 4 点导致内容单薄，也严禁超过 4 点挤爆 A4 单页版面。",
-            "用户明确要求：每个项目必须分四点。恰好四点既系统化展现工程深度与闭环能力，又与 A4 单页版面均衡约束（balanced_vertical_rhythm_no_crowding）严格兼容",
+            "每个项目至少三点，点数按 JD 定",
+            "每份简历固定 3 个项目。每个项目至少 3 个要点，具体条数按目标 JD 分析（可 3 或 4，不写死 4）。叙事以 STAR 为准（情境、任务、行动、结果），不要另起钩子三件套当硬数量。",
+            "2026-09-12 用户裁定：项目固定三个；分点至少三点、跟 JD",
             1,
         ),
         (
@@ -862,16 +862,16 @@ def migrate(conn: sqlite3.Connection) -> None:
             "project",
             "exactly_three_projects_per_resume",
             "每份简历必须且只能展示三个项目",
-            "每份简历项目经历模块必须且只能包含 3 个项目，不多不少。选材规则：NovelMind 与 pk-core（个人数据/知识智能系统）为库里 priority='flagship' 的重点项目，必须无条件入选占 2 席；第 3 席根据目标 JD 从 priority='normal' 项目池中择取对位最强的 1 个（如物联网岗位选 iot-skills-competition，全栈岗位选 pet-hospital-management-system）。严禁放 2 个或 4 个以上项目。",
-            "用户明确要求：每份简历必须三个项目。3 项目 × 4 bullet = 12 个要点，恰好支撑 A4 单页饱满版面；双旗舰保底展示 AI 工程与数据治理深度，第三席按 JD 动态对位最大化 ATS 匹配",
+            "每份简历必须且只能展示三个项目。NovelMind 与 pk-core 为旗舰占 2 席；第 3 席用 T5AI 等工程项目。省级技能大赛只放证书与竞赛栏，不计入项目。严禁 2 个或 4 个以上项目。",
+            "2026-09-12 用户裁定：项目固定三个",
             1,
         ),
         (
             "quantification",
             "quantified_engineering_metrics",
             "工程成果必须包含真实量化指标",
-            "项目与经历描述必须具备真实、可信、有依据的量化指标支撑（如延迟从 280ms 压降至 38ms、缓存复用率 82%、回归耗时缩减 60%、14,031 条结论悬空率 0.00%、指数退避 1s~60s、20+ 篇深度技术长文等），严禁无量化的纯抽象叙述。",
-            "量化指标能给面试官提供具体、可检验的工程价值证据，强化说服力与严谨度",
+            "能量化就量化，必须有基线或可复核来源。禁止堆砌几千几万量级（如 15.8 万条、1500+ 用例）造成吹牛感。同一页量化点宜少、取整。",
+            "2026-09-12 用户裁定：可以量化但不能量化太多",
             1,
         ),
         (
@@ -898,6 +898,67 @@ def migrate(conn: sqlite3.Connection) -> None:
                 updated_at = CURRENT_TIMESTAMP
             """,
             (cat, key, title, content, rat, pri),
+        )
+
+    extra_rules = [
+        (
+            "application_strategy",
+            "sniper_quality_over_quantity_quota",
+            "投递节奏不写死，禁止一家多方向硬塞",
+            "每天投几家不固定，由用户当场决定。仍禁止同一套简历在同一家硬塞多个跨方向岗位。每岗意向单一。",
+            "2026-09-12 用户裁定：节奏看心情，不写死每日家数",
+        ),
+        (
+            "intent_and_targeting",
+            "strict_single_job_intent_matching_jd",
+            "求职意向必须单一且对齐官网岗位全称",
+            "可以写求职意向。一份简历只对应一个 JD 全称，禁止「与/及/斜杠」兼岗。不同岗位分别出独立 MD/PDF。",
+            "2026-09-12 用户裁定：意向可写但不能多个",
+        ),
+        (
+            "content_matching",
+            "jd_tailored_project_emphasis",
+            "海投默认不改正文，差距过大才改",
+            "海投：选对应大方向母版，只改求职意向和技能排序，不改项目正文；仅当母版与 JD 方向差距过大（第三席完全对不上）才按 JD 改项目侧重点。专投才按 JD 深度裁剪。",
+            "2026-09-12 用户裁定：海投不改正文除非差距太远",
+        ),
+        (
+            "pipeline",
+            "md_then_photo_dual_column",
+            "先生成 Markdown 再出照片双栏",
+            "内容源永远是 Markdown 母版/细支稿。先定稿 MD，再用照片双栏生成器从该 MD 出 PDF。禁止先改 PDF 再回写 MD。",
+            "2026-09-12 用户裁定：先 MD 后照片双栏",
+        ),
+        (
+            "geo",
+            "jiangsu_first_shanghai_later_no_shenzhen",
+            "去掉深圳，优先江苏，上海排后",
+            "目标城市：江苏（南京/苏州/无锡/常州）优先；上海次之；不再新增或优选深圳。求职意向行仍不写城市。",
+            "2026-09-12 用户裁定：去深圳，江苏优先上海排后",
+        ),
+        (
+            "education",
+            "show_provincial_award",
+            "竞赛出省级奖",
+            "教育块保留常州大学本科一行；证书/竞赛区必须出现江苏省物联网技能大赛省级获奖与软著。不写专升本、不写四六级。",
+            "2026-09-12 用户裁定：省奖出；专升本不写",
+        ),
+    ]
+    for cat, key, title, content, rat in extra_rules:
+        conn.execute(
+            """
+            INSERT INTO resume_generation_rules
+                (rule_category, rule_key, rule_title, rule_content, rationale, priority, is_active, updated_at)
+            VALUES (?, ?, ?, ?, ?, 1, 1, CURRENT_TIMESTAMP)
+            ON CONFLICT(rule_key) DO UPDATE SET
+                rule_category = excluded.rule_category,
+                rule_title = excluded.rule_title,
+                rule_content = excluded.rule_content,
+                rationale = excluded.rationale,
+                is_active = 1,
+                updated_at = CURRENT_TIMESTAMP
+            """,
+            (cat, key, title, content, rat),
         )
 
     # v16 简历排版模板契约库 (resume_layout_templates)
@@ -1200,9 +1261,9 @@ body {
         ) VALUES (
             'content_matching',
             'jd_tailored_project_emphasis',
-            '根据JD岗位职责动态裁剪物联网项目展示侧重点',
-            '在生成定制简历时，必须根据目标企业与JD的侧重点选择项目展现形态：(1) 工业上位机/软件/自动化岗位：突出Python (PyQt5) 上位机监控开发、Modbus协议与串口服务器通信；(2) 移动端/客户端/Android岗位：突出Android 原生应用开发 (Java)、多传感器数据采集与云平台API对接；(3) 数据开发/网络协议/爬虫岗位：突出Wireshark深度抓包、TCP/IP握手分析与网络通信排障；(4) 系统交付/运维岗位：突出局域网组网、消息网关部署与故障自动化自愈。严禁一刀切使用单一版本。',
-            '竞赛知识库涵盖上位机、移动端、网络组网与云平台完整技术栈，且均为真实实操内容；针对性匹配JD能最大化契合面试官画像，提升简历通过率与专业技术可信度。',
+            '海投默认不改正文，差距过大才改',
+            '海投：选对应大方向母版，只改求职意向和技能排序，不改项目正文；仅当母版与 JD 方向差距过大才按 JD 改项目侧重点。专投才按 JD 深度裁剪物联网项目展示形态。',
+            '2026-09-12 用户裁定：海投不改正文除非差距太远',
             1,
             1,
             CURRENT_TIMESTAMP

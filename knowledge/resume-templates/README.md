@@ -1,6 +1,7 @@
 # resume-templates 知识域
 
-> **用途:** 供简历定制(步骤 7,skill `general-recruit` 待建)调用,提供 STAR 法则和 ATS 优化方法。
+> **权威:** 写法红线是 SQLite `resume_generation_rules`，地图 `docs/resume-authority.md`。本目录只提供 STAR/ATS 操作说明，与库表冲突时改这里。
+> **用途:** 供简历定制调用 STAR 与 ATS 方法。
 > **更新方式:** 方法论稳定;ATS 算法变化时更新。
 > **消费 skill:** `skills/general-recruit/`(未创建)
 

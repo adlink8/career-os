@@ -21,8 +21,9 @@ trigger:
 
 ## 启动时读取
 
-- 待审简历:`data/cv/cv-*.md` 或用户指定的 docx/PDF 文本
-- 证据基线:`data/cv/cv-material.md`(仓库取证版素材)、`config/profile.yml`
+- 待审简历:`data/cv/cv-ops.md` / `cv-iot.md` / `cv-semi.md` 或用户指定文件
+- 红线:`resume_generation_rules`（见 `docs/resume-authority.md`）
+- 证据基线:`config/profile.yml`、仓库项目
 - 参考:`references/evidence-status.md`、`references/inflation-patterns.md`、`references/ai-flavor-patterns.md`
 
 ## 工作流
@@ -39,8 +40,10 @@ trigger:
 - 日期对账:项目时间 vs 在校时间 vs 实习时间有无冲突
 - 检查无比较集的最高级:"最强/第一/核心"——和谁比?
 - 区分项目整体指标与个人贡献指标
-- learning 中技能是否被写成了熟练(profile.yml 三级对照)
-- 求职意向单一性与 JD 绝对对齐: 严禁复合意向(如"AI应用与交付工程师"或带"/"、"与"、"及")。求职意向必须单一且 100% 对齐目标 JD 岗位全称,否则直接判定为必改高风险项(防 ATS 秒刷与 HR 海投标签)
+- 无项目佐证的技能写在简历上（不论是否写「熟练」）→ 必改；profile learning（如 K8s、英语）不得上简历
+- 技能条目是否一律「熟练」、第一条是否为 AI
+- 求职意向是否单一且对齐官网全称；是否出现兼岗「与/及/斜杠」
+- 是否恰好 3 个项目、省赛是否误放入项目栏、专升本是否出现在教育栏
 
 ### 3. 对照证据定五档状态
 

@@ -1,5 +1,7 @@
 # STAR 法则简历应用指南
 
+> 叙事以 STAR 为准，条数与红线服从 `resume_generation_rules`（每份 3 个项目，每项至少 3 点）。本页不另立数量规则。
+
 > STAR = Situation(情境) · Task(任务) · Action(行动) · Result(结果)
 > 简历项目经历**必须用 STAR 重写**,避免"做了 XX"的流水账。
 

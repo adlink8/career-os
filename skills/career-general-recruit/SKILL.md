@@ -6,7 +6,7 @@ agent_created: true
 description: >-
   求职投递前的综合管家。覆盖岗位搜索、JD 解读、简历定制、投递衔接四个环节,
   输出结构化岗位清单、JD 匹配度报告、岗位定制简历,避免盲目海投。
-  简历定制含钩子设计(主钩/次钩/兜底),让简历引导面试官从你准备最深处提问。
+  简历定制服从 resume_generation_rules：三份母版、STAR、单一意向。
 trigger:
   - 搜岗位 / 找工作 / 搜实习 / 哪里有岗位 / 帮我搜 / 招聘信息
   - JD 解读 / 解读JD / 帮我解读 / 这个岗位 / 岗位要求 / 帮我看JD / 岗位匹配度
@@ -24,16 +24,16 @@ trigger:
 - `references/` 相对**本 SKILL.md 所在目录**
 
 ### 启动时读取
-1. `config/profile.yml` — 用户的技能栈、目标城市、薪资预期
-2. `knowledge/jd-templates/` — JD 解读模板和关键词库
-3. `knowledge/resume-templates/` — STAR 法则和 ATS 优化策略
-4. `templates/cv-template.md` — 简历占位符模板
-5. `data/current-status.md` — 当前投递阶段和阻塞项
+1. `docs/resume-authority.md` 与库表 `resume_generation_rules`
+2. `config/profile.yml` — 技能栈、目标城市（江苏优先、上海其次、无深圳）
+3. 现用母版 `data/cv/cv-ops.md` / `cv-iot.md` / `cv-semi.md`
+4. `knowledge/jd-templates/` — JD 解读模板
+5. `data/current-status.md` — 当前投递阶段
 
 ### 数据来源(按优先级)
 1. **WebSearch** — 实时搜索招聘平台(Boss/拉勾/智联)的岗位
 2. **WebFetch** — 抓取具体岗位 JD 页面
-3. `data/tracker.tsv` — 与 `career-app-tracker` 协同记录投递
+3. `data/career_jobs.sqlite` — 与 `career-app-tracker` 协同记录投递（唯一权威源）
 
 ---
 
@@ -121,26 +121,22 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 
 ### 定制流程
 ```
-1. 读取 templates/cv-template.md(占位符模板)
-2. 读取 config/profile.yml(真实数据)
-3. 读取 knowledge/resume-templates/star-method.md(STAR 重写)
-4. 读取 knowledge/resume-templates/ats-optimization.md(关键词命中)
-5. 针对 JD 关键词,调整简历优先级和措辞
-6. 按 references/hook-writing.md 做钩子设计:每项目 3 条按主钩/次钩/兜底分工,每条扛住三层拷打(是什么/为什么/踩坑)
-7. 输出到 data/cv/cv-{role}.md(已 gitignore)
+1. 查 `resume_generation_rules` 与 `docs/resume-authority.md`
+2. 按方向复制对应母版（不覆盖母版本身）：运维 `cv-ops.md`；现场支持/FAE `cv-iot.md`；技术销售/应用工程 `cv-semi.md`
+3. 海投：只改求职意向（官网全称）和技能排序，不改项目正文，除非方向差距过大
+4. 专投：可按 JD 调整要点侧重，仍保持 3 项目、STAR、至少 3 点
+5. 先定稿 MD，再 `python scripts/generate-photo-style-cvs.py`
+6. 面试追问再用 `references/hook-writing.md`，不要用钩子条数改简历
 
 ### 多版简历选择
 
-先按岗位方向选择最接近的真实版本，再从模板派生，不覆盖已有文件：
+| 岗位信号 | 母版 |
+|---|---|
+| 运维 / Linux / IT | `data/cv/cv-ops.md` |
+| 技术支持 / FAE / 现场 | `data/cv/cv-iot.md` |
+| 技术销售 / 应用工程 | `data/cv/cv-semi.md` |
 
-| 岗位信号 | 优先 CV 版本 | 必须突出 |
-|---|---|---|
-| DevOps/运维/云平台 | `data/cv/cv-ops.md` | Linux、Docker、监控、故障复盘 |
-| IoT/嵌入式/技术支持 | `data/cv/cv-iot.md` | MQTT、ESP32、现场调试、客户沟通 |
-| 数据/AI/RAG | `data/cv/cv-ai-infra.md` | Python、SQL、检索评估、指标 |
-| 外企/英文支持 | 在以上版本基础上派生英文版 | 英文项目叙述、跨团队协作 |
-
-若目标岗位同时命中多个方向，按 JD 硬性要求和 profile 中已有证据排序；没有证据的关键词只能标记为待补，不得伪造。
+历史稿（`cv-network.md`、`cv-ai-infra.md`、`*-v2-draft.md` 等）不派生新投递文件。
 ```
 
 ### ATS 关键词命中检查
@@ -163,10 +159,6 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 ├── {项目2}:...
 └── {项目3}:...
 
-【钩子设计】
-├── {项目1}:主钩({钩子类型}) · 次钩({钩子类型}) · 兜底
-└── 埋钩点:{面试官最可能追问的一句话}
-
 【调整说明】
 ├── 求职意向改为:{对应岗位}
 ├── 技能排序调整为:{对应岗位优先}
@@ -184,7 +176,7 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 用户说"记录投递""帮我记一下"
 
 ### 协同 career-app-tracker
-本 skill 不直接写 tracker.tsv,而是调用 `career-app-tracker` 的记录模块:
+本 skill 不直接写库,而是调用 `career-app-tracker` 的记录模块(经 `bin/career_jobs_cli.py apply` 落 `applications` 表):
 ```
 已为你准备好投递记录草稿:
 ├── 日期:{今天}
@@ -209,6 +201,7 @@ C. 帮你记录到投递追踪表(转 career-app-tracker)
 
 ## 参考文档
 - `references/recruit-workflow.md` — 搜索策略 + JD 输出格式 + 简历派生流程
-- `references/hook-writing.md` — 简历钩子设计(主钩/次钩/兜底分工 + 四种钩子写法 + 节奏原理)
+- `docs/resume-authority.md` — 简历权威地图
+- `references/hook-writing.md` — 仅面试追问，不改简历条数
 - `knowledge/jd-templates/` — JD 解读模板和关键词库
 - `knowledge/resume-templates/` — STAR 法则和 ATS 优化

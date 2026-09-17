@@ -1,14 +1,14 @@
 # 简历排版方案库(4 套)
 
-> **适用对象:** `data/cv/cv-*.md` 各版本简历(内容 5 模块:求职意向/教育/技能/项目×4/证书)。
-> **硬约束来源:** `ats-optimization.md` —— 凡走招聘平台/官网投递的版本,必须单栏、标准字体、无表格、无文本框。
+> **适用对象:** 现用母版仅 `cv-ops.md` / `cv-iot.md` / `cv-semi.md`。新稿 PDF 走照片双栏，不走本页 Word 方案。
+> **硬约束来源:** `docs/resume-authority.md` 与 `resume_generation_rules`。
 > **使用方式:** 选定方案 → 按参数在 Word/WPS 或 Pandoc 排版 → 导出 PDF → 命名 `姓名_岗位_简历.pdf`。
 
 ---
 
 ## 方案 A · 经典单栏 ATS 版(默认首选)
 
-**适用:** 官网投递、Boss/实习僧等走 ATS 的平台;对应 `cv-ops.md`、`cv-network.md`。
+**适用:** 历史 Word 单栏。现用官网投递改为母版 MD → `generate-photo-style-cvs.py`。
 
 | 参数 | 值 |
 |------|-----|
