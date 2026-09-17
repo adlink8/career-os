@@ -36,7 +36,7 @@ trigger:
 - 禁止用 LLM 重算五维 ATS 或会审加权总分。
 - 测试画像（`profile.test.json` / 「测一填」）禁止 `release`。
 - 浏览器不自动点提交。`arm-human` / `arm-volume` 只写库 + `autofill.json`，**不登记已投递**。`release` 仍会写 applications（旧路径）；无人值守走 `autoloop`/`arm-human`。真表填充必须命中该 run；必填未清零不能 `mark-applied`。
-- **海投**（`--mode volume`）：选已有分轨简历 + 求职意向改官网标题，跳过拆解/ATS/会审。不改项目正文、不写开放题。硬门槛或复合意向直接放弃。
+- **海投**（`--mode volume`）：选已有分轨简历 + 求职意向改官网标题，跳过拆解/ATS/会审。不改项目正文、不写开放题；仅当母版与 JD 方向差距过大才改正文。硬门槛或复合意向直接放弃。先定稿 MD，再出照片双栏。
 - **专投**（`--mode precision`，默认）：完整拆解→对照→定制→ATS→会审。高价值/高匹配岗才走这条。
 - **无人值守到人工门禁**：`autoloop --mode volume` 选中小厂待投岗并预填，停在 `volume_ready`/`awaiting_human`。用户只审简历、真人评估、再网申。`mark-applied` 才记已投递。
 

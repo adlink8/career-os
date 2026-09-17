@@ -50,6 +50,11 @@ def test_pick_volume_track_keywords():
     assert pick_volume_track("行政专员", "会议纪要")["track"] == "ops"
     assert pick_volume_track("电信云平台运维工程师 (DevOps/AIOps)", "AIOps 平台")["track"] == "ops"
     assert pick_volume_track("终端运维实习生", "现场巡检")["track"] == "ops"
+    assert pick_volume_track("技术销售工程师", "客户拜访")["track"] == "semi"
+    assert pick_volume_track("应用工程师（硬件）", "南京 MCU")["track"] == "semi"
+    assert pick_volume_track("系统应用实习生", "")["track"] == "semi"
+    assert pick_volume_track("芯片系统测试工程师", "")["track"] == "ops"
+    assert pick_volume_track("现场应用工程师", "FAE 客户支持")["track"] == "iot"
 
 
 def test_volume_knockout_composite_title():

@@ -49,8 +49,9 @@ MIN_QUEUE_JD_CHARS = 80
 QUEUE_PREFERRED = ("运维", "技术支持", "devops", "sre", "fae", "交付", "linux", "实习", "ai")
 QUEUE_SKIP_IF_ONLY = ("嵌入式软件",)
 VOLUME_TRACKS = (
-    ("ops", "data/cv/cv-ops.md", ("运维", "devops", "sre", "linux", "监控", "交付")),
-    ("iot", "data/cv/cv-iot.md", ("iot", "物联网", "嵌入式", "mqtt", "技术支持", "fae", "现场")),
+    ("ops", "data/cv/cv-ops.md", ("运维", "devops", "sre", "linux", "监控", "it工程师", "测试", "验证")),
+    ("iot", "data/cv/cv-iot.md", ("iot", "物联网", "技术支持", "fae", "现场", "交付")),
+    ("semi", "data/cv/cv-semi.md", ("技术销售", "销售实习", "应用工程师", "芯片应用", "系统应用")),
     ("ai", "data/cv/cv-ai-infra.md", ("ai", "大模型", "智能体", "rag", "llm", "数据开发", "算法")),
 )
 
@@ -393,8 +394,18 @@ def _job_title_queue_score(title: str) -> Optional[int]:
 
 def queue_ready_jobs(conn: sqlite3.Connection, *, limit: int = 5) -> List[Dict[str, Any]]:
     """中小厂待投、有足够 JD、尚无进行中 apply-run 的岗位。"""
+    try:
+        from services.job_ingest_gate import ingest_gate_ok
+    except ImportError:
+        from bin.services.job_ingest_gate import ingest_gate_ok
     cols = {r[1] for r in conn.execute("PRAGMA table_info(companies)")}
+    job_cols = {r[1] for r in conn.execute("PRAGMA table_info(jobs)")}
     pool_sql = "COALESCE(c.pool, 'sme_startup')" if "pool" in cols else "'sme_startup'"
+    rank_sql = (
+        "AND (j.recommendation_rank IS NULL OR j.recommendation_rank >= 1)"
+        if "recommendation_rank" in job_cols
+        else ""
+    )
     rows = conn.execute(
         f"""
         SELECT j.id AS job_id, j.company_name, j.job_title, j.city, j.status,
@@ -407,6 +418,7 @@ def queue_ready_jobs(conn: sqlite3.Connection, *, limit: int = 5) -> List[Dict[s
           AND {pool_sql} IN ('applied', 'sme_startup')
           AND (length(COALESCE(j.responsibilities,'')) + length(COALESCE(j.requirements,'')))
               >= {int(MIN_QUEUE_JD_CHARS)}
+          {rank_sql}
           AND NOT EXISTS (
               SELECT 1 FROM job_apply_runs r
               WHERE r.job_id = j.id AND r.stage NOT IN ('abandoned', 'captured')
@@ -420,6 +432,12 @@ def queue_ready_jobs(conn: sqlite3.Connection, *, limit: int = 5) -> List[Dict[s
         item = _row_to_dict(row)
         score = _job_title_queue_score(str(item.get("job_title") or ""))
         if score is None:
+            continue
+        if not ingest_gate_ok(
+            str(item.get("job_title") or ""),
+            str(item.get("responsibilities") or ""),
+            str(item.get("requirements") or ""),
+        ):
             continue
         jd_len = len(str(item.get("responsibilities") or "")) + len(str(item.get("requirements") or ""))
         item["queue_score"] = score + min(jd_len // 40, 8)
