@@ -20,6 +20,7 @@ CAPTURE_DIR = ROOT / "data" / "job_discovery" / "captures"
 LOG_DIR = ROOT / "data" / "job_discovery" / "logs"
 PROFILE_JSON = ROOT / "extensions" / "ats-autofill" / "profile.json"
 FIELD_RULES_JSON = ROOT / "extensions" / "ats-autofill" / "field-map-rules.json"
+JOB_PROFILES_MAP_JSON = ROOT / "extensions" / "ats-autofill" / "job-profiles-map.json"
 
 if sys.platform == "win32":
     import msvcrt
@@ -87,6 +88,78 @@ def save(ctx: dict) -> str:
     return str(canonical)
 
 
+def match_job_profile_py(test_url: str, jobs: dict) -> dict | None:
+    if not test_url or not jobs:
+        return None
+    from urllib.parse import urlparse
+
+    target = str(test_url).lower()
+    parsed = urlparse(test_url)
+    netloc = parsed.netloc.lower()
+
+    # 1. UUID / jobAdId match
+    uuids = re.findall(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", target)
+    if uuids:
+        u = uuids[0]
+        for item in jobs.values():
+            if u in (item.get("url") or "").lower():
+                return item
+
+    # 1.2 moseeker pid match
+    pids = re.findall(r"pid/(\d+)", test_url)
+    if pids:
+        p = pids[0]
+        for item in jobs.values():
+            if f"pid/{p}" in (item.get("url") or ""):
+                return item
+
+    # 1.3 html id match
+    html_ids = re.findall(r"/(\d+/\d+\.html)", test_url)
+    if html_ids:
+        h = html_ids[0]
+        for item in jobs.values():
+            if h in (item.get("url") or ""):
+                return item
+
+    # 2. Exact or substring match
+    for item in jobs.values():
+        jurl = (item.get("url") or "").lower()
+        if jurl and (jurl in target or target in jurl):
+            return item
+
+    # 3. Host / Domain match with keyword refinement
+    if netloc:
+        if "maxscend.zhiye.com" in netloc:
+            if any(k in target for k in ["network", "网络", "网工"]):
+                if "maxscend-network-eng" in jobs:
+                    return jobs["maxscend-network-eng"]
+            if any(k in target for k in ["系统应用", "系统", "sae"]):
+                if "maxscend-system-app" in jobs:
+                    return jobs["maxscend-system-app"]
+            if bool(re.search(r"\bai\b", target)) or any(k in target for k in ["ai应用", "智能", "算法"]):
+                if "maxscend-ai-app" in jobs:
+                    return jobs["maxscend-ai-app"]
+
+        if "focus" in netloc or "apply/focus" in target:
+            if "7c34fb13" in target or any(k in target for k in ["数据应用", "数据开发", "大数据"]):
+                if "focus-data-app" in jobs:
+                    return jobs["focus-data-app"]
+            if "aae64c70" in target or bool(re.search(r"\bai\b", target)) or any(k in target for k in ["ai算法", "算法"]):
+                if "focus-ai-rnd" in jobs:
+                    return jobs["focus-ai-rnd"]
+            if any(k in target for k in ["ops", "运维", "linux"]):
+                if "focus-linux-ops" in jobs:
+                    return jobs["focus-linux-ops"]
+
+        for item in jobs.values():
+            jparsed = urlparse(item.get("url") or "")
+            jhost = jparsed.netloc.lower()
+            if jhost and (jhost == netloc or netloc.endswith("." + jhost) or jhost.endswith("." + netloc)):
+                return item
+
+    return None
+
+
 def main() -> int:
     msg = read_message()
     if not msg:
@@ -128,6 +201,58 @@ def main() -> int:
                 )
             finally:
                 conn.close()
+
+            # 优先检查是否命中 27 岗位定制底稿
+            if payload.get("mode") == "blocked" and JOB_PROFILES_MAP_JSON.exists():
+                try:
+                    job_map = json.loads(JOB_PROFILES_MAP_JSON.read_text(encoding="utf-8"))
+                    matched = match_job_profile_py(str(msg.get("url") or ""), job_map)
+                    if matched:
+                        import copy
+                        base_prof = profile or {}
+                        custom_prof = copy.deepcopy(base_prof)
+                        if "universal" not in custom_prof:
+                            custom_prof["universal"] = {}
+                        if "application" not in custom_prof:
+                            custom_prof["application"] = {}
+                        custom_prof["application"]["target_position"] = matched.get("target_position")
+                        custom_prof["application"]["target_company"] = matched.get("company")
+                        custom_prof["application"]["track"] = matched.get("track")
+                        custom_prof["application"]["self_evaluation"] = matched.get("self_evaluation")
+                        custom_prof["application"]["skills_summary"] = matched.get("skills_summary")
+                        custom_prof["application"]["projects"] = matched.get("projects") or []
+
+                        payload = {
+                            "mode": "job_custom",
+                            "custom_company": matched.get("company"),
+                            "custom_title": matched.get("title"),
+                            "custom_track": matched.get("track"),
+                            "allow_fill": True,
+                            "reason": f"已自动识别匹配校招岗位：{matched.get('company')} - {matched.get('title')}",
+                            "autofill": {
+                                "target_position": matched.get("target_position"),
+                                "company": matched.get("company"),
+                                "track": matched.get("track"),
+                                "resume_path": matched.get("resume_path"),
+                                "job_id": matched.get("job_id"),
+                                "open_answers": [
+                                    {"label": "自我评价", "value": matched.get("self_evaluation")},
+                                    {"label": "专业技能", "value": matched.get("skills_summary")},
+                                    {
+                                        "label": "项目经验(综合)",
+                                        "value": "\n\n".join([
+                                            p.get("full_text") or p.get("description") or ""
+                                            for p in matched.get("projects") or []
+                                        ]),
+                                    },
+                                ],
+                            },
+                            "profile": custom_prof,
+                            "run_id": matched.get("job_id"),
+                        }
+                except Exception:
+                    pass
+
             if payload.get("mode") == "test" and profile is not None:
                 payload["profile"] = profile
             elif profile is not None and "profile" not in payload:

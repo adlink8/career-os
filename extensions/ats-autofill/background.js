@@ -218,6 +218,107 @@ async function loadFieldRules() {
   }
 }
 
+let _jobProfilesMapCache = null;
+
+async function loadJobProfilesMap() {
+  if (_jobProfilesMapCache) return _jobProfilesMapCache;
+  try {
+    _jobProfilesMapCache = await loadPackagedJson('job-profiles-map.json');
+    return _jobProfilesMapCache;
+  } catch (_) {
+    return null;
+  }
+}
+
+function matchJobProfile(url, map) {
+  if (!url || !map) return null;
+  const target = String(url).toLowerCase();
+
+  // 1. UUID / JobAdId match
+  const uuids = target.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g);
+  if (uuids && uuids.length) {
+    for (const key of Object.keys(map)) {
+      const item = map[key];
+      const itemUrl = (item.url || '').toLowerCase();
+      if (uuids.some((u) => itemUrl.includes(u))) return item;
+    }
+  }
+
+  // 1.2 moseeker pid match
+  const pidMatch = target.match(/pid\/(\d+)/);
+  if (pidMatch) {
+    for (const key of Object.keys(map)) {
+      const item = map[key];
+      if ((item.url || '').includes('pid/' + pidMatch[1])) return item;
+    }
+  }
+
+  // 1.3 html id match
+  const htmlMatch = target.match(/\/(\d+\/\d+\.html)/);
+  if (htmlMatch) {
+    for (const key of Object.keys(map)) {
+      const item = map[key];
+      if ((item.url || '').includes(htmlMatch[1])) return item;
+    }
+  }
+
+  // 2. Exact or substring match
+  for (const key of Object.keys(map)) {
+    const item = map[key];
+    const itemUrl = (item.url || '').toLowerCase();
+    if (itemUrl && (target.includes(itemUrl) || itemUrl.includes(target))) {
+      return item;
+    }
+  }
+
+  // 3. Host / Domain matching with keyword refinement
+  let hostname = '';
+  try {
+    hostname = new URL(url).hostname.toLowerCase();
+  } catch (_) {}
+
+  if (hostname) {
+    // Check keyword-specific matches on Maxscend
+    if (hostname.includes('maxscend.zhiye.com')) {
+      if (/network|网络|网工/i.test(target)) {
+        if (map['maxscend-network-eng']) return map['maxscend-network-eng'];
+      }
+      if (/系统应用|系统|sae/i.test(target)) {
+        if (map['maxscend-system-app']) return map['maxscend-system-app'];
+      }
+      if (/\bai\b|ai应用|智能|算法/i.test(target)) {
+        if (map['maxscend-ai-app']) return map['maxscend-ai-app'];
+      }
+    }
+
+    // Check keyword-specific matches on Focus Tech
+    if (hostname.includes('focus') || target.includes('apply/focus')) {
+      if (target.includes('7c34fb13') || /数据应用|数据开发|大数据/i.test(target)) {
+        if (map['focus-data-app']) return map['focus-data-app'];
+      }
+      if (target.includes('aae64c70') || /\bai\b|ai算法|算法/i.test(target)) {
+        if (map['focus-ai-rnd']) return map['focus-ai-rnd'];
+      }
+      if (/ops|运维|linux/i.test(target)) {
+        if (map['focus-linux-ops']) return map['focus-linux-ops'];
+      }
+    }
+
+    for (const key of Object.keys(map)) {
+      const item = map[key];
+      let itemHost = '';
+      try {
+        itemHost = new URL(item.url || '').hostname.toLowerCase();
+      } catch (_) {}
+      if (itemHost && (itemHost === hostname || hostname.endsWith('.' + itemHost) || itemHost.endsWith('.' + hostname))) {
+        return item;
+      }
+    }
+  }
+
+  return null;
+}
+
 async function loadFillPayload(url) {
   const overlay = await loadOverlay();
   const field_rules = await loadFieldRules();
@@ -261,6 +362,51 @@ async function loadFillPayload(url) {
       run_id: null,
       overlay: true,
       name: name
+    };
+  }
+
+  // 检查是否命中 27 份定制校招岗位的特定底稿映射
+  const jobMap = await loadJobProfilesMap();
+  const matchedJob = matchJobProfile(url, jobMap);
+  if (matchedJob) {
+    const baseData = bundle.data || (overlay.profile || {});
+    const customProfile = JSON.parse(JSON.stringify(baseData || {}));
+    if (!customProfile.universal) customProfile.universal = {};
+    if (!customProfile.application) customProfile.application = {};
+
+    customProfile.application.target_position = matchedJob.target_position;
+    customProfile.application.target_company = matchedJob.company;
+    customProfile.application.track = matchedJob.track;
+    customProfile.application.self_evaluation = matchedJob.self_evaluation;
+    customProfile.application.skills_summary = matchedJob.skills_summary;
+    customProfile.application.projects = matchedJob.projects;
+
+    const autofill = {
+      target_position: matchedJob.target_position,
+      company: matchedJob.company,
+      track: matchedJob.track,
+      resume_path: matchedJob.resume_path,
+      job_id: matchedJob.job_id,
+      open_answers: [
+        { label: '自我评价', value: matchedJob.self_evaluation },
+        { label: '专业技能', value: matchedJob.skills_summary },
+        { label: '项目经验(综合)', value: (matchedJob.projects || []).map((p) => p.full_text || p.description).join('\n\n') }
+      ]
+    };
+
+    return {
+      ok: true,
+      mode: 'job_custom',
+      custom_company: matchedJob.company,
+      custom_title: matchedJob.title,
+      custom_track: matchedJob.track,
+      allow_fill: true,
+      reason: '已自动识别匹配校招岗位：' + matchedJob.company + ' - ' + matchedJob.title,
+      autofill: autofill,
+      profile: customProfile,
+      field_rules: bundle.field_rules,
+      fill_groups: fill_groups,
+      run_id: matchedJob.job_id
     };
   }
 

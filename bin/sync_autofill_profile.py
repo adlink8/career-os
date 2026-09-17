@@ -162,7 +162,7 @@ def _education_block(edu):
 
 def _projects(profile):
     out = []
-    for item in profile.get("projects") or []:
+    for item in (profile.get("projects") or [])[:3]:
         name = (item.get("name") or "").strip()
         if not name:
             continue
@@ -237,7 +237,7 @@ def build_application(profile):
         f"{p['name']}：{p['duty']}" for p in projects[:3] if p.get("duty")
     )
     self_eval_parts = [
-        f"{school}{degree}在读，专业{major}。" if school else "",
+        f"{school}{degree}在读，专业{major}。" if school else "",  # 填表可用专升本字段；自我评价不写专升本
         f"求职意向：{target}。" if target else "",
         f"熟练技能：{proficient}。" if proficient else "",
         f"项目经历：{highlights}。" if highlights else "",
@@ -248,12 +248,9 @@ def build_application(profile):
         "expected_city": str(career.get("expected_city") or ((career.get("cities") or [""])[0] if career.get("cities") else "")),
         "expected_salary": str(career.get("expected_salary") or ""),
         "self_evaluation": "".join(self_eval_parts).strip(),
-        "skills_summary": (
-            (f"【熟练】{proficient}\n" if proficient else "")
-            + (f"【熟悉】{familiar}" if familiar else "")
-        ).strip(),
+        "skills_summary": (f"【熟练】{proficient}" if proficient else "").strip(),
         "skills_proficient": proficient,
-        "skills_familiar": familiar,
+        "skills_familiar": "",
         "projects": projects,
         "internships": _internships(profile),
         "campus_practices": _records(profile, "campus_practices", ("name", "start_date", "end_date", "description")),

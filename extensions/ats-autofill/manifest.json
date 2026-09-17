@@ -47,7 +47,16 @@
         "*://*.lagou.com/*",
         "*://*.liepin.com/*",
         "*://*.nowcoder.com/*",
-        "*://*.shixiseng.com/*"
+        "*://*.shixiseng.com/*",
+        "*://*.wayzim.com/*",
+        "*://*.ninebot.com/*",
+        "*://*.moseeker.com/*",
+        "*://*.chipown.com.cn/*",
+        "*://*.espressif.com/*",
+        "*://*.wiicode.cn/*",
+        "*://*.skytech.cn/*",
+        "*://*.cstor.cn/*",
+        "*://*.oneing.com/*"
       ],
       "js": [
         "field-map.js",

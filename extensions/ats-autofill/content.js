@@ -751,7 +751,9 @@
         ? ('海投 #' + (fillCtx.run_id || '') + ' ' + ((fillCtx.autofill && fillCtx.autofill.track) || ''))
         : (mode === 'overlay'
           ? '设置页画像'
-          : (mode === 'test' ? '测试画像' : (mode === 'setup' ? '待设置底稿' : '未放行'))));
+          : (mode === 'job_custom'
+            ? ('校招定制: ' + (fillCtx.custom_company || '已匹配') + (fillCtx.custom_track ? (' · ' + fillCtx.custom_track) : ''))
+            : (mode === 'test' ? '测试画像' : (mode === 'setup' ? '待设置底稿' : '未放行')))));
     setInfoRow(card, '模式', modeLabel);
     setInfoRow(card, '候选人', name + (mode === 'test' ? '（测试）' : ''));
     setInfoRow(card, '院校', [edu.school, edu.degree].filter(Boolean).join(' · '));
@@ -800,7 +802,7 @@
       box.appendChild(row);
     });
     if (markBtn) {
-      const fillReady = fillCtx && (fillCtx.mode === 'released' || fillCtx.mode === 'volume' || fillCtx.mode === 'overlay');
+      const fillReady = fillCtx && (fillCtx.mode === 'released' || fillCtx.mode === 'volume' || fillCtx.mode === 'overlay' || fillCtx.mode === 'job_custom');
       markBtn.disabled = !(fillReady && coverage.ready);
     }
   }
@@ -812,11 +814,13 @@
     const app = profile.application;
     const proj1 = (app.projects && app.projects[0]) || {};
     const proj2 = (app.projects && app.projects[1]) || {};
+    const proj3 = (app.projects && app.projects[2]) || {};
     const items = [
       { label: '自我评价', val: app.self_evaluation },
       { label: '专业技能', val: app.skills_summary },
-      { label: '项目1', val: proj1.full_text || proj1.description },
-      { label: '项目2', val: proj2.full_text || proj2.description },
+      { label: '项目1: ' + (proj1.name || '项目1'), val: proj1.full_text || proj1.description },
+      { label: '项目2: ' + (proj2.name || '项目2'), val: proj2.full_text || proj2.description },
+      { label: '项目3: ' + (proj3.name || '项目3'), val: proj3.full_text || proj3.description },
       { label: '学历', val: (function () {
         const edu = univ.education || {};
         const recs = Array.isArray(edu.records) && edu.records.length

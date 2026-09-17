@@ -12,6 +12,9 @@ config/profile.yml
 
 # 填表扩展编译产物（含姓名等，由 bin/sync_autofill_profile.py 生成）
 extensions/ats-autofill/profile.json
+# 填表岗位画像与逐岗配置（含姓名/手机/邮箱等真实填表数据），仅本地
+extensions/ats-autofill/job-profiles-map.json
+extensions/ats-autofill/configs/
 
 # 插件分发包（本地打包产物）
 dist/
