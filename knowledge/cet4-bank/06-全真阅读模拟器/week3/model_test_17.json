@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-17",
+  "day": 17,
+  "week": 3,
+  "title": "The Erosion of Third Places: Reclaiming Public Social Life",
+  "title_cn": "第三空间的萎缩：重构公共社交生活的公共领地",
+  "theme": "社会生活与消费文化变迁",
+  "word_count": 420,
+  "suggested_time_minutes": 10,
+  "passage": "In his influential sociological treatise, urban scholar Ray Oldenburg coined the concept of 'the third place' to designate the informal public gathering spaces that anchor community vitality, distinct from the domestic sphere of the home (the first place) and the productive demands of the workplace (the second place). Classic third places—such as traditional neighborhood coffeehouses, public libraries, neighborhood taverns, barbershops, and town squares—provided low-cost, neutral ground where citizens from divergent socio-economic backgrounds could mingle, converse, and foster civic trust without commercial pressure or formal agendas.\n\nOver the past several decades, however, the urban landscape has witnessed the steady erosion of these vital communal anchors. The aggressive privatization of public land, soaring commercial real estate rents, and suburban sprawl designed exclusively around automobile transit have decimated walkable neighborhood institutions. Many modern commercial cafes, once refuges for vibrant intellectual discourse, have re-engineered their layouts: eliminating communal tables, blaring loud music, and removing electrical outlets to deliberately discourage patrons from lingering. To occupy space in contemporary urban centers, individuals are increasingly compelled to make mandatory financial purchases.\n\nSimultaneously, the migration of daily social life onto digital platforms has compounded this spatial crisis. While social media forums promise boundless connectivity, they lack the organic warmth, spontaneous civility, and non-verbal nuances of physical co-presence. Deprived of neutral public spaces where they can encounter unfamiliar neighbors, individuals retreat into privatized domestic fortresses or homogeneous online echo chambers. Sociologists identify this physical retreat as a key driver of modern political polarization, social atomization, and diminished communal empathy.\n\nRevitalizing civic democracy requires actively reclaiming and expanding physical third places. Urban planners must prioritize the development of pedestrianized public plazas, well-funded community centers, and green municipal parks that welcome all citizens regardless of purchasing power. Commercial businesses, too, must recognize that fostering social belonging creates durable long-term loyalty that far exceeds the narrow gains of rapid customer turnover. A thriving democratic society cannot survive entirely within private apartments and corporate cubicles; it fundamentally requires open, accessible spaces where collective life can organically unfold.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What is the defining characteristic of a \"third place\" according to Ray Oldenburg in Paragraph 1?",
+      "options": {
+        "A": "It is an expensive private membership club for corporate executives.",
+        "B": "It is an informal, low-cost public space distinct from home and work that anchors community.",
+        "C": "It is a specialized research laboratory funded by government grants.",
+        "D": "It is an online video streaming service featuring cultural documentaries."
+      },
+      "correct": "B",
+      "analysis": "第一段首句指出第三空间定义：'informal public gathering spaces that anchor community vitality, distinct from the domestic sphere of the home (the first place) and the productive demands of the workplace (the second place)... low-cost, neutral ground...' 选 B。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"decimated\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "drastically reduced and destroyed",
+        "B": "carefully renovated and preserved",
+        "C": "financially rewarded",
+        "D": "legally regulated"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'The aggressive privatization... soaring rents... have decimated walkable neighborhood institutions'，公有土地私有化、租金高涨严重摧毁了步行的社区机构，decimate 意为大批毁灭、大幅削减，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do some modern commercial cafes deliberately remove electrical outlets according to Paragraph 2?",
+      "options": {
+        "A": "To conserve municipal electrical power during energy shortages.",
+        "B": "To prevent accidental electrical fires in crowded seating areas.",
+        "C": "To discourage customers from staying long without making new purchases.",
+        "D": "To comply with strict child safety regulations."
+      },
+      "correct": "C",
+      "analysis": "第二段指出：'removing electrical outlets to deliberately discourage patrons from lingering... compelled to make mandatory financial purchases'，拆掉插座是为了阻止顾客久坐停留，选 C。"
+    },
+    {
+      "id": 4,
+      "question_type": "细节推理题 (Inference Detail)",
+      "stem": "4. What sociological consequence of losing third places is emphasized in Paragraph 3?",
+      "options": {
+        "A": "Public transport systems become completely unprofitable.",
+        "B": "Individuals retreat into private isolation, driving political polarization and social atomization.",
+        "C": "Commercial shopping malls expand into residential neighborhoods.",
+        "D": "Universities experience a decline in student enrollment."
+      },
+      "correct": "B",
+      "analysis": "第三段指出失去第三空间导致：'retreat into privatized domestic fortresses or homogeneous online echo chambers... key driver of modern political polarization, social atomization...' 退回私人孤岛加剧极化与原子化，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the author's primary argument in the concluding paragraph?",
+      "options": {
+        "A": "Digital platforms will soon replace all physical public gatherings completely.",
+        "B": "A thriving democracy requires revitalizing accessible physical spaces for organic collective life.",
+        "C": "Urban planners should prioritize highway construction over parks.",
+        "D": "Municipalities should ban all commercial businesses from town centers."
+      },
+      "correct": "B",
+      "analysis": "尾段末句为核心观点：'A thriving democratic society cannot survive entirely within private apartments and corporate cubicles; it fundamentally requires open, accessible spaces where collective life can organically unfold.' 繁荣民主社会必须重构开放包容的物理公共空间，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "treatise",
+      "phonetic": "/ˈtriːtɪs/",
+      "pos": "n.",
+      "meaning": "专题论著；学术论文",
+      "collocation": "sociological treatise / philosophical treatise"
+    },
+    {
+      "word": "designate",
+      "phonetic": "/ˈdezɪɡneɪt/",
+      "pos": "v.",
+      "meaning": "指定；标示；命名",
+      "collocation": "designate spaces / areas"
+    },
+    {
+      "word": "divergent",
+      "phonetic": "/daɪˈvɜːdʒənt/",
+      "pos": "adj.",
+      "meaning": "分歧的；迥异的；各不相同的",
+      "collocation": "divergent backgrounds / viewpoints"
+    },
+    {
+      "word": "decimate",
+      "phonetic": "/ˈdesɪmeɪt/",
+      "pos": "v.",
+      "meaning": "大批毁灭；大幅削减",
+      "collocation": "decimate institutions / populations"
+    },
+    {
+      "word": "linger",
+      "phonetic": "/ˈlɪŋɡər/",
+      "pos": "v.",
+      "meaning": "逗留；徘徊；久久不愿离去",
+      "collocation": "linger in the cafe / linger on"
+    },
+    {
+      "word": "mandatory",
+      "phonetic": "/ˈmændətəri/",
+      "pos": "adj.",
+      "meaning": "强制的；义务的；必须的",
+      "collocation": "mandatory purchases / requirement"
+    },
+    {
+      "word": "boundless",
+      "phonetic": "/ˈbaʊndləs/",
+      "pos": "adj.",
+      "meaning": "无边界的；无边无际的",
+      "collocation": "boundless connectivity / optimism"
+    },
+    {
+      "word": "fortress",
+      "phonetic": "/ˈfɔːtrəs/",
+      "pos": "n.",
+      "meaning": "堡垒；要塞；防守严密的私密处",
+      "collocation": "domestic fortresses / mental fortress"
+    },
+    {
+      "word": "plaza",
+      "phonetic": "/ˈplɑːzə/",
+      "pos": "n.",
+      "meaning": "公共广场；集会中心",
+      "collocation": "public plaza / pedestrianized plaza"
+    },
+    {
+      "word": "turnover",
+      "phonetic": "/ˈtɜːnəʊvər/",
+      "pos": "n.",
+      "meaning": "周转率；人员/客流更替",
+      "collocation": "customer turnover / rapid turnover"
+    }
+  ],
+  "translation_cn": "在其极具影响力的社会学论著中，城市学者雷·奥登伯格（Ray Oldenburg）提出了“第三空间”的概念，用来指代那些作为社区活力基石的非正式公共聚集空间——它们既不同于私人生活的家庭寓所（第一空间），也不同于充满严苛要求的职场环境（第二空间）。经典的第三空间——例如街坊咖啡馆、公共图书馆、社区酒馆、传统理发店以及市政广场——为来自截然不同社会经济背景的普通市民提供了一个低成本、中立的交往领地，大家可以在这里自由交流、互致问候，并在毫无商业功利压力与刻板议程的前提下建立起深厚的民间信任。\n\n然而，在过去的数十年中，现代城市肌理目睹了这些关键社区基石的持续凋零与侵蚀。公共土地被大肆私有化、商业地产租金连年飞涨，加之纯粹围绕私家车通勤打造的郊区无序蔓延，彻底摧毁了步行可达的社区公共机构。许多当代商业咖啡厅曾是激荡思想辩论的避风港，如今却被重塑了空间布局：撤除了共享长桌、调大了吵闹的背景音乐，甚至故意拆除了电源插座，以此明目张胆地驱赶久坐的顾客。在当代城市中心立足，市民正被迫为每一次停留支付强制性的消费买单。\n\n与此同时，日常社交生活向数字平台的大规模迁徙，进一步加剧了这场物理空间危机。社交媒体虽然许诺了无限的广阔联结，却完全缺乏实体面对面共存所蕴含的真实温情、自发礼貌以及微妙的非语言信号。由于被剥夺了在日常中偶遇陌生邻居的中立空间，个体纷纷退缩到被私有化的高墙堡垒或同质化的线上回音室中。社会学家指出，这种空间上的集体退避，正是现代社会政治极化、群体原子化以及同理心衰退的核心推手。\n\n重振公民民主的活力，迫切需要我们主动收复并拓宽物理第三空间。城市规划者必须优先打造适宜步行的公共广场、预算充沛的社区文化中心以及向所有公民开放的市政绿地公园，无论其个人的购买力高低。商业机构也必须清醒地领悟到：培育社区归属感所沉淀的深层长期忠诚度，远胜于通过压缩停留时间榨取的微薄翻台率红利。一个蓬勃生动的民主社会绝不可能仅在封闭的私人公寓和冷冰冰的企业工位之间维系；它从根本上依赖于那些真正开放、包容、能让公共生活自然绽放的公共空间。"
+}

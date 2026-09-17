@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-21",
+  "day": 21,
+  "week": 3,
+  "title": "Food Waste and Date Labeling: The Psychology Behind Modern Kitchens",
+  "title_cn": "食物浪费与保质期焦虑：现代厨房消费行为背后的心理机制",
+  "theme": "社会生活与消费文化变迁",
+  "word_count": 420,
+  "suggested_time_minutes": 10,
+  "passage": "In a world where hundreds of millions of people endure chronic malnutrition, a staggering paradox unfolds daily within affluent households: approximately one-third of all food produced globally for human consumption is discarded uneaten. This colossal inefficiency squanders precious agricultural land, drains billions of cubic meters of irrigation water, and generates massive greenhouse gas emissions from decomposing organic matter in municipal landfills. While systemic supply-chain logistics account for a portion of this loss, behavioral researchers have revealed that a substantial fraction of waste occurs at the consumer level, fueled by consumer confusion over date labeling.\n\nThe widespread discarding of perfectly edible groceries is primarily driven by misinterpreting commercial date stamps printed on food packaging. Food manufacturers typically print two distinct types of dates: 'Best Before' dates and 'Use By' dates. 'Use By' labels are critical safety thresholds indicating when perishable items like seafood or raw poultry could pose microbiological health risks. Conversely, 'Best Before' labels merely denote the manufacturer's subjective estimate of peak flavor, crispness, or color, having virtually nothing to do with microbial safety. However, surveys indicate that over seventy percent of consumers conflate these terms, treating 'Best Before' dates as strict deadlines beyond which food instantly turns toxic.\n\nThis behavior is rooted in deep psychological risk aversion. Modern consumers, largely disconnected from traditional agrarian knowledge of sensory evaluation—such as smelling, touching, or inspecting food—rely entirely on printed numbers to manage their primal fear of foodborne illness. In an experimental study conducted across several supermarkets, researchers discovered that shoppers routinely rejected fresh fruits with minor aesthetic blemishes or products within three days of their 'Best Before' date, even when offered steep fifty-percent markdowns. Consumer anxiety over perceived cleanliness completely eclipsed rational economic calculation.\n\nEradicating household food waste demands regulatory harmonization and behavioral re-education. Legislative authorities must standardize food date labeling, phasing out misleading 'Best Before' phrases on non-perishable goods and mandating clear, standardized terminology. Concurrently, public educational initiatives must empower citizens to revive intuitive culinary common sense. Trusting our own biological senses rather than treating arbitrary commercial printouts as absolute edicts is the critical first step toward cultivating a sustainable, respectful relationship with the food that sustains us.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What is the fundamental difference between \"Use By\" and \"Best Before\" dates according to Paragraph 2?",
+      "options": {
+        "A": "\"Use By\" reflects peak flavor, while \"Best Before\" indicates health danger.",
+        "B": "\"Use By\" denotes safety thresholds for perishables, while \"Best Before\" merely indicates peak flavor.",
+        "C": "\"Best Before\" is mandatory for seafood, while \"Use By\" is optional for dry snacks.",
+        "D": "\"Use By\" dates are printed by governments, while \"Best Before\" dates are set by retail stores."
+      },
+      "correct": "B",
+      "analysis": "第二段明确指出两者的根本区别：''Use By' labels are critical safety thresholds... Conversely, 'Best Before' labels merely denote the manufacturer's subjective estimate of peak flavor... having virtually nothing to do with microbial safety.' 选 B。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"conflate\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "confuse or combine mistakenly",
+        "B": "legally challenge",
+        "C": "precisely distinguish",
+        "D": "scientifically test"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'over seventy percent of consumers conflate these terms, treating Best Before dates as strict deadlines beyond which food instantly turns toxic'，把两者混为一谈导致误判，conflate 意为混淆、混同，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do modern consumers rely heavily on printed dates according to Paragraph 3?",
+      "options": {
+        "A": "Because printed labels offer cash-back lottery numbers.",
+        "B": "Because they are detached from traditional sensory skills and fear foodborne illness.",
+        "C": "Because government health inspectors fine people who eat expired food.",
+        "D": "Because modern refrigerators display date warnings automatically."
+      },
+      "correct": "B",
+      "analysis": "第三段指出：'Modern consumers, largely disconnected from traditional agrarian knowledge of sensory evaluation... rely entirely on printed numbers to manage their primal fear of foodborne illness.' 缺乏传统感官辨别经验且恐惧食源性疾病，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What did the supermarket experiment reveal in Paragraph 3?",
+      "options": {
+        "A": "Shoppers bought blemished fruit immediately when discounted.",
+        "B": "Consumers rejected slightly blemished fruits even with fifty-percent markdowns.",
+        "C": "Cashiers refused to scan products nearing their 'Best Before' date.",
+        "D": "Supermarkets threw away all organic food at midnight every day."
+      },
+      "correct": "B",
+      "analysis": "第三段指出：'shoppers routinely rejected fresh fruits with minor aesthetic blemishes or products within three days of their Best Before date, even when offered steep fifty-percent markdowns.' 即使打五折依然拒绝轻微外观瑕疵或临期商品，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What does the author suggest to eradicate household food waste in the conclusion?",
+      "options": {
+        "A": "Banning all commercial packaging and supermarkets.",
+        "B": "Standardizing date labeling regulations and reviving intuitive culinary common sense.",
+        "C": "Forcing restaurants to donate all leftover meals to charity.",
+        "D": "Prohibiting consumers from keeping refrigerators in private apartments."
+      },
+      "correct": "B",
+      "analysis": "尾段总结核心呼吁：'Eradicating household food waste demands regulatory harmonization and behavioral re-education. Legislative authorities must standardize food date labeling... revive intuitive culinary common sense.' 规范统一标签并恢复感官常识，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "squander",
+      "phonetic": "/ˈskwɒndər/",
+      "pos": "v.",
+      "meaning": "挥霍；浪费 (金钱/资源/时间)",
+      "collocation": "squander precious land / resources"
+    },
+    {
+      "word": "perishable",
+      "phonetic": "/ˈperɪʃəbl/",
+      "pos": "adj./n.",
+      "meaning": "易腐坏的；易变质的食品",
+      "collocation": "perishable items / goods"
+    },
+    {
+      "word": "conflate",
+      "phonetic": "/kənˈfleɪt/",
+      "pos": "v.",
+      "meaning": "混淆；混为一谈",
+      "collocation": "conflate distinct terms / concepts"
+    },
+    {
+      "word": "agrarian",
+      "phonetic": "/əˈɡreəriən/",
+      "pos": "adj.",
+      "meaning": "土地的；农业的",
+      "collocation": "agrarian knowledge / society"
+    },
+    {
+      "word": "blemish",
+      "phonetic": "/ˈblemɪʃ/",
+      "pos": "n./v.",
+      "meaning": "瑕疵；斑点；污点",
+      "collocation": "aesthetic blemish / skin blemish"
+    },
+    {
+      "word": "markdown",
+      "phonetic": "/ˈmɑːkdaʊn/",
+      "pos": "n.",
+      "meaning": "降价；减价折扣",
+      "collocation": "steep markdown / price markdown"
+    },
+    {
+      "word": "eclipse",
+      "phonetic": "/ɪˈklɪps/",
+      "pos": "v.",
+      "meaning": "使黯然失色；遮蔽；凌驾于",
+      "collocation": "eclipse rational calculation"
+    },
+    {
+      "word": "harmonization",
+      "phonetic": "/ˌhɑːmənaɪˈzeɪʃn/",
+      "pos": "n.",
+      "meaning": "协调；统一规范",
+      "collocation": "regulatory harmonization"
+    },
+    {
+      "word": "culinary",
+      "phonetic": "/ˈkʌlɪnəri/",
+      "pos": "adj.",
+      "meaning": "烹饪的；厨房的",
+      "collocation": "culinary common sense / skills"
+    },
+    {
+      "word": "edict",
+      "phonetic": "/ˈiːdɪkt/",
+      "pos": "n.",
+      "meaning": "法令；布告；绝对指令",
+      "collocation": "absolute edict / government edict"
+    }
+  ],
+  "translation_cn": "在一个仍有数以亿计人口饱受长期营养不良煎熬的世界上，富裕家庭中每天都在上演着一个触目惊心的悖论：全球每年生产供人类食用的食物中，竟然有约三分之一在未经食用前就被丢进了垃圾桶。这种巨大的系统性低效不仅肆意浪费了宝贵的农业耕地，抽干了数以百亿立方米的灌溉淡水，更因填埋场中有机废物的腐烂排放出极其庞大的温室气体。尽管供应链环节的技术损耗难辞其咎，但行为学研究者发现，相当大比例的浪费其实直接发生在家庭消费端，其背后的祸首正是消费者对包装上保质期标签的严重误解。\n\n完好无损、完全可食用的日常食品被大规模丢弃，根源在于对食品包装上商业日期标识的误读。食品制造商通常会在包装上打印两类性质截然不同的日期：“最佳赏味期（Best Before）”与“安全食用期（Use By）”。“安全食用期”是针对生鲜海鲜或生肉等易腐变质食品设立的硬性安全红线，超过此日期可能滋生致病微生物。然而与之相对，“最佳赏味期”仅仅代表食品生产商对风味、酥脆度或色泽处于巅峰状态的主观预测，与微生物安全卫生几乎没有任何瓜葛。然而调查显示，超过70%的消费者将这两个概念完全混为一谈，把“最佳赏味期”死板地当成了过期即变毒药的生死死线。\n\n这种非理性行为植根于人类深层的风险厌恶心理。脱离了传统农耕社会靠眼看、手摸、鼻子闻等感官经验来辨别食物品质的现代消费者，为了抵御内心对食源性疾病的本能恐慌，只能将信任完全押宝在冷冰冰的印刷数字上。在多家超市开展的一项实证研究中，研究人员发现，消费者普遍会毫不犹豫地拒绝购买带有一丁点自然表皮瑕疵的水果，或是距离“最佳赏味期”仅剩三天的包装食品，即便商家开出了半价的跳楼折扣。消费者对所谓绝对洁净的心理焦虑，彻底压倒了理性的经济算计。\n\n根除家庭食物浪费，既需要法律法规层面的统一规范，也需要面向大众的行为再教育。立法机构必须大刀阔斧推行食品保质期标准的科学统一化，在非易腐食品上逐步淘汰具有误导性的“最佳赏味期”字样，推行清晰明了的规范术语。与此同时，公共教育项目必须赋能公众找回直觉性的厨房辨识常识。学会相信我们自身敏锐的生理感官，而非将包装上武断的商业印刷日期当做绝对圣旨，是人类重新构筑与哺育我们的食物之间敬畏、可持续关系的至关重要的第一步。"
+}

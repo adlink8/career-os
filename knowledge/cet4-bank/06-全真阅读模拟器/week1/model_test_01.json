@@ -1,0 +1,152 @@
+{
+  "id": "cet4-sim-01",
+  "title": "The Paradox of Smart Assistants: Automated Convenience vs. Human Agency",
+  "source_standard": "大学英语四级考试 (CET-4) 仔细阅读 Section C 真题标准",
+  "word_count": 418,
+  "suggested_time_minutes": 10,
+  "passage": "From the music playlists recommended on our commutes to the shortest routes calculated on our map applications, algorithmic assistants have seamlessly woven themselves into the fabric of modern life. By predicting our preferences and automating routine choices, these intelligent systems promise unprecedented convenience, relieving us of the burden of dozens of micro-decisions every single day. In an increasingly fast-paced society, delegating trivial tasks to reliable software appears not only reasonable, but entirely necessary for preserving mental energy.\n\nHowever, behavioral scientists have begun to voice profound concerns about the hidden cost of this digital convenience. When decision-making instincts are continually outsourced to machines, human cognitive abilities may subtly diminish over time. Just as physical muscles atrophy without regular exercise, our capacity for critical judgment, spatial awareness, and independent problem-solving weakens when we passively accept machine-generated suggestions. Instead of evaluating alternative options, users tend to follow algorithmic prompts with unquestioning confidence.\n\nThis subtle shift in human behavior extends far beyond minor consumer choices. A recent empirical study conducted across several metropolitan areas revealed a curious pattern among daily commuters. Participants who strictly followed automated navigation systems reported significantly fewer memorable impressions of their surroundings and experienced a noticeable decline in their geographical orientation skills. By contrast, individuals who occasionally navigated independently or took unfamiliar detours demonstrated higher levels of creative problem-solving and greater adaptability when encountering unexpected road closures. The algorithmic efficiency had inadvertently eliminated the valuable friction that stimulates human curiosity.\n\nNone of this suggests that we should abandon smart technologies and return to an analog lifestyle. Rather, the challenge lies in cultivating conscious agency in an automated age. We must recognize that algorithms are designed primarily to maximize predictability and engagement, not necessarily personal growth or cognitive resilience. To maintain our intellectual autonomy, we should intentionally preserve areas where human intuition and spontaneous exploration take priority. True technological literacy means knowing not just how to deploy intelligent tools, but when to turn them off.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. According to Paragraph 1, what is the primary benefit brought by algorithmic assistants?",
+      "options": {
+        "A": "They completely eliminate the possibility of human errors.",
+        "B": "They save mental energy by handling routine micro-decisions.",
+        "C": "They encourage individuals to develop novel daily routines.",
+        "D": "They dramatically lower the cost of living in urban areas."
+      },
+      "correct": "B",
+      "analysis": "第一段末尾明确提到：By predicting our preferences and automating routine choices, these intelligent systems promise unprecedented convenience, relieving us of the burden of dozens of micro-decisions every single day... for preserving mental energy. 对应 B 选项（处理微小决策以节省精力）。A项completely eliminate过于绝对；C项与原文routine choices相反；D项未提及。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"diminish\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "weaken",
+        "B": "recover",
+        "C": "stabilize",
+        "D": "expand"
+      },
+      "correct": "A",
+      "analysis": "第二段将大脑比作肌肉：Just as physical muscles atrophy without regular exercise, our capacity... weakens when we passively accept machine-generated suggestions. 根据下文的 weaken 与 atrophy（萎缩），可推断 diminish 意为“变弱、削弱、减少”，故选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why are behavioral scientists worried about delegating too much to intelligent systems?",
+      "options": {
+        "A": "Because machines frequently malfunction during peak hours.",
+        "B": "Because companies might charge excessive subscription fees.",
+        "C": "Because people may gradually lose their critical problem-solving instincts.",
+        "D": "Because smart assistants collect too much sensitive personal data."
+      },
+      "correct": "C",
+      "analysis": "第二段指出：When decision-making instincts are continually outsourced to machines, human cognitive abilities may subtly diminish over time... our capacity for critical judgment, spatial awareness, and independent problem-solving weakens，即人们独立判断和解决问题的直觉能力会退化，对应 C 选项。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节理解题 (Experiment Finding)",
+      "stem": "4. What did the empirical study in Paragraph 3 discover about commuters using automated navigation?",
+      "options": {
+        "A": "They suffered more severe traffic accidents on rainy days.",
+        "B": "They reached their destinations much faster than traditional drivers.",
+        "C": "They were less adaptable and had weaker geographical orientation skills.",
+        "D": "They spent significantly more money on gasoline and vehicle maintenance."
+      },
+      "correct": "C",
+      "analysis": "第三段说明：Participants who strictly followed automated navigation systems reported... a noticeable decline in their geographical orientation skills... higher levels of creative problem-solving and greater adaptability属于不依赖导航的人，反推依赖导航者适应力与方向感更弱，对应 C 选项。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨大意/态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the author's main recommendation in the final paragraph?",
+      "options": {
+        "A": "Governments should impose strict bans on commercial algorithms.",
+        "B": "We should strike a conscious balance between automated convenience and human autonomy.",
+        "C": "Consumers should completely abandon smart technologies to protect cognitive abilities.",
+        "D": "Software engineers ought to design assistants that mimic human emotions."
+      },
+      "correct": "B",
+      "analysis": "尾段作者明确反驳了极端做法：None of this suggests that we should abandon smart technologies...，并指出核心建议：Rather, the challenge lies in cultivating conscious agency in an automated age... True technological literacy means knowing not just how to deploy intelligent tools, but when to turn them off. 即在享受便利的同时保持人类自主意识与平衡，对应 B 选项。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "seamlessly",
+      "phonetic": "/ˈsiːmləsli/",
+      "pos": "adv.",
+      "meaning": "无缝地；顺利地",
+      "collocation": "seamlessly weave / integrate into"
+    },
+    {
+      "word": "unprecedented",
+      "phonetic": "/ʌnˈpresɪdentɪd/",
+      "pos": "adj.",
+      "meaning": "前所未有的；空前的",
+      "collocation": "unprecedented convenience / growth"
+    },
+    {
+      "word": "delegate",
+      "phonetic": "/ˈdelɪɡeɪt/",
+      "pos": "v.",
+      "meaning": "委派；把...委托给",
+      "collocation": "delegate tasks / authority to sb."
+    },
+    {
+      "word": "subtly",
+      "phonetic": "/ˈsʌtli/",
+      "pos": "adv.",
+      "meaning": "微弱地；微妙地；不知不觉中",
+      "collocation": "subtly diminish / influence"
+    },
+    {
+      "word": "diminish",
+      "phonetic": "/dɪˈmɪnɪʃ/",
+      "pos": "v.",
+      "meaning": "减少；削弱；贬低",
+      "collocation": "diminish capacity / importance"
+    },
+    {
+      "word": "atrophy",
+      "phonetic": "/ˈætrəfi/",
+      "pos": "v./n.",
+      "meaning": "萎缩；退化",
+      "collocation": "muscles atrophy / cognitive atrophy"
+    },
+    {
+      "word": "empirical",
+      "phonetic": "/ɪmˈpɪrɪkl/",
+      "pos": "adj.",
+      "meaning": "经验主义的；实证的",
+      "collocation": "empirical study / evidence"
+    },
+    {
+      "word": "inadvertently",
+      "phonetic": "/ˌɪnədˈvɜːtntli/",
+      "pos": "adv.",
+      "meaning": "不经意间；非故意地",
+      "collocation": "inadvertently eliminate / cause"
+    },
+    {
+      "word": "agency",
+      "phonetic": "/ˈeɪdʒənsi/",
+      "pos": "n.",
+      "meaning": "能动性；自主意识 (非中介所)",
+      "collocation": "human agency / conscious agency"
+    },
+    {
+      "word": "deploy",
+      "phonetic": "/dɪˈplɔɪ/",
+      "pos": "v.",
+      "meaning": "部署；有效运用",
+      "collocation": "deploy intelligent tools / resources"
+    }
+  ],
+  "translation_cn": "从通勤途中推荐的音乐歌单，到地图应用规划的最优路线，算法助手早已天衣无缝地融入了现代生活的肌理之中。通过预测我们的偏好并将日常繁琐的选择自动化，这些智能系统带来了前所未有的便利，为我们免去了每天面对几十个微小决策的心力负担。在一个节奏日益加快的社会里，将琐碎任务委托给可靠的软件不仅显得合情合理，更是保留脑力精力所必不可少的手段。\n\n然而，行为科学家已经开始对这种数字化便利背后的隐性代价表达深切担忧。当决策本能被源源不断地外包给机器时，人类的认知能力可能会在不知不觉中悄然退化。正如缺乏锻炼的身体肌肉会萎缩一样，当我们被动接受机器生成的建议时，我们独立批判思考、空间感知和解决问题的能力也会随之衰退。用户不再费心评估备选方案，而是带着毫无置疑的信任紧跟算法的提示。\n\n这种人类行为的潜移默化远不止体现在微小的消费选择上。最近在多个大都市开展的一项实证研究揭示了日常通勤者中一个耐人寻味的现象。那些严格依赖自动化导航系统的受试者表示，他们对周围环境留下的深刻记忆显著减少，并且在地理方位辨别能力上出现了明显的滑坡。相反，那些偶尔独立寻路或走陌生小路的人，在面对突发封路情况时表现出更高的创造性解决问题能力和更强的应变适应力。算法追求的高效，无形中抹杀了能够激发人类好奇心的宝贵体验与探索摩擦。\n\n这一切绝非建议我们应当彻底抛弃智能科技，退回到纯模拟的前数字时代。恰恰相反，真正的挑战在于如何在自动化时代培养自觉的人类自主意识。我们必须清醒地认识到，算法在设计上主要是为了追求确定性预测和用户粘性，而非促进个人的认知成长或思维韧性。为了保持我们的心智自主权，我们应当有意识地保留那些优先由人类直觉和自发探索主导的领地。真正成熟的科技素养不仅在于知道如何运用智能工具，更在于清楚何时应当将它们关掉。",
+  "day": 1,
+  "week": 1,
+  "theme": "科技与数字生活异化",
+  "title_cn": "智能助手的悖论"
+}

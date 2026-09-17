@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-28",
+  "day": 28,
+  "week": 4,
+  "title": "Renewable Energy Transition: The Grid Storage Bottleneck",
+  "title_cn": "可再生能源转型：电网储能与材料科学的核心瓶颈",
+  "theme": "认知科学与生态环境",
+  "word_count": 430,
+  "suggested_time_minutes": 10,
+  "passage": "In the ongoing global crusade to avert catastrophic climate disruption, the exponential deployment of clean renewable energy has emerged as a beacon of technological triumph. Over the past decade, manufacturing breakthroughs and economies of scale have driven the levelized cost of solar photovoltaic panels and wind turbines down by more than eighty percent, rendering green electrons undeniably cheaper to generate than electricity derived from fossil fuel combustion. Yet, as nations aggressively retire coal-fired plants and integrate fluctuating renewable sources into their utility networks, power grid engineers are confronting a formidable physics hurdle: the grid-scale energy storage bottleneck.\n\nThe core engineering dilemma originates from the inherent 'intermittency' of nature. Solar arrays generate peak electricity during sunny afternoons, precisely when consumer demand is relatively modest; in the evening, when households return home and energy consumption peaks, solar output plunges to zero. Power engineers call this widening mismatch the 'duck curve.' Because traditional alternating-current electrical grids require instantaneous, second-by-second equilibrium between electricity generation and consumption, massive surges of surplus solar power must frequently be discarded through costly 'curtailment,' while dirty gas turbines are frantically fired up to prevent catastrophic blackouts when darkness falls.\n\nOvercoming this intermittency requires deploying colossal battery storage infrastructure, yet existing electrochemical technologies face formidable chemical and logistical barriers. Contemporary lithium-ion batteries—the workhorse of consumer electronics and electric mobility—are well suited for short-duration frequency stabilization lasting two to four hours. However, they are prohibitively expensive for multi-day or seasonal energy storage. Furthermore, scaling lithium-ion chemistry to gigawatt-hour levels encounters acute geopolitical vulnerabilities, severe supply-chain bottlenecks for rare cobalt and lithium, and persistent thermal-runaway fire risks in dense urban installations.\n\nUnlocking a fully decarbonized energy future requires aggressive public investment in next-generation long-duration storage technologies. Promising frontiers—such as iron-air batteries, vanadium redox flow systems, pumped-storage hydroelectric dams, and green hydrogen electrolysis—offer abundant, non-flammable alternatives capable of discharging power continuously across days or weeks of calm, overcast weather. Governments must reform outdated utility regulatory frameworks, subsidizing energy storage capacity rather than merely generation volume. The true finish line of the clean energy transition is not merely erecting shiny wind turbines, but engineering the robust physical infrastructure required to keep the lights on when the wind ceases to blow.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What major achievement in renewable energy is highlighted in Paragraph 1?",
+      "options": {
+        "A": "The cost of solar and wind generation has dropped by over eighty percent.",
+        "B": "Coal-fired power plants have been outlawed in all countries.",
+        "C": "Electric grids no longer require physical transmission wires.",
+        "D": "Battery recycling has become completely free worldwide."
+      },
+      "correct": "A",
+      "analysis": "第一段第二句明确指出：'driven the levelized cost of solar photovoltaic panels and wind turbines down by more than eighty percent, rendering green electrons undeniably cheaper...' 光伏与风电成本下降超过80%，选 A。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"intermittency\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "unpredictable irregularity and discontinuity",
+        "B": "infinite abundance and permanence",
+        "C": "extreme chemical toxicity",
+        "D": "absolute legal compliance"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'intermittency of nature. Solar arrays generate peak electricity during sunny afternoons... in the evening... plunges to zero.' 自然界太阳光和风力断断续续、不规则波动，intermittency 意为间歇性、断续性，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do power grids frantically fire up gas turbines in the evening according to Paragraph 2?",
+      "options": {
+        "A": "To burn off excess natural gas supplies before midnight.",
+        "B": "To compensate for the sudden drop in solar generation as electricity demand peaks.",
+        "C": "To heat up the electrical cables during cold winter nights.",
+        "D": "To test the emergency alarm systems of metropolitan substations."
+      },
+      "correct": "B",
+      "analysis": "第二段指出：'in the evening, when households return home and energy consumption peaks, solar output plunges to zero... dirty gas turbines are frantically fired up to prevent catastrophic blackouts...' 晚间用电高峰而光伏归零，必须紧急启动气电调峰以防断电，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "细节推理题 (Inference Detail)",
+      "stem": "4. What limitation of lithium-ion batteries is pointed out in Paragraph 3?",
+      "options": {
+        "A": "They can only be recharged once in their operational lifespan.",
+        "B": "They are prohibitively expensive for multi-day storage and face raw material constraints.",
+        "C": "They freeze and stop working when exposed to direct sunlight.",
+        "D": "They emit excessive amounts of greenhouse gases while discharging."
+      },
+      "correct": "B",
+      "analysis": "第三段指出：'prohibitively expensive for multi-day or seasonal energy storage... acute geopolitical vulnerabilities, severe supply-chain bottlenecks for rare cobalt and lithium...' 长时储能造价过高且受原材料供应链瓶颈制约，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the essential requirement for completing the clean energy transition according to the author?",
+      "options": {
+        "A": "Relying strictly on existing lithium-ion battery technology.",
+        "B": "Investing in next-generation long-duration storage infrastructure and reforming regulations.",
+        "C": "Reopening traditional coal mines to ensure continuous power.",
+        "D": "Restricting private citizens' electricity usage during nighttime hours."
+      },
+      "correct": "B",
+      "analysis": "尾段作者给出结论与呼吁：'requires aggressive public investment in next-generation long-duration storage technologies... reform outdated utility regulatory frameworks... engineering the robust physical infrastructure required to keep the lights on...' 投资长时储能新技术并改革监管体制，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "crusade",
+      "phonetic": "/kruːˈseɪd/",
+      "pos": "n.",
+      "meaning": "长期的奋斗运动；十字军东征",
+      "collocation": "global crusade against climate change"
+    },
+    {
+      "word": "intermittency",
+      "phonetic": "/ˌɪntəˈmɪtənsi/",
+      "pos": "n.",
+      "meaning": "间歇性；断续不稳定性",
+      "collocation": "inherent intermittency of renewables"
+    },
+    {
+      "word": "equilibrium",
+      "phonetic": "/ˌiːkwɪˈlɪbriəm/",
+      "pos": "n.",
+      "meaning": "平衡；均势；平衡状态",
+      "collocation": "instantaneous equilibrium"
+    },
+    {
+      "word": "curtailment",
+      "phonetic": "/kɜːˈteɪlmənt/",
+      "pos": "n.",
+      "meaning": "弃电；缩减；削减",
+      "collocation": "curtailment of solar energy"
+    },
+    {
+      "word": "prohibitive",
+      "phonetic": "/prəˈhɪbətɪv/",
+      "pos": "adj.",
+      "meaning": "过高的 (价格昂贵得令人望而却步)",
+      "collocation": "prohibitively expensive"
+    },
+    {
+      "word": "thermal-runaway",
+      "phonetic": "/ˈθɜːml ˈrʌnəweɪ/",
+      "pos": "n.",
+      "meaning": "热失控 (电池自燃链式反应)",
+      "collocation": "thermal-runaway fire risks"
+    },
+    {
+      "word": "decarbonize",
+      "phonetic": "/diːˈkɑːbənaɪz/",
+      "pos": "v.",
+      "meaning": "去碳化；脱碳",
+      "collocation": "decarbonize energy systems"
+    },
+    {
+      "word": "vanadium",
+      "phonetic": "/vəˈneɪdiəm/",
+      "pos": "n.",
+      "meaning": "钒 (化学元素，用于全钒液流电池)",
+      "collocation": "vanadium redox flow battery"
+    },
+    {
+      "word": "electrolysis",
+      "phonetic": "/ɪˌlekˈtrɒləsɪs/",
+      "pos": "n.",
+      "meaning": "电解；电解作用",
+      "collocation": "hydrogen electrolysis"
+    },
+    {
+      "word": "subsidize",
+      "phonetic": "/ˈsʌbsɪdaɪz/",
+      "pos": "v.",
+      "meaning": "补贴；资助",
+      "collocation": "subsidize storage capacity"
+    }
+  ],
+  "translation_cn": "在全人类抗击灾难性气候崩溃的全球伟大征程中，清洁可再生能源的指数级爆发式部署，被誉为一场划时代的技术凯歌。在过去的十年间，全球制造业的突破性工艺与规模经济效应，将太阳能光伏面板与风力发电机的平准化度电成本狂砍了80%以上，使得绿电在发电端的成本毫无争议地远低于传统的化石燃料火电。然而，正当各国加速关停淘汰传统燃煤电厂、将波动剧烈的可再生能源大规模接入公用电网之际，电力系统工程师们却不得不正视一道极其坚硬的物理高墙：电网级储能的核心瓶颈。\n\n这一核心工程困局，本质上根植于大自然不可避免的“间歇性（intermittency）”。光伏阵列往往在晴朗燥热的正午产出电力的峰值，而此时全社会的用电负荷却相对温和平稳；而到了傍晚，随着千家万户归家开灯、全网用电需求骤升至全天尖峰时，太阳能发电量却瞬间断崖式清零。电力工程师将这种巨大的供需脱节戏称为“鸭子曲线（duck curve）”。由于传统的交流电网必须在分秒之间维持发电量与用电量的绝对动态平衡，海量过剩的正午太阳能往往只能通过代价高昂的“弃电（curtailment）”白白浪费；而在夜幕降临之际，原本应当淘汰的高污染天然气轮机却不得不被紧急点火狂飙，以防引发灾难性的电网大崩溃。\n\n破解这种大自然的间歇性，必须在电网端部署数以吉瓦计的庞大储能基础设施，然而现有的电化学电池技术却遭遇了极其严酷的化学材料与供应链天花板。作为消费电子和电动汽车绝对支柱的现代锂离子电池，极其胜任持续2到4小时的短时电网调频；但若要将其用于跨数天乃至跨季节的长周期储能，其成本昂贵得令人根本无法承受。更严重的是，将锂电池堆砌到数十吉瓦时的规模，不仅深陷极其敏感的地缘政治资源脆弱性，面临钴、锂等关键稀有金属的供应链死锁，更在大城市周边的高密度储能电站中埋下了挥之不去的“热失控”自燃起火安全隐患。\n\n开启一个彻底摆脱化石燃料的绿色能源未来，迫切需要政府对下一代长时储能前沿技术施以强有力的国家级战略投资。诸如铁空气电池、全钒氧化还原液流电池、抽水蓄能电站以及绿电制氢等新兴赛道，提供了原材料极其丰富、天然不可燃且具备跨数天乃至数周连续放电能力的革命性替代方案，能够从容抵御持续数周的无风阴雨恶劣天气。各国政府必须大刀阔斧改革过时的电力市场监管体制，将补贴重点从单一追求装机容量转向对电网储能调峰能力的精准激励。清洁能源转型的真正终点线，绝不仅仅在于在荒野上竖立起多少耀眼的风机，而在于我们能否筑牢坚实的物理电网基础设施，确保在长夜漫漫、微风止息的无光时刻，千家万户的灯火依然能长明不熄。"
+}

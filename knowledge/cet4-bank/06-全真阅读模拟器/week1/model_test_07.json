@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-07",
+  "day": 7,
+  "week": 1,
+  "title": "Algorithmic Bias: When Machine Learning Perpetuates Human Inequity",
+  "title_cn": "算法偏见：机器学习如何加剧人类历史不平等",
+  "theme": "科技与数字生活异化",
+  "word_count": 435,
+  "suggested_time_minutes": 10,
+  "passage": "As artificial intelligence systems are rapidly integrated into public administration, judicial sentencing, financial lending, and corporate recruitment, automated algorithms are frequently promoted as impartial arbiters. Enthusiasts argue that replacing flawed human discretion with cold mathematical formulas eliminates personal prejudice, nepotism, and emotional bias. By analyzing colossal datasets at computational speeds, machine-learning models promise to render institutional decision-making wholly meritocratic. However, computer scientists and sociologists have uncovered a troubling reality: algorithms do not automatically eliminate discrimination; rather, they frequently codify, scale, and disguise existing societal inequities under a veneer of mathematical objectivity.\n\nThe fundamental source of algorithmic bias lies within the training data used to educate neural networks. Machine learning algorithms identify statistical correlations from historical records. When historical datasets reflect decades of systemic socioeconomic disadvantages, racial discrimination, or gender disparities, the predictive algorithm faithfully reproduces and institutionalizes those historical patterns. For example, when a prominent multinational technology enterprise deployed an automated resume-screening tool trained on a decade of past hiring data, the system systematically downgraded applications containing the word 'women's,' reflecting the male-dominated historical composition of the tech workforce.\n\nComplicating matters further is the notorious 'black box' dilemma. Modern deep-learning architectures comprise millions of interconnected mathematical parameters, making it virtually impossible even for their creators to retrace the precise causal logic behind a specific automated verdict. When an applicant is denied a mortgage, or a job seeker is silently filtered out by an algorithm, affected individuals are rarely provided with actionable explanations or meaningful avenues for appeal. What was once visible human prejudice has been laundered into an inscrutable computational verdict, insulating powerful institutions from legal accountability.\n\nCombating algorithmic bias requires confronting the dangerous myth of mathematical neutrality. Technologists must implement rigorous pre-deployment audits, curate representative training datasets, and actively balance algorithms to offset historical skews. Furthermore, governments must establish enforceable algorithmic accountability legislation, mandating explainability and human oversight in all automated decisions that affect basic human rights. Artificial intelligence should serve as an instrument for social elevation, not an automated accelerator of historic injustice.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What is the main argument made by advocates of automated algorithms in Paragraph 1?",
+      "options": {
+        "A": "Mathematical models are cheaper to build than hiring personnel.",
+        "B": "Replacing human judgment with formulas removes prejudice and ensures fairness.",
+        "C": "Algorithms will eventually eliminate the need for legal systems.",
+        "D": "Computer systems are capable of expressing genuine human empathy."
+      },
+      "correct": "B",
+      "analysis": "第一段指出推崇者的观点：'replacing flawed human discretion with cold mathematical formulas eliminates personal prejudice, nepotism, and emotional bias... render institutional decision-making wholly meritocratic.' 对应 B 选项。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"veneer\" in Paragraph 1 is closest in meaning to _______.",
+      "options": {
+        "A": "superficial disguise",
+        "B": "solid foundation",
+        "C": "complete absence",
+        "D": "revolutionary theory"
+      },
+      "correct": "A",
+      "analysis": "第一段尾句：'disguise existing societal inequities under a veneer of mathematical objectivity.' 在数学客观性的虚假外衣下掩盖社会不公，veneer 指虚假外表、表面掩饰，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why did the tech company's resume-screening tool downgrade applications with the word \"women's\"?",
+      "options": {
+        "A": "Female candidates lacked required technical certifications.",
+        "B": "A computer virus corrupted the database during screening.",
+        "C": "The algorithm was trained on historical data reflecting a male-dominated workforce.",
+        "D": "Human managers manually intervened to alter the algorithm's scores."
+      },
+      "correct": "C",
+      "analysis": "第二段末尾举例：'reflecting the male-dominated historical composition of the tech workforce... faithfully reproduces and institutionalizes those historical patterns.' 算法基于过往男性占优的历史数据训练，故而固化了偏差，选 C。"
+    },
+    {
+      "id": 4,
+      "question_type": "细节推理题 (Inference Detail)",
+      "stem": "4. What makes the \"black box\" dilemma especially dangerous according to Paragraph 3?",
+      "options": {
+        "A": "It crashes computers whenever large files are processed.",
+        "B": "It prevents affected individuals from understanding decisions or seeking appeals.",
+        "C": "It enables foreign hackers to steal national security secrets.",
+        "D": "It forces companies to spend excessive amounts of money on hardware."
+      },
+      "correct": "B",
+      "analysis": "第三段指出黑箱问题：'making it virtually impossible... to retrace the precise causal logic... affected individuals are rarely provided with actionable explanations or meaningful avenues for appeal.' 受影响者得不到解释也无法申诉，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is essential to tackling algorithmic bias according to the author?",
+      "options": {
+        "A": "Banning all forms of artificial intelligence immediately.",
+        "B": "Allowing technology giants to handle audits without outside interference.",
+        "C": "Disrupting the myth of neutrality, conducting rigorous audits, and enforcing human oversight.",
+        "D": "Teaching all citizens advanced machine-learning programming skills."
+      },
+      "correct": "C",
+      "analysis": "尾段作者提出：'confronting the dangerous myth of mathematical neutrality. Technologists must implement rigorous pre-deployment audits... mandating explainability and human oversight...' 破除中立神话、严格审计并强制人类监管，选 C。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "impartial",
+      "phonetic": "/ɪmˈpɑːʃl/",
+      "pos": "adj.",
+      "meaning": "公正的；不偏不倚的",
+      "collocation": "impartial arbiter / judge"
+    },
+    {
+      "word": "arbiter",
+      "phonetic": "/ˈɑːbɪtər/",
+      "pos": "n.",
+      "meaning": "裁决人；仲裁者",
+      "collocation": "impartial arbiter / sole arbiter"
+    },
+    {
+      "word": "discretion",
+      "phonetic": "/dɪˈskreʃn/",
+      "pos": "n.",
+      "meaning": "自由裁量权；谨慎",
+      "collocation": "human discretion / judicial discretion"
+    },
+    {
+      "word": "meritocratic",
+      "phonetic": "/ˌmerɪtəˈkrætɪk/",
+      "pos": "adj.",
+      "meaning": "优绩至上的；任人唯贤的",
+      "collocation": "meritocratic system / selection"
+    },
+    {
+      "word": "veneer",
+      "phonetic": "/vəˈnɪər/",
+      "pos": "n.",
+      "meaning": "虚假外表；外饰；虚饰",
+      "collocation": "under a veneer of objectivity"
+    },
+    {
+      "word": "disparity",
+      "phonetic": "/dɪˈspærəti/",
+      "pos": "n.",
+      "meaning": "巨大悬殊；不平等",
+      "collocation": "gender disparity / racial disparity"
+    },
+    {
+      "word": "notorious",
+      "phonetic": "/nəʊˈtɔːriəs/",
+      "pos": "adj.",
+      "meaning": "声名狼藉的；臭名昭著的",
+      "collocation": "notorious black box / problem"
+    },
+    {
+      "word": "inscrutable",
+      "phonetic": "/ɪnˈskruːtəbl/",
+      "pos": "adj.",
+      "meaning": "难以理解的；高深莫测的",
+      "collocation": "inscrutable verdict / code"
+    },
+    {
+      "word": "audit",
+      "phonetic": "/ˈɔːdɪt/",
+      "pos": "n./v.",
+      "meaning": "审查；审计；稽核",
+      "collocation": "pre-deployment audit / independent audit"
+    },
+    {
+      "word": "oversight",
+      "phonetic": "/ˈəʊvəsaɪt/",
+      "pos": "n.",
+      "meaning": "监管；监察；疏忽",
+      "collocation": "human oversight / regulatory oversight"
+    }
+  ],
+  "translation_cn": "随着人工智能系统迅速融入公共行政、司法量刑、信贷审批和企业招聘等关键领域，自动化算法常常被奉为毫无偏私的公正仲裁者。技术拥趸主张，用冷静的数学公式取代容易出错的人类自由裁量权，能够有效剔除个人偏见、裙带关系与情绪干扰。通过以计算速度分析海量数据，机器学习模型承诺将让各类机构决策变得完全以绩效与才能为准绳。然而，计算机科学家与社会学家揭示了一个令人不安的现实：算法不仅没有自动消除歧视，反而在数学客观性的光鲜外衣掩护下，将社会已有的不公法则化、规模化与隐蔽化。\n\n算法偏见的根本病灶，植根于用来训练神经网络的历史数据中。机器学习算法本质上是从过往记录中抓取统计相关性。一旦历史数据集映射了数十年来根深蒂固的社会经济劣势、种族歧视或性别鸿沟，预测算法就会忠实地将这些历史陋习予以复制并制度化。例如，某知名跨国科技巨头曾部署过一套基于过去十年招聘数据训练的简历自动初筛工具，该系统随后被发现成体系地压低含有“女性”一词的求职申请得分，这赤裸裸地折射出了该企业以往技术队伍以男性为主导的历史结构。\n\n更为棘手的是恶名昭彰的“黑箱”困局。现代深度学习架构由数以百万计错综复杂的数学参数交织而成，以至于即使是其设计者本人，也几乎无法逆向推导出特定自动化裁决背后的具体因果链条。当一位申请人被无情拒贷，或者一位求职者被算法在无声无息中淘汰出局时，当事人极少能获得切实可行的理由说明或申诉途径。曾经肉眼可见的人为偏见，如今被洗白成了高深莫测的计算机裁决，这使得位高权重的机构得以彻底逃避法律问责。\n\n向算法偏见开刀，首先必须击碎“数学即中立”的危险迷思。技术开发团队必须在上线前落实严格的独立审计，清洗并构建具有充分代表性的训练数据集，并主动调整算法权重以抵消历史偏差。此外，各国政府必须出台具备强制执行力的算法问责法案，规定在所有涉及公民基本权利的自动化决策中，必须强制保留可解释性与人类终审监管机制。人工智能应当成为推动社会平等向上的利器，而非将历史不公自动化加速的暗器。"
+}

@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-02",
+  "day": 2,
+  "week": 1,
+  "title": "The Echo Chamber: How Recommendation Algorithms Shape Digital Beliefs",
+  "title_cn": "回音室效应：算法推荐如何重塑数字时代的群体信念",
+  "theme": "科技与数字生活异化",
+  "word_count": 425,
+  "suggested_time_minutes": 10,
+  "passage": "In the early days of the commercial Internet, visionaries widely celebrated digital connectivity as an equalizer that would dissolve ideological boundaries and grant universal access to diverse perspectives. Today, however, that optimistic forecast has collided with a stark reality: social media platforms, driven by engagement-maximizing algorithms, increasingly enclose users within intellectual echo chambers. By continuously tracking our clicks, watch duration, and interaction histories, recommendation engines curate an artificial feed tailored strictly to our pre-existing biases, shielding us from dissenting viewpoints.\n\nThis phenomenon is not merely an inconvenience for casual browsers; it subtly alters how human beings process empirical truth. When algorithms consistently prioritize sensational or emotionally polarizing content to retain user attention, moderate and nuanced viewpoints are systematically marginalized. Sociologists observe that repeated exposure to uniform ideas cultivates what is known as confirmation bias—a psychological tendency to accept claims that align with our intuition while dismissing contrary evidence as invalid or hostile. Over time, digital consumers mistake their customized feed for objective reality.\n\nA multi-university research initiative recently analyzed over three million political and scientific discussions across two major social networks. The researchers found that users situated in dense recommendation clusters were fifty-four percent less likely to engage with content that challenged their worldview compared to individuals who utilized chronological feeds. Furthermore, when conflicting evidence was introduced into homogeneous groups, participants frequently exhibited defensive hostility rather than constructive debate. The algorithmic architecture had not merely mirrored societal divisions; it had actively amplified them.\n\nBreaking free from algorithmic echo chambers requires deliberate intellectual discipline. While regulatory scrutiny of tech monopolies is essential, individual users must take active responsibility for their digital diet. Seeking out reputable journalism with contrasting editorial stances, intentionally clicking on non-conforming analyses, and periodically resetting tracking cookies can disrupt automated profiling. Critical thinking in the twenty-first century demands not only evaluating the arguments we see, but questioning why certain arguments are shown to us while others remain entirely hidden.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What was the original expectation of early Internet visionaries according to Paragraph 1?",
+      "options": {
+        "A": "Commercial platforms would replace traditional educational institutions.",
+        "B": "Global connectivity would bridge ideological divisions and broaden viewpoints.",
+        "C": "Personal data privacy would be completely guaranteed by law.",
+        "D": "Automated algorithms would eliminate the spread of false rumors."
+      },
+      "correct": "B",
+      "analysis": "第一段首句指出：'visionaries widely celebrated digital connectivity as an equalizer that would dissolve ideological boundaries and grant universal access to diverse perspectives.' 对应 B 项（弥合意识形态分歧并拓宽视角）。A、C、D 项均未在第一段提及。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"nuanced\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "aggressive",
+        "B": "subtle and balanced",
+        "C": "outdated",
+        "D": "unreliable"
+      },
+      "correct": "B",
+      "analysis": "第二段中 'moderate and nuanced viewpoints are systematically marginalized'（温和且具有细微平衡差异的观点被系统性边缘化），与前文的 'sensational or emotionally polarizing content'（煽情与极端对立内容）形成反义对比，故 nuanced 意为细微而平衡的，选 B。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推断题 (Cause & Effect)",
+      "stem": "3. Why do digital users often mistake their personalized feeds for objective reality?",
+      "options": {
+        "A": "Because users lack basic reading comprehension skills.",
+        "B": "Because repeated exposure to uniform ideas reinforces confirmation bias.",
+        "C": "Because tech platforms explicitly advertise their feeds as neutral.",
+        "D": "Because government regulators censor all dissenting articles."
+      },
+      "correct": "B",
+      "analysis": "第二段明确说明：'repeated exposure to uniform ideas cultivates what is known as confirmation bias... Over time, digital consumers mistake their customized feed for objective reality.' 对应 B 项（持续接触同质化观点强化了证实偏差）。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节理解题 (Experiment Finding)",
+      "stem": "4. What did the multi-university study in Paragraph 3 discover?",
+      "options": {
+        "A": "Users in dense clusters rarely read political news.",
+        "B": "Chronological feeds caused more severe social anxiety.",
+        "C": "Participants in homogeneous groups reacted defensively when exposed to conflicting evidence.",
+        "D": "Social networks lost significant revenue after algorithm updates."
+      },
+      "correct": "C",
+      "analysis": "第三段指出：'when conflicting evidence was introduced into homogeneous groups, participants frequently exhibited defensive hostility rather than constructive debate.' 对应 C 项（置身同质群体中的受试者面对冲突证据时表现出防御性敌意）。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨大意/建议题 (Main Idea / Recommendation)",
+      "stem": "5. What is the author's primary message in the concluding paragraph?",
+      "options": {
+        "A": "Users should actively diversify their sources of information rather than passively accept feeds.",
+        "B": "Governments ought to shut down all personalized recommendation platforms.",
+        "C": "Online news reading is inherently inferior to printed newspapers.",
+        "D": "People should stop discussing controversial topics on social media."
+      },
+      "correct": "A",
+      "analysis": "末段总结指出：'individual users must take active responsibility for their digital diet. Seeking out reputable journalism with contrasting editorial stances... Critical thinking... demands questioning why certain arguments are shown to us' 对应 A 项（主动拓宽多元信息源，而非被动接受算法投喂）。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "visionary",
+      "phonetic": "/ˈvɪʒənri/",
+      "pos": "n./adj.",
+      "meaning": "有远见者；有远见的",
+      "collocation": "early visionaries / visionary leader"
+    },
+    {
+      "word": "dissolve",
+      "phonetic": "/dɪˈzɒlv/",
+      "pos": "v.",
+      "meaning": "消除；溶解；解散",
+      "collocation": "dissolve boundaries / partnership"
+    },
+    {
+      "word": "curate",
+      "phonetic": "/kjʊəˈreɪt/",
+      "pos": "v.",
+      "meaning": "筛选；策划；精心组织",
+      "collocation": "curate content / feed"
+    },
+    {
+      "word": "marginalize",
+      "phonetic": "/ˈmɑːdʒɪnəlaɪz/",
+      "pos": "v.",
+      "meaning": "使边缘化；排挤",
+      "collocation": "systematically marginalized"
+    },
+    {
+      "word": "confirmation bias",
+      "phonetic": "/ˌkɒnfəˈmeɪʃn baɪəs/",
+      "pos": "n.",
+      "meaning": "证实偏差 (只信符合自己观点的偏见)",
+      "collocation": "reinforce confirmation bias"
+    },
+    {
+      "word": "homogeneous",
+      "phonetic": "/ˌhɒməˈdʒiːniəs/",
+      "pos": "adj.",
+      "meaning": "同质的；由同类组成的",
+      "collocation": "homogeneous groups / culture"
+    },
+    {
+      "word": "amplify",
+      "phonetic": "/ˈæmplɪfaɪ/",
+      "pos": "v.",
+      "meaning": "放大；增强",
+      "collocation": "amplify social divisions / signals"
+    },
+    {
+      "word": "reputable",
+      "phonetic": "/ˈrepjətəbl/",
+      "pos": "adj.",
+      "meaning": "声誉良好的；有信誉的",
+      "collocation": "reputable journalism / source"
+    },
+    {
+      "word": "disrupt",
+      "phonetic": "/dɪsˈrʌpt/",
+      "pos": "v.",
+      "meaning": "打破；扰乱；中断",
+      "collocation": "disrupt automated profiling / market"
+    },
+    {
+      "word": "scrutiny",
+      "phonetic": "/ˈskruːtəni/",
+      "pos": "n.",
+      "meaning": "严密审查；彻底检查",
+      "collocation": "regulatory scrutiny / close scrutiny"
+    }
+  ],
+  "translation_cn": "在商业互联网发展初期，众多具有远见的先驱曾热情赞颂数字互联是一项伟大的“平等器”，能够打破意识形态的藩篱，让每个人都能广泛接触到多元视角的观点。然而今天，这种乐观的预言却撞上了严酷的现实：以追求最大用户粘性为导向的社交媒体平台，正通过推荐算法日益将用户封闭在一个个思维“回音室”中。通过持续追踪我们的点击、停留时长和互动历史，推荐引擎精心打造出一套严格迎合我们既有偏见的信息流，将一切不同异见隔绝在外。\n\n这种现象对普通网民而言绝非仅仅带来些许不便，它在不知不觉中悄然改变着人类处理客观事实的方式。当算法始终优先推荐耸人听闻或带有强烈情绪对立色彩的内容来博取眼球时，温和且具有细微辨析度的平衡观点便被系统性地边缘化了。社会学家观察到，长期反复接触单一维度的言论会加剧所谓的“证实偏差”——即人们倾向于无条件接纳符合自身直觉的说法，而将相反的证据斥为荒谬或心怀敌意。久而久之，数字消费者便误将自己定制的信息流当成了客观世界的全貌。\n\n由多所大学联合发起的一项研究最近分析了主流社交网络上超过三百万条关于政治与科学话题的讨论。研究人员发现，身处高度算法推荐集群中的用户，接触挑战自身世界观内容的主动性比使用纯时间线信息流的用户低了整整百分之五十四。更令人担忧的是，当冲突相反的证据被引入同质化社群时，受试者往往表现出强烈的防御性敌意，而非开展建设性的理性探讨。算法架构不仅没有抚平社会鸿沟，反而积极放大了对立与偏狭。\n\n若要挣脱算法回音室的枷锁，唯有依靠自觉的独立思考与自律。尽管对科技巨头的监管势在必行，但每个个体用户必须对自己吸收的“数字饮食”承担起首要责任。主动寻找立场客观、兼顾不同论调的严肃新闻，有意识地浏览非顺应偏好的深度分析，并定期清理追踪凭据，都能有效干扰算法的用户画像。二十一世纪的批判性思维，不仅要求我们深刻评估眼前的论点，更要求我们清醒地反思：为何某些论调被推送到我们眼前，而另一些事实却被深藏不见。"
+}

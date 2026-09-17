@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-13",
+  "day": 13,
+  "week": 2,
+  "title": "Psychological Safety: The Foundation of High-Performing Teams",
+  "title_cn": "团队心理安全感：高效组织协作的决定性基石",
+  "theme": "职场心理与行为经济学",
+  "word_count": 425,
+  "suggested_time_minutes": 10,
+  "passage": "In the fiercely competitive arena of modern enterprise, corporate executives have long operated under the assumption that organizational excellence is achieved by assembling the brightest individual minds and subjecting them to relentless performance scrutiny. Billions of dollars are expended annually on optimizing operational workflows, acquiring elite credentialed talent, and calibrating competitive bonus structures. Yet, seasoned managers frequently observe a confounding paradox: teams comprised of stellar individual contributors routinely stumble, while seemingly average groups achieve groundbreaking innovations. For decades, the hidden variable governing collective brilliance remained an elusive organizational mystery.\n\nThe breakthrough came from Harvard Business School professor Amy Edmondson, who pioneered the concept of 'psychological safety'—the shared belief held by team members that the group is safe for interpersonal risk-taking. In a psychologically safe workplace, individuals do not fear being ridiculed, marginalized, or penalized when they voice an unconventional idea, ask a seemingly naive question, or openly admit an operational error. When psychological safety is deficient, self-protective fear paralyzes candor; employees hoard vital information, conceal emerging defects, and conform to safe consensus, inevitably steering organizations toward catastrophic oversights.\n\nThis theoretical insight received definitive empirical confirmation through Google's multi-year research initiative, dubbed Project Aristotle. Google's analysts spent three years examining hundreds of operational teams across the company, testing hypotheses regarding team composition, educational prestige, gender diversity, and personality distribution. The statistical results astonished company executives: who was on the team mattered far less than how the team interacted. Teams characterized by high psychological safety exhibited equal conversational turn-taking, high social sensitivity, and superior project profitability. Their members were drastically less likely to leave the organization and twice as effective in delivering innovative products.\n\nCultivating psychological safety requires deliberate, vulnerable leadership behavior. Managers must abandon the authoritarian posture of infallibility, actively framing work as learning experiments rather than flawless executions. Leaders should explicitly acknowledge their own mistakes, model curiosity by asking genuine open-ended questions, and reward whistleblowers who spotlight inconvenient organizational truths. Psychological safety is not about cultivating a soft, conflict-free environment; rather, it provides the indispensable emotional bedrock that enables rigorous debate, radical transparency, and collaborative breakthroughs.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What confounding paradox is frequently observed by seasoned managers in Paragraph 1?",
+      "options": {
+        "A": "Small companies innovate faster than large multinationals.",
+        "B": "Teams of star contributors often stumble while ordinary groups achieve breakthroughs.",
+        "C": "Higher bonus structures always lead to employee resignations.",
+        "D": "Remote employees work longer hours than in-office workers."
+      },
+      "correct": "B",
+      "analysis": "第一段末尾指出这一悖论：'teams comprised of stellar individual contributors routinely stumble, while seemingly average groups achieve groundbreaking innovations.' 明星团队折戟而普通团队突破，选 B。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"candor\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "frankness and honesty",
+        "B": "excessive caution",
+        "C": "financial generosity",
+        "D": "hostile confrontation"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'When psychological safety is deficient, self-protective fear paralyzes candor; employees hoard vital information, conceal emerging defects...' 缺乏安全感导致人们不敢直言，隐瞒缺陷，因此 candor 指坦率、真诚直言，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. What occurs when a workplace lacks psychological safety according to Paragraph 2?",
+      "options": {
+        "A": "Employees demand higher stock compensation.",
+        "B": "Staff withhold vital information and hide mistakes to protect themselves.",
+        "C": "Managers are forced to hire external consultants.",
+        "D": "Companies completely eliminate bonus systems."
+      },
+      "correct": "B",
+      "analysis": "第二段指出缺乏心理安全感的恶果：'employees hoard vital information, conceal emerging defects, and conform to safe consensus, inevitably steering organizations toward catastrophic oversights.' 选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What did Google's Project Aristotle discover about high-performing teams in Paragraph 3?",
+      "options": {
+        "A": "Team members all held degrees from prestigious Ivy League universities.",
+        "B": "How team members interacted was far more important than individual member qualifications.",
+        "C": "Introverted software engineers performed better when isolated completely.",
+        "D": "Teams with strict hierarchical leadership generated the highest profit margins."
+      },
+      "correct": "B",
+      "analysis": "第三段指出实证发现：'who was on the team mattered far less than how the team interacted. Teams characterized by high psychological safety exhibited equal conversational turn-taking... and superior project profitability.' 团队互动方式远比成员个人资质更重要，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. How should leaders cultivate psychological safety according to the author in Paragraph 4?",
+      "options": {
+        "A": "By eliminating all debates and disagreements from project meetings.",
+        "B": "By demonstrating vulnerability, admitting mistakes, and framing work as learning experiments.",
+        "C": "By firing any employee who raises critical objections.",
+        "D": "By offering identical salaries regardless of job performance."
+      },
+      "correct": "B",
+      "analysis": "尾段作者给出建议：'abandon the authoritarian posture of infallibility, actively framing work as learning experiments... explicitly acknowledge their own mistakes...' 展现脆弱、承认失误并将工作视为学习实验，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "scrutiny",
+      "phonetic": "/ˈskruːtəni/",
+      "pos": "n.",
+      "meaning": "仔细审查；彻底核查",
+      "collocation": "performance scrutiny / close scrutiny"
+    },
+    {
+      "word": "confounding",
+      "phonetic": "/kənˈfaʊndɪŋ/",
+      "pos": "adj.",
+      "meaning": "令人困惑的；混淆的",
+      "collocation": "confounding paradox / factor"
+    },
+    {
+      "word": "candor",
+      "phonetic": "/ˈkændər/",
+      "pos": "n.",
+      "meaning": "坦率；直率；真诚",
+      "collocation": "paralyze candor / speak with candor"
+    },
+    {
+      "word": "oversight",
+      "phonetic": "/ˈəʊvəsaɪt/",
+      "pos": "n.",
+      "meaning": "疏漏；失察；盲区",
+      "collocation": "catastrophic oversight / regulatory oversight"
+    },
+    {
+      "word": "turn-taking",
+      "phonetic": "/ˈtɜːn teɪkɪŋ/",
+      "pos": "n.",
+      "meaning": "轮流互动；交替发言",
+      "collocation": "equal conversational turn-taking"
+    },
+    {
+      "word": "drastically",
+      "phonetic": "/ˈdræstɪkli/",
+      "pos": "adv.",
+      "meaning": "大幅度地；剧烈地",
+      "collocation": "drastically reduce / decline"
+    },
+    {
+      "word": "infallibility",
+      "phonetic": "/ɪnˌfæləˈbɪləti/",
+      "pos": "n.",
+      "meaning": "绝无过失；绝对正确性",
+      "collocation": "posture of infallibility"
+    },
+    {
+      "word": "posture",
+      "phonetic": "/ˈpɒstʃər/",
+      "pos": "n.",
+      "meaning": "姿势；姿态；心理姿态",
+      "collocation": "authoritarian posture / defensive posture"
+    },
+    {
+      "word": "whistleblower",
+      "phonetic": "/ˈwɪslbləʊər/",
+      "pos": "n.",
+      "meaning": "吹哨人；揭发检举者",
+      "collocation": "reward whistleblowers / protect whistleblower"
+    },
+    {
+      "word": "bedrock",
+      "phonetic": "/ˈbedrɒk/",
+      "pos": "n.",
+      "meaning": "基石；深层底座",
+      "collocation": "emotional bedrock / bedrock of innovation"
+    }
+  ],
+  "translation_cn": "在当代商业社会的激烈竞争中，企业高管长期以来秉持着一种预设：打造卓越组织的秘诀，在于招揽最聪明的顶级人才，并对他们施以严酷的绩效考核。每年有数十亿美元被砸向工作流程优化、顶尖文凭人才争夺以及精密的奖金激励机制。然而，经验丰富的管理者却频繁目睹一个令人困惑的悖论：由明星级天才拼凑而成的团队往往连连受挫，而由资质平平的普通成员组成的团队反而频频取得突破性创新。数十年来，支配集体非凡智慧的隐藏变量始终是一个捉摸不透的组织迷局。\n\n这一谜团的破解源自哈佛商学院教授艾米·埃德蒙森（Amy Edmondson），她开创性地提出了“团队心理安全感”这一核心概念——即团队成员共同深信：团队内部是一个可以从容承担人际风险的安全领地。在一个具备高心理安全感的组织中，当员工提出标新立异的构想、询问看似幼稚的基础问题，或是坦白承认自己在操作中的失误时，绝不会担心招致嘲笑、排挤或惩罚。反之，当心理安全感匮乏时，自我保护的恐惧便会窒息真诚与坦率；员工开始藏匿关键信息、掩盖萌芽中的产品缺陷，并迎合安全的表面共识，这最终不可避免地将组织引向灾难性的系统溃败。\n\n这一深刻理论在谷歌公司开展的代号为“亚里士多德计划”的多年实证研究中获得了坚实印证。谷歌的数据分析师耗时三年深入剖析了全公司数百个工作团队，全方位检验了包括团队人员构成、名校学历比例、性别多样性以及性格分布在内的诸多假设。最终的统计结论令高管大为震惊：团队里“有谁”其实无关紧要，团队成员“如何互动”才决定一切。那些具备卓越心理安全感的团队展现出极为均衡的发言轮转机会、高度的社交敏感度以及更为亮眼的项目盈利表现。其成员流失率断崖式下降，推出颠覆性创新产品的效率更是翻了一番。\n\n培育团队心理安全感，需要管理者主动放下身段，展现富有勇气的脆弱姿态。领导者必须摒弃那种“永远英明正确”的专断架势，主动将日常业务重塑为“探索式学习实验”而非“不容有失的机械执行”。管理者应当公开坦陈自己的过失，通过真诚提出开放式问题展示好奇心，并重奖那些揭开尴尬组织真相的“吹哨人”。心理安全感绝非是要打造一团和气、不敢交锋的温室；相反，它提供了最坚实的情感底座，使得团队能够承受最激烈的思想交锋、最彻底的信息透明，并最终实现突破性的协同创新。"
+}

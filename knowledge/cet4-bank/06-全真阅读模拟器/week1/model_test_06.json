@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-06",
+  "day": 6,
+  "week": 1,
+  "title": "Wearable Health Trackers: The Quantification of Everyday Wellness",
+  "title_cn": "可穿戴健康追踪器：日常健康的“量化自我”迷思",
+  "theme": "科技与数字生活异化",
+  "word_count": 422,
+  "suggested_time_minutes": 10,
+  "passage": "In an era marked by rapid health awareness and ubiquitous technology, wearable fitness trackers have evolved from niche athletic gadgets into mainstream lifestyle accessories. Millions of consumers diligently strap smartwatches to their wrists each morning, monitoring daily step counts, resting heart rates, and blood oxygen saturation with quasi-religious devotion. The philosophy propelling this boom is known as the 'quantified self'—the belief that by translating continuous bodily functions into objective digital metrics, individuals can eliminate ambiguity, optimize vitality, and assume full accountability for their longevity.\n\nUndeniably, automated biological tracking offers tangible public health advantages. For individuals managing chronic conditions such as hypertension or cardiovascular arrhythmias, continuous biometric tracking provides critical early warning indicators, prompting timely medical intervention. Furthermore, the gamified mechanics of digital trackers—such as virtual trophies and milestone streaks—serve as potent psychological catalysts that incentivize previously sedentary office workers to incorporate brisk walking and cardiovascular exercise into their daily routines.\n\nYet, clinical psychologists have begun warning against the unintended emotional fallout of this excessive quantification. When individuals rely exclusively on wrist-worn monitors to interpret their physiological status, they frequently lose touch with intuitive bodily sensations. Sleep specialists have recently coined the diagnostic term 'orthosomnia' to describe an emerging anxiety disorder characterized by obsessive preoccupation with achieving flawless sleep tracker scores. Patients suffering from this condition report lying awake in bed, immobilized by anxiety that their restless movement will ruin their nightly recovery algorithm—ironically precipitating the very insomnia they sought to prevent.\n\nMoreover, commercial algorithms often oversimplify the fluid, highly individualized nature of human physiology. Rigid benchmarks—such as the arbitrary ten-thousand-step threshold popularized by early marketing campaigns—fail to account for biological diversity, daily stress variations, and organic recovery needs. True wellness is not a static mathematical equation to be solved through obsessive algorithmic surveillance. Instead of allowing automated scores to dictate daily self-esteem, we must learn to integrate digital insights with mindful body awareness, recognizing that a vibrant life encompasses natural fluctuations that no sensor can perfectly capture.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What is the fundamental premise behind the \"quantified self\" movement described in Paragraph 1?",
+      "options": {
+        "A": "Athletic success depends entirely on expensive digital equipment.",
+        "B": "Translating bodily functions into digital metrics enables individuals to optimize health.",
+        "C": "Smartwatches can cure chronic cardiovascular diseases automatically.",
+        "D": "Doctors should replace traditional diagnosis with smartphone apps."
+      },
+      "correct": "B",
+      "analysis": "第一段尾句解释该理念：'the quantified self—the belief that by translating continuous bodily functions into objective digital metrics, individuals can eliminate ambiguity, optimize vitality, and assume full accountability for their longevity.' 对应 B 选项。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"sedentary\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "physically inactive",
+        "B": "highly ambitious",
+        "C": "intellectually curious",
+        "D": "emotionally unstable"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'incentivize previously sedentary office workers to incorporate brisk walking and cardiovascular exercise'，对比快走和有氧运动可知，sedentary 意为久坐不动的、缺乏锻炼的，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. How does \"orthosomnia\" paradoxically worsen sleep quality according to Paragraph 3?",
+      "options": {
+        "A": "The bright screen of the tracker illuminates the bedroom all night.",
+        "B": "The device frequently emits loud alarm noises during deep sleep.",
+        "C": "Anxiety about achieving perfect sleep metrics keeps patients awake.",
+        "D": "Trackers emit electromagnetic waves that disturb melatonin production."
+      },
+      "correct": "C",
+      "analysis": "第三段指出正睡症（orthosomnia）患者：'report lying awake in bed, immobilized by anxiety that their restless movement will ruin their nightly recovery algorithm—ironically precipitating the very insomnia they sought to prevent'，对分数的过度焦虑让人失眠，选 C。"
+    },
+    {
+      "id": 4,
+      "question_type": "细节推理题 (Inference Detail)",
+      "stem": "4. What flaw in commercial fitness algorithms is highlighted in Paragraph 4?",
+      "options": {
+        "A": "They drain smartwatch batteries excessively fast.",
+        "B": "They impose rigid, arbitrary thresholds that ignore individual biological diversity.",
+        "C": "They are vulnerable to malicious hacking attacks.",
+        "D": "They encourage users to consume excessive sugary sports drinks."
+      },
+      "correct": "B",
+      "analysis": "第四段指出：'Rigid benchmarks—such as the arbitrary ten-thousand-step threshold... fail to account for biological diversity, daily stress variations, and organic recovery needs.' 机械一刀切的硬指标忽视了个体生理差异，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What does the author suggest regarding personal wellness in the conclusion?",
+      "options": {
+        "A": "Consumers should discard all health trackers immediately.",
+        "B": "Individuals should combine digital metrics with intuitive body awareness.",
+        "C": "Health insurance companies should mandate smartwatch usage.",
+        "D": "Smartwatches should be classified strictly as prescription medical devices."
+      },
+      "correct": "B",
+      "analysis": "尾段作者建议：'we must learn to integrate digital insights with mindful body awareness, recognizing that a vibrant life encompasses natural fluctuations that no sensor can perfectly capture.' 结合数字洞察与内在身体感知，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "ubiquitous",
+      "phonetic": "/juːˈbɪkwɪtəs/",
+      "pos": "adj.",
+      "meaning": "无处不在的；普遍存在的",
+      "collocation": "ubiquitous technology / presence"
+    },
+    {
+      "word": "devotion",
+      "phonetic": "/dɪˈvəʊʃn/",
+      "pos": "n.",
+      "meaning": "奉献；忠诚；极度虔诚",
+      "collocation": "religious devotion / dedication"
+    },
+    {
+      "word": "incentivize",
+      "phonetic": "/ɪnˈsentɪvaɪz/",
+      "pos": "v.",
+      "meaning": "激励；刺激",
+      "collocation": "incentivize workers / behaviors"
+    },
+    {
+      "word": "sedentary",
+      "phonetic": "/ˈsedntri/",
+      "pos": "adj.",
+      "meaning": "久坐不动的；缺乏运动的",
+      "collocation": "sedentary lifestyle / sedentary workers"
+    },
+    {
+      "word": "fallout",
+      "phonetic": "/ˈfɔːlaʊt/",
+      "pos": "n.",
+      "meaning": "副作用；不良后果",
+      "collocation": "emotional fallout / political fallout"
+    },
+    {
+      "word": "preoccupation",
+      "phonetic": "/priːˌɒkjuˈpeɪʃn/",
+      "pos": "n.",
+      "meaning": "全神贯注；执迷；挥之不去的念头",
+      "collocation": "obsessive preoccupation with sth."
+    },
+    {
+      "word": "precipitate",
+      "phonetic": "/prɪˈsɪpɪteɪt/",
+      "pos": "v.",
+      "meaning": "促使；导致；加速发生",
+      "collocation": "precipitate a crisis / insomnia"
+    },
+    {
+      "word": "benchmark",
+      "phonetic": "/ˈbentʃmɑːk/",
+      "pos": "n.",
+      "meaning": "基准；基准检验点",
+      "collocation": "rigid benchmarks / industry benchmark"
+    },
+    {
+      "word": "arbitrary",
+      "phonetic": "/ˈɑːbɪtrəri/",
+      "pos": "adj.",
+      "meaning": "任意的；武断的；凭主观意愿的",
+      "collocation": "arbitrary threshold / decision"
+    },
+    {
+      "word": "fluctuation",
+      "phonetic": "/ˌflʌktʃuˈeɪʃn/",
+      "pos": "n.",
+      "meaning": "波动；起伏变化",
+      "collocation": "natural fluctuations / price fluctuations"
+    }
+  ],
+  "translation_cn": "在一个健康意识空前高涨、数字技术无孔不入的时代，可穿戴运动追踪器已经从特定专业运动员的小众装备，演变为大众的主流生活配饰。每天清晨，数以百万计的消费者一丝不苟地将智能手表绑在手腕上，带着近乎宗教般的虔诚追踪每日步数、静息心率和血氧饱和度。推动这场热潮的核心哲学被称为“量化自我”——即坚信通过将持续的生理机能转化为客观的数字指标，人们就能消除不确定性、优化生命活力，并对自己的健康长寿承担起全权责任。\n\n不可否认，自动化生物追踪确实带来了实打实的公共健康红利。对于高血压或心律失常等慢性病患者而言，不间断的生物指标监测提供了关键的早期预警，促使他们及时就医。此外，数字追踪器的游戏化激励机制——例如虚拟奖章和连续打卡记录——充当了强有力的心理催化剂，成功激励那些原本久坐不动的办公室白领将健步走和有氧锻炼融入日常生活。\n\n然而，临床心理学家已开始警告这种过度量化所带来的意想不到的负面心理反噬。当人们完全依赖手腕上的设备来解读自身生理状态时，他们往往会丧失对身体直觉感知的敏感度。睡眠专家最近创造了“正睡症”这一诊断术语，用来描述一种新兴的焦虑障碍：患者对必须获得完美的睡眠追踪评分产生病态执念。患有这种症状的人自述躺在床上不敢入睡，深怕自己翻身动弹会破坏当晚的算法恢复得分——极其讽刺的是，这恰恰引发了他们原本竭力避免的失眠。\n\n此外，商业算法往往严重低估了人体生理动态且高度个体化的本质。一些僵化的基准——例如早期营销活动炒作出的“一万步”武断门槛——根本没有考虑个体的生物多样性、日常压力波动以及天然的机体恢复需求。真正的健康绝非一个靠严密算法监控就能破解的静态数学公式。我们不应任由自动生成的评分左右自尊心，而必须学会将数字洞察与清晰的身体觉察有机融合，清醒地认识到：生机勃勃的生命本身就包含着任何传感器都无法完美捕捉的天然波动。"
+}

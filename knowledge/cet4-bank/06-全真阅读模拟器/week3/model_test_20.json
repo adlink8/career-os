@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-20",
+  "day": 20,
+  "week": 3,
+  "title": "Experiential Purchases vs. Material Possessions: What Truly Drives Well-Being",
+  "title_cn": "体验消费 vs 物质占有：何者真正带来长久幸福感",
+  "theme": "社会生活与消费文化变迁",
+  "word_count": 425,
+  "suggested_time_minutes": 10,
+  "passage": "In consumer-driven economies, advertisements relentlessly perpetuate the promise that material acquisition is the royal road to personal fulfillment. We are bombarded with imagery suggesting that a state-of-the-art smartphone, a designer handbag, or a high-performance luxury automobile will permanently elevate our life satisfaction. Driven by this commercial ethos, households accumulate vast quantities of physical possessions. Yet, decades of empirical research conducted by social psychologists have demonstrated a striking divergence: spending money on life experiences delivers substantially greater and more enduring happiness than investing in material goods.\n\nThe psychological mechanism explaining this disparity centers on what economists term 'hedonic adaptation.' When an individual purchases a new material object, the initial rush of excitement is intense but fleeting. Because the physical possession remains static in one's environment, the brain rapidly acclimates to its presence; what was once novel becomes mundane, fading into the background of daily life. Consequently, individuals find themselves trapped on a 'hedonic treadmill,' compelled to continually acquire newer, more expensive items simply to sustain their baseline happiness.\n\nIn contrast, experiential purchases—such as exploring an unfamiliar landscape, learning to cook regional cuisine, or attending a live concert with friends—are immune to this adaptation decay. A landmark multi-year investigation directed by Cornell University psychologist Thomas Gilovich revealed that experiences are fundamentally superior drivers of well-being for two reasons. First, experiences become woven into our narrative identity; we are literally the sum total of what we have witnessed and done, not the inanimate objects we store in closets. Second, experiences are inherently social. Even challenging travel mishaps evolve into cherished comedic anecdotes that deepen interpersonal bonds, whereas material goods frequently provoke toxic social comparisons and envy.\n\nThese psychological insights hold profound implications for personal budgeting and public governance. Individuals seeking genuine fulfillment should consciously reallocate discretionary expenditure away from ephemeral status symbols toward enriching collective experiences. Concurrently, forward-thinking municipalities should prioritize funding accessible public recreation, cultural arts festivals, and pristine public parks over facilitating sprawling shopping malls. True affluence is ultimately measured not by the abundance of physical inventory we hoard, but by the richness of the memories we carry.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What promise do advertisements constantly promote according to Paragraph 1?",
+      "options": {
+        "A": "Material acquisition leads directly to lasting personal fulfillment.",
+        "B": "Saving money in banks is safer than buying luxury goods.",
+        "C": "Consuming less energy will protect the global climate.",
+        "D": "Life experiences are far cheaper than manufactured products."
+      },
+      "correct": "A",
+      "analysis": "第一段首句指出广告的宣传：'advertisements relentlessly perpetuate the promise that material acquisition is the royal road to personal fulfillment.' 物质占有是通往幸福的捷径，选 A。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"mundane\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "ordinary and unexciting",
+        "B": "dangerously radioactive",
+        "C": "extremely lucrative",
+        "D": "technologically advanced"
+      },
+      "correct": "A",
+      "analysis": "第二段上下文：'the brain rapidly acclimates to its presence; what was once novel becomes mundane, fading into the background of daily life.' 大脑迅速适应，曾经的新奇变得平淡无奇，mundane 意为平凡乏味的、单调的，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do material possessions cause people to be trapped on a \"hedonic treadmill\" in Paragraph 2?",
+      "options": {
+        "A": "Because products break down within weeks of purchase.",
+        "B": "Because the brain quickly adapts to static possessions, requiring new items to maintain happiness.",
+        "C": "Because credit card debt forces consumers to work multiple jobs.",
+        "D": "Because storage space in apartments is strictly limited."
+      },
+      "correct": "B",
+      "analysis": "第二段解释享乐适应机理：'Because the physical possession remains static... what was once novel becomes mundane... compelled to continually acquire newer, more expensive items simply to sustain their baseline happiness.' 静态物品迅速被适应，必须买更新更贵的来维持快乐，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What did Thomas Gilovich's Cornell University research reveal about experiences?",
+      "options": {
+        "A": "They become part of our narrative identity and foster social bonding.",
+        "B": "They cause more intense financial regret than material purchases.",
+        "C": "They are only beneficial for people over fifty years old.",
+        "D": "They provoke fierce social rivalry among family members."
+      },
+      "correct": "A",
+      "analysis": "第三段指出吉洛维奇教授的发现：'experiences become woven into our narrative identity... inherently social... deepen interpersonal bonds'，成为自我叙事认同一部分并促进社会联结，选 A。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the author's primary conclusion in the final paragraph?",
+      "options": {
+        "A": "Governments should completely ban luxury retail shopping malls.",
+        "B": "True affluence lies in the richness of memories rather than the hoarding of physical goods.",
+        "C": "Individuals should never spend any money on entertainment.",
+        "D": "Material goods are essential for measuring national economic growth."
+      },
+      "correct": "B",
+      "analysis": "尾段末句指出真谛：'True affluence is ultimately measured not by the abundance of physical inventory we hoard, but by the richness of the memories we carry.' 真正的富足在于记忆的丰盈而非物质的囤积，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "disparity",
+      "phonetic": "/dɪˈspærəti/",
+      "pos": "n.",
+      "meaning": "显著差异；悬殊差距",
+      "collocation": "striking disparity / divergence"
+    },
+    {
+      "word": "hedonic",
+      "phonetic": "/hɪˈdɒnɪk/",
+      "pos": "adj.",
+      "meaning": "享乐的；快乐论的",
+      "collocation": "hedonic adaptation / hedonic treadmill"
+    },
+    {
+      "word": "acclimate",
+      "phonetic": "/ˈækləmeɪt/",
+      "pos": "v.",
+      "meaning": "适应新环境；服水土",
+      "collocation": "acclimate to one's presence"
+    },
+    {
+      "word": "mundane",
+      "phonetic": "/mʌnˈdeɪn/",
+      "pos": "adj.",
+      "meaning": "平淡无奇的；世俗的；枯燥的",
+      "collocation": "become mundane / mundane details"
+    },
+    {
+      "word": "narrative",
+      "phonetic": "/ˈnærətɪv/",
+      "pos": "adj./n.",
+      "meaning": "叙事的；叙述的；故事认同",
+      "collocation": "narrative identity / personal narrative"
+    },
+    {
+      "word": "inanimate",
+      "phonetic": "/ɪnˈænɪmət/",
+      "pos": "adj.",
+      "meaning": "无生命的；无生气的",
+      "collocation": "inanimate objects / matter"
+    },
+    {
+      "word": "mishap",
+      "phonetic": "/ˈmɪshæp/",
+      "pos": "n.",
+      "meaning": "小晦气；不幸小事故",
+      "collocation": "travel mishaps / minor mishap"
+    },
+    {
+      "word": "discretionary",
+      "phonetic": "/dɪˈskreʃənri/",
+      "pos": "adj.",
+      "meaning": "自由支配的；随意的",
+      "collocation": "discretionary expenditure / income"
+    },
+    {
+      "word": "pristine",
+      "phonetic": "/ˈprɪstiːn/",
+      "pos": "adj.",
+      "meaning": "原始纯净的；未受污染的",
+      "collocation": "pristine public parks / nature"
+    },
+    {
+      "word": "hoard",
+      "phonetic": "/hɔːd/",
+      "pos": "v.",
+      "meaning": "贮藏；囤积；秘藏",
+      "collocation": "hoard physical inventory / wealth"
+    }
+  ],
+  "translation_cn": "在消费主义主导的现代经济体中，商业广告无休止地向公众灌输一种许诺：占有物质财富是通往个人幸福圆满的康庄大道。我们被铺天盖地的营销视觉所包围，似乎拥有一款顶配智能手机、一只设计师品牌手袋，或是一辆高性能豪华轿车，就能永久性地拔高我们对生活的满意度。在这一商业伦理的驱使下，现代家庭囤积了数量极其庞大的实物资产。然而，社会心理学家数十年来开展的大量实证研究却揭示了一个截然相反的惊人结论：将金钱投资于真实的人生体验，所带来的幸福感远远比购买实体商品更为深刻、更为持久。\n\n解释这种巨大落差的心理学机制，核心在于经济学家所称的“享乐适应（hedonic adaptation）”。当一个人购买了一件全新的实体物件时，最初的那阵心跳与兴奋虽然猛烈，却转瞬即逝。由于实物在生活环境中是静止不变的，我们的大脑会以极快的速度对其习以为常；曾经无比新鲜的宝贝很快沦为乏善可陈的背景杂物，彻底褪色在日常的平淡中。最终，人们发现自己深陷于一架停不下来的“享乐跑步机”之上：不得不强迫自己去追求更新潮、更昂贵的商品，仅仅是为了维持基准线上的快乐感。\n\n与此形成鲜明对比的是，体验型消费——诸如探索一片未知的异域山水、动手学做一道地道的地方风味佳肴，或是与挚友一同奔赴一场现场音乐节——却天然免疫于这种适应性的衰减。康奈尔大学心理学家托马斯·吉洛维奇（Thomas Gilovich）主导的一项里程碑式多年追踪研究揭示：体验之所以能带来压倒性的长久幸福，核心在于两点。首先，独特的人生经历被深深编织进了我们的“自我叙事认同”之中——从根本上讲，我们之所以成为今天的自己，取决于我们曾亲眼见证过什么、经历过什么，而非我们在衣橱里塞进了多少没有生命的死物。其次，体验天生具有高度的社交属性。即使旅途中遭遇令人啼笑皆非的意外窘况，日后也会沉淀为拉近人际距离的温情笑谈；而实物商品却往往只会诱发有毒的攀比嫉妒。\n\n这些深刻的心理学洞见，对个人财务规划乃至城市公共治理都具有重大启示。追求真正充实幸福的个体，应当自觉地将可自由支配的开支从虚妄的面子符号，战略性地转向那些能丰富集体记忆的沉浸式体验。与此同时，富有远见的市政规划者应当优先把纳税人的资金投入到开放易达的公共休闲绿地、惠民文化艺术节以及纯净的市民公园建设中，而非一味盲目审批大而无当的购物中心。生命的真正富足，从来不是衡量于我们囤积了多少有形的仓储库存，而是在于我们的人生行囊中装载了多少温暖一生的珍贵记忆。"
+}

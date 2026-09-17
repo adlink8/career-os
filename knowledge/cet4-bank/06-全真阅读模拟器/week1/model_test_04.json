@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-04",
+  "day": 4,
+  "week": 1,
+  "title": "The Myth of Multitasking in a Hyper-Connected World",
+  "title_cn": "多任务处理神话：超互联时代的专注力碎片化危机",
+  "theme": "科技与数字生活异化",
+  "word_count": 420,
+  "suggested_time_minutes": 10,
+  "passage": "In modern workplaces and academic environments, multitasking is frequently praised as an indispensable badge of efficiency. Professionals take pride in toggling between dozens of browser tabs, drafting emails during teleconferences, and responding to instant messages while analyzing complex spreadsheets. This frantic juggling of stimuli creates a compelling psychological illusion of immense productivity. However, cognitive neuroscientists have consistently demonstrated that what we perceive as simultaneous processing is actually rapid, erratic task-switching that severely degrades mental performance.\n\nThe human brain is fundamentally not wired to execute multiple attention-demanding cognitive tasks in parallel. When an individual attempts to focus on two distinct activities simultaneously, the prefrontal cortex is forced to repeatedly disengage from one mental rule set and activate another. This cognitive friction incurs what researchers term a 'switching cost'—a brief but cumulative delay accompanied by a sharp spike in mental fatigue. Far from accelerating output, habitual task-switching fragments working memory, diminishes comprehension depth, and vastly escalates error rates in high-stakes problem solving.\n\nA landmark investigation conducted by psychologists at Stanford University compared chronic media multitaskers with their single-tasking peers across a battery of cognitive tests. The researchers anticipated that frequent multitaskers would display superior mental agility and superior information filtering capabilities. The empirical findings, however, revealed precisely the reverse. Heavy multitaskers were substantially worse at filtering out irrelevant environmental distractions, organized their memory less logically, and were notably slower at switching between discrete tasks. Their chronic exposure to digital clutter had effectively eroded their capacity to sustain selective attention.\n\nReclaiming cognitive clarity requires establishing intentional boundaries against digital interruptions. Cultivating sustained focus demands structured work intervals, deliberate batching of electronic correspondence, and the discipline of monolithic single-tasking. Deep intellectual breakthroughs and nuanced problem-solving rarely emerge from fragmented bursts of attention. In a hyper-connected knowledge economy, the rarest and most valuable competitive advantage is not the speed at which one juggles distractions, but the depth of uninterrupted contemplation one can sustain.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What does Paragraph 1 suggest about multitasking in modern workplaces?",
+      "options": {
+        "A": "It is scientifically proven to boost creative thinking.",
+        "B": "It gives employees a false sensation of high efficiency.",
+        "C": "It significantly reduces psychological fatigue during office hours.",
+        "D": "It helps professionals solve complex spreadsheets faster."
+      },
+      "correct": "B",
+      "analysis": "第一段指出：'This frantic juggling of stimuli creates a compelling psychological illusion of immense productivity. However... what we perceive as simultaneous processing is actually rapid, erratic task-switching that severely degrades mental performance.' 这说明多任务给人带来高效的错觉（illusion），对应 B 选项。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"erratic\" in Paragraph 1 is closest in meaning to _______.",
+      "options": {
+        "A": "unpredictable and inconsistent",
+        "B": "organized and methodical",
+        "C": "deliberate and steady",
+        "D": "harmless and flexible"
+      },
+      "correct": "A",
+      "analysis": "第一段上下文提到多任务是'rapid, erratic task-switching that severely degrades mental performance'，结合后文的脱离规则集、摩擦、碎片化，可知 erratic 指混乱无序、不规则的，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why does task-switching lead to a \"switching cost\" according to Paragraph 2?",
+      "options": {
+        "A": "Because the brain consumes all its physical glucose within minutes.",
+        "B": "Because digital devices frequently freeze during rapid application switching.",
+        "C": "Because the prefrontal cortex must repeatedly stop and reboot different cognitive rule sets.",
+        "D": "Because individuals lack basic time-management skills."
+      },
+      "correct": "C",
+      "analysis": "第二段明确解释：'the prefrontal cortex is forced to repeatedly disengage from one mental rule set and activate another. This cognitive friction incurs what researchers term a switching cost'，前额叶被迫频繁脱离并重启不同思维规则集，对应 C 选项。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What surprising result did the Stanford University investigation reveal?",
+      "options": {
+        "A": "Frequent multitaskers performed better on emotional intelligence assessments.",
+        "B": "Single-tasking professionals earned substantially lower annual salaries.",
+        "C": "Heavy multitaskers were actually more easily distracted and organized memory worse.",
+        "D": "Chronic multitaskers were exceptionally adept at filtering junk emails."
+      },
+      "correct": "C",
+      "analysis": "第三段指出：'findings, however, revealed precisely the reverse. Heavy multitaskers were substantially worse at filtering out irrelevant environmental distractions, organized their memory less logically...' 即长期多任务者反而更易受干扰且记忆混乱，选 C。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the author's primary conclusion in the final paragraph?",
+      "options": {
+        "A": "Companies should strictly prohibit internet access during working hours.",
+        "B": "Uninterrupted deep contemplation constitutes the most valuable competitive advantage.",
+        "C": "Electronic correspondence should be abolished in modern management.",
+        "D": "Multitasking ability will remain the primary criterion for professional promotion."
+      },
+      "correct": "B",
+      "analysis": "尾段末句指出：'the rarest and most valuable competitive advantage is not the speed at which one juggles distractions, but the depth of uninterrupted contemplation one can sustain.' 持续不受打扰的深度沉思是最宝贵的竞争优势，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "indispensable",
+      "phonetic": "/ˌɪndɪˈspensəbl/",
+      "pos": "adj.",
+      "meaning": "必不可少的；不可或缺的",
+      "collocation": "indispensable part / badge"
+    },
+    {
+      "word": "stimuli",
+      "phonetic": "/ˈstɪmjʊlaɪ/",
+      "pos": "n.",
+      "meaning": "刺激物 (stimulus复数)",
+      "collocation": "juggling of stimuli / visual stimuli"
+    },
+    {
+      "word": "disengage",
+      "phonetic": "/ˌdɪsɪnˈɡeɪdʒ/",
+      "pos": "v.",
+      "meaning": "脱离；解脱；中断参与",
+      "collocation": "disengage from a rule set / task"
+    },
+    {
+      "word": "incur",
+      "phonetic": "/ɪnˈkɜːr/",
+      "pos": "v.",
+      "meaning": "招致；蒙受；引起 (成本/损失)",
+      "collocation": "incur costs / penalties / friction"
+    },
+    {
+      "word": "escalate",
+      "phonetic": "/ˈeskəleɪt/",
+      "pos": "v.",
+      "meaning": "使加剧；逐步升高",
+      "collocation": "escalate error rates / conflicts"
+    },
+    {
+      "word": "chronic",
+      "phonetic": "/ˈkrɒnɪk/",
+      "pos": "adj.",
+      "meaning": "慢性的；长期的；习惯性的",
+      "collocation": "chronic multitaskers / chronic stress"
+    },
+    {
+      "word": "agility",
+      "phonetic": "/əˈdʒɪləti/",
+      "pos": "n.",
+      "meaning": "敏捷度；灵活性",
+      "collocation": "mental agility / physical agility"
+    },
+    {
+      "word": "discrete",
+      "phonetic": "/dɪˈskriːt/",
+      "pos": "adj.",
+      "meaning": "分离的；互不相干的",
+      "collocation": "discrete tasks / categories"
+    },
+    {
+      "word": "monolithic",
+      "phonetic": "/ˌmɒnəˈlɪθɪk/",
+      "pos": "adj.",
+      "meaning": "单一整体的；单块的",
+      "collocation": "monolithic single-tasking"
+    },
+    {
+      "word": "contemplation",
+      "phonetic": "/ˌkɒntəmˈpleɪʃn/",
+      "pos": "n.",
+      "meaning": "沉思；冥想；专注深思",
+      "collocation": "deep contemplation / uninterrupted contemplation"
+    }
+  ],
+  "translation_cn": "在现代职场与学术环境中，多任务处理常被誉为不可或缺的高效徽章。职场人士自豪地在数十个浏览器标签页间反复切换，在远程会议中草拟邮件，同时一边分析复杂表格一边回复即时通讯软件。这种在各种感官刺激之间疯狂周旋的状态，创造了一种工作产出极为庞大的心理错觉。然而，认知神经科学家一再证实，我们所自以为的“同时处理”，本质上只是大脑在不同任务间快速而混乱的切换，这种行为严重损害了心智表现。\n\n从生理结构上看，人类大脑根本不具备并行处理多项高认知负荷任务的神经回路。当一个人试图同时专注于两件截然不同的事情时，前额叶皮层被迫反复从一套思维规则集中脱离，并紧急激活另一套规则。这种认知摩擦带来了研究者所称的“切换成本”——一种短暂但不断累积的延迟，并伴随大脑疲劳度的急剧飙升。习惯性的任务切换非但不能加速产出，反而割裂了工作记忆，削弱了理解深度，并在面对高难度决策时大幅推高错误率。\n\n斯坦福大学心理学家开展的一项里程碑式研究，通过一系列认知测试对比了长期多任务使用者与专注单任务处理的同龄人。研究人员最初预期，频繁的多任务操作者会展现出更卓越的思维敏捷度和更强的信息过滤能力。然而，实证研究的结果却截然相反。长期多任务者在屏蔽无关环境干扰方面表现得明显更差，他们对记忆信息的逻辑组织能力更弱，而且在独立任务之间的切换速度也显著迟缓。长期暴露在数字垃圾信息中，事实上已经蚕食了他们维持定向注意力的基础能力。\n\n重获清晰敏锐的认知力，需要我们在数字干扰面前设立自觉的边界。培养持久的专注力需要结构化的工作时段划分、有计划地批量处理电子邮件，以及坚持单一任务专注意志。深刻的思想突破和细致的难题化解，极少诞生于碎片化的注意力冲动中。在高度互联的知识经济时代，最稀缺、最具价值的竞争优势，从来不是周旋于琐碎干扰的切换速度，而是你能够维持不受打扰的深度沉思时间。"
+}

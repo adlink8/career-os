@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-03",
+  "day": 3,
+  "week": 1,
+  "title": "Blue Light, Circadian Rhythms, and the Modern Sleep Deficit",
+  "title_cn": "屏幕蓝光、生物钟与现代人的睡眠赤字危机",
+  "theme": "科技与数字生活异化",
+  "word_count": 415,
+  "suggested_time_minutes": 10,
+  "passage": "For millions of urban dwellers, the final visual experience of the day is not the calming darkness of a bedroom, but the vibrant glow of a smartphone screen. Whether catching up on instant messages, browsing short video feeds, or reading late-night news, this bedtime routine has become nearly universal. Yet, sleep physiologists warn that this seemingly harmless indulgence exerts a profound disruptive effect on the intricate biological clocks that govern human vitality.\n\nAt the heart of the issue is the specific wavelength of light emitted by modern digital displays. Unlike the warm amber tones of sunset or incandescent bulbs, electronic screens emit concentrated blue light, which closely mimics midday sunlight. When specialized photoreceptors in our retinas detect this frequency, they signal the brain's pineal gland to halt the production of melatonin—the essential hormone responsible for inducing drowsiness and facilitating cell repair. Consequently, the brain remains in a hyper-alert state, misinterpreting the midnight glow as broad daylight.\n\nThe consequences of chronic sleep deprivation extend far beyond morning lethargy. Clinical trials demonstrate that prolonged circadian disruption impairs the brain's glymphatic system, which actively flushes out metabolic waste and toxic proteins during deep rest. Without adequate restorative sleep, individuals experience measurable deficits in short-term memory consolidation, emotional resilience, and immune defense. Over months and years, irregular sleep cycles significantly increase the vulnerability to cardiovascular disorders and metabolic syndromes.\n\nRestoring healthy circadian alignment does not require a drastic retreat from modern technology, but rather consistent behavioral boundaries. Health experts advocate establishing a digital sunset at least sixty minutes before sleep, replacing luminous screens with physical books or relaxing audio. Furthermore, exposing oneself to natural morning sunlight helps synchronize internal clocks and anchors daytime alertness. In a culture that frequently glorifies midnight toil, reclaiming restful sleep is perhaps the most fundamental act of preventive healthcare.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What happens when the retina detects concentrated blue light according to Paragraph 2?",
+      "options": {
+        "A": "The heart rate accelerates dramatically within seconds.",
+        "B": "The brain ceases the secretion of the sleep-inducing hormone melatonin.",
+        "C": "The eyesight improves temporarily due to enhanced focus.",
+        "D": "The body releases large amounts of stress hormones to fight fatigue."
+      },
+      "correct": "B",
+      "analysis": "第二段明确说明：When specialized photoreceptors in our retinas detect this frequency, they signal the brain's pineal gland to halt the production of melatonin—the essential hormone responsible for inducing drowsiness. 对应 B 项（大脑停止分泌促眠的褪黑素）。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"lethargy\" in Paragraph 3 is closest in meaning to _______.",
+      "options": {
+        "A": "tiredness and lack of energy",
+        "B": "intense excitement",
+        "C": "temporary confusion",
+        "D": "unusual hunger"
+      },
+      "correct": "A",
+      "analysis": "第三段首句：'The consequences of chronic sleep deprivation extend far beyond morning lethargy.'（长期睡眠剥夺的后果远不止清晨的倦怠无力）。结合常识与上下文，熬夜缺乏睡眠会导致疲倦萎靡，故 lethargy 意为疲乏、无精打采，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果机制理解题 (Biological Mechanism)",
+      "stem": "3. Why is deep restorative sleep vital for brain health according to clinical trials?",
+      "options": {
+        "A": "It allows the brain to generate entirely new neural structures.",
+        "B": "It facilitates the clearing of metabolic waste and harmful toxins.",
+        "C": "It prevents the retina from aging prematurely.",
+        "D": "It eliminates the need for morning natural light exposure."
+      },
+      "correct": "B",
+      "analysis": "第三段指出：'prolonged circadian disruption impairs the brain's glymphatic system, which actively flushes out metabolic waste and toxic proteins during deep rest.' 对应 B 项（深睡有助于清理大脑代谢废物与有害毒素）。"
+    },
+    {
+      "id": 4,
+      "question_type": "推理判断题 (Inference)",
+      "stem": "4. What can be inferred from the final paragraph about circadian alignment?",
+      "options": {
+        "A": "Natural morning sunlight helps reset and stabilize the body clock.",
+        "B": "People should stop reading physical books before going to bed.",
+        "C": "Digital screens must be completely removed from homes.",
+        "D": "Urban workers can easily adapt to midnight work without negative effects."
+      },
+      "correct": "A",
+      "analysis": "尾段提到：'exposing oneself to natural morning sunlight helps synchronize internal clocks and anchors daytime alertness.' 对应 A 项（早晨自然阳光有助于重设与稳定生物钟）。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨大意题 (Main Idea)",
+      "stem": "5. What is the central purpose of this passage?",
+      "options": {
+        "A": "To analyze the technological evolution of smartphone displays.",
+        "B": "To explain the biological hazards of bedtime screen use and suggest remedies.",
+        "C": "To criticize the lack of government regulation on electronic devices.",
+        "D": "To compare the efficiency of different commercial sleep-aid medications."
+      },
+      "correct": "B",
+      "analysis": "全文围绕睡前看屏幕蓝光对人体褪黑素分泌与生物钟的干扰，深入阐明其长期健康危害，并在末尾给出建立行为界限的具体改善建议，对应 B 项。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "dweller",
+      "phonetic": "/ˈdwelə(r)/",
+      "pos": "n.",
+      "meaning": "居住者；居民",
+      "collocation": "urban / city dwellers"
+    },
+    {
+      "word": "indulgence",
+      "phonetic": "/ɪnˈdʌldʒəns/",
+      "pos": "n.",
+      "meaning": "沉溺；放纵；嗜好",
+      "collocation": "harmless indulgence / self-indulgence"
+    },
+    {
+      "word": "mimic",
+      "phonetic": "/ˈmɪmɪk/",
+      "pos": "v.",
+      "meaning": "模仿；模拟",
+      "collocation": "mimic sunlight / natural conditions"
+    },
+    {
+      "word": "drowsiness",
+      "phonetic": "/ˈdraʊzinəs/",
+      "pos": "n.",
+      "meaning": "睡意；困倦",
+      "collocation": "induce drowsiness"
+    },
+    {
+      "word": "deprivation",
+      "phonetic": "/ˌdeprɪˈveɪʃn/",
+      "pos": "n.",
+      "meaning": "剥夺；匮乏",
+      "collocation": "sleep deprivation"
+    },
+    {
+      "word": "consolidation",
+      "phonetic": "/kənˌsɒlɪˈdeɪʃn/",
+      "pos": "n.",
+      "meaning": "巩固；强化",
+      "collocation": "memory consolidation"
+    },
+    {
+      "word": "vulnerability",
+      "phonetic": "/ˌvʌlnərəˈbɪləti/",
+      "pos": "n.",
+      "meaning": "易受伤害性；脆弱性",
+      "collocation": "increase vulnerability to"
+    },
+    {
+      "word": "drastic",
+      "phonetic": "/ˈdræstɪk/",
+      "pos": "adj.",
+      "meaning": "剧烈的；极端的",
+      "collocation": "drastic measures / retreat"
+    },
+    {
+      "word": "luminous",
+      "phonetic": "/ˈluːmɪnəs/",
+      "pos": "adj.",
+      "meaning": "发光的；明亮的",
+      "collocation": "luminous screens / display"
+    },
+    {
+      "word": "synchronize",
+      "phonetic": "/ˈsɪŋkrənaɪz/",
+      "pos": "v.",
+      "meaning": "使同步；协调",
+      "collocation": "synchronize internal clocks"
+    }
+  ],
+  "translation_cn": "对数以百万计的都市人而言，一天中最后的视觉体验并非卧室里宁静的黑暗，而是智能手机屏幕散发出的刺眼光亮。无论是回复即时消息、刷短视频信息流，还是浏览深夜新闻，这套睡前例行程序已近乎普及。然而，睡眠生理学家发出警告，这种看似无害的放纵习惯正在对掌控人类生命活力的精密生物钟产生深切的破坏性影响。\n\n问题的根源在于现代数码屏幕所发射的特定光波波长。与日落时分温暖的琥珀色调或传统白炽灯泡不同，电子屏幕会发出集中的蓝光，这种光线与正午时分的强烈日光高度相似。当视网膜中特化的光感受器捕捉到这种频段时，它们便会向大脑的松果体发送信号，强行终止褪黑素的分泌——而褪黑素正是诱发睡意并促进细胞自我修复的关键激素。其结果是，大脑始终处于高度亢奋的戒备状态，将午夜的荧光误判为艳阳高照的白昼。\n\n长期睡眠不足的严重后果绝非仅仅表现为清晨起床时的疲惫昏沉。临床实验表明，持续的生物钟紊乱会严重损伤大脑的胶质淋巴系统，而该系统正是在深度休息期间负责主动冲洗代谢废物和毒性蛋白的关键机制。一旦缺乏充足的恢复性睡眠，受试者在短期记忆巩固、情绪韧性和免疫防御方面都会出现清晰可测的退化滑坡。日积月累之下，不规律的睡眠周期会显著增加个体患上心血管疾病和代谢综合征的风险。\n\n恢复健康的生物节律并不需要彻底与现代科技决裂，而是需要建立持之以恒的行为边界。健康专家倡导在就寝前至少六十分钟拉开“数字日落”，用纸质书籍或舒缓音频取代刺眼的电子屏幕。此外，在清晨主动沐浴自然阳光有助于校准重设体内时钟，为白天的充沛精力奠定基础。在一个常常将深夜加班熬夜奉为美德的文化氛围中，夺回优质安稳的睡眠或许才是最根本有效的预防性健康举措。"
+}

@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-05",
+  "day": 5,
+  "week": 1,
+  "title": "The Evolution of Digital Privacy: From Secrecy to Surveillance Capitalism",
+  "title_cn": "数字隐私的演变：从秘密保护到监控资本主义",
+  "theme": "科技与数字生活异化",
+  "word_count": 428,
+  "suggested_time_minutes": 10,
+  "passage": "For decades, privacy was traditionally conceptualized as the right to conceal intimate personal affairs from the gaze of state authorities and inquisitive neighbors. In the pre-digital era, physical walls and bureaucratic friction provided natural safeguards for personal anonymity. Today, however, the wholesale digitization of daily transactions has rendered that historic framework entirely obsolete. Privacy in the contemporary era is no longer merely about secrecy; it has transformed into a high-stakes battle over human behavioral data, corporate surveillance, and the autonomy of individual decision-making.\n\nAt the core of this transformation is an economic model that social theorists term 'surveillance capitalism.' Under this architecture, commercial platforms do not merely collect data to improve user experience or optimize operational logistics. Instead, they unilaterally claim human experience as free raw material for translation into behavioral data. Every search query, location ping, biometric scan, and social connection is harvested, aggregated, and fed into predictive artificial intelligence algorithms. These digital profiles are subsequently packaged into 'behavioral futures markets' where advertisers and corporations bid for the ability to subtly nudge consumer choices.\n\nThe fundamental threat of this pervasive surveillance is not merely the potential breach of passwords or financial fraud. Rather, it represents an unprecedented asymmetry of knowledge and psychological leverage. While platforms possess granular insights into individual vulnerabilities, insecurities, and emotional triggers, users remain completely blind to the proprietary mechanisms governing their digital environments. A controlled experiment conducted by behavioral economists revealed that when e-commerce interfaces dynamically adjusted discounts based on users' real-time emotional agitation, consumer expenditure rose by thirty-one percent, with buyers later expressing acute regret.\n\nRestoring genuine privacy requires moving beyond the hollow ritual of clicking 'I Agree' on incomprehensible terms of service. Consent obtained through opaque, manipulative user interfaces cannot be considered informed or voluntary. Meaningful reform demands robust legislative limits on behavioral data collection, strict prohibitions against predictive psychological profiling, and the establishment of digital rights as non-negotiable public utilities. We must recognize that privacy is not an individualized luxury to be traded away for convenience, but the indispensable prerequisite for a free and democratic society.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. How was privacy traditionally defined in the pre-digital era according to Paragraph 1?",
+      "options": {
+        "A": "As the absolute ownership of intellectual property.",
+        "B": "As the ability to trade personal data for commercial discounts.",
+        "C": "As the right to keep personal affairs hidden from external intrusion.",
+        "D": "As the legal freedom to access government information."
+      },
+      "correct": "C",
+      "analysis": "第一段首句指出：'privacy was traditionally conceptualized as the right to conceal intimate personal affairs from the gaze of state authorities and inquisitive neighbors.' 即保护私人事务不受窥探，对应 C 选项。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"unilaterally\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "without mutual agreement",
+        "B": "with careful hesitation",
+        "C": "under strict supervision",
+        "D": "through democratic voting"
+      },
+      "correct": "A",
+      "analysis": "第二段指出平台掠夺性获取数据：'they unilaterally claim human experience as free raw material'，未经用户实质协商便单方面据为己有，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do commercial platforms harvest behavioral data according to Paragraph 2?",
+      "options": {
+        "A": "To assist law enforcement agencies in tracking criminals.",
+        "B": "To sell predictive consumer profiles to corporate advertisers.",
+        "C": "To lower the cost of hardware manufacturing.",
+        "D": "To educate users on healthy digital lifestyle habits."
+      },
+      "correct": "B",
+      "analysis": "第二段末尾指出将画像打包输入市场：'advertisers and corporations bid for the ability to subtly nudge consumer choices'，即卖给广告商和企业用于诱导消费，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What did the controlled experiment by behavioral economists demonstrate in Paragraph 3?",
+      "options": {
+        "A": "Emotion-based dynamic pricing led to higher spending and subsequent customer regret.",
+        "B": "Discounts offered during holidays had negligible impact on consumer decisions.",
+        "C": "Users were willing to pay higher fees for enhanced data encryption.",
+        "D": "Elderly shoppers were more vulnerable to financial fraud than younger users."
+      },
+      "correct": "A",
+      "analysis": "第三段末尾指出：'when e-commerce interfaces dynamically adjusted discounts based on users' real-time emotional agitation, consumer expenditure rose by thirty-one percent, with buyers later expressing acute regret.' 情绪动态定价推高消费且带来后续后悔，选 A。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What does the author advocate for in the final paragraph?",
+      "options": {
+        "A": "Users should avoid using any digital financial services.",
+        "B": "Companies should be allowed to self-regulate without government interference.",
+        "C": "Genuine privacy must be safeguarded through systemic legislation rather than deceptive consent forms.",
+        "D": "Online platforms should charge a monthly subscription fee for privacy."
+      },
+      "correct": "C",
+      "analysis": "尾段作者呼吁：'Restoring genuine privacy requires moving beyond the hollow ritual of clicking I Agree... Meaningful reform demands robust legislative limits...' 强调通过强有力的法律立法保护数字权利，而非形式化的点击同意，选 C。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "conceal",
+      "phonetic": "/kənˈsiːl/",
+      "pos": "v.",
+      "meaning": "隐瞒；掩盖；隐藏",
+      "collocation": "conceal intimate affairs / true motives"
+    },
+    {
+      "word": "obsolete",
+      "phonetic": "/ˈɒbsəliːt/",
+      "pos": "adj.",
+      "meaning": "过时的；废弃的；淘汰的",
+      "collocation": "render obsolete / obsolete framework"
+    },
+    {
+      "word": "unilaterally",
+      "phonetic": "/ˌjuːnɪˈlætrəli/",
+      "pos": "adv.",
+      "meaning": "单方面地；片面地",
+      "collocation": "unilaterally claim / decide"
+    },
+    {
+      "word": "aggregate",
+      "phonetic": "/ˈæɡrɪɡeɪt/",
+      "pos": "v.",
+      "meaning": "聚合；合计；聚集",
+      "collocation": "harvest and aggregate data"
+    },
+    {
+      "word": "nudge",
+      "phonetic": "/nʌdʒ/",
+      "pos": "v./n.",
+      "meaning": "轻推；顺水推舟式劝诱",
+      "collocation": "nudge consumer choices / behavior"
+    },
+    {
+      "word": "asymmetry",
+      "phonetic": "/eɪˈsɪmətri/",
+      "pos": "n.",
+      "meaning": "不对称；不均衡",
+      "collocation": "asymmetry of knowledge / power"
+    },
+    {
+      "word": "granular",
+      "phonetic": "/ˈɡrænjələr/",
+      "pos": "adj.",
+      "meaning": "细粒度的；精细入微的",
+      "collocation": "granular insights / granular data"
+    },
+    {
+      "word": "proprietary",
+      "phonetic": "/prəˈpraɪətri/",
+      "pos": "adj.",
+      "meaning": "专有的；私有的；专利所有的",
+      "collocation": "proprietary mechanisms / software"
+    },
+    {
+      "word": "opaque",
+      "phonetic": "/əʊˈpeɪk/",
+      "pos": "adj.",
+      "meaning": "不透明的；晦涩难懂的",
+      "collocation": "opaque interfaces / opaque terms"
+    },
+    {
+      "word": "prerequisite",
+      "phonetic": "/ˌpriːˈrekwəzɪt/",
+      "pos": "n.",
+      "meaning": "先决条件；前提要求",
+      "collocation": "indispensable prerequisite for sth."
+    }
+  ],
+  "translation_cn": "数十年来，隐私在传统意义上一直被定义为个人将私密事务隐藏在国家权力与好事邻居窥探视线之外的权利。在前数字时代，实体砖墙和繁琐的官僚程序为个人匿名性提供了天然屏障。然而今天，日常交易的全面数字化让这一历史概念彻底过时。当今时代的隐私已不再仅仅关乎守密，它已经演变成一场围绕人类行为数据、企业全方位监控以及个体决策自主权的严峻博弈。\n\n这场转型的核心，是一种被社会理论家称为“监控资本主义”的经济模式。在这一体系下，商业平台收集数据早已不仅是为了改善用户体验或优化运营调度。相反，他们单方面将人类生活经验视为免费的原材料，大肆转化为行为数据。每一次搜索查询、位置定位、生物识别扫描以及社交关联都被大肆收割、汇聚，并源源不断地投喂给预测性人工智能算法。随后，这些数字画像被打包推向“行为期货市场”，广告商与企业在此竞价竞标，以获取潜移默化操纵消费者选择的权力。\n\n这种无孔不入的监控所带来的根本威胁，绝不仅仅是密码泄露或金融诈骗等表面损失，而是造就了前所未有的信息不对称与心理杠杆失衡。平台对个人的弱点、焦虑和情绪触发点掌握着细致入微的洞察，而用户对其数字环境背后的专利算法运作机制却处于全然盲目的状态。行为经济学家的一项受控实验表明，当电商平台根据消费者的实时情绪波动动态调整折扣时，消费者支出增加了31%，而购买者事后无不表达出强烈的悔恨。\n\n重获真正的隐私，要求我们必须超越在晦涩难懂的服务条款上机械点击“我同意”这种虚妄的仪式。通过不透明、诱导操纵性界面获取的同意，根本谈不上知情或自愿。富有实质意义的改革，必须建立在对行为数据收集施加严苛法律限制、明令禁止预测性心理画像，以及将数字权利确立为不容侵犯的公共基础设施之上。我们必须认清：隐私绝非用来换取便利的个人奢侈品，而是一个自由民主社会不可或缺的前提基石。"
+}

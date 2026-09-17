@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-22",
+  "day": 22,
+  "week": 4,
+  "title": "Growth Mindset vs. Fixed Mindset: The Science of Neuroplasticity",
+  "title_cn": "成长型思维 vs 固定型思维：神经可塑性与终身学习",
+  "theme": "认知科学与生态环境",
+  "word_count": 425,
+  "suggested_time_minutes": 10,
+  "passage": "For generations, traditional education systems and popular culture have operated under the unexamined conviction that human intellectual capability is an innate, genetically predetermined endowment. Students are routinely pigeonholed as either naturally gifted at mathematics or inherently hopeless at creative writing. However, groundbreaking investigations by Stanford University psychologist Carol Dweck and contemporary neuroscientists have upended this deterministic dogma. Human cognitive capacity is not a static vessel fixed at birth, but a dynamic, malleable architecture governed profoundly by an individual's underlying mindset toward effort and failure.\n\nDweck's theoretical framework delineates two contrasting orientations: the 'fixed mindset' and the 'growth mindset.' Individuals harboring a fixed mindset believe that intelligence is an unalterable trait. Consequently, they perceive academic challenges and professional obstacles as terrifying evaluative tests of their innate worth; experiencing difficulty induces acute panic, prompting them to conceal deficiencies, avoid challenges, and defensively abandon difficult tasks. Conversely, individuals cultivating a growth mindset understand intellectual ability as a muscular capacity that expands through deliberate practice, effective strategies, and constructive critique. For them, setbacks are not verdicts of inadequacy, but vital pedagogical feedback.\n\nThis psychological distinction is firmly anchored in modern neurobiology through the discovery of 'neuroplasticity.' For decades, neuroscientists believed that the adult brain was physiologically immutable. Modern neuroimaging demonstrates that the brain constantly reorganizes its neural circuitry in response to learning. When an individual wrestles with a demanding cognitive puzzle, neurons fire intensely, generating new dendritic branches and coating axons in myelin—a fatty insulating sheath that dramatically accelerates electrical signal transmission. The sensation of cognitive struggle is not a symptom of intellectual limitation; rather, it is the precise biological signature of neural rewiring.\n\nFostering a genuine growth mindset requires transforming how mentors evaluate achievement. Praising individuals for innate intelligence—such as declaring 'you are naturally brilliant'—perversely reinforces a fragile fixed mindset, making learners hypersensitive to future failure. Instead, educators and organizational leaders must practice process-oriented praise, celebrating strategic experimentation, persistent effort, and resilience in the wake of defeat. By demystifying the biological mechanics of learning, we liberate individuals to transcend self-imposed limitations and realize their boundless intellectual potential.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. What did traditional education systems typically assume about human intellect in Paragraph 1?",
+      "options": {
+        "A": "Intellect can only be developed through physical sports.",
+        "B": "Intellectual ability is an innate, genetically predetermined trait.",
+        "C": "Cognitive capacity decreases linearly every decade.",
+        "D": "Creative writing requires higher IQ than mathematical analysis."
+      },
+      "correct": "B",
+      "analysis": "第一段首句指出传统观念：'intellectual capability is an innate, genetically predetermined endowment. Students are routinely pigeonholed as either naturally gifted... or inherently hopeless...' 假定智力是天生遗传决定的，选 B。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The word \"malleable\" in Paragraph 1 is closest in meaning to _______.",
+      "options": {
+        "A": "adaptable and capable of being shaped",
+        "B": "fragile and easily shattered",
+        "C": "strictly unchangeable",
+        "D": "chemically dangerous"
+      },
+      "correct": "A",
+      "analysis": "第一段上下文：'not a static vessel fixed at birth, but a dynamic, malleable architecture governed profoundly by an individual's underlying mindset...' 与静态固定相对，malleable 指可塑的、动态可塑造的，选 A。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do people with a fixed mindset fear challenges according to Paragraph 2?",
+      "options": {
+        "A": "Because challenges are prohibited by educational institutions.",
+        "B": "Because they view obstacles as terrifying evaluative tests of their innate worth.",
+        "C": "Because failure results in severe criminal punishments.",
+        "D": "Because their brain synapses cannot physically process new symbols."
+      },
+      "correct": "B",
+      "analysis": "第二段指出：'Consequently, they perceive academic challenges and professional obstacles as terrifying evaluative tests of their innate worth; experiencing difficulty induces acute panic...' 视挑战为对自身天资的恐怖审判，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What biological event occurs when someone struggles with a cognitive puzzle according to Paragraph 3?",
+      "options": {
+        "A": "Brain temperature drops dangerously below normal levels.",
+        "B": "Neurons generate new branches and coat axons with myelin, rewiring the brain.",
+        "C": "The brain stops all internal electrical transmissions.",
+        "D": "Dendritic branches permanently wither away."
+      },
+      "correct": "B",
+      "analysis": "第三段解释神经可塑性机理：'generating new dendritic branches and coating axons in myelin... precisely the biological signature of neural rewiring.' 神经元生长出新树突并包裹髓鞘加速传导，重塑大脑回路，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What recommendation does the author offer to educators in Paragraph 4?",
+      "options": {
+        "A": "Praising natural brilliance constantly to boost student self-esteem.",
+        "B": "Praising process, strategic experimentation, and persistence rather than innate talent.",
+        "C": "Eliminating all examinations and homework from modern schools.",
+        "D": "Separating students into gifted and slow tracks at age six."
+      },
+      "correct": "B",
+      "analysis": "尾段作者给出明确建议：'Instead, educators and organizational leaders must practice process-oriented praise, celebrating strategic experimentation, persistent effort, and resilience...' 过程导向表扬，肯定策略尝试与坚持，而非夸耀天赋，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "predetermined",
+      "phonetic": "/ˌpriːdɪˈtɜːmɪnd/",
+      "pos": "adj.",
+      "meaning": "预先确定的；命中注定的",
+      "collocation": "genetically predetermined"
+    },
+    {
+      "word": "pigeonhole",
+      "phonetic": "/ˈpɪdʒɪnhəʊl/",
+      "pos": "v.",
+      "meaning": "把...归类归档；打上标签",
+      "collocation": "pigeonhole students / individuals"
+    },
+    {
+      "word": "malleable",
+      "phonetic": "/ˈmæliəbl/",
+      "pos": "adj.",
+      "meaning": "可塑的；易受影响改变的",
+      "collocation": "malleable architecture / mind"
+    },
+    {
+      "word": "delineate",
+      "phonetic": "/dɪˈlɪnieɪt/",
+      "pos": "v.",
+      "meaning": "勾画；描绘；阐明",
+      "collocation": "delineate two orientations / boundaries"
+    },
+    {
+      "word": "pedagogical",
+      "phonetic": "/ˌpedəˈɡɒdʒɪkl/",
+      "pos": "adj.",
+      "meaning": "教学法的；教育学的",
+      "collocation": "pedagogical feedback / strategy"
+    },
+    {
+      "word": "immutable",
+      "phonetic": "/ɪˈmjuːtəbl/",
+      "pos": "adj.",
+      "meaning": "不可改变的；永恒不变的",
+      "collocation": "physically immutable / immutable law"
+    },
+    {
+      "word": "myelin",
+      "phonetic": "/ˈmaɪəlɪn/",
+      "pos": "n.",
+      "meaning": "髓磷脂；髓鞘",
+      "collocation": "coating axons in myelin"
+    },
+    {
+      "word": "rewiring",
+      "phonetic": "/ˌriːˈwaɪərɪŋ/",
+      "pos": "n.",
+      "meaning": "神经回路重新布线；重构",
+      "collocation": "neural rewiring / brain rewiring"
+    },
+    {
+      "word": "perversely",
+      "phonetic": "/pəˈvɜːsli/",
+      "pos": "adv.",
+      "meaning": "适得其反地；别扭反常地",
+      "collocation": "perversely reinforce / act"
+    },
+    {
+      "word": "demystify",
+      "phonetic": "/ˌdiːˈmɪstɪfaɪ/",
+      "pos": "v.",
+      "meaning": "揭秘；使非神秘化；阐明",
+      "collocation": "demystify mechanics / the process"
+    }
+  ],
+  "translation_cn": "世代以来，传统教育体制与大众通俗文化一直秉持着一个未经审视的偏见：人类的智力才干是一种与生俱来、由基因事先注定的天然禀赋。学生们被惯性地贴上非此即彼的刻板标签——要么是天生的“数学奇才”，要么是命中注定学不好写作的“文科笨蛋”。然而，斯坦福大学心理学家卡罗尔·德韦克（Carol Dweck）与当代神经科学家的开创性实证研究，彻底击碎了这种宿命论式的教条。人类的认知心智能力绝非生来固定大小的静态容器，而是一座动态可塑的宏伟架构，其终生成长深受个体对“努力与失败”底层思维信念的深远支配。\n\n德韦克的理论体系清晰地界定了两种截然相反的认知取向：“固定型思维（fixed mindset）”与“成长型思维（growth mindset）”。持有固定型思维的人深信智力是一种不可更改的固化特质。顺理成章地，他们把学业挑战与职场挫折视为对其先天资质的恐怖审判；一旦遇到困难，他们便会陷入强烈的恐慌，从而习惯性掩饰短板、规避挑战并在挫折面前防御性地退缩放弃。相反，拥有成长型思维的人则把智力理解为如同肌肉一般的机能，能够通过刻意练习、高效策略与建设性复盘不断壮大。在他们眼中，失败绝非个人无能的宣判，而是不可或缺的教学反馈。\n\n这种心理学上的分野，在现代神经科学对“神经可塑性（neuroplasticity）”的发现中获得了坚不可摧的生理印证。数十年来，传统医学界误以为成年人的大脑结构在生理上是固化不变的。然而现代神经影像学清晰证实：人类大脑始终在根据学习体验不间断地重塑其神经回路。当一个人苦苦思索一道高难度的认知谜题时，神经元会剧烈放电，生长出繁茂的全新树突分支，并在轴突外部包裹上一层厚厚的髓鞘——一种能使电信号传导速度呈数十倍飙升的脂肪绝缘层。攻坚难题时的绞尽脑汁与痛苦感，绝非智力低下的缺陷症状，而恰恰是大脑神经回路正在疯狂重构的生理显化标志！\n\n培育真正的成长型思维，需要全社会彻底重构对成就的评价话语。盲目夸奖孩子的天赋才智——例如脱口而出“你天生真聪明”——反而会适得其反地强化脆弱的固定型思维，让学习者对日后的失败变得极度玻璃心与脆弱敏感。相反，教育工作者与组织领导者必须践行“过程导向的表扬”，真诚肯定充满智慧的策略尝试、不屈不挠的持续付出，以及在挫折面前展现出的坚韧品质。通过向世人揭开学习背后的神经生理运作奥秘，我们才能真正解放每一个个体，勇敢超越自我设限，兑现无限的智力潜能。"
+}

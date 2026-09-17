@@ -1,0 +1,151 @@
+{
+  "id": "cet4-sim-08",
+  "day": 8,
+  "week": 2,
+  "title": "The Cult of Busyness: Why Overwork Became a Modern Status Symbol",
+  "title_cn": "忙碌崇拜：过度工作为何演变为现代地位象征",
+  "theme": "职场心理与行为经济学",
+  "word_count": 425,
+  "suggested_time_minutes": 10,
+  "passage": "Throughout most of human history, social prestige was intimately correlated with leisurely detachment from labor. In nineteenth-century aristocratic society, as economist Thorstein Veblen famously observed, the ruling elite flaunted their superiority through 'conspicuous leisure'—openly demonstrating that they possessed sufficient accumulated wealth to avoid productive toil altogether. In contemporary professional culture, however, this historic dynamic has completely inverted. Today, complaining about an exhausting schedule, boasting of seventy-hour workweeks, and perpetually lamenting a lack of free time have become the preeminent status symbols of the knowledge economy.\n\nSociological researchers refer to this phenomenon as the 'cult of busyness.' In knowledge-intensive industries, an individual's financial and professional value is tied not to tangible physical assets, but to their specialized human capital. When professionals proclaim that they are completely overwhelmed with pressing deadlines and client meetings, they are engaging in what behavioral economists term 'conspicuous industriousness.' By signaling that their intellectual services are in scarce, relentless demand, busy professionals subconsciously broadcast their indispensable societal importance and economic desirability.\n\nA collaborative study published by researchers from Columbia and Harvard analyzed how consumer perceptions shifted when reading holiday letters and social media updates. The researchers discovered that fictional characters depicted as working long hours and having virtually no leisure were consistently perceived as having higher socioeconomic status and greater earning power than those who led relaxed, balanced lives. Interestingly, this status premium was particularly pronounced in market economies where upward social mobility is strongly perceived as being attainable through relentless individual merit.\n\nYet, this relentless glorification of work carries catastrophic psychological and organizational costs. Chronic overwork fosters profound burnout, stifles creative divergent thinking, and degrades emotional well-being. Furthermore, much of what passes for intense busyness in modern corporate offices is performative rather than genuinely productive—comprising endless performative meetings, unnecessary email threads, and hurried administrative theater. True organizational productivity and personal fulfillment require dethroning busyness as a measure of virtue, reclaiming rest not as a guilty concession, but as the foundational catalyst of intellectual clarity.",
+  "questions": [
+    {
+      "id": 1,
+      "question_type": "细节事实题 (Detail Fact)",
+      "stem": "1. How did the ruling elite display their high status in the nineteenth century according to Paragraph 1?",
+      "options": {
+        "A": "By establishing international charitable foundations.",
+        "B": "By openly showing that they did not need to perform physical toil.",
+        "C": "By publishing academic treatises on political economy.",
+        "D": "By working longer hours than their domestic servants."
+      },
+      "correct": "B",
+      "analysis": "第一段第二句指出：'the ruling elite flaunted their superiority through conspicuous leisure—openly demonstrating that they possessed sufficient accumulated wealth to avoid productive toil altogether.' 展现无需体力劳作，选 B。"
+    },
+    {
+      "id": 2,
+      "question_type": "词义推断题 (Vocabulary in Context)",
+      "stem": "2. The phrase \"conspicuous industriousness\" in Paragraph 2 is closest in meaning to _______.",
+      "options": {
+        "A": "secret financial investment",
+        "B": "visible display of hard work and busyness",
+        "C": "unintentional industrial pollution",
+        "D": "careless management of employee relations"
+      },
+      "correct": "B",
+      "analysis": "第二段对应过去的 conspicuous leisure（炫耀性闲暇），现在的职场人通过炫耀忙碌来标榜价值，选 B（引人注目的勤勉与忙碌展示）。"
+    },
+    {
+      "id": 3,
+      "question_type": "因果推理题 (Cause & Effect)",
+      "stem": "3. Why do knowledge workers boast about their hectic schedules according to Paragraph 2?",
+      "options": {
+        "A": "To petition management for substantial salary increases.",
+        "B": "To signal that their scarce intellectual skills are in high demand.",
+        "C": "To discourage colleagues from assigning them additional tasks.",
+        "D": "To comply with corporate public relations policies."
+      },
+      "correct": "B",
+      "analysis": "第二段末尾指出：'By signaling that their intellectual services are in scarce, relentless demand, busy professionals subconsciously broadcast their indispensable societal importance...' 借此证明智力技能供不应求且重要，选 B。"
+    },
+    {
+      "id": 4,
+      "question_type": "实验细节题 (Experiment Finding)",
+      "stem": "4. What did the study by Columbia and Harvard researchers reveal?",
+      "options": {
+        "A": "People working over seventy hours per week were generally happier.",
+        "B": "Individuals with no leisure time were perceived as having higher socioeconomic status.",
+        "C": "Reading holiday letters reduced overall employee productivity.",
+        "D": "Employees who took regular vacations were promoted more quickly."
+      },
+      "correct": "B",
+      "analysis": "第三段指出：'characters depicted as working long hours and having virtually no leisure were consistently perceived as having higher socioeconomic status and greater earning power'，无闲暇的高负荷工作者被认为社会经济地位更高，选 B。"
+    },
+    {
+      "id": 5,
+      "question_type": "主旨态度题 (Main Idea / Author's View)",
+      "stem": "5. What is the author's ultimate attitude toward the \"cult of busyness\" in modern workplaces?",
+      "options": {
+        "A": "Supportive, as it drives economic growth in market economies.",
+        "B": "Critical, because it leads to burnout and performative rather than true productivity.",
+        "C": "Indifferent, since work habits change with technological advancements.",
+        "D": "Uncertain, because empirical data remains largely inconclusive."
+      },
+      "correct": "B",
+      "analysis": "尾段作者批判：'this relentless glorification of work carries catastrophic psychological and organizational costs... performative rather than genuinely productive... dethroning busyness as a measure of virtue'，强烈批判其表演性质与身心消耗，选 B。"
+    }
+  ],
+  "vocabulary_bank": [
+    {
+      "word": "prestige",
+      "phonetic": "/preˈstiːʒ/",
+      "pos": "n.",
+      "meaning": "威望；声望；显赫地位",
+      "collocation": "social prestige / high prestige"
+    },
+    {
+      "word": "aristocratic",
+      "phonetic": "/ˌærɪstəˈkrætɪk/",
+      "pos": "adj.",
+      "meaning": "贵族的；贵族阶层的",
+      "collocation": "aristocratic society / elite"
+    },
+    {
+      "word": "flaunt",
+      "phonetic": "/flɔːnt/",
+      "pos": "v.",
+      "meaning": "炫耀；张扬；夸耀",
+      "collocation": "flaunt superiority / wealth"
+    },
+    {
+      "word": "conspicuous",
+      "phonetic": "/kənˈspɪkjuəs/",
+      "pos": "adj.",
+      "meaning": "显眼的；引人注目的；炫耀的",
+      "collocation": "conspicuous leisure / consumption"
+    },
+    {
+      "word": "lament",
+      "phonetic": "/ləˈment/",
+      "pos": "v./n.",
+      "meaning": "悲叹；哀怨；抱怨",
+      "collocation": "lament a lack of free time"
+    },
+    {
+      "word": "industriousness",
+      "phonetic": "/ɪnˈdʌstriəsnəs/",
+      "pos": "n.",
+      "meaning": "勤劳；勤勉；勤奋",
+      "collocation": "conspicuous industriousness"
+    },
+    {
+      "word": "pronounced",
+      "phonetic": "/prəˈnaʊnst/",
+      "pos": "adj.",
+      "meaning": "显著的；明显的",
+      "collocation": "particularly pronounced effect"
+    },
+    {
+      "word": "catastrophic",
+      "phonetic": "/ˌkætəˈstrɒfɪk/",
+      "pos": "adj.",
+      "meaning": "灾难性的；毁灭性的",
+      "collocation": "catastrophic costs / consequences"
+    },
+    {
+      "word": "performative",
+      "phonetic": "/pəˈfɔːmətɪv/",
+      "pos": "adj.",
+      "meaning": "表演性质的；装模作样的",
+      "collocation": "performative meetings / work"
+    },
+    {
+      "word": "dethrone",
+      "phonetic": "/dɪˈθrəʊn/",
+      "pos": "v.",
+      "meaning": "废黜；剥夺...的统治地位",
+      "collocation": "dethrone busyness / the champion"
+    }
+  ],
+  "translation_cn": "在人类历史的大多数时期，社会声望往往与远离体力劳动的从容闲暇紧密相连。正如经济学家托斯丹·凡勃伦的名言所述，在19世纪的贵族社会中，统治精英通过“炫耀性闲暇”来彰显自身优越——公开展现自己拥有足够丰厚的财富，从而完全无需从事任何体力劳作。然而，在当代的专业职场文化中，这一历史动力机制发生了彻底的颠倒。今天，抱怨日程满载、吹嘘每周工作70小时以及无休止地叹息缺少个人闲暇，反倒成了知识经济时代最引以为傲的社会地位象征。\n\n社会学学者将这一现象命名为“忙碌崇拜”。在知识密集型行业中，个人的经济与职业价值与其专属的人力资本深度捆绑。当职场精英宣称自己被排山倒海的紧急截稿期和客户会议压得喘不过气时，他们实际上是在进行行为经济学家所谓的“炫耀性勤勉”。通过向外界释放其专业智力服务正处于极度紧缺、供不应求的强烈信号，忙碌的职场人潜意识里正在广播自己不可或缺的社会价值与经济吸引力。\n\n由哥伦比亚大学与哈佛大学研究人员联合发表的一项实证研究，分析了受试者在阅读节日贺信和社交媒体动态时的认知变化。研究人员发现，那些被描述为工作时间极长、几乎没有任何个人闲暇的虚拟人物，一贯被公众认定拥有更高的社会经济阶层和更强的赚钱能力，远超那些过着悠闲平衡生活的人物。耐人寻味的是，这种“地位溢价”在那些将阶层向上流动坚定归功于不懈个人奋斗的市场经济体中尤为显著。\n\n然而，这种对劳作的病态美化带来了灾难性的心理健康与组织运营成本。长期的过度加班滋生了深层次的职业倦怠，扼杀了创造性的发散思维，并严重侵蚀了情绪健康。更进一步说，现代企业办公室里充斥的大量所谓高强度忙碌，本质上只是表演性质而非真正的实质产出——无休止的表演性例会、毫无必要的邮件群发抄送以及慌乱的行政舞台剧。真正健康的组织生产力与个人成就感，需要我们将忙碌从道德美德的神坛上拽下来，重新将休整视为激活敏锐思维的根本催化剂，而非一种心怀愧疚的妥协让步。"
+}
