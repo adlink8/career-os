@@ -1,0 +1,24 @@
+## Part IV / Translation / (30 minutes)
+
+**Directions:** _For this part, you are allowed 30 minutes to translate a passage from Chinese into English. You should write your answer on **Answer Sheet 2**._
+
+近年来，为化解居家老人“做饭难、吃饭难”的难题，许多城市把建设<u>社区食堂</u>（community canteen）作为应对之策，为老年人提供实惠便捷的<u>助餐服务</u>（meal assistance service）。食堂多开在居民区内，饭菜少油少盐、软硬适中，七十岁以上的老人持卡就餐还可享受折扣。对行动不便的高龄老人，社区组织志愿者和外卖骑手把热饭送到家中。为解决开业初期的亏损，一些食堂白天向社会顾客开放，用对外营业的收入补贴助餐服务。如今，一顿寻常的午饭，已与<u>日间照料</u>（day care）、上门看病一起被列为社区养老服务的基本内容。不少老人说，食堂里有熟人、有说笑声，比一个人守着电视吃饭热闹得多。
+
+### 参考译文
+
+In recent years, to help older residents who live at home with the daily difficulty of cooking and buying their meals, many cities have responded by building community canteens that provide affordable and convenient meal assistance for the elderly. Most of them are set up inside residential neighborhoods, where the dishes are low in oil and salt and cooked soft enough for older people, and customers over seventy can get a discount with a meal card. For the oldest residents, who have trouble getting around, communities organize volunteers and delivery riders to bring hot meals to their doors. To make up for the losses in the first months of operation, some canteens open to the general public during the day and use the income from outside diners to subsidize the meal service. Today, an ordinary lunch has joined day care and doctor visits at home as a basic part of community care for the elderly. Many older residents say that the canteen, with its familiar faces and laughter, is far livelier than eating alone in front of the television.
+
+### 得分点
+
+1. **"近年来" + 句首不定式目的状语 + 现在完成时**（In recent years, to help older residents who live at home with the daily difficulty of…, many cities have responded by building…）：本段主时态为现在完成时，全篇误用一般过去时累计扣分；"为化解……难题"用 to help sb with the difficulty of doing / to solve the problem 前置表目的，比硬起一句 In order that 更简洁；"把建设社区食堂作为应对之策"respond by building / turn to community canteens as an answer，写 take … as a measure 亦可；"做饭难、吃饭难"是民生政策语汇，意译 the daily difficulty of cooking and buying their meals 给分，逐字直译 cook difficult, eat difficult 不得分。
+2. **"为老年人提供……"定语从句 + provide 搭配**（community canteens that provide affordable and convenient meal assistance for the elderly）：先行词 canteens + that 定语从句是本主题的核心句式；provide sb with sth / provide sth for sb 两种搭配均可，"实惠便捷"affordable and convenient；"助餐服务"按卷面提示写 meal assistance service，写 meal aid / dining help 酌情给分；"居家老人"older residents who live at home / the elderly living at home，直译 home old people 不得分。
+3. **"饭菜少油少盐、软硬适中" + where 非限定定语从句**（…, where the dishes are low in oil and salt and cooked soft enough for older people）：where 引导的非限定定语从句把"开在居民区内"与食堂内部描写并成一句，是拉开档次的衔接手段；"少油少盐"be low in oil and salt（be 动词不可省），"软硬适中"cooked soft enough / neither too hard nor too greasy，写 food is soft 属漏译"适中"。
+4. **"七十岁以上的老人持卡就餐还可享受折扣"**（customers over seventy can get a discount with a meal card）：over seventy 为介词短语后置定语，"持卡"用 with a meal card 表方式，二者构成本句的给分点组合；get a discount / enjoy a discount / get a discounted price 均可给分；"还可"译出 can / even 即可，漏译不扣分，把"持卡"误译为 hold the card and eat 属汉式直译扣分。
+5. **"行动不便的高龄老人" + 非限定定语从句 + 地道动词**（For the oldest residents, who have trouble getting around, communities organize volunteers and delivery riders to bring hot meals to their doors）：who have trouble getting around / have mobility problems 是"行动不便"的标准译法，直译 walk inconveniently 不得分；organize sb to do sth；"送到家中"写 bring sth to sb's door / deliver meals to their homes 均属地道转达，"外卖骑手"delivery riders / food delivery workers。
+6. **"为解决开业初期的亏损……用……补贴……"双重目的表达**（To make up for the losses in the first months of operation, some canteens open to the general public during the day and use the income from outside diners to subsidize the meal service）：句首不定式与句末 use sth to do 形成"目的—手段"闭环，是本卷最长也最易失分的句子；"亏损"losses / running at a loss，"向社会顾客开放"open to the general public / outside customers，"补贴"subsidize / offset the cost of（美式拼写 -ize）。
+7. **"已与……一起被列为……基本内容" 现在完成时 + as 补足语 + 三项并列**（an ordinary lunch has joined day care and doctor visits at home as a basic part of community care for the elderly）：主语是"一顿寻常的午饭"，谓语三单且必须用现在完成时；has joined A and B as… / has been listed together with A and B as… 两种句式均可给分（后者为被动写法），写成 has been listed 而漏掉 as 引导的补足成分扣结构分；"日间照料"按卷面提示写 day care，"上门看病"doctor visits at home / home medical visits；"社区养老服务"community care for the elderly / community elderly-care services。
+8. **"比一个人守着电视吃饭热闹得多" 比较级 + 动名词比较对象**（the canteen, with its familiar faces and laughter, is far livelier than eating alone in front of the television）：比较项必须对称（livelier than eating…，不可写成 than we eat alone）；"热闹得多"用 far / much livelier 表程度，more lively 为拼写错误；with its familiar faces and laughter 作插入伴随状语对应"有熟人、有说笑声"。本卷热点词汇：养老 elderly care、居民区 residential neighborhood（美式拼写，非 neighbourhood）、志愿者 volunteer；专有名词按卷面提示照抄，不必自造译名。
+
+```json
+{"answers": {"translation_theme": "社区食堂与老年助餐服务（段译汉译英）", "translation_prompt": "社区食堂与老年助餐服务", "hanzi_count": 218}}
+```

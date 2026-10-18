@@ -100,3 +100,13 @@ data/job_discovery/runs/*/
 scratch/
 .workbuddy/
 .git.broken-*/
+
+
+# 个人本地工具脚本（硬编码真实姓名/手机/邮箱，绝不入库）
+scripts/generate_ops_resumes.py
+
+# 根目录临时抓取/调试残留与本机工具状态
+/nul
+/tmp_*.js
+/tmp_*.html
+/.mimosa/

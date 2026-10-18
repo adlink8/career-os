@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>CET-4 Player — mock-01 Section C Passage 2 — 农业无人机与精准种植</title>
+<style>
+body{margin:0;background:#14161a;color:#dfe3e8;font-family:'Segoe UI','Microsoft YaHei',sans-serif;display:flex;flex-direction:column;height:100vh}
+#nav-tabs{display:flex;gap:8px;background:#181b22;padding:10px 18px;border-bottom:1px solid #2a2e35;overflow-x:auto;flex-wrap:nowrap}
+.tab-item{color:#9aa3af;text-decoration:none;font-size:13px;padding:6px 14px;border-radius:6px;transition:all 0.2s;background:#222630;white-space:nowrap;display:inline-flex;align-items:center}
+.tab-item:hover{color:#fff;background:#2d3340}
+.tab-item.active{color:#fff;background:#3b82f6;font-weight:600}
+header{padding:10px 18px;font-weight:600;border-bottom:1px solid #2a2e35;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#legend{font-size:12px;font-weight:400;color:#9aa3af}
+#legend b{padding:1px 8px;border-radius:4px;margin:0 2px}
+
+/* Top Subtitle Area (Active Sentence) */
+#sub{flex:0 0 auto;text-align:left;padding:14px 28px 12px;min-height:120px;background:#1a1d24;border-bottom:1px solid #282c35}
+#sub-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px 6px}
+.chunk-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#212631;border:1px solid #323b4b;border-radius:8px;padding:8px 12px;box-sizing:border-box;transition:all 0.15s ease}
+.chunk-card:hover{background:#283142;border-color:#60a5fa;box-shadow:0 4px 12px rgba(59,130,246,0.25)}
+.card-en{font-size:18px;line-height:1.45;color:#ffffff;font-weight:500;letter-spacing:0.2px}
+.card-zh{font-size:15px;line-height:1.45;color:#ffd479;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,212,121,0.25)}
+.slash-col{display:inline-flex;align-items:center;color:#64748b;font-size:20px;font-weight:bold;user-select:none;padding:0 2px}
+#tip{font-size:13.5px;margin-top:10px;color:#93c5fd;background:rgba(59,130,246,0.1);border-left:3px solid #3b82f6;padding:6px 12px;border-radius:4px;display:none}
+
+/* Scrollable List */
+#wrap{flex:1 1 auto;overflow-y:auto;padding:14px 28px 30px}
+p.line{margin:10px 0;padding:12px 14px;border-radius:8px;cursor:pointer;line-height:1.5;border-left:4px solid transparent;background:#181b22;border:1px solid #232833;transition:all 0.2s ease}
+p.line:hover{background:#1d222b;border-color:#333d4e;border-left-color:#3b82f6}
+p.line.on{background:#1e2638;border-color:#3b82f6;border-left-color:#60a5fa;box-shadow:0 4px 14px rgba(0,0,0,0.35)}
+.line-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;color:#64748b}
+.line-badge{font-weight:600;color:#94a3b8;background:#232936;padding:2px 8px;border-radius:4px}
+.line-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 4px}
+.m-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#12151b;border:1px solid #252b37;border-radius:6px;padding:6px 9px;transition:all 0.15s;box-sizing:border-box}
+.line.on .m-card{background:#17202e;border-color:#2b3952}
+.m-card:hover{border-color:#60a5fa;background:#1c2638}
+.m-en{color:#e2e8f0;font-size:14.5px;line-height:1.45;font-weight:500}
+.m-zh{color:#ffd479;font-size:13.5px;line-height:1.45;margin-top:4px;padding-top:4px;border-top:1px dashed rgba(255,212,121,0.2)}
+.m-slash{display:inline-flex;align-items:center;color:#475569;font-size:15px;font-weight:bold;user-select:none;padding:0 1px}
+.line-tip{margin-top:8px;padding:4px 10px;border-radius:4px;background:rgba(59,130,246,0.1);border-left:2px solid #3b82f6;font-size:13px;color:#93c5fd}
+
+/* Audio Player Transport */
+#transport{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:10px 18px 18px;background:#161920;border-top:1px solid #232730}
+#play{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:none;background:#3b82f6;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#play:hover{background:#2563eb}
+#bar{flex:1 1 auto;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+#track{width:100%;height:10px;border-radius:5px;background:#2a2e35;position:relative}
+#fill{height:100%;border-radius:5px;background:#3b82f6;width:0}
+#knob{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);left:0;box-shadow:0 1px 4px #0008}
+#time{flex:0 0 auto;font-variant-numeric:tabular-nums;color:#9aa3af}
+audio{display:none}
+</style></head><body>
+<nav id="nav-tabs">
+<a href="player.html" class="tab-item">🎧 Part II 听力全套 (13:17)</a>
+<a href="player-cloze.html" class="tab-item">📖 Section A 选词填空 (时间银行)</a>
+<a href="player-passage1.html" class="tab-item">📖 Section C 仔细阅读一 (代际流动)</a>
+<a href="player-passage2.html" class="tab-item active">📖 Section C 仔细阅读二 (农业无人机)</a>
+</nav>
+<header><span id="title">mock-01 Section C Passage 2 — 农业无人机与精准种植</span><span id="legend">重点标注：<b style="background:#63d68a">答案定位/题眼</b><b style="background:#ff9d5c">原生路标(转折/因果/实证)</b><b style="background:#7fc4ff">核心搭配/细节</b><b style="background:#d9a2ff">陷阱辨析</b>（1:1 顺流意群卡点对齐）</span></header>
+<div id="sub">
+ <div id="sub-cards"></div>
+ <div id="tip"></div>
+</div>
+<div id="wrap"></div>
+<div id="transport">
+ <button id="play">▶</button>
+ <div id="bar"><div id="track"><div id="fill"></div><div id="knob"></div></div></div>
+ <span id="time">0:00 / -:-</span>
+</div>
+<audio id="a" src="mock-01-reading-passage2.mp3" preload="metadata"></audio>
+<script>
+const CUES=[{"start": 0.0, "end": 6.096, "en": "Seen from the air, a soybean field looks flat and even, but the plants themselves would disagree.", "zh": "从空中看去， 一片大豆田显得平坦而均匀， 但植物自身却会有不同意见。", "en_chunks": ["Seen from the air,", "a soybean field looks flat and even,", "but the plants themselves would disagree."], "zh_chunks": ["从空中看去，", "一片大豆田显得平坦而均匀，", "但植物自身却会有不同意见。"], "en_chunked": "Seen from the air, \\ a soybean field looks flat and even, \\ but the plants themselves would disagree.", "zh_chunked": "从空中看去， \\ 一片大豆田显得平坦而均匀， \\ 但植物自身却会有不同意见。", "marks": [{"p": 56, "l": 3, "t": "signal", "note": "but: 视角反差转折"}]}, {"start": 6.446, "end": 12.974, "en": "Within a short distance the soil conditions can change, and one corner may produce half of what the middle does.", "zh": "在短短的距离之内土壤状况就可能改变， 并且田地的一角可能只产出 田中央所产出的一半。", "en_chunks": ["Within a short distance the soil conditions can change,", "and one corner may produce half", "of what the middle does."], "zh_chunks": ["在短短的距离之内土壤状况就可能改变，", "并且田地的一角可能只产出", "田中央所产出的一半。"], "en_chunked": "Within a short distance the soil conditions can change, \\ and one corner may produce half \\ of what the middle does.", "zh_chunked": "在短短的距离之内土壤状况就可能改变， \\ 并且田地的一角可能只产出 \\ 田中央所产出的一半。", "marks": [{"p": 26, "l": 27, "t": "detail", "note": "soil conditions can change: 土壤局部差异"}]}, {"start": 13.324, "end": 19.372, "en": "For most of the machinery era, people who grew crops had no cheap way to act on these differences.", "zh": "在机械化时代的大部分时间里， 种植庄稼的人们 没有廉价的办法来应对这些差异。", "en_chunks": ["For most of the machinery era,", "people who grew crops", "had no cheap way to act on these differences."], "zh_chunks": ["在机械化时代的大部分时间里，", "种植庄稼的人们", "没有廉价的办法来应对这些差异。"], "en_chunked": "For most of the machinery era, \\ people who grew crops \\ had no cheap way to act on these differences.", "zh_chunked": "在机械化时代的大部分时间里， \\ 种植庄稼的人们 \\ 没有廉价的办法来应对这些差异。", "marks": [{"p": 49, "l": 16, "t": "signal", "note": "had no cheap way: 传统农耕痛点"}]}, {"start": 19.722, "end": 25.698, "en": "One treatment covered a wide strip, so a choice for the whole area became a choice for every part of it.", "zh": "一次作业覆盖很宽的一条， 因此对整个区域所做的选择 就成了对其中每一个部位的选择。", "en_chunks": ["One treatment covered a wide strip,", "so a choice for the whole area", "became a choice for every part of it."], "zh_chunks": ["一次作业覆盖很宽的一条，", "因此对整个区域所做的选择", "就成了对其中每一个部位的选择。"], "en_chunked": "One treatment covered a wide strip, \\ so a choice for the whole area \\ became a choice for every part of it.", "zh_chunked": "一次作业覆盖很宽的一条， \\ 因此对整个区域所做的选择 \\ 就成了对其中每一个部位的选择。", "marks": [{"p": 0, "l": 34, "t": "answer", "note": "Q51 题眼定位：机械化粗放作业忽视微观土壤差异"}]}, {"start": 26.048, "end": 32.48, "en": "Small flying devices have changed that situation: battery-powered drones now cross a field every few days.", "zh": "小型飞行装置已经改变了那种局面： 电池驱动的无人机 如今每隔几天便掠过农田。", "en_chunks": ["Small flying devices have changed that situation:", "battery-powered drones", "now cross a field every few days."], "zh_chunks": ["小型飞行装置已经改变了那种局面：", "电池驱动的无人机", "如今每隔几天便掠过农田。"], "en_chunked": "Small flying devices have changed that situation: \\ battery-powered drones \\ now cross a field every few days.", "zh_chunked": "小型飞行装置已经改变了那种局面： \\ 电池驱动的无人机 \\ 如今每隔几天便掠过农田。", "marks": [{"p": 0, "l": 49, "t": "signal", "note": "changed that situation: 技术破局标志"}]}, {"start": 32.83, "end": 37.318, "en": "Their sensors record light from the plants in colors people cannot see.", "zh": "它们的传感器记录来自植物的光线， 以人类所不能看见的颜色。", "en_chunks": ["Their sensors record light from the plants", "in colors people cannot see."], "zh_chunks": ["它们的传感器记录来自植物的光线，", "以人类所不能看见的颜色。"], "en_chunked": "Their sensors record light from the plants \\ in colors people cannot see.", "zh_chunked": "它们的传感器记录来自植物的光线， \\ 以人类所不能看见的颜色。", "marks": [{"p": 6, "l": 7, "t": "detail", "note": "sensors: 多光谱传感器检测"}]}, {"start": 37.668, "end": 42.924, "en": "A plant short of food or water shows it weeks before someone walking the rows notices.", "zh": "一株缺乏养分或水分的植物 提前数周表现出这一点， 在沿田垄步行的人注意到之前。", "en_chunks": ["A plant short of food or water", "shows it weeks before", "someone walking the rows notices."], "zh_chunks": ["一株缺乏养分或水分的植物", "提前数周表现出这一点，", "在沿田垄步行的人注意到之前。"], "en_chunked": "A plant short of food or water \\ shows it weeks before \\ someone walking the rows notices.", "zh_chunked": "一株缺乏养分或水分的植物 \\ 提前数周表现出这一点， \\ 在沿田垄步行的人注意到之前。", "marks": [{"p": 40, "l": 12, "t": "detail", "note": "weeks before: 提前数周预警"}]}, {"start": 43.274, "end": 50.354, "en": "Software turns these readings into a chart, which now goes back to vehicles that treat single plants instead of wide strips.", "zh": "软件把这些读数转变成一张图表， 这张图表现在返回给作业车辆， 由它们针对单株植物实施处理， 而不是覆盖大面积宽条带。", "en_chunks": ["Software turns these readings into a chart,", "which now goes back to vehicles", "that treat single plants", "instead of wide strips."], "zh_chunks": ["软件把这些读数转变成一张图表，", "这张图表现在返回给作业车辆，", "由它们针对单株植物实施处理，", "而不是覆盖大面积宽条带。"], "en_chunked": "Software turns these readings into a chart, \\ which now goes back to vehicles \\ that treat single plants \\ instead of wide strips.", "zh_chunked": "软件把这些读数转变成一张图表， \\ 这张图表现在返回给作业车辆， \\ 由它们针对单株植物实施处理， \\ 而不是覆盖大面积宽条带。", "marks": [{"p": 86, "l": 35, "t": "answer", "note": "Q52 题眼定位：精准单株变量作业（treat single plants instead of wide strips）"}]}, {"start": 50.704, "end": 54.688, "en": "The business case is clear, but the results are uneven.", "zh": "商业论据是清楚的， 但实际结果却不均衡。", "en_chunks": ["The business case is clear,", "but the results are uneven."], "zh_chunks": ["商业论据是清楚的，", "但实际结果却不均衡。"], "en_chunked": "The business case is clear, \\ but the results are uneven.", "zh_chunked": "商业论据是清楚的， \\ 但实际结果却不均衡。", "marks": [{"p": 27, "l": 3, "t": "signal", "note": "but the results are uneven: 转折提示局限性"}]}, {"start": 55.038, "end": 61.182, "en": "Researchers at agricultural colleges treated some fields with drones and others in the traditional way.", "zh": "农业学院的研究人员 用无人机处理了一部分田地， 而用传统方式处理了其余的田地。", "en_chunks": ["Researchers at agricultural colleges", "treated some fields with drones", "and others in the traditional way."], "zh_chunks": ["农业学院的研究人员", "用无人机处理了一部分田地，", "而用传统方式处理了其余的田地。"], "en_chunked": "Researchers at agricultural colleges \\ treated some fields with drones \\ and others in the traditional way.", "zh_chunked": "农业学院的研究人员 \\ 用无人机处理了一部分田地， \\ 而用传统方式处理了其余的田地。", "marks": [{"p": 0, "l": 40, "t": "signal", "note": "Researchers... treated: 对照实验路标"}]}, {"start": 61.532, "end": 67.148, "en": "Chemical use fell by a third, and output rose where the seeds were spaced to suit the soil.", "zh": "化学品用量下降了三分之一， 并且产量上升了， 在种子间距被调整以适应土壤的地方。", "en_chunks": ["Chemical use fell by a third,", "and output rose", "where the seeds were spaced to suit the soil."], "zh_chunks": ["化学品用量下降了三分之一，", "并且产量上升了，", "在种子间距被调整以适应土壤的地方。"], "en_chunked": "Chemical use fell by a third, \\ and output rose \\ where the seeds were spaced to suit the soil.", "zh_chunked": "化学品用量下降了三分之一， \\ 并且产量上升了， \\ 在种子间距被调整以适应土壤的地方。", "marks": [{"p": 0, "l": 27, "t": "detail", "note": "Chemical use fell by a third: 农药化肥减量三分之一"}]}, {"start": 67.498, "end": 75.106, "en": "Money saved on chemicals arrives immediately, but the tools cost real money: drones, software, and a worker who can fix them.", "zh": "在化学品上节省的资金立刻到账， 但这些工具花费真正的金钱： 无人机、软件， 以及一名能修理它们的工人。", "en_chunks": ["Money saved on chemicals arrives immediately,", "but the tools cost real money:", "drones, software,", "and a worker who can fix them."], "zh_chunks": ["在化学品上节省的资金立刻到账，", "但这些工具花费真正的金钱：", "无人机、软件，", "以及一名能修理它们的工人。"], "en_chunked": "Money saved on chemicals arrives immediately, \\ but the tools cost real money: \\ drones, software, \\ and a worker who can fix them.", "zh_chunked": "在化学品上节省的资金立刻到账， \\ 但这些工具花费真正的金钱： \\ 无人机、软件， \\ 以及一名能修理它们的工人。", "marks": [{"p": 46, "l": 28, "t": "signal", "note": "but the tools cost real money: 成本阻碍"}]}, {"start": 75.456, "end": 83.016, "en": "The tools spread fastest among younger farm families, who already walk their fields with a phone in hand, not among the biggest farms.", "zh": "这些工具传播得最快 在更年轻的农户家庭之中， 他们本就手里拿着手机走过田间， 而不是在规模最大的农场之中。", "en_chunks": ["The tools spread fastest", "among younger farm families,", "who already walk their fields with a phone in hand,", "not among the biggest farms."], "zh_chunks": ["这些工具传播得最快", "在更年轻的农户家庭之中，", "他们本就手里拿着手机走过田间，", "而不是在规模最大的农场之中。"], "en_chunked": "The tools spread fastest \\ among younger farm families, \\ who already walk their fields with a phone in hand, \\ not among the biggest farms.", "zh_chunked": "这些工具传播得最快 \\ 在更年轻的农户家庭之中， \\ 他们本就手里拿着手机走过田间， \\ 而不是在规模最大的农场之中。", "marks": [{"p": 22, "l": 35, "t": "answer", "note": "Q53 题眼定位：年轻家庭接受度最高"}]}, {"start": 83.366, "end": 86.102, "en": "The farming questions are harder.", "zh": "农艺方面的问题 则更为艰难。", "en_chunks": ["The farming questions", "are harder."], "zh_chunks": ["农艺方面的问题", "则更为艰难。"], "en_chunked": "The farming questions \\ are harder.", "zh_chunked": "农艺方面的问题 \\ 则更为艰难。", "marks": []}, {"start": 86.452, "end": 91.18, "en": "A sensor can show that a plant looks wrong, but it cannot always say why.", "zh": "传感器能够显示某株植物看起来不正常， 但它并非总能说清为什么。", "en_chunks": ["A sensor can show that a plant looks wrong,", "but it cannot always say why."], "zh_chunks": ["传感器能够显示某株植物看起来不正常，", "但它并非总能说清为什么。"], "en_chunked": "A sensor can show that a plant looks wrong, \\ but it cannot always say why.", "zh_chunked": "传感器能够显示某株植物看起来不正常， \\ 但它并非总能说清为什么。", "marks": [{"p": 40, "l": 3, "t": "signal", "note": "but it cannot always say why: 技术盲区"}]}, {"start": 91.53, "end": 97.386, "en": "A lack of food, root disease, and soil that holds too much water send nearly the same signal.", "zh": "养分的缺乏、根部的疾病、 以及蓄水过多的土壤， 发出几乎完全相同的反射信号。", "en_chunks": ["A lack of food, root disease,", "and soil that holds too much water", "send nearly the same signal."], "zh_chunks": ["养分的缺乏、根部的疾病、", "以及蓄水过多的土壤，", "发出几乎完全相同的反射信号。"], "en_chunked": "A lack of food, root disease, \\ and soil that holds too much water \\ send nearly the same signal.", "zh_chunked": "养分的缺乏、根部的疾病、 \\ 以及蓄水过多的土壤， \\ 发出几乎完全相同的反射信号。", "marks": [{"p": 0, "l": 62, "t": "detail", "note": "send nearly the same signal: 信号同质性难题"}]}, {"start": 97.736, "end": 105.032, "en": "The most successful farms therefore use a drone as a first-step tool, narrowing a whole farm to the few parts worth walking through.", "zh": "最成功的农场因此把无人机用作第一步初筛工具， 把整个农场范围缩小 到值得亲自下地察看的少数几个部位。", "en_chunks": ["The most successful farms therefore use a drone as a first-step tool,", "narrowing a whole farm", "to the few parts worth walking through."], "zh_chunks": ["最成功的农场因此把无人机用作第一步初筛工具，", "把整个农场范围缩小", "到值得亲自下地察看的少数几个部位。"], "en_chunked": "The most successful farms therefore use a drone as a first-step tool, \\ narrowing a whole farm \\ to the few parts worth walking through.", "zh_chunked": "最成功的农场因此把无人机用作第一步初筛工具， \\ 把整个农场范围缩小 \\ 到值得亲自下地察看的少数几个部位。", "marks": [{"p": 26, "l": 9, "t": "signal", "note": "therefore: 因果定论路标"}, {"p": 48, "l": 23, "t": "answer", "note": "Q54 题眼定位：first-step tool 缩小走访范围"}]}, {"start": 105.382, "end": 113.206, "en": "The device searches, and the person decides; this way of working has lasted longer than the automatic future that companies once described.", "zh": "机器负责搜索排查，而人来做出决定； 这种工作方式维持得更加长久， 比农机公司当年描述过的全自动未来。", "en_chunks": ["The device searches, and the person decides;", "this way of working has lasted longer", "than the automatic future that companies once described."], "zh_chunks": ["机器负责搜索排查，而人来做出决定；", "这种工作方式维持得更加长久，", "比农机公司当年描述过的全自动未来。"], "en_chunked": "The device searches, and the person decides; \\ this way of working has lasted longer \\ than the automatic future that companies once described.", "zh_chunked": "机器负责搜索排查，而人来做出决定； \\ 这种工作方式维持得更加长久， \\ 比农机公司当年描述过的全自动未来。", "marks": [{"p": 0, "l": 44, "t": "signal", "note": "The device searches, and the person decides: 人机协同核心哲学"}]}, {"start": 113.556, "end": 117.036, "en": "The environmental account is still being written.", "zh": "生态效益这笔账 目前仍在持续书写之中。", "en_chunks": ["The environmental account", "is still being written."], "zh_chunks": ["生态效益这笔账", "目前仍在持续书写之中。"], "en_chunked": "The environmental account \\ is still being written.", "zh_chunked": "生态效益这笔账 \\ 目前仍在持续书写之中。", "marks": []}, {"start": 117.386, "end": 124.178, "en": "Careful application sends less chemical into the streams and protects the helpful insects that older methods destroyed.", "zh": "仔细的施用 送入更少的化学品 进入溪流之中， 并保护了有益的昆虫， 那些更老旧的方法所消灭的。", "en_chunks": ["Careful application", "sends less chemical", "into the streams", "and protects the helpful insects", "that older methods destroyed."], "zh_chunks": ["仔细的施用", "送入更少的化学品", "进入溪流之中，", "并保护了有益的昆虫，", "那些更老旧的方法所消灭的。"], "en_chunked": "Careful application \\ sends less chemical \\ into the streams \\ and protects the helpful insects \\ that older methods destroyed.", "zh_chunked": "仔细的施用 \\ 送入更少的化学品 \\ 进入溪流之中， \\ 并保护了有益的昆虫， \\ 那些更老旧的方法所消灭的。", "marks": []}, {"start": 124.528, "end": 128.56, "en": "Whether such advantages will continue is another question.", "zh": "这些环境优势能否持久延续， 则是另一个未知问题。", "en_chunks": ["Whether such advantages will continue", "is another question."], "zh_chunks": ["这些环境优势能否持久延续，", "则是另一个未知问题。"], "en_chunked": "Whether such advantages will continue \\ is another question.", "zh_chunked": "这些环境优势能否持久延续， \\ 则是另一个未知问题。", "marks": [{"p": 0, "l": 42, "t": "signal", "note": "Whether... is another question: 批判性审视"}]}, {"start": 128.91, "end": 133.086, "en": "A few firms now own both the flight data and the seed supply.", "zh": "少数几家公司如今拥有 飞行航测数据和种子供应这两者。", "en_chunks": ["A few firms now own", "both the flight data and the seed supply."], "zh_chunks": ["少数几家公司如今拥有", "飞行航测数据和种子供应这两者。"], "en_chunked": "A few firms now own \\ both the flight data and the seed supply.", "zh_chunked": "少数几家公司如今拥有 \\ 飞行航测数据和种子供应这两者。", "marks": [{"p": 0, "l": 60, "t": "answer", "note": "Q55 题眼定位：D 项 A few firms own both flight data and seed supply (数据与种子垄断隐忧)"}]}, {"start": 133.436, "end": 139.652, "en": "Organizations speaking for farm workers now raise this at meetings where the devices are otherwise welcome.", "zh": "为农场工人发声的社会组织 如今郑重提出了这一点， 在那些该设备原本受到欢迎的研讨会上。", "en_chunks": ["Organizations speaking for farm workers", "now raise this", "at meetings where the devices are otherwise welcome."], "zh_chunks": ["为农场工人发声的社会组织", "如今郑重提出了这一点，", "在那些该设备原本受到欢迎的研讨会上。"], "en_chunked": "Organizations speaking for farm workers \\ now raise this \\ at meetings where the devices are otherwise welcome.", "zh_chunked": "为农场工人发声的社会组织 \\ 如今郑重提出了这一点， \\ 在那些该设备原本受到欢迎的研讨会上。", "marks": []}];
+const a=document.getElementById('a'),wrap=document.getElementById('wrap');
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+
+CUES.forEach((c, idx)=>{
+ const p=document.createElement('p');p.className='line';
+ 
+ const meta=document.createElement('div');meta.className='line-meta';
+ const badge=document.createElement('span');badge.className='line-badge';
+ badge.textContent='句 ' + (idx+1);
+ const tSpan=document.createElement('span');tSpan.textContent=fmt(c.start);
+ meta.appendChild(badge);meta.appendChild(tSpan);
+ p.appendChild(meta);
+
+ const cardsBox=document.createElement('div');cardsBox.className='line-cards';
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const mCard=document.createElement('div');mCard.className='m-card';
+   const mEn=document.createElement('div');mEn.className='m-en';mEn.textContent=enText;
+   const mZh=document.createElement('div');mZh.className='m-zh';mZh.textContent=(c.zh_chunks||[])[ci]||'';
+   mCard.appendChild(mEn);mCard.appendChild(mZh);
+   cardsBox.appendChild(mCard);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='m-slash';slash.textContent=String.fromCharCode(92);
+     cardsBox.appendChild(slash);
+   }
+ });
+ p.appendChild(cardsBox);
+
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   const noteDiv=document.createElement('div');noteDiv.className='line-tip';
+   noteDiv.textContent='🎯 ' + notes.join(' | ');
+   p.appendChild(noteDiv);
+ }
+
+ p.onclick=()=>{a.currentTime=c.start+.02;if(a.paused)a.play();};
+ wrap.appendChild(p);c.el=p;
+});
+
+let cur=-1;
+function paint(i){
+ const sc=document.getElementById('sub-cards'),tip=document.getElementById('tip');
+ sc.innerHTML='';tip.textContent='';tip.style.display='none';
+ if(i<0)return;const c=CUES[i];
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const card=document.createElement('div');card.className='chunk-card';
+   const enDiv=document.createElement('div');enDiv.className='card-en';enDiv.textContent=enText;
+   const zhDiv=document.createElement('div');zhDiv.className='card-zh';zhDiv.textContent=(c.zh_chunks||[])[ci]||'';
+   card.appendChild(enDiv);card.appendChild(zhDiv);
+   sc.appendChild(card);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='slash-col';slash.textContent=String.fromCharCode(92);
+     sc.appendChild(slash);
+   }
+ });
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   tip.textContent='🎯 '+notes.join(' | ');
+   tip.style.display='block';
+ }
+}
+
+a.addEventListener('timeupdate',()=>{const t=a.currentTime;
+ let i=CUES.findIndex(c=>t>=c.start&&t<c.end);
+ if(i!==cur){if(cur>=0)CUES[cur].el.classList.remove('on');
+  if(i>=0){CUES[i].el.classList.add('on');CUES[i].el.scrollIntoView({block:'center',behavior:'smooth'});}
+  paint(i);cur=i;}
+ const d=a.duration||1;const r=Math.min(t/d,1);
+ document.getElementById('fill').style.width=(r*100)+'%';
+ document.getElementById('knob').style.left=(r*100)+'%';
+ document.getElementById('time').textContent=fmt(t)+' / '+fmt(a.duration||0);});
+
+const play=document.getElementById('play');
+play.onclick=()=>{a.paused?a.play():a.pause();};
+a.onplay=()=>play.textContent='⏸';a.onpause=()=>play.textContent='▶';
+const bar=document.getElementById('bar');
+function seekEv(e){const r=bar.getBoundingClientRect();
+ a.currentTime=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*(a.duration||0);}
+bar.addEventListener('pointerdown',e=>{bar.setPointerCapture(e.pointerId);seekEv(e);bar._d=true;});
+bar.addEventListener('pointermove',e=>{if(bar._d)seekEv(e);});
+bar.addEventListener('pointerup',()=>bar._d=false);
+</script></body></html>

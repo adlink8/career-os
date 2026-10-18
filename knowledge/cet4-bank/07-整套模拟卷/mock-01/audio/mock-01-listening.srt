@@ -1,0 +1,531 @@
+1
+00:00:00,000 --> 00:00:02,304
+News Report One.
+新闻报道一。
+
+2
+00:00:03,104 --> 00:00:16,904
+The hottest day of September on record pushed the city of Tucson to activate its emergency heat plan for the first time this year, opening nine cooling centers in libraries, community colleges and fire stations.
+有记录以来最热的一个九月天，让图森（Tucson）市今年首次启动高温应急计划，在图书馆、社区学院和消防站开放了九个降温避暑点。
+
+3
+00:00:17,204 --> 00:00:28,244
+The National Weather Service logged 41 degrees Celsius downtown shortly before three in the afternoon, one degree above the previous mark from 2006.
+美国国家气象局（National Weather Service）记录到，下午三点前不久市区气温高达41摄氏度，比2006年的旧纪录还高出一度。
+
+4
+00:00:28,544 --> 00:00:38,888
+Officials urged residents to ride free municipal buses between errands rather than walk, and public pools stayed open two hours longer than usual.
+官方敦促市民出门办事时改乘免费市政公交车、不要步行，公共泳池也比平时延长开放两小时。
+
+5
+00:00:39,188 --> 00:00:47,036
+Utilities warned that pressure on the electrical grid would remain tight until evening, when air-conditioner use peaks.
+电力公司警告说，电网压力将持续紧张，直到傍晚空调使用高峰到来。
+
+6
+00:00:47,336 --> 00:00:54,392
+City hospitals reported twenty-two heat-related admissions, most of them over the age of seventy.
+市立医院报告了22例与高温相关的入院病例，其中大多数患者超过七十岁。
+
+7
+00:00:54,692 --> 00:01:06,068
+The mayor said shaded bus stops and four thousand additional street trees would go before the council in November, together with money to insulate the homes of low-income families.
+市长表示，带遮阳设施的公交站和加种四千棵行道树的提案将于11月提交市议会，其中还包括为低收入家庭住宅加装隔热层的资金。
+
+8
+00:01:06,368 --> 00:01:11,868
+⏳ 请作答（5 秒）
+
+9
+00:01:11,868 --> 00:01:14,268
+News Report Two.
+新闻报道二。
+
+10
+00:01:15,068 --> 00:01:24,572
+A regional museum that had kept almost all of its collection in boxes has reopened with a complete online catalogue and free handheld guides.
+一家地方博物馆曾把几乎全部馆藏都装在箱子里，如今重新开放，并推出了完整的在线馆藏目录和免费手持导览设备。
+
+11
+00:01:24,872 --> 00:01:38,816
+The Riverside Institute spent four point two million dollars over four years photographing each of its thirty-eight thousand objects; the images are now downloadable, and teachers have been using them to build classroom lessons.
+河畔研究所（Riverside Institute）花四年时间、四千二百万美元，为三万八千件藏品逐一拍照存档；这些图片现在都可以下载，老师们一直在用它们来设计课堂教学。
+
+12
+00:01:39,116 --> 00:01:46,892
+Only about nine hundred pieces hang in the galleries, though curators promise to rotate the displays twice a year.
+展厅里实际展出的只有大约九百件，不过策展人承诺每年更换两次展品。
+
+13
+00:01:47,192 --> 00:01:56,912
+Visitors may bring their own telephones or take a device from the front desk to summon pictures, recordings and descriptions in six languages.
+参观者可以自带手机，也可以从服务台领一台设备，调看图样、录音和六种语言的讲解。
+
+14
+00:01:57,212 --> 00:02:10,940
+The director said the goal was to reach people who rarely walk through museum doors: downloads from other countries now make up about a third of the traffic, and school groups arrived twenty percent more often during the first term.
+馆长说，目标是触达那些很少踏进博物馆大门的人：目前来自国外的下载量约占总访问量的三分之一，第一学期学校团体到访的频率提高了百分之二十。
+
+15
+00:02:11,240 --> 00:02:14,792
+Admission stays free on Sundays.
+周日免费入场。
+
+16
+00:02:15,092 --> 00:02:20,592
+⏳ 请作答（5 秒）
+
+17
+00:02:20,592 --> 00:02:23,016
+News Report Three.
+新闻报道三。
+
+18
+00:02:23,816 --> 00:02:35,048
+Owners of small shops and workshops say they cannot absorb another rise in electricity costs, according to a survey published on Monday by a regional business federation.
+一家地区商业联合会周一发布的调查显示，小商店和小作坊的店主们表示，他们已无力再消化电费的又一轮上涨。
+
+19
+00:02:35,348 --> 00:02:47,540
+Nearly seven in ten of the thirteen hundred firms questioned reported bills more than double what they paid two years earlier, and a quarter said they had already reduced staff hours or shut one site.
+在接受调查的一千三百家企业中，近七成反映电费账单是两年前的两倍多，四分之一表示已经削减了员工工时或关闭了一处营业点。
+
+20
+00:02:47,840 --> 00:02:57,296
+The federation is asking the national regulator to postpone a scheduled change in wholesale pricing until spring and to extend short-term credit.
+该联合会正请求国家监管机构把定好的批发电价调整推迟到春季，并延长短期信贷。
+
+21
+00:02:57,596 --> 00:03:06,140
+Large manufacturers, by contrast, have protected themselves with longer contracts and expect smaller increases.
+相比之下，大型制造商靠长期合同保护自己，预计涨幅会小一些。
+
+22
+00:03:06,440 --> 00:03:15,896
+Owners of bakeries and laundries told reporters they were weighing higher prices, which they fear could push shoppers toward supermarket chains.
+面包店和洗衣店店主告诉记者，他们正在考虑提价，但又担心这样会把顾客推向连锁超市。
+
+23
+00:03:16,196 --> 00:03:24,260
+The regulator answered that it reviews tariffs twice a year and that support schemes for vulnerable customers are already open.
+监管机构回应说，他们每年审查两次电价，而且针对困难用户的帮扶计划已经在受理申请。
+
+24
+00:03:24,560 --> 00:03:32,060
+⏳ 请作答（7 秒）
+
+25
+00:03:32,060 --> 00:03:34,364
+Conversation One.
+对话一。
+
+26
+00:03:35,164 --> 00:03:39,100
+Excuse me, are you the first-year advisor?
+打扰一下，请问您是一年级新生辅导员吗？
+
+27
+00:03:39,450 --> 00:03:46,890
+I have to lock in my Friday schedule by Thursday noon, and I'm stuck between two choices for the seminar requirement.
+我必须在周四中午之前敲定周五的课表安排，可研讨课的必修要求让我在两个选项之间卡住了。
+
+28
+00:03:47,240 --> 00:03:50,504
+I am, Mia; sit down.
+我就是，米娅（Mia），坐下说吧。
+
+29
+00:03:50,854 --> 00:03:52,798
+Which two?
+哪两门？
+
+30
+00:03:53,148 --> 00:03:57,660
+Academic Writing, and Statistics for the Life Sciences.
+学术写作，还有生命科学统计学。
+
+31
+00:03:58,010 --> 00:04:06,026
+My roommate took statistics last year; he says the lectures are easy to follow, but the problem sets eat four hours every week.
+我室友去年修了统计课；他说讲课很好懂，但每周的作业题要花掉四个小时。
+
+32
+00:04:06,376 --> 00:04:13,816
+That part is fair, and the sets are worth thirty percent of your final mark, so missing one is expensive.
+他说得没错，那些作业占期末成绩的百分之三十，少交一次损失很大。
+
+33
+00:04:14,166 --> 00:04:17,646
+What are you planning to do after you graduate?
+你毕业后打算做什么？
+
+34
+00:04:17,996 --> 00:04:23,012
+Medical school, ideally, though I hate the thought of writing all year.
+理想情况下是上医学院，可一想到要整年写个不停我就头疼。
+
+35
+00:04:23,362 --> 00:04:26,266
+Then writing isn't optional.
+那写作就不是可有可无的了。
+
+36
+00:04:26,616 --> 00:04:36,840
+The entrance examination asks for an essay, and the programs we send students to want evidence that somebody can build an argument over ten pages.
+入学考试要写作文，我们送学生去的那些项目也想要有证据表明学生能写出一份贯穿十页纸的论证。
+
+37
+00:04:37,190 --> 00:04:43,022
+But my laboratory course meets Tuesday evenings, so the writing section may not fit.
+但我的实验课在周二晚上上，所以写作课的那个班可能排不开。
+
+38
+00:04:43,372 --> 00:04:52,156
+The sections run Tuesday evenings and Friday afternoons; the Tuesday one collides with your lab, so you'd want Friday.
+写作班分别排在周二晚上和周五下午；周二的班跟你的实验课冲突，所以你应该选周五那个。
+
+39
+00:04:52,506 --> 00:04:59,538
+Two places were still open when the system refreshed this morning, and I wouldn't assume they'll last the day.
+今早系统刷新的时候还剩两个名额，我劝你别指望它们能留到今天结束。
+
+40
+00:04:59,888 --> 00:05:03,248
+What if I start it and find it too heavy?
+要是我选了之后觉得课业太重怎么办？
+
+41
+00:05:03,598 --> 00:05:05,686
+Can I get out?
+能退课吗？
+
+42
+00:05:06,036 --> 00:05:11,460
+You can withdraw without anything on your record until the Friday of week four.
+到第四周的周五为止，你退课不会在成绩单上留下任何记录。
+
+43
+00:05:11,810 --> 00:05:21,386
+After that you need signatures from both instructors, and students who wait too long usually finish the term with a grade they didn't plan for.
+那之后就需要两位任课老师都签字，而且拖得太久的学生，往往到期末会拿到一个自己根本没打算要的成绩。
+
+44
+00:05:21,736 --> 00:05:23,488
+Got it.
+明白了。
+
+45
+00:05:23,838 --> 00:05:27,126
+Is there any support outside class?
+课外有什么辅导支持吗？
+
+46
+00:05:27,476 --> 00:05:35,300
+The writing center takes two appointments a week online, and the tutors are graduate students in the same program.
+写作中心每周可以在线预约两次辅导，辅导老师是同专业的研究生。
+
+47
+00:05:35,650 --> 00:05:41,410
+In heavy weeks they run a queue instead, so you might sit for twenty minutes.
+作业多的那几周他们会改成现场排号，所以你可能会等上二十分钟。
+
+48
+00:05:41,760 --> 00:05:46,656
+Then I'll take Friday writing and leave the statistics reading for later.
+那我就选周五的写作班，统计的阅读任务以后再说。
+
+49
+00:05:47,006 --> 00:05:48,782
+Thank you.
+谢谢你。
+
+50
+00:05:49,132 --> 00:05:58,632
+⏳ 请作答（9 秒）
+
+51
+00:05:58,632 --> 00:06:01,056
+Conversation Two.
+对话二。
+
+52
+00:06:01,856 --> 00:06:08,576
+Good afternoon, you must be Elena; thanks for coming about the weekend position at the campus bookstore.
+下午好，你一定是埃琳娜（Elena）吧；欢迎你来面谈校园书店周末兼职的事。
+
+53
+00:06:08,926 --> 00:06:10,966
+Have a seat.
+请坐。
+
+54
+00:06:11,316 --> 00:06:17,700
+I've read your form, and my first question is a simple one: have you ever worked behind a counter?
+我看过你的申请表了，第一个问题很简单：你在柜台后面打过工吗？
+
+55
+00:06:18,050 --> 00:06:19,874
+Thank you.
+谢谢。
+
+56
+00:06:20,224 --> 00:06:29,056
+Two summers at a farmstand out of town, mostly weighing produce and handling money, so your register system will be new to me.
+在郊外的农产品直销店打过两个暑假，主要是给农产品称重和收钱，所以你们的收银系统对我来说完全是新的。
+
+57
+00:06:29,406 --> 00:06:36,294
+That's no trouble; we train people on it during the first two shifts, and a manager is always on the floor.
+那没问题；头两个班次我们会培训收银，而且店里随时都有经理值班。
+
+58
+00:06:36,644 --> 00:06:40,028
+What I really need to sort out is the clock.
+我真正需要落实的是时间问题。
+
+59
+00:06:40,378 --> 00:06:48,202
+I can be here any Saturday, but Sunday mornings my family drives into the city, so I could start at one.
+我哪个周六都可以来，但周日早上家里人开车进城，所以我一点之后才行。
+
+60
+00:06:48,552 --> 00:06:51,264
+Let's be exact, then.
+那我们就说得准确些。
+
+61
+00:06:51,614 --> 00:07:00,086
+We're short between eight and noon on Sunday, and that's the busiest stretch of the week: deliveries, and students who missed the earlier line.
+我们周日八点到中午缺人手，而那正是一周里最忙的时段：既要收货，又有没赶上先前那波、挤到这个时段的学生。
+
+62
+00:07:00,436 --> 00:07:06,700
+In that case I could ask my brother to take the drive and cover Sunday mornings myself.
+那样的话，我可以让我弟弟替家里跑进城这趟，周日早上我自己来顶班。
+
+63
+00:07:07,050 --> 00:07:11,226
+I'd rather not build a schedule around family favors.
+我不太想把排班建立在麻烦你家人的基础上。
+
+64
+00:07:11,576 --> 00:07:20,048
+Here's what I can do: eight hours on Saturday, fixed, and when the spring timetable is set in six weeks I'll ring you first about Sunday.
+我可以这样安排：周六固定八个小时，等六周后春季课表定了，关于周日的安排我会第一个打电话给你。
+
+65
+00:07:20,398 --> 00:07:22,606
+That suits me.
+这样挺适合我的。
+
+66
+00:07:22,956 --> 00:07:27,372
+The notice said eleven dollars an hour; is that right?
+通知上说每小时十一美元，没错吧？
+
+67
+00:07:27,722 --> 00:07:33,818
+It is, and it becomes thirteen in March, when the university raises the student minimum.
+没错，到三月份会涨到十三美元，到时候学校会上调学生兼职的最低工资标准。
+
+68
+00:07:34,168 --> 00:07:40,048
+There's also a discount of fifteen percent, but only on a day you're actually scheduled.
+还有百分之十五的购物折扣，不过只在你当天确实有排班的时候才能用。
+
+69
+00:07:40,398 --> 00:07:42,342
+Understood.
+明白了。
+
+70
+00:07:42,692 --> 00:07:45,788
+Do you need anything else from me today?
+今天还需要我再提供什么吗？
+
+71
+00:07:46,138 --> 00:07:48,154
+Two things.
+两样东西。
+
+72
+00:07:48,504 --> 00:07:56,784
+Proof that you're enrolled, by Friday, and the name of somebody who has worked beside you before, because I'll ask them a question or two.
+周五前给我一份在读证明，再提供一个和你共事过的人的姓名，因为我要向他们了解一两个问题。
+
+73
+00:07:57,134 --> 00:08:02,342
+I'll send the paperwork tonight and give you the manager from the farmstand.
+我今晚上就把材料发过来，推荐人可以填农场直销店的经理。
+
+74
+00:08:02,692 --> 00:08:12,192
+⏳ 请作答（9 秒）
+
+75
+00:08:12,192 --> 00:08:14,256
+Passage One.
+篇章一。
+
+76
+00:08:15,056 --> 00:08:25,184
+For thirty years the distance an average American drives each day has barely changed, while the share of trips taken on foot has fallen to about one in fifty.
+三十年来，普通美国人每天开车的里程数几乎没有变化，而步行出行的比例已经降到大约五十分之一。
+
+77
+00:08:25,484 --> 00:08:36,452
+Researchers in Melbourne decided to test whether the built environment could push that number the other way, and their findings are now changing how several cities approve new housing.
+墨尔本的研究人员决定检验一下，建筑环境能否把这个数字往反方向推动，他们的发现正在改变好几个城市审批新建住宅的方式。
+
+78
+00:08:36,752 --> 00:08:47,456
+The study followed more than two thousand adults for three years, mapping every street within a kilometer of their homes and asking them to record where they actually went on foot.
+这项研究跟踪了两千多名成年人长达三年，绘制了他们家方圆一公里内的每一条街道，并请他们记录自己实际步行去过的地方。
+
+79
+00:08:47,756 --> 00:08:57,020
+The strongest predictor turned out not to be parks or scenery but something drier: how many crossings a person needed to reach the next block.
+结果发现，最强的预测指标并不是公园或风景，而是个更干巴巴的因素：一个人走到下一个街区需要穿过多少处路口。
+
+80
+00:08:57,320 --> 00:09:09,944
+Districts built on long superblocks, where a shop sits two kilometers away behind a wall of garages, produced almost no walking at all, whatever residents said about their intentions.
+建在长条形超大街区上的社区——商店在两公里外、隔着一排车库墙——几乎产生不了任何步行，不管居民嘴上说多想走路都一样。
+
+81
+00:09:10,244 --> 00:09:21,116
+Small blocks with frequent intersections kept people on their feet, and the effect held after the researchers allowed for income, age and whether a household owned a car.
+小街区、路口密集的设计能把人留在双脚上，而且在研究者把收入、年龄和家庭是否有车等因素考虑进去之后，这一效应依然成立。
+
+82
+00:09:21,416 --> 00:09:33,080
+A second result was less obvious: steps gathered in a few repeatable spots, so benches, shade and safe crossings brought outsize benefits where they were placed.
+第二个结果就不那么显而易见了：步行活动会汇聚到少数几个可以重复出现的地点，所以长椅、遮阴处和安全路口设在哪里，就在哪里带来超乎预期的效果。
+
+83
+00:09:33,380 --> 00:09:42,212
+Planners now argue that laying pavement beside existing wide roads achieves far less than cutting those roads into shorter pieces.
+规划师们现在认为，在现有的宽阔马路旁边铺人行道，收效远远不如把这些马路切割成更短的路段。
+
+84
+00:09:42,512 --> 00:09:50,012
+⏳ 请作答（7 秒）
+
+85
+00:09:50,012 --> 00:09:52,124
+Passage Two.
+篇章二。
+
+86
+00:09:52,924 --> 00:09:59,908
+Ask a student how to prepare for an examination and most will answer with late nights and strong coffee.
+问学生该怎么备考，大多数人的回答是熬夜加浓咖啡。
+
+87
+00:10:00,208 --> 00:10:04,840
+Ask a neuroscientist and you are likely to hear the opposite.
+去问神经科学家，你听到的多半是相反的说法。
+
+88
+00:10:05,140 --> 00:10:19,492
+During deep sleep the brain runs through the day's events at high speed, a process researchers call consolidation, and in doing so it carries fragile new information out of a temporary holding area and into permanent storage.
+在深度睡眠期间，大脑会以极高的速度重演白天经历的事情，研究者称之为巩固（consolidation）；在这个过程中，大脑把脆弱的新信息从临时存放区转移进永久存储区。
+
+89
+00:10:19,792 --> 00:10:27,544
+In one well-known experiment, volunteers learned a sequence of finger taps and were tested twelve hours later.
+在一个著名的实验中，志愿者们学习了一串手指敲击动作，十二小时后接受测试。
+
+90
+00:10:27,844 --> 00:10:32,404
+Half of them slept during that interval and half stayed awake.
+其中一半人在间隔期间睡了觉，另一半则一直保持清醒。
+
+91
+00:10:32,704 --> 00:10:43,720
+The rested group improved by roughly ten percent on average, and the gains were still there a week later, while repetition with no sleep in between produced almost nothing.
+休息过的那组平均提高了大约百分之十，而且一周之后进步仍然保留；相比之下，中间不睡觉、只是一遍遍重复练习则几乎没有效果。
+
+92
+00:10:44,020 --> 00:10:49,084
+A second finding is stranger, because rest appears to choose.
+第二个发现更奇怪，因为睡眠似乎会挑挑拣拣。
+
+93
+00:10:49,384 --> 00:11:05,680
+Not everything learned between breakfast and bedtime survives; cues presented around a study session, such as a particular smell or a brief tone, can tip which traces are kept, and anything tagged as emotionally important is pushed to the front of the queue.
+从早餐到睡前学到的东西并非都能保留下来；学习时段前后出现的线索，比如某种特定的气味或短暂的声音，能左右哪些记忆痕迹被保留，而任何被标记为情感重要的内容都会被推到队伍最前面。
+
+94
+00:11:05,980 --> 00:11:13,948
+That helps explain why a student who works four hours and then sleeps often does better than one who works eight and does not.
+这有助于解释为什么学四个小时就去睡的学生，往往比连学八个小时不睡的学生表现更好。
+
+95
+00:11:14,248 --> 00:11:24,040
+It also explains a cruelty in the same mechanism: an all-nighter damages recall of precisely the material the extra hours were meant to protect.
+这也解释了同一机制中残酷的一面：开夜车所损害的回忆，恰恰是多熬那几个小时本想保住的内容。
+
+96
+00:11:24,340 --> 00:11:31,840
+⏳ 请作答（7 秒）
+
+97
+00:11:31,840 --> 00:11:33,976
+Passage Three.
+篇章三。
+
+98
+00:11:34,776 --> 00:11:42,672
+How does a monarch butterfly, which has never made the journey, find a mountain valley it visited only in its ancestry?
+一只从未走过这段旅程的帝王蝶，是怎么找到它的祖先才到过的山间谷地的？
+
+99
+00:11:42,972 --> 00:11:48,108
+The answer, increasingly, is that the route arrives preloaded.
+越来越多的证据给出的答案是：这条路线先天就预装好了。
+
+100
+00:11:48,408 --> 00:12:00,696
+Monarchs crossing North America live in a chain of generations: the individuals that travel thousands of kilometers are great-great-grandchildren of those that left the same valleys the previous autumn.
+穿越北美的帝王蝶生活在一代接一代的链条上：跋涉数千公里的那些个体，是前一年秋天离开同一片山谷的那些蝴蝶的曾曾孙辈。
+
+101
+00:12:00,996 --> 00:12:14,508
+Field experiments with raised nets and displaced adults show that the insects combine a sun compass, which needs clear light, with an internal clock, so that they can correct for the sun's travel across the sky.
+用架高的网和易地放飞的成蝶所做的野外实验表明，这些昆虫会把需要晴天光线的太阳罗盘和体内生物钟结合起来，从而能针对太阳在天空中的移动做出修正。
+
+102
+00:12:14,808 --> 00:12:24,984
+Cloudy days do not stop them, because they also read polarization, a pattern in the light that survives cloud and that human eyes cannot detect.
+阴天也拦不住它们，因为它们还能识别偏振光——这种光的模式能够穿透云层，而人眼察觉不到。
+
+103
+00:12:25,284 --> 00:12:29,100
+Pigeons turn out to be even less single-minded.
+事实证明，鸽子在导航上更是多管齐下。
+
+104
+00:12:29,400 --> 00:12:41,520
+They use the Earth's magnetic field, odors carried along familiar routes and possibly low-frequency sound, and when researchers blocked one channel the birds simply relied on the rest.
+它们会利用地磁场、沿熟悉路线传播的气味，可能还有低频声音；当研究者堵住其中一条通道时，鸽子就干脆依靠其余的渠道。
+
+105
+00:12:41,820 --> 00:12:48,900
+The most surprising navigation belongs to the desert ant, which keeps a tally of its own strides.
+最令人惊讶的导航本领属于沙漠蚁，它会默默记下自己迈出的步数。
+
+106
+00:12:49,200 --> 00:13:02,016
+Scientists glued hair-thin extensions to some animals' legs and shortened others by amputation; the foragers then overshot or fell short of their nests by exactly the amount the alteration predicted.
+科学家在一些蚂蚁的腿上粘了细如发丝的加长杆，又把另一些蚂蚁的腿截短；结果外出觅食的蚂蚁要么飞过巢穴、要么离巢穴还差一段，偏差量恰好与改造所预测的完全一致。
+
+107
+00:13:02,316 --> 00:13:07,332
+No one has found an insect that uses only one sense to get home.
+人们至今还没有发现哪种昆虫只靠一种感官就能找到回家的路。
+
+108
+00:13:07,632 --> 00:13:17,132
+⏳ 请作答（9 秒）

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>CET-4 Player — mock-01 Section A — 选词填空 (时间银行)</title>
+<style>
+body{margin:0;background:#14161a;color:#dfe3e8;font-family:'Segoe UI','Microsoft YaHei',sans-serif;display:flex;flex-direction:column;height:100vh}
+#nav-tabs{display:flex;gap:8px;background:#181b22;padding:10px 18px;border-bottom:1px solid #2a2e35;overflow-x:auto;flex-wrap:nowrap}
+.tab-item{color:#9aa3af;text-decoration:none;font-size:13px;padding:6px 14px;border-radius:6px;transition:all 0.2s;background:#222630;white-space:nowrap;display:inline-flex;align-items:center}
+.tab-item:hover{color:#fff;background:#2d3340}
+.tab-item.active{color:#fff;background:#3b82f6;font-weight:600}
+header{padding:10px 18px;font-weight:600;border-bottom:1px solid #2a2e35;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#legend{font-size:12px;font-weight:400;color:#9aa3af}
+#legend b{padding:1px 8px;border-radius:4px;margin:0 2px}
+
+/* Top Subtitle Area (Active Sentence) */
+#sub{flex:0 0 auto;text-align:left;padding:14px 28px 12px;min-height:120px;background:#1a1d24;border-bottom:1px solid #282c35}
+#sub-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px 6px}
+.chunk-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#212631;border:1px solid #323b4b;border-radius:8px;padding:8px 12px;box-sizing:border-box;transition:all 0.15s ease}
+.chunk-card:hover{background:#283142;border-color:#60a5fa;box-shadow:0 4px 12px rgba(59,130,246,0.25)}
+.card-en{font-size:18px;line-height:1.45;color:#ffffff;font-weight:500;letter-spacing:0.2px}
+.card-zh{font-size:15px;line-height:1.45;color:#ffd479;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,212,121,0.25)}
+.slash-col{display:inline-flex;align-items:center;color:#64748b;font-size:20px;font-weight:bold;user-select:none;padding:0 2px}
+#tip{font-size:13.5px;margin-top:10px;color:#93c5fd;background:rgba(59,130,246,0.1);border-left:3px solid #3b82f6;padding:6px 12px;border-radius:4px;display:none}
+
+/* Scrollable List */
+#wrap{flex:1 1 auto;overflow-y:auto;padding:14px 28px 30px}
+p.line{margin:10px 0;padding:12px 14px;border-radius:8px;cursor:pointer;line-height:1.5;border-left:4px solid transparent;background:#181b22;border:1px solid #232833;transition:all 0.2s ease}
+p.line:hover{background:#1d222b;border-color:#333d4e;border-left-color:#3b82f6}
+p.line.on{background:#1e2638;border-color:#3b82f6;border-left-color:#60a5fa;box-shadow:0 4px 14px rgba(0,0,0,0.35)}
+.line-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;color:#64748b}
+.line-badge{font-weight:600;color:#94a3b8;background:#232936;padding:2px 8px;border-radius:4px}
+.line-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 4px}
+.m-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#12151b;border:1px solid #252b37;border-radius:6px;padding:6px 9px;transition:all 0.15s;box-sizing:border-box}
+.line.on .m-card{background:#17202e;border-color:#2b3952}
+.m-card:hover{border-color:#60a5fa;background:#1c2638}
+.m-en{color:#e2e8f0;font-size:14.5px;line-height:1.45;font-weight:500}
+.m-zh{color:#ffd479;font-size:13.5px;line-height:1.45;margin-top:4px;padding-top:4px;border-top:1px dashed rgba(255,212,121,0.2)}
+.m-slash{display:inline-flex;align-items:center;color:#475569;font-size:15px;font-weight:bold;user-select:none;padding:0 1px}
+.line-tip{margin-top:8px;padding:4px 10px;border-radius:4px;background:rgba(59,130,246,0.1);border-left:2px solid #3b82f6;font-size:13px;color:#93c5fd}
+
+/* Audio Player Transport */
+#transport{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:10px 18px 18px;background:#161920;border-top:1px solid #232730}
+#play{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:none;background:#3b82f6;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#play:hover{background:#2563eb}
+#bar{flex:1 1 auto;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+#track{width:100%;height:10px;border-radius:5px;background:#2a2e35;position:relative}
+#fill{height:100%;border-radius:5px;background:#3b82f6;width:0}
+#knob{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);left:0;box-shadow:0 1px 4px #0008}
+#time{flex:0 0 auto;font-variant-numeric:tabular-nums;color:#9aa3af}
+audio{display:none}
+</style></head><body>
+<nav id="nav-tabs">
+<a href="player.html" class="tab-item">🎧 Part II 听力全套 (13:17)</a>
+<a href="player-cloze.html" class="tab-item active">📖 Section A 选词填空 (时间银行)</a>
+<a href="player-passage1.html" class="tab-item">📖 Section C 仔细阅读一 (代际流动)</a>
+<a href="player-passage2.html" class="tab-item">📖 Section C 仔细阅读二 (农业无人机)</a>
+</nav>
+<header><span id="title">mock-01 Section A — 选词填空 (时间银行)</span><span id="legend">重点标注：<b style="background:#63d68a">答案定位/题眼</b><b style="background:#ff9d5c">原生路标(转折/因果/实证)</b><b style="background:#7fc4ff">核心搭配/细节</b><b style="background:#d9a2ff">陷阱辨析</b>（1:1 顺流意群卡点对齐）</span></header>
+<div id="sub">
+ <div id="sub-cards"></div>
+ <div id="tip"></div>
+</div>
+<div id="wrap"></div>
+<div id="transport">
+ <button id="play">▶</button>
+ <div id="bar"><div id="track"><div id="fill"></div><div id="knob"></div></div></div>
+ <span id="time">0:00 / -:-</span>
+</div>
+<audio id="a" src="mock-01-reading-cloze.mp3" preload="metadata"></audio>
+<script>
+const CUES=[{"start": 0.0, "end": 8.376, "en": "When a winter storm cut Maeve Brennan's power, the first person to check on her was not a paid caregiver but a neighbor she had met days earlier.", "zh": "当一场冬季暴风雪切断了梅芙·布伦南家的电源时， 第一个前去探望她的人 并不是花钱雇来的护工， 而是一位邻居， 她几天前刚刚认识的。", "en_chunks": ["When a winter storm cut Maeve Brennan's power,", "the first person to check on her", "was not a paid caregiver", "but a neighbor", "she had met days earlier."], "zh_chunks": ["当一场冬季暴风雪切断了梅芙·布伦南家的电源时，", "第一个前去探望她的人", "并不是花钱雇来的护工，", "而是一位邻居，", "她几天前刚刚认识的。"], "en_chunked": "When a winter storm cut Maeve Brennan's power, \\ the first person to check on her \\ was not a paid caregiver \\ but a neighbor \\ she had met days earlier.", "zh_chunked": "当一场冬季暴风雪切断了梅芙·布伦南家的电源时， \\ 第一个前去探望她的人 \\ 并不是花钱雇来的护工， \\ 而是一位邻居， \\ 她几天前刚刚认识的。", "marks": [{"p": 59, "l": 8, "t": "detail", "note": "check on: 探望/照看某人"}, {"p": 82, "l": 32, "t": "signal", "note": "not... but...: 转折对比，破除常规认知"}]}, {"start": 8.725999999999999, "end": 16.142, "en": "The two women had been linked to each other through a local time bank, a scheme matching households needing help with those able to give it.", "zh": "这两位女性被联系在了一起， 通过当地一家“时间银行”， 一个将需要帮助的家庭 与能够提供帮助的人进行匹配的项目。", "en_chunks": ["The two women had been linked to each other", "through a local time bank,", "a scheme matching households needing help", "with those able to give it."], "zh_chunks": ["这两位女性被联系在了一起，", "通过当地一家“时间银行”，", "一个将需要帮助的家庭", "与能够提供帮助的人进行匹配的项目。"], "en_chunked": "The two women had been linked to each other \\ through a local time bank, \\ a scheme matching households needing help \\ with those able to give it.", "zh_chunked": "这两位女性被联系在了一起， \\ 通过当地一家“时间银行”， \\ 一个将需要帮助的家庭 \\ 与能够提供帮助的人进行匹配的项目。", "marks": [{"p": 24, "l": 6, "t": "answer", "note": "Q26 答案：linked (be linked to 被动语态连结在一起)"}]}, {"start": 16.492, "end": 21.556, "en": "Every hour spent helping others earns a credit that can be saved and spent later.", "zh": "帮助他人所花费的每个小时， 都能赚取一个时间积分/额度， 能够被存起来并在日后消费使用。", "en_chunks": ["Every hour spent helping others", "earns a credit", "that can be saved and spent later."], "zh_chunks": ["帮助他人所花费的每个小时，", "都能赚取一个时间积分/额度，", "能够被存起来并在日后消费使用。"], "en_chunked": "Every hour spent helping others \\ earns a credit \\ that can be saved and spent later.", "zh_chunked": "帮助他人所花费的每个小时， \\ 都能赚取一个时间积分/额度， \\ 能够被存起来并在日后消费使用。", "marks": [{"p": 40, "l": 6, "t": "answer", "note": "Q27 答案：credit (earns a credit 赚取时间信用额度)"}]}, {"start": 21.906, "end": 24.45, "en": "Time banks are nothing new.", "zh": "时间银行 并不是什么新鲜事。", "en_chunks": ["Time banks", "are nothing new."], "zh_chunks": ["时间银行", "并不是什么新鲜事。"], "en_chunked": "Time banks \\ are nothing new.", "zh_chunked": "时间银行 \\ 并不是什么新鲜事。", "marks": [{"p": 11, "l": 11, "t": "signal", "note": "nothing new: 历史常识铺垫"}]}, {"start": 24.8, "end": 33.032, "en": "The idea originated in Japan in the 1970s, when young mothers wanted to share childcare, and has since spread worldwide.", "zh": "这一构想于20世纪70年代起源于日本， 当时年轻母亲们希望分担育儿， 自那以后便在全世界传播开来。", "en_chunks": ["The idea originated in Japan in the 1970s,", "when young mothers wanted to share childcare,", "and has since spread worldwide."], "zh_chunks": ["这一构想于20世纪70年代起源于日本，", "当时年轻母亲们希望分担育儿，", "自那以后便在全世界传播开来。"], "en_chunked": "The idea originated in Japan in the 1970s, \\ when young mothers wanted to share childcare, \\ and has since spread worldwide.", "zh_chunked": "这一构想于20世纪70年代起源于日本， \\ 当时年轻母亲们希望分担育儿， \\ 自那以后便在全世界传播开来。", "marks": [{"p": 9, "l": 10, "t": "answer", "note": "Q28 答案：originated (originated in 起源于...)"}]}, {"start": 33.382, "end": 42.262, "en": "What is novel about the modern version is its software: an application now handles the matching and reminders once left to exhausted volunteers.", "zh": "现代版本的新颖之处 在于其软件： 一款应用程序如今处理匹配和提醒事项， 曾经全留给精疲力竭的志愿者们承担。", "en_chunks": ["What is novel about the modern version", "is its software:", "an application now handles the matching and reminders", "once left to exhausted volunteers."], "zh_chunks": ["现代版本的新颖之处", "在于其软件：", "一款应用程序如今处理匹配和提醒事项，", "曾经全留给精疲力竭的志愿者们承担。"], "en_chunked": "What is novel about the modern version \\ is its software: \\ an application now handles the matching and reminders \\ once left to exhausted volunteers.", "zh_chunked": "现代版本的新颖之处 \\ 在于其软件： \\ 一款应用程序如今处理匹配和提醒事项， \\ 曾经全留给精疲力竭的志愿者们承担。", "marks": [{"p": 8, "l": 5, "t": "answer", "note": "Q29 答案：novel (What is novel about... 关键形容词：新颖的/不同寻常的)"}]}, {"start": 42.612, "end": 47.604, "en": "Such schemes, supporters argue, offer more than practical help.", "zh": "支持者主张，此类方案 所提供的远不止实际的帮助。", "en_chunks": ["Such schemes, supporters argue,", "offer more than practical help."], "zh_chunks": ["支持者主张，此类方案", "所提供的远不止实际的帮助。"], "en_chunked": "Such schemes, supporters argue, \\ offer more than practical help.", "zh_chunked": "支持者主张，此类方案 \\ 所提供的远不止实际的帮助。", "marks": [{"p": 40, "l": 9, "t": "signal", "note": "more than: 程度递进"}]}, {"start": 47.954, "end": 63.314, "en": "Since nobody is paid, the exchange feels more like an act of neighborliness than a commercial transaction; and since time, not money, is the measure of worth, members describe a fresh sense of belonging, of being part of a place rather than merely passing through it.", "zh": "由于没有人拿取报酬， 这种互助感觉更像是一种睦邻行为， 而非一场商业交易； 并且由于时间而非金钱是价值的衡量标准， 成员们描述了一种全新的归属感， 真正成为一个地方的一部分， 而非仅仅是这里的过客。", "en_chunks": ["Since nobody is paid,", "the exchange feels more like an act of neighborliness", "than a commercial transaction;", "and since time, not money, is the measure of worth,", "members describe a fresh sense of belonging,", "of being part of a place", "rather than merely passing through it."], "zh_chunks": ["由于没有人拿取报酬，", "这种互助感觉更像是一种睦邻行为，", "而非一场商业交易；", "并且由于时间而非金钱是价值的衡量标准，", "成员们描述了一种全新的归属感，", "真正成为一个地方的一部分，", "而非仅仅是这里的过客。"], "en_chunked": "Since nobody is paid, \\ the exchange feels more like an act of neighborliness \\ than a commercial transaction; \\ and since time, not money, is the measure of worth, \\ members describe a fresh sense of belonging, \\ of being part of a place \\ rather than merely passing through it.", "zh_chunked": "由于没有人拿取报酬， \\ 这种互助感觉更像是一种睦邻行为， \\ 而非一场商业交易； \\ 并且由于时间而非金钱是价值的衡量标准， \\ 成员们描述了一种全新的归属感， \\ 真正成为一个地方的一部分， \\ 而非仅仅是这里的过客。", "marks": [{"p": 87, "l": 11, "t": "answer", "note": "Q30 答案：transaction (commercial transaction 商业交易)"}, {"p": 194, "l": 9, "t": "answer", "note": "Q31 答案：belonging (sense of belonging 归属感)"}]}, {"start": 63.664, "end": 72.208, "en": "Dutch researchers tracking 400 households found participants reported substantially higher levels of trust in their neighbors than non-members did.", "zh": "跟踪了400个家庭的荷兰研究人员 发现参与者报告了明显大幅更高的信任水平， 对他们的邻居， 相比非成员而言。", "en_chunks": ["Dutch researchers tracking 400 households", "found participants reported substantially higher levels of trust", "in their neighbors", "than non-members did."], "zh_chunks": ["跟踪了400个家庭的荷兰研究人员", "发现参与者报告了明显大幅更高的信任水平，", "对他们的邻居，", "相比非成员而言。"], "en_chunked": "Dutch researchers tracking 400 households \\ found participants reported substantially higher levels of trust \\ in their neighbors \\ than non-members did.", "zh_chunked": "跟踪了400个家庭的荷兰研究人员 \\ 发现参与者报告了明显大幅更高的信任水平， \\ 对他们的邻居， \\ 相比非成员而言。", "marks": [{"p": 43, "l": 5, "t": "signal", "note": "found: 实证研究动词路标"}, {"p": 71, "l": 13, "t": "answer", "note": "Q32 答案：substantially (substantially higher levels 显著大幅更高)"}]}, {"start": 72.558, "end": 75.15, "en": "Not everyone is convinced.", "zh": "并非所有人 都对此信服。", "en_chunks": ["Not everyone", "is convinced."], "zh_chunks": ["并非所有人", "都对此信服。"], "en_chunked": "Not everyone \\ is convinced.", "zh_chunked": "并非所有人 \\ 都对此信服。", "marks": [{"p": 0, "l": 12, "t": "signal", "note": "Not everyone: 转折质疑信号词"}]}, {"start": 75.5, "end": 83.108, "en": "Critics note that reliable volunteers are still notoriously hard to find, and that most work falls on a few organizers.", "zh": "批评人士指出， 可靠的志愿者依然是出名地难找， 并且大部分工作落在了少数几个组织者身上。", "en_chunks": ["Critics note", "that reliable volunteers are still notoriously hard to find,", "and that most work falls on a few organizers."], "zh_chunks": ["批评人士指出，", "可靠的志愿者依然是出名地难找，", "并且大部分工作落在了少数几个组织者身上。"], "en_chunked": "Critics note \\ that reliable volunteers are still notoriously hard to find, \\ and that most work falls on a few organizers.", "zh_chunked": "批评人士指出， \\ 可靠的志愿者依然是出名地难找， \\ 并且大部分工作落在了少数几个组织者身上。", "marks": [{"p": 48, "l": 11, "t": "answer", "note": "Q33 答案：notoriously (notoriously hard 众所周知/恶名昭彰地困难)"}]}, {"start": 83.458, "end": 91.09, "en": "Fairness is another concern: members in remote areas may spend so long traveling that the scheme stops being convenient.", "zh": "公平性是另一个关切点： 偏远地区的成员 可能在路上花费如此多的时间， 以至于该方案不再显得便利。", "en_chunks": ["Fairness is another concern:", "members in remote areas", "may spend so long traveling", "that the scheme stops being convenient."], "zh_chunks": ["公平性是另一个关切点：", "偏远地区的成员", "可能在路上花费如此多的时间，", "以至于该方案不再显得便利。"], "en_chunked": "Fairness is another concern: \\ members in remote areas \\ may spend so long traveling \\ that the scheme stops being convenient.", "zh_chunked": "公平性是另一个关切点： \\ 偏远地区的成员 \\ 可能在路上花费如此多的时间， \\ 以至于该方案不再显得便利。", "marks": [{"p": 40, "l": 6, "t": "answer", "note": "Q34 答案：remote (remote areas 偏远地区)"}]}, {"start": 91.44, "end": 102.648, "en": "Even so, Brennan, 78, says her life has changed: \"I used to go whole days without speaking to anyone. Now I know somebody will notice if I don't appear.\"", "zh": "即便如此，78岁的布伦南说她的生活改变了： “我过去常常一整天不跟任何人说话。 现在我知道有人会察觉到， 如果我没有露面的话。”", "en_chunks": ["Even so, Brennan, 78, says her life has changed:", "\"I used to go whole days without speaking to anyone.", "Now I know somebody will notice", "if I don't appear.\""], "zh_chunks": ["即便如此，78岁的布伦南说她的生活改变了：", "“我过去常常一整天不跟任何人说话。", "现在我知道有人会察觉到，", "如果我没有露面的话。”"], "en_chunked": "Even so, Brennan, 78, says her life has changed: \\ \"I used to go whole days without speaking to anyone. \\ Now I know somebody will notice \\ if I don't appear.\"", "zh_chunked": "即便如此，78岁的布伦南说她的生活改变了： \\ “我过去常常一整天不跟任何人说话。 \\ 现在我知道有人会察觉到， \\ 如果我没有露面的话。”", "marks": [{"p": 133, "l": 6, "t": "answer", "note": "Q35 答案：notice (somebody will notice 有人会察觉到)"}]}];
+const a=document.getElementById('a'),wrap=document.getElementById('wrap');
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+
+CUES.forEach((c, idx)=>{
+ const p=document.createElement('p');p.className='line';
+ 
+ const meta=document.createElement('div');meta.className='line-meta';
+ const badge=document.createElement('span');badge.className='line-badge';
+ badge.textContent='句 ' + (idx+1);
+ const tSpan=document.createElement('span');tSpan.textContent=fmt(c.start);
+ meta.appendChild(badge);meta.appendChild(tSpan);
+ p.appendChild(meta);
+
+ const cardsBox=document.createElement('div');cardsBox.className='line-cards';
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const mCard=document.createElement('div');mCard.className='m-card';
+   const mEn=document.createElement('div');mEn.className='m-en';mEn.textContent=enText;
+   const mZh=document.createElement('div');mZh.className='m-zh';mZh.textContent=(c.zh_chunks||[])[ci]||'';
+   mCard.appendChild(mEn);mCard.appendChild(mZh);
+   cardsBox.appendChild(mCard);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='m-slash';slash.textContent=String.fromCharCode(92);
+     cardsBox.appendChild(slash);
+   }
+ });
+ p.appendChild(cardsBox);
+
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   const noteDiv=document.createElement('div');noteDiv.className='line-tip';
+   noteDiv.textContent='🎯 ' + notes.join(' | ');
+   p.appendChild(noteDiv);
+ }
+
+ p.onclick=()=>{a.currentTime=c.start+.02;if(a.paused)a.play();};
+ wrap.appendChild(p);c.el=p;
+});
+
+let cur=-1;
+function paint(i){
+ const sc=document.getElementById('sub-cards'),tip=document.getElementById('tip');
+ sc.innerHTML='';tip.textContent='';tip.style.display='none';
+ if(i<0)return;const c=CUES[i];
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const card=document.createElement('div');card.className='chunk-card';
+   const enDiv=document.createElement('div');enDiv.className='card-en';enDiv.textContent=enText;
+   const zhDiv=document.createElement('div');zhDiv.className='card-zh';zhDiv.textContent=(c.zh_chunks||[])[ci]||'';
+   card.appendChild(enDiv);card.appendChild(zhDiv);
+   sc.appendChild(card);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='slash-col';slash.textContent=String.fromCharCode(92);
+     sc.appendChild(slash);
+   }
+ });
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   tip.textContent='🎯 '+notes.join(' | ');
+   tip.style.display='block';
+ }
+}
+
+a.addEventListener('timeupdate',()=>{const t=a.currentTime;
+ let i=CUES.findIndex(c=>t>=c.start&&t<c.end);
+ if(i!==cur){if(cur>=0)CUES[cur].el.classList.remove('on');
+  if(i>=0){CUES[i].el.classList.add('on');CUES[i].el.scrollIntoView({block:'center',behavior:'smooth'});}
+  paint(i);cur=i;}
+ const d=a.duration||1;const r=Math.min(t/d,1);
+ document.getElementById('fill').style.width=(r*100)+'%';
+ document.getElementById('knob').style.left=(r*100)+'%';
+ document.getElementById('time').textContent=fmt(t)+' / '+fmt(a.duration||0);});
+
+const play=document.getElementById('play');
+play.onclick=()=>{a.paused?a.play():a.pause();};
+a.onplay=()=>play.textContent='⏸';a.onpause=()=>play.textContent='▶';
+const bar=document.getElementById('bar');
+function seekEv(e){const r=bar.getBoundingClientRect();
+ a.currentTime=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*(a.duration||0);}
+bar.addEventListener('pointerdown',e=>{bar.setPointerCapture(e.pointerId);seekEv(e);bar._d=true;});
+bar.addEventListener('pointermove',e=>{if(bar._d)seekEv(e);});
+bar.addEventListener('pointerup',()=>bar._d=false);
+</script></body></html>

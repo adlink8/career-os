@@ -1,0 +1,592 @@
+{
+  "tips": {
+    "0": "新闻一（高温应急）Q1–Q2：首句导语就是 Q1 答案（开放九处避暑场所），末句市长十一月提案是 Q2；中间 41℃、22 人送医、4000 棵树只当定位锚，buses / pools / hospitals 这些原词全是错项诱饵。",
+    "7": "新闻二（博物馆数字化）Q3–Q4：答案在前两句（完整在线目录＋四年拍完全部藏品）和倒数第二句（校群到访增两成）；‘只展九百件’‘借用设备’‘周日免费’三处原词分别对应 A、D、B 错项。",
+    "14": "新闻三（电费冲击小企业）Q5–Q7：按行序出题，一二句给调查结论（近七成账单翻倍），三句给诉求（推迟调价＋延续信贷），五句面包店洗衣店的担忧即 Q7；by contrast 之后‘大企业受影响更小’务必听清。",
+    "21": "对话一（选课咨询）Q8–Q11：开场两句锁定‘两门研讨课要定一门’，Q9 在 but 之后（作业占期末三成），Q10 在退课时限那句及其后一句，Q11 在结尾两句（研究生辅导＋高峰排队）；答案几乎都在 W 的回应里。",
+    "46": "对话二（面试兼职）Q12–Q15：第一轮听她的 farmstand 经历，Q13 抓男声 ‘What I really need to sort out is the clock’，Q14 在他最终报价那句（固定周六八小时、六周后再联系），Q15 在结尾 ‘Two things’ 之后一句。",
+    "69": "篇章一（墨尔本步行研究）Q16–Q18：主题句在前两句，Q16 是第三句的做法（两千人三年＋绘制周边路网），Q17 抓 not…but 之后的交叉口密度，Q18 在末句 Planners now argue。",
+    "78": "篇章二（睡眠与记忆）Q19–Q21：首句是学生的错误做法，次句 the opposite 起才是正文；Q19 在 consolidation 那句，Q20 在实验两句（12 小时、约一成），Q21 在 rest appears to choose 之后。",
+    "89": "篇章三（动物导航）Q22–Q25：三种动物按顺序出题——蝴蝶（路线 preloaded／阴天读偏振光）、信鸽（堵住一通道改用其余）、沙漠蚁（数步幅）；每题答案都在该动物段落的第二句。"
+  },
+  "spans": {
+    "1": [
+      {
+        "quote": "opening nine cooling centers in libraries, community colleges and fire stations",
+        "t": "answer",
+        "note": "Q1→B：导语即答案，开放九处避暑场所（图书馆／社区学院／消防站）＝选项 “made public buildings available as refuges”"
+      }
+    ],
+    "2": [
+      {
+        "quote": "41 degrees Celsius",
+        "t": "detail",
+        "note": "Q1：题干 record heat 的具体数字，听到即确认首句事件成立（本句其余 2006／one degree 不出题）"
+      }
+    ],
+    "3": [
+      {
+        "quote": "ride free municipal buses",
+        "t": "trap",
+        "note": "与 Q1 错项 C “suspended bus service until the evening” 同词 bus，原文是免费乘坐而非停驶，勿秒选"
+      },
+      {
+        "quote": "stayed open two hours longer",
+        "t": "trap",
+        "note": "与 Q1 错项 D “asked shops to stay open through the night” 同词 stay open，原文主语是 public pools，勿秒选"
+      }
+    ],
+    "4": [
+      {
+        "quote": "until evening",
+        "t": "trap",
+        "note": "与 Q1 错项 C “…until the evening” 逐字同词；Q2 错项 B 的 electricity 也出自本句 electrical grid，均勿秒选"
+      }
+    ],
+    "5": [
+      {
+        "quote": "City hospitals reported",
+        "t": "trap",
+        "note": "与 Q1 错项 A “closed hospitals”、Q2 错项 C “the main hospital” 同词 hospital，原文只报收治人数，未关医院也未设新病房，勿秒选"
+      }
+    ],
+    "6": [
+      {
+        "quote": "shaded bus stops and four thousand additional street trees",
+        "t": "answer",
+        "note": "Q2→A：林荫站台＋增植行道树＝选项 “streets” 的长期改造"
+      },
+      {
+        "quote": "in November",
+        "t": "detail",
+        "note": "Q2：题干时间词，听到 in November 即知进入末句提案句"
+      },
+      {
+        "quote": "money to insulate the homes of low-income families",
+        "t": "answer",
+        "note": "Q2→A：为低收入住户房屋保温＝选项 “housing” 的长期改造；D “泳池延长开放” 是第三句已实施的细节，非本句"
+      }
+    ],
+    "8": [
+      {
+        "quote": "kept almost all of its collection in boxes",
+        "t": "trap",
+        "note": "与 Q3 错项 A “hung its whole collection in new galleries”、C “emptied its storage rooms” 同词 collection／库房意象，原文说藏品大多仍在箱中，勿秒选"
+      },
+      {
+        "quote": "a complete online catalogue",
+        "t": "answer",
+        "note": "Q3→D：完整在线目录＝选项 “built a digital record of what it owns”"
+      }
+    ],
+    "9": [
+      {
+        "quote": "over four years photographing each of its thirty-eight thousand objects",
+        "t": "answer",
+        "note": "Q3→D：四年为全部三万八千件藏品建影像＝数字记录的建成过程（题干 over the past four years 就定位到这里）"
+      },
+      {
+        "quote": "the images are now downloadable",
+        "t": "answer",
+        "note": "Q3→D 关键：影像现可下载＝record 已建成；同词的 photographing 是错项 B “sold photographs…to schools” 的诱饵，原文并未出售"
+      }
+    ],
+    "10": [
+      {
+        "quote": "Only about nine hundred pieces hang in the galleries",
+        "t": "trap",
+        "note": "与 Q3 错项 A “hung its whole collection in new galleries” 同词 hang…in the galleries，Only about nine hundred 恰恰相反，勿秒选"
+      },
+      {
+        "quote": "though",
+        "t": "signal",
+        "note": "Q3：though 后是轮换展出的补充信息，判断 A 对错靠的是主句的 Only"
+      }
+    ],
+    "11": [
+      {
+        "quote": "take a device from the front desk",
+        "t": "trap",
+        "note": "与 Q4 错项 D “Visitors were required to carry a device” 同词 device，原文是可自愿借用而非强制，勿秒选"
+      }
+    ],
+    "12": [
+      {
+        "quote": "downloads from other countries now make up about a third of the traffic",
+        "t": "trap",
+        "note": "与 Q4 错项 A “Visitors from other countries replaced local ones” 同词 from other countries，原文只说占约三分之一流量，未谈取代，勿秒选"
+      },
+      {
+        "quote": "school groups arrived twenty percent more often during the first term",
+        "t": "answer",
+        "note": "Q4→C：首学期到校团体增两成＝选项 “More classes arrived with their teachers”"
+      }
+    ],
+    "13": [
+      {
+        "quote": "Admission stays free on Sundays",
+        "t": "trap",
+        "note": "与 Q4 错项 B “Free Sunday tickets doubled in a month” 同词 free…Sundays，这是既有政策、无翻倍一事，勿秒选"
+      }
+    ],
+    "15": [
+      {
+        "quote": "cannot absorb another rise in electricity costs",
+        "t": "answer",
+        "note": "Q5：导语点出主题（小企业扛不住再涨电费），具体数据在下句"
+      },
+      {
+        "quote": "a regional business federation",
+        "t": "detail",
+        "note": "Q6：题干 the federation 即指这个机构，第三句的诉求由它提出"
+      }
+    ],
+    "16": [
+      {
+        "quote": "Nearly seven in ten of the thirteen hundred firms questioned reported bills more than double what they paid two years earlier",
+        "t": "answer",
+        "note": "Q5→A：受访一千三百家中近七成账单为两年前的两倍以上＝选项 “a majority of small firms…double or worse”"
+      },
+      {
+        "quote": "a quarter said they had already reduced staff hours or shut one site",
+        "t": "trap",
+        "note": "与 Q5 错项 B “A quarter of the firms have closed for good”、Q7 错项 B “shut one of their sites” 同词 a quarter／shut one site，原文是减工时或关一处而非倒闭，勿秒选"
+      }
+    ],
+    "17": [
+      {
+        "quote": "postpone a scheduled change in wholesale pricing until spring",
+        "t": "answer",
+        "note": "Q6→B：推迟批发定价调整＝选项 “a delay to a pricing change”；错项 A “permanent cut in wholesale prices” 也同用 wholesale，听清是推迟而非降价"
+      },
+      {
+        "quote": "extend short-term credit",
+        "t": "answer",
+        "note": "Q6→B 后半：延续短期信贷＝选项 “continued lending”"
+      }
+    ],
+    "18": [
+      {
+        "quote": "Large manufacturers",
+        "t": "trap",
+        "note": "与 Q5 错项 C “Large manufacturers are suffering most” 逐字同词，原文恰恰说他们受损更小，勿秒选"
+      },
+      {
+        "quote": "by contrast",
+        "t": "signal",
+        "note": "Q5：对比信号，其后‘有更长约、涨幅更小’正是判定 C 反向的关键"
+      }
+    ],
+    "19": [
+      {
+        "quote": "they were weighing higher prices, which they fear could push shoppers toward supermarket chains",
+        "t": "answer",
+        "note": "Q7→D：想转嫁涨价、又怕顾客流向连锁超市＝选项 “Passing on costs may send buyers to larger chains”，fear 对应题干 worried"
+      }
+    ],
+    "20": [
+      {
+        "quote": "support schemes for vulnerable customers are already open",
+        "t": "trap",
+        "note": "与 Q7 错项 A “the support schemes will be closed”、Q6 错项 D “vulnerable customers” 同词，原文是已经开放，勿秒选"
+      }
+    ],
+    "23": [
+      {
+        "quote": "lock in my Friday schedule by Thursday noon",
+        "t": "trap",
+        "note": "与 Q8 错项 A “ask for more time over the deadline” 同涉截止时间，她只是陈述期限并未求延期，勿秒选"
+      },
+      {
+        "quote": "I'm stuck between two choices for the seminar requirement",
+        "t": "answer",
+        "note": "Q8→C：开场两句即来意——两门研讨课之间定一门＝选项 “To settle which of two seminars to take this term”"
+      }
+    ],
+    "27": [
+      {
+        "quote": "but",
+        "t": "signal",
+        "note": "Q9：but 之后（每周吃掉四小时的 problem sets）才是出题段，前半 lectures easy to follow 是干扰"
+      }
+    ],
+    "28": [
+      {
+        "quote": "the sets are worth thirty percent of your final mark",
+        "t": "answer",
+        "note": "Q9→B：平时习题集占期末三成＝选项 “Regular homework decides part of the final mark”；Q11 错项 B “counts toward the course grade” 同涉成绩，但那是统计课作业、不是课外辅导"
+      }
+    ],
+    "33": [
+      {
+        "quote": "my laboratory course meets Tuesday evenings",
+        "t": "trap",
+        "note": "与 Q9 错项 A “lectures are held on Tuesday evenings”、C “before a laboratory course” 同词 Tuesday evenings／laboratory course，那是她的实验课而非统计课，勿秒选"
+      }
+    ],
+    "35": [
+      {
+        "quote": "Two places were still open",
+        "t": "trap",
+        "note": "与 Q8 错项 D “a class that is already full” 同处选课名额语境，原文说还开着两个名额，与 D 相反，勿秒选"
+      }
+    ],
+    "38": [
+      {
+        "quote": "without anything on your record",
+        "t": "trap",
+        "note": "与 Q10 错项 B “leaves no mark on the record whenever it is done” 同词 record，B 抽掉了时限即错，勿秒选"
+      },
+      {
+        "quote": "until the Friday of week four",
+        "t": "trap",
+        "note": "与 Q10 错项 C “impossible before the fourth week” 同词 fourth／week，原文恰恰是此前可无记录退课，方向相反，勿秒选"
+      }
+    ],
+    "39": [
+      {
+        "quote": "After that",
+        "t": "signal",
+        "note": "Q10：时限转折，其后‘需两位任课教师签字’说明越晚越麻烦"
+      },
+      {
+        "quote": "students who wait too long usually finish the term with a grade they didn't plan for",
+        "t": "answer",
+        "note": "Q10→A：拖太久会拿非计划的成绩＝选项 “It becomes harder to do the later it is left”"
+      }
+    ],
+    "42": [
+      {
+        "quote": "takes two appointments a week",
+        "t": "trap",
+        "note": "与 Q10 错项 D “requires an appointment at the writing center” 同词 appointment／writing center，原文是自愿线上预约而非要求，勿秒选"
+      },
+      {
+        "quote": "the tutors are graduate students in the same program",
+        "t": "answer",
+        "note": "Q11→D：辅导者是同专业研究生＝选项 “Graduate students give it”"
+      }
+    ],
+    "43": [
+      {
+        "quote": "they run a queue instead",
+        "t": "answer",
+        "note": "Q11→D 后半：高峰周改为排队＝选项 “though waiting may be involved”"
+      },
+      {
+        "quote": "twenty minutes",
+        "t": "detail",
+        "note": "Q11：等候时长数字，佐证 D 中的 waiting"
+      }
+    ],
+    "44": [
+      {
+        "quote": "Then I'll take Friday writing and leave the statistics reading for later",
+        "t": "answer",
+        "note": "Q8 佐证：两门之间最终选定周五写作班，印证来意是 settle which of two seminars"
+      }
+    ],
+    "51": [
+      {
+        "quote": "Two summers at a farmstand out of town, mostly weighing produce and handling money",
+        "t": "answer",
+        "note": "Q12→B：两夏天在户外农产品摊称重收钱＝选项 “worked at an outdoor produce stand”"
+      },
+      {
+        "quote": "your register system will be new to me",
+        "t": "trap",
+        "note": "与 Q12 错项 C “used the shop's register system” 同词 register system，原文恰恰说她是新手，勿秒选"
+      }
+    ],
+    "52": [
+      {
+        "quote": "we train people on it during the first two shifts",
+        "t": "trap",
+        "note": "与 Q13 错项 A “can operate the cash register” 同话题：男声随即说会培训，故收银能力不是他要考量的，勿秒选"
+      }
+    ],
+    "53": [
+      {
+        "quote": "What I really need to sort out is the clock",
+        "t": "answer",
+        "note": "Q13→C：really 强调他要理清的是时间（the clock），即能否覆盖最忙时段＝选项 “whether the woman can cover the busiest hours”"
+      }
+    ],
+    "54": [
+      {
+        "quote": "but",
+        "t": "signal",
+        "note": "Q13／Q14：but 之后是她唯一的时间冲突（周日早上进城的家庭安排），男声下面正是针对这一时段"
+      }
+    ],
+    "56": [
+      {
+        "quote": "between eight and noon on Sunday",
+        "t": "detail",
+        "note": "Q13→C：缺人时段的具体钟点，是被考到的时间细节"
+      },
+      {
+        "quote": "that's the busiest stretch of the week",
+        "t": "answer",
+        "note": "Q13→C：一周最忙的时段＝选项 “the busiest hours”"
+      },
+      {
+        "quote": "deliveries",
+        "t": "trap",
+        "note": "与 Q12 错项 A “run a delivery service” 同词，此处只指到店货品，勿秒选"
+      }
+    ],
+    "57": [
+      {
+        "quote": "I could ask my brother to take the drive and cover Sunday mornings myself",
+        "t": "trap",
+        "note": "与 Q15 错项 C “Ask her brother to take the Sunday shift” 逐字同词，但这只是她的设想且下句即被否，勿秒选"
+      }
+    ],
+    "58": [
+      {
+        "quote": "I'd rather not",
+        "t": "signal",
+        "note": "Q15：拒绝信号，否掉让哥哥代劳的方案，故 C 不是他要求她做的事"
+      }
+    ],
+    "59": [
+      {
+        "quote": "eight hours on Saturday, fixed",
+        "t": "answer",
+        "note": "Q14→A：先给一个固定的周六八小时班次＝选项 “One guaranteed shift now”"
+      },
+      {
+        "quote": "when the spring timetable is set in six weeks I'll ring you first about Sunday",
+        "t": "answer",
+        "note": "Q14→A 后半：六周后春季课表定了第一个联系她＝选项 “with another possibly following”；错项 C “unpaid trial period of six weeks” 同用 six weeks，原文并无试用期，勿误选；B 的 March 在两句之后"
+      }
+    ],
+    "62": [
+      {
+        "quote": "thirteen in March",
+        "t": "trap",
+        "note": "与 Q14 错项 B “A weekend post starting in March” 同词 March，那是涨薪时点而非开工时间，勿秒选"
+      }
+    ],
+    "66": [
+      {
+        "quote": "Two things",
+        "t": "signal",
+        "note": "Q15：列举信号，其后一句就是 D 项的两项要求，务必听全两点"
+      }
+    ],
+    "67": [
+      {
+        "quote": "Proof that you're enrolled, by Friday",
+        "t": "answer",
+        "note": "Q15→D 前半：周五前交在读证明＝选项 “a document about her studies”"
+      },
+      {
+        "quote": "the name of somebody who has worked beside you before",
+        "t": "answer",
+        "note": "Q15→D 后半：给出共事过的人的姓名＝选项 “name someone who can vouch for her”"
+      }
+    ],
+    "71": [
+      {
+        "quote": "Researchers in Melbourne",
+        "t": "detail",
+        "note": "Q16：题干地名，听到即准备，真正做法在下一句"
+      },
+      {
+        "quote": "several cities",
+        "t": "trap",
+        "note": "与 Q16 错项 B “compared Melbourne with several other cities” 同词 several cities，原文是多个城市据此修改审批，并未做城市间比较，勿秒选"
+      }
+    ],
+    "72": [
+      {
+        "quote": "more than two thousand adults for three years",
+        "t": "detail",
+        "note": "Q16→C：样本量与时长两个数字，是 tracked 的依据"
+      },
+      {
+        "quote": "mapping every street within a kilometer of their homes and asking them to record where they actually went on foot",
+        "t": "answer",
+        "note": "Q16→C：绘制住所周边路网＋记录实际步行＝选项 “tracked what people walked and the streets around them”；错项 A “asked drivers to record their daily trips” 同用 record，但对象是步行者不是司机"
+      }
+    ],
+    "73": [
+      {
+        "quote": "turned out not to be parks or scenery but",
+        "t": "signal",
+        "note": "Q17：not…but 是全段最关键的结构，parks 正是错项 D “nearest park” 的诱饵，真正的答案在 but 之后"
+      },
+      {
+        "quote": "how many crossings a person needed to reach the next block",
+        "t": "answer",
+        "note": "Q17→A：最强预测因子＝到下个街区需要多少个路口，对应选项 “how frequent the crossings were”"
+      }
+    ],
+    "75": [
+      {
+        "quote": "Small blocks with frequent intersections kept people on their feet",
+        "t": "answer",
+        "note": "Q17→A 复述：小街区＋密集路口让人一直在走＝选项 “how short the blocks and how frequent the crossings”"
+      },
+      {
+        "quote": "income, age and whether a household owned a car",
+        "t": "trap",
+        "note": "与 Q17 错项 B “income”、C “whether the family owned a car” 逐字同词，原文是已被控制掉的变量，勿秒选"
+      }
+    ],
+    "77": [
+      {
+        "quote": "laying pavement beside existing wide roads achieves far less than cutting those roads into shorter pieces",
+        "t": "answer",
+        "note": "Q18→B：在宽路旁铺路面远不如把宽路切成短段＝选项 “Redesigning broad streets beats lining them with paths”；末句即答案，同时排除 A “widened sidewalks”"
+      }
+    ],
+    "80": [
+      {
+        "quote": "the opposite",
+        "t": "signal",
+        "note": "Q19：与首句学生的熬夜＋咖啡做法相反，其后才是正文（睡眠的作用）"
+      }
+    ],
+    "81": [
+      {
+        "quote": "carries fragile new information out of a temporary holding area and into permanent storage",
+        "t": "answer",
+        "note": "Q19→D：深睡把脆弱的新信息从临时区搬进永久存储＝选项 “Fresh learning is moved into lasting storage”"
+      }
+    ],
+    "82": [
+      {
+        "quote": "a sequence of finger taps",
+        "t": "detail",
+        "note": "Q20：题干实验内容，听到 finger taps 即锁定实验段"
+      },
+      {
+        "quote": "were tested twelve hours later",
+        "t": "trap",
+        "note": "与 Q20 错项 D “Testing after twelve hours proved unreliable” 同词 twelve hours，测试时点本身没问题，勿秒选"
+      }
+    ],
+    "83": [
+      {
+        "quote": "half stayed awake",
+        "t": "trap",
+        "note": "与 Q20 错项 B “The group that stayed awake improved just as much” 同词 stayed awake，原文是他们几乎无进步，勿秒选"
+      }
+    ],
+    "84": [
+      {
+        "quote": "The rested group improved by roughly ten percent on average",
+        "t": "answer",
+        "note": "Q20→A：休息组平均进步约一成且一周后仍在＝real gains"
+      },
+      {
+        "quote": "while repetition with no sleep in between produced almost nothing",
+        "t": "answer",
+        "note": "Q20→A 反证：不睡觉的重复练习几乎无收获（while 对比，B 项 “just as much” 与此相反）"
+      }
+    ],
+    "85": [
+      {
+        "quote": "because rest appears to choose",
+        "t": "signal",
+        "note": "Q21：because 引出第二发现——睡眠会挑选，正是 C 项 tip the balance 的落点"
+      }
+    ],
+    "86": [
+      {
+        "quote": "Not everything learned between breakfast and bedtime survives",
+        "t": "trap",
+        "note": "与 Q21 错项 A “Everything learned in a day is preserved” 同词 everything learned，原文是否定式，勿秒选"
+      },
+      {
+        "quote": "cues presented around a study session, such as a particular smell or a brief tone, can tip which traces are kept",
+        "t": "answer",
+        "note": "Q21→C：学习前后的线索（气味／短音）可左右哪些痕迹保留＝选项 “Cues given around learning can tip the balance”；别读成 D 的‘削弱记忆’"
+      },
+      {
+        "quote": "anything tagged as emotionally important is pushed to the front of the queue",
+        "t": "trap",
+        "note": "与 Q21 错项 B “Only emotional material is ever kept” 同词 emotional，原文是排到队首而非只保留这一类，勿秒选"
+      }
+    ],
+    "91": [
+      {
+        "quote": "the route arrives preloaded",
+        "t": "answer",
+        "note": "Q22→B：路线与生俱来＝选项 “The map seems to come with the travelers”（首句提问，本句作答）"
+      }
+    ],
+    "92": [
+      {
+        "quote": "great-great-grandchildren of those that left the same valleys the previous autumn",
+        "t": "answer",
+        "note": "Q22→B 依据：飞完全程的是去年离谷者的曾曾孙，没有成虫带路，故 A “learns from its parents”、D “跟随他虫” 均无据"
+      }
+    ],
+    "93": [
+      {
+        "quote": "which needs clear light",
+        "t": "trap",
+        "note": "与 Q23 错项 A “land and wait for clear light” 同词 clear light，原文只说太阳罗盘需要晴光，未说降落等待，勿秒选"
+      }
+    ],
+    "94": [
+      {
+        "quote": "because",
+        "t": "signal",
+        "note": "Q23：because 之后是阴天照飞的原因，也就是答案所在"
+      },
+      {
+        "quote": "they also read polarization, a pattern in the light that survives cloud and that human eyes cannot detect",
+        "t": "answer",
+        "note": "Q23→D：读取人眼不可见的偏振光图案＝选项 “sense a pattern of light that we cannot see”"
+      }
+    ],
+    "95": [
+      {
+        "quote": "even less single-minded",
+        "t": "signal",
+        "note": "Q24：程度递进（不止一种手段），提示下文列出多种通道，答案就在下句"
+      }
+    ],
+    "96": [
+      {
+        "quote": "They use the Earth's magnetic field, odors carried along familiar routes and possibly low-frequency sound",
+        "t": "answer",
+        "note": "Q24→A 依据（三通道并用）；本句也是 Q23 错项 B “Earth's magnetic field” 的出处——那是信鸽的手段，不是蝴蝶"
+      },
+      {
+        "quote": "when researchers blocked one channel the birds simply relied on the rest",
+        "t": "answer",
+        "note": "Q24→A：堵住一个通道就改用其余＝选项 “They lean on other cues when one is cut off”"
+      }
+    ],
+    "97": [
+      {
+        "quote": "the desert ant",
+        "t": "detail",
+        "note": "Q25：题干实验对象，听到即进入最后一题"
+      },
+      {
+        "quote": "keeps a tally of its own strides",
+        "t": "answer",
+        "note": "Q25→C：靠数自己的步幅计量＝选项 “judge distance by how far their stride reaches”"
+      }
+    ],
+    "98": [
+      {
+        "quote": "glued hair-thin extensions to some animals' legs",
+        "t": "trap",
+        "note": "与 Q25 错项 B “walk faster when their legs are lengthened” 同词 legs／加长，原文说超出目标而非走得快，勿秒选"
+      },
+      {
+        "quote": "overshot or fell short of their nests by exactly the amount the alteration predicted",
+        "t": "answer",
+        "note": "Q25→C：偏差恰等于腿长改变量，证明它按步幅测距"
+      }
+    ]
+  }
+}

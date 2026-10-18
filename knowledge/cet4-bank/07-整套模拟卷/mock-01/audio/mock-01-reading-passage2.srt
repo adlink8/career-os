@@ -1,0 +1,114 @@
+1
+00:00:00,000 --> 00:00:06,096
+Seen from the air, \ a soybean field looks flat and even, \ but the plants themselves would disagree.
+从空中看去， \ 一片大豆田显得平坦而均匀， \ 但植物自身却会有不同意见。
+
+2
+00:00:06,446 --> 00:00:12,974
+Within a short distance the soil conditions can change, \ and one corner may produce half \ of what the middle does.
+在短短的距离之内土壤状况就可能改变， \ 并且田地的一角可能只产出 \ 田中央所产出的一半。
+
+3
+00:00:13,324 --> 00:00:19,372
+For most of the machinery era, \ people who grew crops \ had no cheap way to act on these differences.
+在机械化时代的大部分时间里， \ 种植庄稼的人们 \ 没有廉价的办法来应对这些差异。
+
+4
+00:00:19,722 --> 00:00:25,698
+One treatment covered a wide strip, \ so a choice for the whole area \ became a choice for every part of it.
+一次作业覆盖很宽的一条， \ 因此对整个区域所做的选择 \ 就成了对其中每一个部位的选择。
+
+5
+00:00:26,048 --> 00:00:32,480
+Small flying devices have changed that situation: \ battery-powered drones \ now cross a field every few days.
+小型飞行装置已经改变了那种局面： \ 电池驱动的无人机 \ 如今每隔几天便掠过农田。
+
+6
+00:00:32,830 --> 00:00:37,318
+Their sensors record light from the plants \ in colors people cannot see.
+它们的传感器记录来自植物的光线， \ 以人类所不能看见的颜色。
+
+7
+00:00:37,668 --> 00:00:42,924
+A plant short of food or water \ shows it weeks before \ someone walking the rows notices.
+一株缺乏养分或水分的植物 \ 提前数周表现出这一点， \ 在沿田垄步行的人注意到之前。
+
+8
+00:00:43,274 --> 00:00:50,354
+Software turns these readings into a chart, \ which now goes back to vehicles \ that treat single plants \ instead of wide strips.
+软件把这些读数转变成一张图表， \ 这张图表现在返回给作业车辆， \ 由它们针对单株植物实施处理， \ 而不是覆盖大面积宽条带。
+
+9
+00:00:50,704 --> 00:00:54,688
+The business case is clear, \ but the results are uneven.
+商业论据是清楚的， \ 但实际结果却不均衡。
+
+10
+00:00:55,038 --> 00:01:01,182
+Researchers at agricultural colleges \ treated some fields with drones \ and others in the traditional way.
+农业学院的研究人员 \ 用无人机处理了一部分田地， \ 而用传统方式处理了其余的田地。
+
+11
+00:01:01,532 --> 00:01:07,148
+Chemical use fell by a third, \ and output rose \ where the seeds were spaced to suit the soil.
+化学品用量下降了三分之一， \ 并且产量上升了， \ 在种子间距被调整以适应土壤的地方。
+
+12
+00:01:07,498 --> 00:01:15,106
+Money saved on chemicals arrives immediately, \ but the tools cost real money: \ drones, software, \ and a worker who can fix them.
+在化学品上节省的资金立刻到账， \ 但这些工具花费真正的金钱： \ 无人机、软件， \ 以及一名能修理它们的工人。
+
+13
+00:01:15,456 --> 00:01:23,016
+The tools spread fastest \ among younger farm families, \ who already walk their fields with a phone in hand, \ not among the biggest farms.
+这些工具传播得最快 \ 在更年轻的农户家庭之中， \ 他们本就手里拿着手机走过田间， \ 而不是在规模最大的农场之中。
+
+14
+00:01:23,366 --> 00:01:26,102
+The farming questions \ are harder.
+农艺方面的问题 \ 则更为艰难。
+
+15
+00:01:26,452 --> 00:01:31,180
+A sensor can show that a plant looks wrong, \ but it cannot always say why.
+传感器能够显示某株植物看起来不正常， \ 但它并非总能说清为什么。
+
+16
+00:01:31,530 --> 00:01:37,386
+A lack of food, root disease, \ and soil that holds too much water \ send nearly the same signal.
+养分的缺乏、根部的疾病、 \ 以及蓄水过多的土壤， \ 发出几乎完全相同的反射信号。
+
+17
+00:01:37,736 --> 00:01:45,032
+The most successful farms therefore use a drone as a first-step tool, \ narrowing a whole farm \ to the few parts worth walking through.
+最成功的农场因此把无人机用作第一步初筛工具， \ 把整个农场范围缩小 \ 到值得亲自下地察看的少数几个部位。
+
+18
+00:01:45,382 --> 00:01:53,206
+The device searches, and the person decides; \ this way of working has lasted longer \ than the automatic future that companies once described.
+机器负责搜索排查，而人来做出决定； \ 这种工作方式维持得更加长久， \ 比农机公司当年描述过的全自动未来。
+
+19
+00:01:53,556 --> 00:01:57,036
+The environmental account \ is still being written.
+生态效益这笔账 \ 目前仍在持续书写之中。
+
+20
+00:01:57,386 --> 00:02:04,178
+Careful application \ sends less chemical \ into the streams \ and protects the helpful insects \ that older methods destroyed.
+仔细的施用 \ 送入更少的化学品 \ 进入溪流之中， \ 并保护了有益的昆虫， \ 那些更老旧的方法所消灭的。
+
+21
+00:02:04,528 --> 00:02:08,560
+Whether such advantages will continue \ is another question.
+这些环境优势能否持久延续， \ 则是另一个未知问题。
+
+22
+00:02:08,910 --> 00:02:13,086
+A few firms now own \ both the flight data and the seed supply.
+少数几家公司如今拥有 \ 飞行航测数据和种子供应这两者。
+
+23
+00:02:13,436 --> 00:02:19,652
+Organizations speaking for farm workers \ now raise this \ at meetings where the devices are otherwise welcome.
+为农场工人发声的社会组织 \ 如今郑重提出了这一点， \ 在那些该设备原本受到欢迎的研讨会上。

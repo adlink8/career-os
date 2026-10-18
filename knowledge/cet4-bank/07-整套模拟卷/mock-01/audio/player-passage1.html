@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>CET-4 Player — mock-01 Section C Passage 1 — 代际流动与故乡依恋</title>
+<style>
+body{margin:0;background:#14161a;color:#dfe3e8;font-family:'Segoe UI','Microsoft YaHei',sans-serif;display:flex;flex-direction:column;height:100vh}
+#nav-tabs{display:flex;gap:8px;background:#181b22;padding:10px 18px;border-bottom:1px solid #2a2e35;overflow-x:auto;flex-wrap:nowrap}
+.tab-item{color:#9aa3af;text-decoration:none;font-size:13px;padding:6px 14px;border-radius:6px;transition:all 0.2s;background:#222630;white-space:nowrap;display:inline-flex;align-items:center}
+.tab-item:hover{color:#fff;background:#2d3340}
+.tab-item.active{color:#fff;background:#3b82f6;font-weight:600}
+header{padding:10px 18px;font-weight:600;border-bottom:1px solid #2a2e35;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#legend{font-size:12px;font-weight:400;color:#9aa3af}
+#legend b{padding:1px 8px;border-radius:4px;margin:0 2px}
+
+/* Top Subtitle Area (Active Sentence) */
+#sub{flex:0 0 auto;text-align:left;padding:14px 28px 12px;min-height:120px;background:#1a1d24;border-bottom:1px solid #282c35}
+#sub-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px 6px}
+.chunk-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#212631;border:1px solid #323b4b;border-radius:8px;padding:8px 12px;box-sizing:border-box;transition:all 0.15s ease}
+.chunk-card:hover{background:#283142;border-color:#60a5fa;box-shadow:0 4px 12px rgba(59,130,246,0.25)}
+.card-en{font-size:18px;line-height:1.45;color:#ffffff;font-weight:500;letter-spacing:0.2px}
+.card-zh{font-size:15px;line-height:1.45;color:#ffd479;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,212,121,0.25)}
+.slash-col{display:inline-flex;align-items:center;color:#64748b;font-size:20px;font-weight:bold;user-select:none;padding:0 2px}
+#tip{font-size:13.5px;margin-top:10px;color:#93c5fd;background:rgba(59,130,246,0.1);border-left:3px solid #3b82f6;padding:6px 12px;border-radius:4px;display:none}
+
+/* Scrollable List */
+#wrap{flex:1 1 auto;overflow-y:auto;padding:14px 28px 30px}
+p.line{margin:10px 0;padding:12px 14px;border-radius:8px;cursor:pointer;line-height:1.5;border-left:4px solid transparent;background:#181b22;border:1px solid #232833;transition:all 0.2s ease}
+p.line:hover{background:#1d222b;border-color:#333d4e;border-left-color:#3b82f6}
+p.line.on{background:#1e2638;border-color:#3b82f6;border-left-color:#60a5fa;box-shadow:0 4px 14px rgba(0,0,0,0.35)}
+.line-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;color:#64748b}
+.line-badge{font-weight:600;color:#94a3b8;background:#232936;padding:2px 8px;border-radius:4px}
+.line-cards{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 4px}
+.m-card{display:inline-flex;flex-direction:column;justify-content:space-between;background:#12151b;border:1px solid #252b37;border-radius:6px;padding:6px 9px;transition:all 0.15s;box-sizing:border-box}
+.line.on .m-card{background:#17202e;border-color:#2b3952}
+.m-card:hover{border-color:#60a5fa;background:#1c2638}
+.m-en{color:#e2e8f0;font-size:14.5px;line-height:1.45;font-weight:500}
+.m-zh{color:#ffd479;font-size:13.5px;line-height:1.45;margin-top:4px;padding-top:4px;border-top:1px dashed rgba(255,212,121,0.2)}
+.m-slash{display:inline-flex;align-items:center;color:#475569;font-size:15px;font-weight:bold;user-select:none;padding:0 1px}
+.line-tip{margin-top:8px;padding:4px 10px;border-radius:4px;background:rgba(59,130,246,0.1);border-left:2px solid #3b82f6;font-size:13px;color:#93c5fd}
+
+/* Audio Player Transport */
+#transport{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:10px 18px 18px;background:#161920;border-top:1px solid #232730}
+#play{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:none;background:#3b82f6;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#play:hover{background:#2563eb}
+#bar{flex:1 1 auto;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+#track{width:100%;height:10px;border-radius:5px;background:#2a2e35;position:relative}
+#fill{height:100%;border-radius:5px;background:#3b82f6;width:0}
+#knob{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);left:0;box-shadow:0 1px 4px #0008}
+#time{flex:0 0 auto;font-variant-numeric:tabular-nums;color:#9aa3af}
+audio{display:none}
+</style></head><body>
+<nav id="nav-tabs">
+<a href="player.html" class="tab-item">🎧 Part II 听力全套 (13:17)</a>
+<a href="player-cloze.html" class="tab-item">📖 Section A 选词填空 (时间银行)</a>
+<a href="player-passage1.html" class="tab-item active">📖 Section C 仔细阅读一 (代际流动)</a>
+<a href="player-passage2.html" class="tab-item">📖 Section C 仔细阅读二 (农业无人机)</a>
+</nav>
+<header><span id="title">mock-01 Section C Passage 1 — 代际流动与故乡依恋</span><span id="legend">重点标注：<b style="background:#63d68a">答案定位/题眼</b><b style="background:#ff9d5c">原生路标(转折/因果/实证)</b><b style="background:#7fc4ff">核心搭配/细节</b><b style="background:#d9a2ff">陷阱辨析</b>（1:1 顺流意群卡点对齐）</span></header>
+<div id="sub">
+ <div id="sub-cards"></div>
+ <div id="tip"></div>
+</div>
+<div id="wrap"></div>
+<div id="transport">
+ <button id="play">▶</button>
+ <div id="bar"><div id="track"><div id="fill"></div><div id="knob"></div></div></div>
+ <span id="time">0:00 / -:-</span>
+</div>
+<audio id="a" src="mock-01-reading-passage1.mp3" preload="metadata"></audio>
+<script>
+const CUES=[{"start": 0.0, "end": 5.832, "en": "For most of the last century, rich countries saw migration as a way out of poverty.", "zh": "在上个世纪的大部分时间里， 富裕国家把人口迁移视为 摆脱贫困的一条出路。", "en_chunks": ["For most of the last century,", "rich countries saw migration", "as a way out of poverty."], "zh_chunks": ["在上个世纪的大部分时间里，", "富裕国家把人口迁移视为", "摆脱贫困的一条出路。"], "en_chunked": "For most of the last century, \\ rich countries saw migration \\ as a way out of poverty.", "zh_chunked": "在上个世纪的大部分时间里， \\ 富裕国家把人口迁移视为 \\ 摆脱贫困的一条出路。", "marks": []}, {"start": 6.182, "end": 11.702, "en": "A poor family moved to a better city, and its young people left poverty behind.", "zh": "一个贫困家庭搬迁到更好的城市， 家里的年轻人便把贫困甩在身后。", "en_chunks": ["A poor family moved to a better city,", "and its young people left poverty behind."], "zh_chunks": ["一个贫困家庭搬迁到更好的城市，", "家里的年轻人便把贫困甩在身后。"], "en_chunked": "A poor family moved to a better city, \\ and its young people left poverty behind.", "zh_chunked": "一个贫困家庭搬迁到更好的城市， \\ 家里的年轻人便把贫困甩在身后。", "marks": []}, {"start": 12.052, "end": 18.652, "en": "Recent studies built on income records of tens of millions of families tell a more complicated story.", "zh": "最新的多项研究 建立在数千万家庭的收入记录之上， 讲述了一个更为复杂的故事。", "en_chunks": ["Recent studies", "built on income records of tens of millions of families", "tell a more complicated story."], "zh_chunks": ["最新的多项研究", "建立在数千万家庭的收入记录之上，", "讲述了一个更为复杂的故事。"], "en_chunked": "Recent studies \\ built on income records of tens of millions of families \\ tell a more complicated story.", "zh_chunked": "最新的多项研究 \\ 建立在数千万家庭的收入记录之上， \\ 讲述了一个更为复杂的故事。", "marks": [{"p": 0, "l": 14, "t": "signal", "note": "Recent studies: 实证研究原生路标"}, {"p": 67, "l": 32, "t": "signal", "note": "tell a more complicated story: 反转预警"}]}, {"start": 19.002, "end": 25.602, "en": "Moving does help a poor youngster, the researchers report, but far less than people were once told.", "zh": "搬迁确实有助于贫困年轻人， 研究人员报告说， 但幅度远小于 人们曾经被告知的那样。", "en_chunks": ["Moving does help a poor youngster,", "the researchers report,", "but far less", "than people were once told."], "zh_chunks": ["搬迁确实有助于贫困年轻人，", "研究人员报告说，", "但幅度远小于", "人们曾经被告知的那样。"], "en_chunked": "Moving does help a poor youngster, \\ the researchers report, \\ but far less \\ than people were once told.", "zh_chunked": "搬迁确实有助于贫困年轻人， \\ 研究人员报告说， \\ 但幅度远小于 \\ 人们曾经被告知的那样。", "marks": [{"p": 35, "l": 22, "t": "signal", "note": "the researchers report: 实证动词路标"}, {"p": 59, "l": 12, "t": "signal", "note": "but far less: 转折与极端限定词（实测考点极高发）"}]}, {"start": 25.951999999999998, "end": 31.472, "en": "The gains depend on where a family settles, and not on the act of leaving itself.", "zh": "收益取决于一个家庭定居在何处， 而非取决于离开这一行为本身。", "en_chunks": ["The gains depend on where a family settles,", "and not on the act of leaving itself."], "zh_chunks": ["收益取决于一个家庭定居在何处，", "而非取决于离开这一行为本身。"], "en_chunked": "The gains depend on where a family settles, \\ and not on the act of leaving itself.", "zh_chunked": "收益取决于一个家庭定居在何处， \\ 而非取决于离开这一行为本身。", "marks": [{"p": 10, "l": 32, "t": "answer", "note": "Q46 题眼定位：B 项 Its benefits depend mainly on where a family settles"}, {"p": 48, "l": 28, "t": "trap", "note": "not on the act of leaving: 排除 A/C/D 项"}]}, {"start": 31.822, "end": 38.734, "en": "One conclusion is uncomfortable to accept: a good area is not good because of its shops or new houses.", "zh": "有一个结论令人难以接受： 一个好的区域之所以好 并非因为那里的商店或新房子。", "en_chunks": ["One conclusion is uncomfortable to accept:", "a good area is not good", "because of its shops or new houses."], "zh_chunks": ["有一个结论令人难以接受：", "一个好的区域之所以好", "并非因为那里的商店或新房子。"], "en_chunked": "One conclusion is uncomfortable to accept: \\ a good area is not good \\ because of its shops or new houses.", "zh_chunked": "有一个结论令人难以接受： \\ 一个好的区域之所以好 \\ 并非因为那里的商店或新房子。", "marks": [{"p": 0, "l": 14, "t": "signal", "note": "One conclusion: 核心定论路标"}, {"p": 69, "l": 26, "t": "trap", "note": "shops or new houses: 诱杀原词党（Q47 错项 A 诱饵）"}]}, {"start": 39.084, "end": 47.7, "en": "It is good because of the steady groups that meet there: unions, clubs, two-parent homes, employers who keep the same staff for years.", "zh": "它之所以好是因为在那里定期聚会的稳定群体： 工会、俱乐部、双亲家庭、 以及多年留用同一批员工的雇主。", "en_chunks": ["It is good because of the steady groups that meet there:", "unions, clubs, two-parent homes,", "employers who keep the same staff for years."], "zh_chunks": ["它之所以好是因为在那里定期聚会的稳定群体：", "工会、俱乐部、双亲家庭、", "以及多年留用同一批员工的雇主。"], "en_chunked": "It is good because of the steady groups that meet there: \\ unions, clubs, two-parent homes, \\ employers who keep the same staff for years.", "zh_chunked": "它之所以好是因为在那里定期聚会的稳定群体： \\ 工会、俱乐部、双亲家庭、 \\ 以及多年留用同一批员工的雇主。", "marks": [{"p": 26, "l": 29, "t": "answer", "note": "Q47 题眼定位：C 项 steady groups there and the expectations of help"}]}, {"start": 48.05, "end": 54.098, "en": "Where such groups no longer meet, even a move made for good reasons repeats the old poverty.", "zh": "在这些群体不再聚会的地方， 哪怕一次出于良好意图的搬迁 也会重复旧有的贫困。", "en_chunks": ["Where such groups no longer meet,", "even a move made for good reasons", "repeats the old poverty."], "zh_chunks": ["在这些群体不再聚会的地方，", "哪怕一次出于良好意图的搬迁", "也会重复旧有的贫困。"], "en_chunked": "Where such groups no longer meet, \\ even a move made for good reasons \\ repeats the old poverty.", "zh_chunked": "在这些群体不再聚会的地方， \\ 哪怕一次出于良好意图的搬迁 \\ 也会重复旧有的贫困。", "marks": []}, {"start": 54.448, "end": 61.24, "en": "A family enters a new neighborhood, but what it really finds is a set of expectations about who gets help.", "zh": "一个家庭进入一个新的街区， 但它真正发现的 是一整套关于谁能得到帮助的社会预期。", "en_chunks": ["A family enters a new neighborhood,", "but what it really finds", "is a set of expectations about who gets help."], "zh_chunks": ["一个家庭进入一个新的街区，", "但它真正发现的", "是一整套关于谁能得到帮助的社会预期。"], "en_chunked": "A family enters a new neighborhood, \\ but what it really finds \\ is a set of expectations about who gets help.", "zh_chunked": "一个家庭进入一个新的街区， \\ 但它真正发现的 \\ 是一整套关于谁能得到帮助的社会预期。", "marks": [{"p": 67, "l": 32, "t": "answer", "note": "Q47 题眼补充：expectations about who gets help"}]}, {"start": 61.59, "end": 66.654, "en": "The same studies record what numbers capture poorly: the cost of leaving.", "zh": "这批相同的研究记录了 数字难以捕捉的东西： 离开故土的代价。", "en_chunks": ["The same studies record", "what numbers capture poorly:", "the cost of leaving."], "zh_chunks": ["这批相同的研究记录了", "数字难以捕捉的东西：", "离开故土的代价。"], "en_chunked": "The same studies record \\ what numbers capture poorly: \\ the cost of leaving.", "zh_chunked": "这批相同的研究记录了 \\ 数字难以捕捉的东西： \\ 离开故土的代价。", "marks": [{"p": 57, "l": 15, "t": "signal", "note": "the cost of leaving: 核心主题提炼"}]}, {"start": 67.004, "end": 74.9, "en": "Experts have interviewed hundreds of migrants now in their fifties, and most describe a lasting sense of belonging to neither place.", "zh": "专家访谈了数百名现年五十多岁的移民， 大多数人描述了一种持久的感觉—— 两个地方都不完全属于。", "en_chunks": ["Experts have interviewed hundreds of migrants now in their fifties,", "and most describe a lasting sense", "of belonging to neither place."], "zh_chunks": ["专家访谈了数百名现年五十多岁的移民，", "大多数人描述了一种持久的感觉——", "两个地方都不完全属于。"], "en_chunked": "Experts have interviewed hundreds of migrants now in their fifties, \\ and most describe a lasting sense \\ of belonging to neither place.", "zh_chunked": "专家访谈了数百名现年五十多岁的移民， \\ 大多数人描述了一种持久的感觉—— \\ 两个地方都不完全属于。", "marks": [{"p": 0, "l": 35, "t": "signal", "note": "interviewed hundreds: 访谈实证"}, {"p": 89, "l": 38, "t": "answer", "note": "Q48 题眼定位：A 项 feel they belong fully to neither their hometown nor their new city"}]}, {"start": 75.25, "end": 78.778, "en": "Their hometown has changed beyond recognition.", "zh": "他们的故乡 已经变化得面目全非。", "en_chunks": ["Their hometown", "has changed beyond recognition."], "zh_chunks": ["他们的故乡", "已经变化得面目全非。"], "en_chunked": "Their hometown \\ has changed beyond recognition.", "zh_chunked": "他们的故乡 \\ 已经变化得面目全非。", "marks": []}, {"start": 79.128, "end": 84.504, "en": "The city they chose is where they work, but it is rarely the place they picture as home.", "zh": "他们所选择的城市是他们工作之地， 但极少会是那个地方—— 他们心中描绘为家园的地方。", "en_chunks": ["The city they chose is where they work,", "but it is rarely the place", "they picture as home."], "zh_chunks": ["他们所选择的城市是他们工作之地，", "但极少会是那个地方——", "他们心中描绘为家园的地方。"], "en_chunked": "The city they chose is where they work, \\ but it is rarely the place \\ they picture as home.", "zh_chunked": "他们所选择的城市是他们工作之地， \\ 但极少会是那个地方—— \\ 他们心中描绘为家园的地方。", "marks": []}, {"start": 84.854, "end": 89.942, "en": "One man put it plainly: \"I come from two places that no longer exist.\"", "zh": "一位男士直白地说道： “我来自两个地方， 它们都已经不复存在了。”", "en_chunks": ["One man put it plainly:", "\"I come from two places", "that no longer exist.\""], "zh_chunks": ["一位男士直白地说道：", "“我来自两个地方，", "它们都已经不复存在了。”"], "en_chunked": "One man put it plainly: \\ \"I come from two places \\ that no longer exist.\"", "zh_chunked": "一位男士直白地说道： \\ “我来自两个地方， \\ 它们都已经不复存在了。”", "marks": []}, {"start": 90.292, "end": 95.98, "en": "Researchers treat that feeling as a measurable loss of social support, not as weakness.", "zh": "研究人员把那种感受对待为 社会支持网络的一种可衡量的损失， 而非个人的软弱。", "en_chunks": ["Researchers treat that feeling", "as a measurable loss of social support,", "not as weakness."], "zh_chunks": ["研究人员把那种感受对待为", "社会支持网络的一种可衡量的损失，", "而非个人的软弱。"], "en_chunked": "Researchers treat that feeling \\ as a measurable loss of social support, \\ not as weakness.", "zh_chunked": "研究人员把那种感受对待为 \\ 社会支持网络的一种可衡量的损失， \\ 而非个人的软弱。", "marks": [{"p": 37, "l": 32, "t": "detail", "note": "loss of social support: 社会支持网络的损失"}]}, {"start": 96.33, "end": 100.698, "en": "Officials often forget the practical importance of that finding.", "zh": "政府官员们常常遗忘 那个发现所具有的现实重要性。", "en_chunks": ["Officials often forget", "the practical importance of that finding."], "zh_chunks": ["政府官员们常常遗忘", "那个发现所具有的现实重要性。"], "en_chunked": "Officials often forget \\ the practical importance of that finding.", "zh_chunked": "政府官员们常常遗忘 \\ 那个发现所具有的现实重要性。", "marks": []}, {"start": 101.048, "end": 108.464, "en": "If attachment to a hometown is as strong as the evidence shows, a plan aimed only at moving people will keep failing.", "zh": "如果对故乡的依恋真如证据所表明的那样强烈， 仅仅旨在把人搬迁走的规划 将会持续失败。", "en_chunks": ["If attachment to a hometown is as strong as the evidence shows,", "a plan aimed only at moving people", "will keep failing."], "zh_chunks": ["如果对故乡的依恋真如证据所表明的那样强烈，", "仅仅旨在把人搬迁走的规划", "将会持续失败。"], "en_chunked": "If attachment to a hometown is as strong as the evidence shows, \\ a plan aimed only at moving people \\ will keep failing.", "zh_chunked": "如果对故乡的依恋真如证据所表明的那样强烈， \\ 仅仅旨在把人搬迁走的规划 \\ 将会持续失败。", "marks": [{"p": 65, "l": 44, "t": "signal", "note": "aimed only at moving people will keep failing: 因果预警"}]}, {"start": 108.814, "end": 116.854, "en": "Improving transport, universities and hospitals in shrinking places does not keep people in one place, as critics warn.", "zh": "改善收缩萎缩地区的交通、大学与医院， 并不会把人们固定在一个地方， 像批评人士所警告的那样。", "en_chunks": ["Improving transport, universities and hospitals in shrinking places", "does not keep people in one place,", "as critics warn."], "zh_chunks": ["改善收缩萎缩地区的交通、大学与医院，", "并不会把人们固定在一个地方，", "像批评人士所警告的那样。"], "en_chunked": "Improving transport, universities and hospitals in shrinking places \\ does not keep people in one place, \\ as critics warn.", "zh_chunked": "改善收缩萎缩地区的交通、大学与医院， \\ 并不会把人们固定在一个地方， \\ 像批评人士所警告的那样。", "marks": []}, {"start": 117.204, "end": 121.98, "en": "It widens the range of lives a person can picture without leaving home.", "zh": "它拓宽了生活的可能范围—— 一个人能够去设想的生活， 无需离开家乡。", "en_chunks": ["It widens the range of lives", "a person can picture", "without leaving home."], "zh_chunks": ["它拓宽了生活的可能范围——", "一个人能够去设想的生活，", "无需离开家乡。"], "en_chunked": "It widens the range of lives \\ a person can picture \\ without leaving home.", "zh_chunked": "它拓宽了生活的可能范围—— \\ 一个人能够去设想的生活， \\ 无需离开家乡。", "marks": [{"p": 3, "l": 30, "t": "answer", "note": "Q49 题眼定位：D 项 gives people more ways to build a life without moving"}]}, {"start": 122.33, "end": 128.906, "en": "When a move does happen, support that travels with the young person matters more than a grant paid at the start.", "zh": "当搬迁确实发生之时， 伴随年轻人一同流动的支持， 比出发初始发放的补贴更重要。", "en_chunks": ["When a move does happen,", "support that travels with the young person", "matters more than a grant paid at the start."], "zh_chunks": ["当搬迁确实发生之时，", "伴随年轻人一同流动的支持，", "比出发初始发放的补贴更重要。"], "en_chunked": "When a move does happen, \\ support that travels with the young person \\ matters more than a grant paid at the start.", "zh_chunked": "当搬迁确实发生之时， \\ 伴随年轻人一同流动的支持， \\ 比出发初始发放的补贴更重要。", "marks": [{"p": 67, "l": 16, "t": "signal", "note": "matters more than: 比较级核心结论"}]}, {"start": 129.256, "end": 136.36, "en": "The plain conclusion is that opportunity is spread unevenly across the country, and that belonging is stubborn.", "zh": "最朴素的结论是： 机会在全国范围内的分布是不均衡的， 并且故土归属感是极其顽固深刻的。", "en_chunks": ["The plain conclusion is", "that opportunity is spread unevenly across the country,", "and that belonging is stubborn."], "zh_chunks": ["最朴素的结论是：", "机会在全国范围内的分布是不均衡的，", "并且故土归属感是极其顽固深刻的。"], "en_chunked": "The plain conclusion is \\ that opportunity is spread unevenly across the country, \\ and that belonging is stubborn.", "zh_chunked": "最朴素的结论是： \\ 机会在全国范围内的分布是不均衡的， \\ 并且故土归属感是极其顽固深刻的。", "marks": [{"p": 0, "l": 23, "t": "signal", "note": "The plain conclusion is that: 全文总结论原生路标"}, {"p": 29, "l": 76, "t": "answer", "note": "Q50 题眼定位：C 项 Policy has to take both uneven opportunity and lasting attachment seriously"}]}, {"start": 136.71, "end": 142.182, "en": "A generation told to \"just move\" is learning that place is harder to shake than a habit.", "zh": "被告知“只要搬走就好”的一代人 正在懂得： 故土印记比生活习惯更难摆脱。", "en_chunks": ["A generation told to \"just move\"", "is learning", "that place is harder to shake than a habit."], "zh_chunks": ["被告知“只要搬走就好”的一代人", "正在懂得：", "故土印记比生活习惯更难摆脱。"], "en_chunked": "A generation told to \"just move\" \\ is learning \\ that place is harder to shake than a habit.", "zh_chunked": "被告知“只要搬走就好”的一代人 \\ 正在懂得： \\ 故土印记比生活习惯更难摆脱。", "marks": []}, {"start": 142.532, "end": 147.284, "en": "The towns people leave never stop raising their youngsters from a distance.", "zh": "人们所离开的那些城镇， 从未停止过养育自家的孩子， 隔着遥远的距离。", "en_chunks": ["The towns people leave", "never stop raising their youngsters", "from a distance."], "zh_chunks": ["人们所离开的那些城镇，", "从未停止过养育自家的孩子，", "隔着遥远的距离。"], "en_chunked": "The towns people leave \\ never stop raising their youngsters \\ from a distance.", "zh_chunked": "人们所离开的那些城镇， \\ 从未停止过养育自家的孩子， \\ 隔着遥远的距离。", "marks": []}];
+const a=document.getElementById('a'),wrap=document.getElementById('wrap');
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+
+CUES.forEach((c, idx)=>{
+ const p=document.createElement('p');p.className='line';
+ 
+ const meta=document.createElement('div');meta.className='line-meta';
+ const badge=document.createElement('span');badge.className='line-badge';
+ badge.textContent='句 ' + (idx+1);
+ const tSpan=document.createElement('span');tSpan.textContent=fmt(c.start);
+ meta.appendChild(badge);meta.appendChild(tSpan);
+ p.appendChild(meta);
+
+ const cardsBox=document.createElement('div');cardsBox.className='line-cards';
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const mCard=document.createElement('div');mCard.className='m-card';
+   const mEn=document.createElement('div');mEn.className='m-en';mEn.textContent=enText;
+   const mZh=document.createElement('div');mZh.className='m-zh';mZh.textContent=(c.zh_chunks||[])[ci]||'';
+   mCard.appendChild(mEn);mCard.appendChild(mZh);
+   cardsBox.appendChild(mCard);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='m-slash';slash.textContent=String.fromCharCode(92);
+     cardsBox.appendChild(slash);
+   }
+ });
+ p.appendChild(cardsBox);
+
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   const noteDiv=document.createElement('div');noteDiv.className='line-tip';
+   noteDiv.textContent='🎯 ' + notes.join(' | ');
+   p.appendChild(noteDiv);
+ }
+
+ p.onclick=()=>{a.currentTime=c.start+.02;if(a.paused)a.play();};
+ wrap.appendChild(p);c.el=p;
+});
+
+let cur=-1;
+function paint(i){
+ const sc=document.getElementById('sub-cards'),tip=document.getElementById('tip');
+ sc.innerHTML='';tip.textContent='';tip.style.display='none';
+ if(i<0)return;const c=CUES[i];
+ (c.en_chunks||[]).forEach((enText, ci)=>{
+   const card=document.createElement('div');card.className='chunk-card';
+   const enDiv=document.createElement('div');enDiv.className='card-en';enDiv.textContent=enText;
+   const zhDiv=document.createElement('div');zhDiv.className='card-zh';zhDiv.textContent=(c.zh_chunks||[])[ci]||'';
+   card.appendChild(enDiv);card.appendChild(zhDiv);
+   sc.appendChild(card);
+   if(ci < c.en_chunks.length - 1){
+     const slash=document.createElement('span');slash.className='slash-col';slash.textContent=String.fromCharCode(92);
+     sc.appendChild(slash);
+   }
+ });
+ const notes=(c.marks||[]).filter(m=>m.note).map(m=>m.note);
+ if(notes.length){
+   tip.textContent='🎯 '+notes.join(' | ');
+   tip.style.display='block';
+ }
+}
+
+a.addEventListener('timeupdate',()=>{const t=a.currentTime;
+ let i=CUES.findIndex(c=>t>=c.start&&t<c.end);
+ if(i!==cur){if(cur>=0)CUES[cur].el.classList.remove('on');
+  if(i>=0){CUES[i].el.classList.add('on');CUES[i].el.scrollIntoView({block:'center',behavior:'smooth'});}
+  paint(i);cur=i;}
+ const d=a.duration||1;const r=Math.min(t/d,1);
+ document.getElementById('fill').style.width=(r*100)+'%';
+ document.getElementById('knob').style.left=(r*100)+'%';
+ document.getElementById('time').textContent=fmt(t)+' / '+fmt(a.duration||0);});
+
+const play=document.getElementById('play');
+play.onclick=()=>{a.paused?a.play():a.pause();};
+a.onplay=()=>play.textContent='⏸';a.onpause=()=>play.textContent='▶';
+const bar=document.getElementById('bar');
+function seekEv(e){const r=bar.getBoundingClientRect();
+ a.currentTime=Math.min(Math.max((e.clientX-r.left)/r.width,0),1)*(a.duration||0);}
+bar.addEventListener('pointerdown',e=>{bar.setPointerCapture(e.pointerId);seekEv(e);bar._d=true;});
+bar.addEventListener('pointermove',e=>{if(bar._d)seekEv(e);});
+bar.addEventListener('pointerup',()=>bar._d=false);
+</script></body></html>

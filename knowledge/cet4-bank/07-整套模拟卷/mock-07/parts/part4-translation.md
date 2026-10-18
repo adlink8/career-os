@@ -1,0 +1,26 @@
+## Part IV / Translation / (30 minutes)
+
+**Directions:** _For this part, you are allowed 30 minutes to translate a passage from Chinese into English. You should write your answer on **Answer Sheet 2**._
+
+二十四节气是中国古人观察太阳周年运动总结出的时间体系，2016 年被列入联合国教科文组织<u>非物质文化遗产</u>（intangible cultural heritage）名录。一年分成二十四个时段，“清明”“霜降”“大雪”这些名字既标出农事节点，也指导着中国人的衣食住行。立秋是夏秋之交，民间素有“贴秋膘”的习俗：过去人家难得吃肉，夏天闷热、胃口变差，体重下降，天一转凉便炖羊肉、包饺子，把掉下去的肉补回来。如今营养专家提醒，贴秋膘不等于大鱼大肉，而应在<u>均衡膳食</u>的基础上适量增加蛋白质，多吃<u>粗粮</u>（coarse grains）和时令果蔬。对许多家庭而言，这一习俗更像迎接秋天的仪式，提醒人们天凉时好好吃饭。
+
+（卷面实测：219 个汉字，5 句。）
+
+### 参考译文
+
+The Twenty-four Solar Terms, a time system worked out by ancient Chinese people through long observation of the sun's annual movement, were inscribed on the UNESCO list of intangible cultural heritage in 2016. The year is divided into twenty-four periods, whose names — Clear and Bright, Frost's Descent and Major Snow, for example — not only mark the right moments for farm work but also guide what Chinese people eat, wear and do throughout the year. The Start of Autumn falls at the turn from summer to autumn, and people in the countryside have long kept a custom known as "putting on fat for autumn": since meat rarely appeared on the table and the muggy summer took away both their appetite and their weight, they would stew mutton and make dumplings the moment the air turned cool, to gain back the weight they had lost. Nutrition experts now point out that the custom does not mean feasting on rich food; rather, on top of a balanced diet, people should take a moderate amount of extra protein and eat more coarse grains and seasonal fruit and vegetables. For many families today, the custom is more a ritual welcoming autumn, a reminder to eat well when the weather turns cool.
+
+### 得分点
+
+1. **首句术语 + 同位语 + 一般过去时被动**（The Twenty-four Solar Terms, a time system worked out by ancient Chinese people…, were inscribed on the UNESCO list of intangible cultural heritage in 2016）：节气无对应英文词，写 The Twenty-four Solar Terms / the 24 solar terms 均可给分；"总结出的"用过去分词短语 worked out by…作后置定语（work out 表"归纳得出"，优于 summarize）；有明确过去时间状语 in 2016，主句必须用一般过去时被动 were inscribed on / were added to，写成 has been listed（与 in 2016 冲突）是本卷最典型的时态错，累计扣分；"联合国教科文组织"写 UNESCO 或 United Nations Educational, Scientific and Cultural Organization 均可，"名录"简化为 list 即可，不必硬译 Representative List of the Intangible Cultural Heritage of Humanity。
+2. **"一年分成二十四个时段" 被动 + whose 定语从句并句**（The year is divided into twenty-four periods, whose names…）：be divided into 是高频搭配，注意被动；用 whose 把"分成时段"与"名字有意义"并成一句是本句的加分处理，另起两句 The year has twenty-four parts. Their names… 只给基础分。
+3. **"既……也……" not only…but also 平行 + 破折号插入语**（not only mark the right moments for farm work but also guide…）：主语 names 为复数，两侧均接动词原形，平行结构不对称（如 not only 后接名词、but also 后接动词）扣结构分；三个节名可用英译（Clear and Bright, Frost's Descent, Major Snow）或拼音大写（Qingming, Shuangjiang, Daxue），不要求统一，但须有 for example 标明是举例；"衣食住行"意译 what Chinese people eat, wear and do 或 food, clothing and daily routine，逐字直译 four things of clothing and food 不得分；"农事节点"the right moments for farm work / the key points for farming。
+4. **"素有……的习俗" 现在完成时 + 冒号展开**（people in the countryside have long kept a custom known as "putting on fat for autumn"）："素有"用 have long + 过去分词（非 long ago 一般过去时）；"民间"译 people in the countryside / country people，写 folk people 属汉式英语；"贴秋膘"以 putting on fat/weight for autumn 或 storing autumn fat 意译，音译 tie qiubiao 须加解释才给分，直译 stick autumn fat 不得分。
+5. **冒号后原因链：since 从句 + rarely 的限定 + both…and 压缩**（since meat rarely appeared on the table and the muggy summer took away both their appetite and their weight）："难得"是低频而非全无，写 rarely/seldom；译成 never ate meat 属过度绝对，扣分；"闷热"muggy / hot and humid，写 very hot 只给基础分；"胃口变差、体重下降"以 take away both their appetite and their weight 并列两个宾语，一句话处理三项信息是本卷拉开档次的手段。
+6. **"天一转凉便炖羊肉、包饺子" would 表过去习惯 + the moment 时间状语**（they would stew mutton and make dumplings the moment the air turned cool）：would do 表"过去常常"，其后直接跟动词原形（不可写 would to stew），也不与 used to 叠用；the moment + 从句作"一……就……"，比连续使用 as soon as 更有变化；"补回来"to gain back the weight they had lost——目的不定式 + 省略关系代词的定语从句，"掉体重"在先须用过去完成时 had lost，时态混浊（gain back the weight they lost）扣 0.5 分档。
+7. **"不等于大鱼大肉，而应……" 否定 + rather 转折 + 建议句**（the custom does not mean feasting on rich food; rather, on top of a balanced diet, people should take a moderate amount of extra protein…）："大鱼大肉"意译 rich/fatty food in large quantities 或 feasting on rich food，直译 big fish big meat 不得分；rather 作副词连接分号后的转折建议，比 but 更贴"并非……而是"；"在……基础上"on top of / on the basis of（卷面未给提示，"均衡膳食"balanced diet 为核心采分词）；"适量"a moderate/proper amount of；"增加蛋白质"take/increase extra protein；"时令果蔬"seasonal fruit and vegetables——fruit 表水果总量时不可数、vegetables 用复数，"粗粮"按卷面提示写 coarse grains，vegetables / protein / heritage 类关键词拼写错误影响得分。
+8. **收尾"更像……仪式" + 句末同位语**（the custom is more a ritual welcoming autumn, a reminder to eat well when the weather turns cool）：more a…than a… 的比较处理（本句无比较对象，写 more like a ritual 亦可）；句末同位语 a reminder 回指整句，是"由俗入理"的标准收束句式；"提醒人们做某事"a reminder to do sth（不定式，非 of doing）；when the weather turns cool 时间状语从句收全段。全篇美式拼写统一（无 colour、favourite、practise、organise 类英式形），时态分层：现代事实与专家观点用一般现在时，讲"过去人家"用一般过去时与 would，"素有"与"2016 年被列入"分别用现在完成时与一般过去时被动。
+
+```json
+{"answers": {"translation_theme": "二十四节气与秋贴膘习俗（段译汉译英）", "translation_prompt": "二十四节气与秋贴膘习俗", "hanzi_count": 219}}
+```
