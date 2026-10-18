@@ -1,0 +1,50 @@
+[
+  {
+    "source_job_id": "bocom-27it",
+    "company_name": "交通银行 (BOCOM)",
+    "job_title": "2027年度校园招聘·金融科技职位（IT系统管理/软件开发，含上海市分行）",
+    "category": "运维/IT岗",
+    "city": "上海市（另有全国分行）",
+    "salary_text": "以公告为准（国有大行标准）",
+    "education_req": "以岗位页为准（总行科技岗竞争高，分行本科可投比例大）",
+    "match_level": "有变数",
+    "responsibilities": "IT 系统管理、软件开发等金融科技岗（以 bankcomm.com 岗位页为准）",
+    "requirements": "2027届应届；总行应届生项目+上海市分行（9/15 公告）同步开放；官网人才招聘频道网申",
+    "matching_analysis": "国有大行 27 校招正式启动、金融科技职位明确设岗；总行岗竞争激烈，上海市分行岗相对务实；与浦发/工行同属上海银行线量贩投递",
+    "application_url": "https://www.bankcomm.com（人才招聘→校园招聘）",
+    "website": "https://www.bankcomm.com",
+    "campus_url": "https://www.bankcomm.com"
+  },
+  {
+    "source_job_id": "bosc-27ft",
+    "company_name": "上海银行 (Bank of Shanghai)",
+    "job_title": "2027届校园招聘·总行金融科技岗",
+    "category": "运维/IT岗",
+    "city": "上海市",
+    "salary_text": "以公告为准（城商行头部标准）",
+    "education_req": "计算机/软件工程/电子信息/通信/自动化/数学/统计等相关专业（其余岗位不限专业）",
+    "match_level": "有变数",
+    "responsibilities": "总行金融科技开发/运维（以上海银行招聘频道岗位页为准）",
+    "requirements": "2027届应届；公告约 2026-09-22 发布（上海本地宝 6 天前收录）；专业要求与用户计算机专业直接对口",
+    "matching_analysis": "城商行头部、总行科技岗专业要求与用户专业逐字对口、笔试闯关制；节奏与上届一致（26届为 9/11 发布），网申窗口期注意官网公告截止日",
+    "application_url": "https://www.bosc.cn（上海银行官网→人才招聘）",
+    "website": "https://www.bosc.cn",
+    "campus_url": "http://sh.bendibao.com"
+  },
+  {
+    "source_job_id": "icbc-27it",
+    "company_name": "中国工商银行 (ICBC)",
+    "job_title": "2027年度校园招聘·科技类岗位（含数据中心上海）",
+    "category": "运维/IT岗",
+    "city": "上海市（数据中心）等",
+    "salary_text": "以公告为准（国有大行标准）",
+    "education_req": "以公告为准（国有大行校招通常本科及以上）",
+    "match_level": "有变数",
+    "responsibilities": "数据中心运营、软件开发等科技类岗（以 job.icbc.com.cn 岗位页为准）",
+    "requirements": "2027届应届；2027年度校园招聘启事已发布；数据中心（上海）方向对口运维栈",
+    "matching_analysis": "国有大行校招已开闸、数据中心上海方向与用户运维栈对口、笔试闯关制；四大行缩招背景下单行期望值放低，当量贩投递处理",
+    "application_url": "https://job.icbc.com.cn（工行人才招聘→校园招聘）",
+    "website": "https://www.icbc.com.cn",
+    "campus_url": "https://job.icbc.com.cn"
+  }
+]

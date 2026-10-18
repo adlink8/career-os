@@ -109,4 +109,5 @@ scripts/generate_ops_resumes.py
 /nul
 /tmp_*.js
 /tmp_*.html
+/tmp_*.json
 /.mimosa/

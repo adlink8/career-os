@@ -1,0 +1,133 @@
+# Career OS — gitignore
+
+# 个人隐私数据(DATA-03):简历全系列、个人评估、岗位清单与抓取数据,仅本地
+data/cv/
+data/resume-project-proposals/
+data/analysis/
+data/jobs/
+
+# 真实求职画像(含姓名/出生年/学校/手机等),仅本地保留
+# skill 运行时读取 config/profile.yml;提交时用 config/profile.example.yml 脱敏样本
+config/profile.yml
+
+# 填表扩展编译产物（含姓名等，由 bin/sync_autofill_profile.py 生成）
+extensions/ats-autofill/profile.json
+# 填表岗位画像与逐岗配置（含姓名/手机/邮箱等真实填表数据），仅本地
+extensions/ats-autofill/job-profiles-map.json
+extensions/ats-autofill/configs/
+
+# 插件分发包（本地打包产物）
+dist/
+
+# 本机数据仓库路径（含绝对路径）
+config/personal-data-warehouse.yml
+
+# 真实投递与求职状态（含真实公司、投递进度、内推渠道），仅本地；权威数据在本地 sqlite
+# data/tracker.tsv 已于 2026-09-17 废弃删除，投递数据统一以 data/career_jobs.sqlite 为唯一源
+data/current-status.md
+data/platform_recruitment_jd.md
+
+# 本地数据库与备份文件（含真实信息与运行状态，绝不上云）
+data/*.sqlite*
+data/*.db
+data/*.bak
+*.sqlite
+*.sqlite3
+*.db
+
+# 抓取、爬虫分析数据与临时报表
+data/tianyancha/
+data/aispeech_campus_jobs_*.json
+data/job_target_*.json
+data/jd/
+data/job_discovery/extracts/
+data/job_discovery/manifests/
+
+# 中小厂外联清单（含电话/邮箱列与投递备注），仅本地
+data/sme-outreach*
+
+# 含真实姓名/邮箱的简历生成一次性脚本，仅本地
+scripts/generate_customized_resumes.py
+
+# 临时目录与临时脚本/调试参数
+tmp/
+tmp_*.py
+tc_params.json
+
+# 浏览器自动化运行日志与页面快照（可能含访问足迹）
+.playwright-cli/
+
+# 个人简历、证件照及导出产物全格式拦截（纯占位模板保留在 templates/）
+*.pdf
+*.docx
+*.jpg
+*.jpeg
+*.png
+
+# 独立子 Git 仓库与子项目
+adlink8-profile/
+
+# 历史备份文件
+docs/*.backup
+*.backup
+
+# 系统与开发环境文件
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/js/node_modules/
+tests/js/package-lock.json
+.vscode/
+.idea/
+
+# Local Judge0 deployment secrets/runtime env
+deploy/judge0/judge0.conf
+deploy/judge0/runtime.env
+
+# 岗位截图管道：浏览器会话含登录 cookie，严禁入库
+data/job_discovery/browser_profiles/
+data/job_discovery/screenshots/
+data/job_discovery/captures/*.json
+data/job_discovery/logs/*.jsonl
+data/job_discovery/logs/*.json
+data/job_discovery/runs/*/
+
+# 临时调试与环境辅助目录
+scratch/
+.workbuddy/
+.git.broken-*/
+
+# ===== ↑ 以上同步自 .gitignore（「从 .gitignore 同步」只重写以上部分）=====
+.git/
+.hg/
+.svn/
+node_modules/
+bower_components/
+jspm_packages/
+site-packages/
+venv/
+coverage/
+htmlcov/
+lcov-report/
+cmakefiles/
+cmake-build-*/
+bazel-*/
+pods/
+deriveddata/
+storybook-static/
+playwright-report/
+test-results/
+allure-results/
+allure-report/
+cdk.out/
+*.egg-info/
+*.dist-info/
+eggs/
+pip-wheel-metadata/
+wheels/
+# ----- ↑ 以上为 ZCode 默认排除规则（自定义规则请写在本行下方，不会被同步/恢复改动）-----
+# 自定义规则写在下方（本行提示可删除）
