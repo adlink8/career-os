@@ -1,5 +1,5 @@
 /**
- * 表单格子 → 画像槽位。捕获和填表共用，避免再按岗位轨道分支。
+ * 表单格子按字段名取值。旧槽位只给迁入 / lookupSlot 用。
  */
 (function (root) {
   'use strict';
@@ -65,41 +65,38 @@
     return out;
   }
 
+  function valueByLabel(label, notebook, index) {
+    var overlay = root.CareerOsOverlay;
+    if (overlay && overlay.valueByLabel) return overlay.valueByLabel(notebook, label, index);
+    var want = overlay && overlay.normalizeLabel
+      ? overlay.normalizeLabel(label)
+      : String(label || '').replace(/\s+/g, ' ').trim();
+    if (!want || !notebook || !Array.isArray(notebook.modules)) return '';
+    var hits = [];
+    notebook.modules.forEach(function (mod) {
+      (mod && Array.isArray(mod.items) ? mod.items : []).forEach(function (item) {
+        (item && Array.isArray(item.fields) ? item.fields : []).forEach(function (field) {
+          var lab = overlay && overlay.normalizeLabel
+            ? overlay.normalizeLabel(field && field.label)
+            : String(field && field.label || '').replace(/\s+/g, ' ').trim();
+          if (lab === want) hits.push(field.value == null ? '' : String(field.value));
+        });
+      });
+    });
+    var raw = hits[index || 0];
+    return raw == null ? '' : String(raw).trim();
+  }
+
   function valueForSlot(slot, profile, projectIndex) {
-    if (!slot || !profile) return '';
-    var eduHit = String(slot).match(/^universal\.education\.(?:records|undergraduate|junior_college)\.(.+)$/);
-    if (eduHit) {
-      var recs = educationRecords(profile);
-      var eduItem = recs[projectIndex || 0] || {};
-      var eduKey = eduHit[1];
-      var eduRaw = eduItem[eduKey];
-      if ((eduRaw == null || eduRaw === '') && eduKey === 'graduation') eduRaw = eduItem.end_date;
-      if ((eduRaw == null || eduRaw === '') && eduKey === 'end_date') eduRaw = eduItem.graduation;
-      return eduRaw == null ? '' : String(eduRaw).trim();
+    var overlay = root.CareerOsOverlay;
+    if (!slot || !profile || !overlay) return '';
+    var nb = profile;
+    if (!overlay.isNotebook(profile) && overlay.normalizeImport) {
+      try { nb = overlay.normalizeImport(profile); } catch (_) { nb = profile; }
     }
-    var listHit = slot.match(/^(application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages|family_members|training_records))\.(.+)$/);
-    if (listHit) {
-      var item = (pick(profile, listHit[1]) || [])[projectIndex || 0] || {};
-      var raw = item[listHit[2]];
-      if (raw == null || raw === '') {
-        if (listHit[1] === 'application.award_records' && listHit[2] === 'name') {
-          raw = pick(profile, 'universal.awards');
-        }
-        if (listHit[1] === 'application.certificate_records' && listHit[2] === 'name') {
-          raw = pick(profile, 'universal.certificates');
-        }
-      }
-      return raw == null ? '' : String(raw).trim();
-    }
-    if (slot === 'application.expected_city') {
-      var city = pick(profile, 'application.expected_city');
-      if (city) return String(city).trim();
-      var cities = pick(profile, 'application.target_cities') || '';
-      return String(cities).split(/[、,，]/)[0].trim();
-    }
-    var val = pick(profile, slot);
-    if (val == null) return '';
-    return String(val).trim();
+    var info = overlay.lookupSlot && overlay.lookupSlot(slot);
+    var label = info && info.label ? info.label : slot;
+    return valueByLabel(label, nb, projectIndex || 0);
   }
 
   function isRealIdCard(value) {
@@ -139,6 +136,7 @@
   root.CareerOsFieldMap = {
     setRules: setRules,
     resolveSlot: resolveSlot,
+    valueByLabel: valueByLabel,
     valueForSlot: valueForSlot,
     isRealIdCard: isRealIdCard,
     isNoiseLabel: isNoiseLabel,

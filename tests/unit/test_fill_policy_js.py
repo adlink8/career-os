@@ -12,7 +12,15 @@ ROOT = Path(__file__).resolve().parents[2]
 @pytest.mark.skipif(shutil.which("node") is None, reason="需要 node")
 @pytest.mark.parametrize(
     "name",
-    ["fill-policy.test.js", "overlay-store.test.js", "fill-runtime.test.js", "fill-dropdown.test.js"],
+    [
+        "fill-policy.test.js",
+        "overlay-store.test.js",
+        "notebook-store.test.js",
+        "field-map.test.js",
+        "fill-runtime.test.js",
+        "fill-dropdown.test.js",
+        "adaptive-scan.test.js",
+    ],
 )
 def test_js_contract(name):
     js = ROOT / "tests" / "js" / name

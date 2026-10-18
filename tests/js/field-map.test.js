@@ -8,11 +8,19 @@ const vm = require('vm');
 const assert = require('assert');
 
 const ROOT = path.resolve(__dirname, '../..');
-const mapSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map.js'), 'utf8');
 const sandbox = { self: {}, console };
-vm.runInNewContext(mapSrc, sandbox);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8'),
+  sandbox
+);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map.js'), 'utf8'),
+  sandbox
+);
+const store = sandbox.self.CareerOsOverlay;
 const fmap = sandbox.self.CareerOsFieldMap;
 assert.ok(fmap, 'CareerOsFieldMap 未加载');
+assert.ok(store, 'CareerOsOverlay 未加载');
 
 const rules = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map-rules.json'), 'utf8')
@@ -21,37 +29,34 @@ fmap.setRules(rules);
 const profile = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/profile.test.json'), 'utf8')
 );
+const notebook = store.normalizeImport(profile);
 
 function check(label, cond) {
   assert.ok(cond, label);
 }
 
-check('姓名槽位', fmap.resolveSlot('姓名') === 'universal.personal.name');
-check('学校名称', fmap.resolveSlot('学校名称') === 'universal.education.records.school');
-check('学习形式', fmap.resolveSlot('学习形式') === 'universal.education.records.education_type');
+check('填表用 valueByLabel 姓名', fmap.valueByLabel('姓名', notebook, 0) === '测一填');
+check('填表用 valueByLabel 去请输入', fmap.valueByLabel('请输入姓名', notebook, 0) === '测一填');
+check('填表用 valueByLabel 学校第二段', fmap.valueByLabel('学校名称', notebook, 1) === '江苏信息职业技术学院');
+check('填表用 valueByLabel 手机号', fmap.valueByLabel('手机号', notebook, 0) === '13800138000');
 check(
-  '教育第二段读专科',
-  fmap.valueForSlot('universal.education.records.school', profile, 1) === '江苏信息职业技术学院'
+  'lookupSlot 只给迁入翻标签',
+  store.lookupSlot('universal.personal.name') && store.lookupSlot('universal.personal.name').label === '姓名'
 );
-check(
-  '旧 undergraduate 槽位仍读第一段',
-  fmap.valueForSlot('universal.education.undergraduate.school', profile, 0) === '常州大学'
-);
-check('期望工作城市', fmap.resolveSlot('期望工作城市') === 'application.expected_city');
+fmap.setRules([]);
+check('填表不依赖 setRules', fmap.valueByLabel('姓名', notebook, 0) === '测一填');
+fmap.setRules(rules);
+
+const contentSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/content.js'), 'utf8');
+const beisenSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/beisen-fill.js'), 'utf8');
+check('content 填入不走 valueForSlot', contentSrc.indexOf('valueForSlot') === -1);
+check('beisen pickValue 不走 valueForSlot', beisenSrc.indexOf('valueForSlot') === -1);
 check('噪声标签', fmap.isNoiseLabel('请选择') === true);
 check('假身份证不填', fmap.isRealIdCard('') === false);
 check('18位才算身份证', fmap.isRealIdCard('11010119900101123' + 'X') === true);
 check(
-  '测试姓名',
-  fmap.valueForSlot('universal.personal.name', profile, 0) === '测一填'
-);
-check(
-  '测试手机',
-  fmap.valueForSlot('universal.personal.phone', profile, 0) === '13800138000'
-);
-check(
   '测试邮箱不含个人域',
-  String(fmap.valueForSlot('universal.personal.email', profile, 0)).includes('example.com')
+  String(fmap.valueByLabel('邮箱', notebook, 0)).includes('example.com')
 );
 
 const autofill = {

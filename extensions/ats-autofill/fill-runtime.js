@@ -65,28 +65,88 @@
     return Math.max(0, (need || 0) - 1);
   }
 
-  function expandPlan(profile) {
-    var app = (profile && profile.application) || {};
-    var edu = (profile && profile.universal && profile.universal.education) || {};
-    var eduNeed = rowCount(edu.records);
-    if (!eduNeed) {
-      if (edu.undergraduate && (edu.undergraduate.school || edu.undergraduate.major)) eduNeed += 1;
-      if (edu.junior_college && (edu.junior_college.school || edu.junior_college.major)) eduNeed += 1;
+  function itemHasValue(item) {
+    if (!item || typeof item !== 'object') return false;
+    if (Array.isArray(item.fields)) {
+      return item.fields.some(function (f) {
+        return String(f && f.value == null ? '' : f.value).trim() !== '';
+      });
     }
-    if (!eduNeed) eduNeed = 1;
-    return {
-      edu: extraClicks(eduNeed),
-      intern: extraClicks(rowCount(app.internships)),
-      projects: extraClicks(rowCount(app.projects)),
-      campus: extraClicks(rowCount(app.campus_roles) + rowCount(app.campus_practices)),
-      awards: extraClicks(rowCount(app.award_records)),
-      certs: extraClicks(rowCount(app.certificate_records)),
-      family: extraClicks(rowCount(app.family_members)),
-      training: extraClicks(rowCount(app.training_records))
-    };
+    return Object.keys(item).some(function (k) {
+      return String(item[k] == null ? '' : item[k]).trim() !== '';
+    });
   }
 
-  function classifyAdd(el) {
+  function asNotebook(profile) {
+    var overlay = root.CareerOsOverlay;
+    if (!overlay || !profile) return profile;
+    if (overlay.isNotebook(profile)) return profile;
+    try { return overlay.normalizeImport(profile); } catch (_) { return profile; }
+  }
+
+  function expandPlan(notebook, shape) {
+    var nb = asNotebook(notebook);
+    var counts = {};
+    function addCount(title, n) {
+      title = String(title || '').trim();
+      if (!title) return;
+      counts[title] = Math.max(counts[title] || 0, n || 0);
+    }
+    if (nb && Array.isArray(nb.modules)) {
+      nb.modules.forEach(function (m) {
+        var n = 0;
+        (m.items || []).forEach(function (item) {
+          if (itemHasValue(item)) n += 1;
+        });
+        addCount(m.title, n);
+      });
+    } else if (notebook && notebook.application) {
+      var app = notebook.application || {};
+      var edu = (notebook.universal && notebook.universal.education) || {};
+      var eduNeed = rowCount(edu.records);
+      if (!eduNeed) {
+        if (edu.undergraduate && (edu.undergraduate.school || edu.undergraduate.major)) eduNeed += 1;
+        if (edu.junior_college && (edu.junior_college.school || edu.junior_college.major)) eduNeed += 1;
+      }
+      addCount('教育经历', eduNeed);
+      addCount('实习经历', rowCount(app.internships));
+      addCount('项目经历', rowCount(app.projects));
+      addCount('在校职务', rowCount(app.campus_roles));
+      addCount('在校实践', rowCount(app.campus_practices));
+      addCount('获奖', rowCount(app.award_records));
+      addCount('证书', rowCount(app.certificate_records));
+      addCount('家庭成员', rowCount(app.family_members));
+      addCount('培训经历', rowCount(app.training_records));
+    }
+    if (shape && Array.isArray(shape.modules)) {
+      shape.modules.forEach(function (m) {
+        var want = Number(m && m.count);
+        if (want > 0) addCount(m.title, want);
+      });
+    }
+    var plan = {};
+    Object.keys(counts).forEach(function (title) {
+      plan[title] = extraClicks(counts[title]);
+    });
+    return plan;
+  }
+
+  function classifyAdd(el, notebook) {
+    var titles = [];
+    var nb = asNotebook(notebook);
+    if (nb && Array.isArray(nb.modules)) {
+      nb.modules.forEach(function (m) {
+        if (m && m.title) titles.push(String(m.title).trim());
+      });
+    }
+    function matchTitle(t) {
+      var i;
+      for (i = 0; i < titles.length; i++) {
+        if (!titles[i]) continue;
+        if (t === titles[i] || t.indexOf(titles[i]) !== -1 || titles[i].indexOf(t) !== -1) return titles[i];
+      }
+      return '';
+    }
     var node = el;
     var i;
     for (i = 0; i < 10 && node; i++) {
@@ -94,14 +154,17 @@
       while (prev) {
         var t = String(prev.textContent || '').replace(/\s+/g, ' ').trim();
         if (t && t.length < 24) {
-          if (/项目/.test(t)) return 'projects';
-          if (/实习|工作经历/.test(t)) return 'intern';
-          if (/教育/.test(t)) return 'edu';
-          if (/家庭/.test(t)) return 'family';
-          if (/培训/.test(t)) return 'training';
-          if (/校园|在校|实践|职务/.test(t)) return 'campus';
-          if (/证书/.test(t)) return 'certs';
-          if (/获奖/.test(t)) return 'awards';
+          var hit = matchTitle(t);
+          if (hit) return hit;
+          if (/项目/.test(t)) return matchTitle('项目经历') || '项目经历';
+          if (/实习|工作经历/.test(t)) return matchTitle('实习经历') || '实习经历';
+          if (/教育/.test(t)) return matchTitle('教育经历') || '教育经历';
+          if (/家庭/.test(t)) return matchTitle('家庭成员') || '家庭成员';
+          if (/培训/.test(t)) return matchTitle('培训经历') || '培训经历';
+          if (/校园|在校职务|职务/.test(t)) return matchTitle('在校职务') || '在校职务';
+          if (/实践/.test(t)) return matchTitle('在校实践') || '在校实践';
+          if (/证书/.test(t)) return matchTitle('证书') || '证书';
+          if (/获奖/.test(t)) return matchTitle('获奖') || '获奖';
         }
         prev = prev.previousElementSibling;
       }
@@ -126,6 +189,182 @@
 
   function sleep(ms) {
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  function setNativeValue(element, value) {
+    if (!element || value === undefined || value === null) return false;
+    var str = String(value).trim();
+    if (!str) return false;
+    if (element.disabled) return false;
+    var win = typeof window !== 'undefined' ? window : root;
+    var tag = String(element.tagName || '').toLowerCase();
+    if (tag === 'select') {
+      var lower = str.toLowerCase();
+      var matched = false;
+      var opts = element.options || [];
+      var i;
+      for (i = 0; i < opts.length; i++) {
+        var opt = opts[i];
+        var t = String((opt && opt.text) || '').trim();
+        var v = String((opt && opt.value) || '').trim();
+        if (t === str || v === str || t.indexOf(str) !== -1 || str.indexOf(t) !== -1 || t.toLowerCase() === lower) {
+          element.value = opt.value;
+          matched = true;
+        }
+      }
+      if (!matched) return false;
+      element.dispatchEvent(new Event('input', { bubbles: true }));
+      element.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    }
+
+    if (element.readOnly) {
+      try { element.readOnly = false; } catch (_) { /* ignore */ }
+    }
+
+    var isTextarea = tag === 'textarea';
+    var prototype = isTextarea
+      ? (win.HTMLTextAreaElement && win.HTMLTextAreaElement.prototype)
+      : (win.HTMLInputElement && win.HTMLInputElement.prototype);
+    var ownDesc = Object.getOwnPropertyDescriptor(element, 'value');
+    var protoDesc = prototype ? Object.getOwnPropertyDescriptor(prototype, 'value') : null;
+    var writeValue = str;
+    if (element.type === 'date' && /^\d{4}-\d{2}$/.test(str)) writeValue = str + '-01';
+    if (element._valueTracker && typeof element._valueTracker.setValue === 'function') {
+      element._valueTracker.setValue('');
+    }
+    if (protoDesc && protoDesc.set && ownDesc && ownDesc.set !== protoDesc.set) protoDesc.set.call(element, writeValue);
+    else if (ownDesc && ownDesc.set) ownDesc.set.call(element, writeValue);
+    else if (protoDesc && protoDesc.set) protoDesc.set.call(element, writeValue);
+    else element.value = writeValue;
+
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+    try {
+      element.dispatchEvent(new InputEvent('input', {
+        bubbles: true,
+        cancelable: true,
+        data: writeValue,
+        inputType: 'insertText'
+      }));
+    } catch (_) { /* older browsers */ }
+    element.dispatchEvent(new Event('change', { bubbles: true }));
+    try { element.dispatchEvent(new Event('blur', { bubbles: true })); } catch (_) { /* ignore */ }
+    return true;
+  }
+
+  function cleanTitle(el) {
+    var t = String((el && el.textContent) || '').replace(/\s+/g, ' ').trim();
+    if (!t || t.length >= 24) return '';
+    if (/添加|暂存/.test(t)) return '';
+    return t;
+  }
+
+  function classNameOf(el) {
+    return String((el && el.className) || '');
+  }
+
+  function isSectionHeading(el) {
+    if (!el) return false;
+    if (el.tagName && /^H[1-4]$/.test(el.tagName)) return true;
+    var cls = classNameOf(el);
+    if (el.classList && el.classList.contains('module-title')) return true;
+    if (el.classList && el.classList.contains('el-collapse-item__header')) return true;
+    if (cls.indexOf('collapse-item__header') !== -1) return true;
+    return false;
+  }
+
+  function isCollapseItem(el) {
+    var cls = classNameOf(el);
+    if (!cls) return false;
+    if (cls.indexOf('collapse-item__') !== -1) return false;
+    return cls.indexOf('collapse-item') !== -1;
+  }
+
+  function headingIn(el) {
+    if (!el) return '';
+    if (isSectionHeading(el)) return cleanTitle(el);
+    if (!isCollapseItem(el) || !el.querySelector) return '';
+    var header = el.querySelector('.el-collapse-item__header, [class*="collapse-item__header"], .module-title');
+    return header ? cleanTitle(header) : '';
+  }
+
+  function nearbySection(el) {
+    var n = el;
+    var depth = 0;
+    while (n && depth < 14) {
+      var prev = n.previousElementSibling;
+      while (prev) {
+        var t = headingIn(prev);
+        if (t) return t;
+        prev = prev.previousElementSibling;
+      }
+      if (n !== el) {
+        var own = headingIn(n);
+        if (own) return own;
+      }
+      n = n.parentElement;
+      depth += 1;
+    }
+    return '';
+  }
+
+  function itemLabel(item) {
+    if (!item) return '';
+    var near = nearbyLabel(item.querySelector && item.querySelector('input, textarea, select') || item);
+    if (near) return near;
+    var lab = item.querySelector
+      ? item.querySelector('.el-form-item__label, .ant-form-item-label, .bs-form-item-label, label')
+      : null;
+    var t = String((lab && lab.textContent) || '').replace(/\s+/g, ' ').trim();
+    if (t && t.length <= 20 && !/首页|投递记录|上传简历/.test(t)) return t;
+    return '';
+  }
+
+  function collectFormItems(doc) {
+    doc = doc || (typeof document !== 'undefined' ? document : null);
+    if (!doc || !doc.querySelectorAll) return [];
+    var seen = [];
+    var out = [];
+    function push(item, label) {
+      if (!item || seen.indexOf(item) !== -1) return;
+      if (item.closest && item.closest('#career-os-floating-root')) return;
+      label = String(label || '').replace(/\s+/g, ' ').trim();
+      if (!label || label.length > 40) return;
+      if (/搜索职位|添加|暂存|取消|预览并提交|立即投递|至今/.test(label)) return;
+      seen.push(item);
+      out.push({ item: item, label: label, section: nearbySection(item) });
+    }
+    doc.querySelectorAll('.el-form-item, .ant-form-item, .bs-form-item').forEach(function (item) {
+      push(item, itemLabel(item));
+    });
+    doc.querySelectorAll(
+      '.el-date-editor, .el-select, .el-input, .el-textarea, .ant-select, .ant-picker, .el-cascader'
+    ).forEach(function (widget) {
+      var item = (widget.closest && widget.closest('.el-form-item, .ant-form-item, .bs-form-item'))
+        || widget.parentElement;
+      if (!item || seen.indexOf(item) !== -1) return;
+      push(item, itemLabel(item) || itemLabel(widget.parentElement));
+    });
+    return out;
+  }
+
+  function fieldValue(item) {
+    var input = item && item.querySelector
+      ? item.querySelector('textarea, input:not([type="hidden"]):not([type="file"])')
+      : null;
+    if (!input) return '';
+    if (input.type === 'checkbox' || input.type === 'radio') return input.checked ? (input.value || '1') : '';
+    return String(input.value || '').trim();
+  }
+
+  function collectAdaptiveFields(doc) {
+    return collectFormItems(doc).map(function (entry) {
+      return {
+        section: entry.section || '',
+        label: entry.label,
+        value: fieldValue(entry.item)
+      };
+    });
   }
 
   function nearbyLabel(el) {
@@ -205,16 +444,8 @@
   async function expandRepeatable(doc, profile) {
     if (!doc) return 0;
     var plan = expandPlan(profile);
-    var remain = {
-      edu: plan.edu,
-      intern: plan.intern,
-      projects: plan.projects,
-      campus: plan.campus,
-      awards: plan.awards,
-      certs: plan.certs,
-      family: plan.family,
-      training: plan.training
-    };
+    var remain = {};
+    Object.keys(plan || {}).forEach(function (k) { remain[k] = plan[k]; });
     var clicks = 0;
     var guard = 0;
     while (guard < 8) {
@@ -223,7 +454,7 @@
       var did = false;
       var i;
       for (i = 0; i < buttons.length; i++) {
-        var kind = classifyAdd(buttons[i]);
+        var kind = classifyAdd(buttons[i], profile);
         if (!kind || !remain[kind]) continue;
         try { buttons[i].click(); } catch (_) { continue; }
         remain[kind] -= 1;
@@ -279,6 +510,11 @@
     waitForForm: waitForForm,
     expandRepeatable: expandRepeatable,
     revealForm: revealForm,
-    nearbyLabel: nearbyLabel
+    nearbyLabel: nearbyLabel,
+    nearbySection: nearbySection,
+    collectFormItems: collectFormItems,
+    collectAdaptiveFields: collectAdaptiveFields,
+    sleep: sleep,
+    setNativeValue: setNativeValue
   };
 })(typeof self !== 'undefined' ? self : this);

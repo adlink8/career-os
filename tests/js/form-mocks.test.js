@@ -45,15 +45,16 @@ async function fillPage(htmlRel, hostname, href, hash) {
   const w = dom.window;
   w.HTMLInputElement = w.HTMLInputElement;
   w.HTMLTextAreaElement = w.HTMLTextAreaElement;
+  loadScript(dom, 'extensions/ats-autofill/overlay-store.js');
   loadScript(dom, 'extensions/ats-autofill/field-map.js');
   loadScript(dom, 'extensions/ats-autofill/fill-policy.js');
   loadScript(dom, 'extensions/ats-autofill/fill-runtime.js');
   loadScript(dom, 'extensions/ats-autofill/beisen-fill.js');
   const fmap = w.CareerOsFieldMap;
   fmap.setRules(loadRules());
-  const profile = loadProfile();
+  const notebook = w.CareerOsOverlay.normalizeImport(loadProfile());
   const site = w.CareerOsFillRuntime.detect(href, hostname, hash);
-  const result = await w.CareerOsBeisenFill.fill(profile, { fillGroups: w.CareerOsFillPolicy.defaults() });
+  const result = await w.CareerOsBeisenFill.fill(notebook, { fillGroups: w.CareerOsFillPolicy.defaults(notebook) });
   return { window: w, document: w.document, result: result, site: site };
 }
 

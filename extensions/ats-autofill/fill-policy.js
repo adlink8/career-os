@@ -1,36 +1,57 @@
 /**
- * 一键填充范围：设置页多选。勾选的类别才写入；格子旁「填入」不走这份策略。
+ * 一键填充范围：按内容库模块标题勾选。格子旁「填入」不走这份策略。
  */
 (function (root) {
   'use strict';
 
   var KEY = 'overlayFillGroups';
 
-  var GROUPS = [
-    { id: 'personal', label: '个人信息' },
-    { id: 'education', label: '教育经历' },
-    { id: 'intent', label: '求职意向' },
-    { id: 'intern', label: '实习经历' },
-    { id: 'projects', label: '项目经历' },
-    { id: 'campus', label: '职务 / 实践' },
-    { id: 'award', label: '获奖 / 证书 / 外语' },
-    { id: 'eval', label: '自我评价 / 技能' },
-    { id: 'open', label: '开放题' }
-  ];
+  var GROUPS = [];
 
-  function defaults() {
-    var out = {};
-    GROUPS.forEach(function (g) { out[g.id] = true; });
+  function groupsFrom(notebook) {
+    var out = [];
+    ((notebook && notebook.modules) || []).forEach(function (m) {
+      if (!m) return;
+      var title = String(m.title || '').trim();
+      if (!title) return;
+      out.push({ id: m.id || title, label: title });
+    });
     return out;
   }
 
-  function normalize(map) {
-    var out = defaults();
+  function defaults(notebook) {
+    var out = {};
+    groupsFrom(notebook).forEach(function (g) { out[g.id] = true; });
+    return out;
+  }
+
+  function normalize(map, notebook) {
+    var out = defaults(notebook);
     if (!map || typeof map !== 'object') return out;
-    GROUPS.forEach(function (g) {
-      if (Object.prototype.hasOwnProperty.call(map, g.id)) out[g.id] = !!map[g.id];
+    Object.keys(out).forEach(function (id) {
+      if (Object.prototype.hasOwnProperty.call(map, id)) out[id] = !!map[id];
     });
     return out;
+  }
+
+  function normalizeLabel(label) {
+    var overlay = root.CareerOsOverlay;
+    if (overlay && overlay.normalizeLabel) return overlay.normalizeLabel(label);
+    return String(label || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function moduleIdsForLabel(label, notebook) {
+    var want = normalizeLabel(label);
+    var ids = [];
+    ((notebook && notebook.modules) || []).forEach(function (m) {
+      var has = (m.items || []).some(function (item) {
+        return (item.fields || []).some(function (f) {
+          return normalizeLabel(f && f.label) === want;
+        });
+      });
+      if (has) ids.push(m.id || m.title);
+    });
+    return ids;
   }
 
   function groupForSlot(slot) {
@@ -66,31 +87,53 @@
     return '';
   }
 
-  function allowed(slot, groups) {
-    var g = groupForSlot(slot);
+  function allowed(label, groups, notebook, moduleTitle) {
+    if (notebook && Array.isArray(notebook.modules) && notebook.modules.length) {
+      var map = normalize(groups, notebook);
+      if (moduleTitle) {
+        var mod = null;
+        notebook.modules.forEach(function (m) {
+          if (m && m.title === moduleTitle) mod = m;
+        });
+        if (!mod) return true;
+        return !!map[mod.id || mod.title];
+      }
+      var ids = moduleIdsForLabel(label, notebook);
+      if (!ids.length) return true;
+      return ids.some(function (id) { return !!map[id]; });
+    }
+    var g = groupForSlot(label);
     if (!g) return true;
-    return !!normalize(groups)[g];
+    if (!groups || typeof groups !== 'object') return true;
+    if (Object.prototype.hasOwnProperty.call(groups, g)) return !!groups[g];
+    return true;
   }
 
-  function selectedIds(groups) {
-    var map = normalize(groups);
-    return GROUPS.filter(function (g) { return map[g.id]; }).map(function (g) { return g.id; });
+  function selectedIds(groups, notebook) {
+    var list = groupsFrom(notebook);
+    if (!list.length) {
+      return Object.keys(groups || {}).filter(function (k) { return groups[k]; });
+    }
+    var map = normalize(groups, notebook);
+    return list.filter(function (g) { return map[g.id]; }).map(function (g) { return g.id; });
   }
 
   function load() {
     return new Promise(function (resolve) {
       if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.local) {
-        resolve(defaults());
+        resolve({});
         return;
       }
       chrome.storage.local.get({ overlayFillGroups: null }, function (stored) {
-        resolve(normalize(stored.overlayFillGroups));
+        resolve(stored.overlayFillGroups && typeof stored.overlayFillGroups === 'object'
+          ? stored.overlayFillGroups
+          : {});
       });
     });
   }
 
   function save(map) {
-    var normalized = normalize(map);
+    var normalized = map && typeof map === 'object' ? map : {};
     return new Promise(function (resolve) {
       if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.local) {
         resolve(normalized);
@@ -105,6 +148,7 @@
   root.CareerOsFillPolicy = {
     KEY: KEY,
     GROUPS: GROUPS,
+    groupsFrom: groupsFrom,
     defaults: defaults,
     normalize: normalize,
     groupForSlot: groupForSlot,

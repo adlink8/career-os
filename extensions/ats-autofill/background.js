@@ -7,7 +7,7 @@ try { importScripts('runtime-log.js'); } catch (_) { /* ignore */ }
 try { importScripts('overlay-store.js'); } catch (_) { /* ignore */ }
 try { importScripts('fill-policy.js'); } catch (_) { /* ignore */ }
 
-const CONTENT_JS = ['field-map.js', 'runtime-log.js', 'shortcuts.js', 'fill-policy.js', 'fill-runtime.js', 'beisen-fill.js', 'content.js'];
+const CONTENT_JS = ['overlay-store.js', 'field-map.js', 'runtime-log.js', 'shortcuts.js', 'fill-policy.js', 'fill-runtime.js', 'beisen-fill.js', 'content.js'];
 const CONTENT_CSS = ['content.css'];
 
 function mergeCaptures(results) {
@@ -192,7 +192,10 @@ async function persistContext(ctx) {
 function isTestProfile(data) {
   if (!data || typeof data !== 'object') return false;
   const version = String(data.version || '').toLowerCase();
-  const name = (((data.universal || {}).personal || {}).name) || '';
+  const Overlay = self.CareerOsOverlay;
+  const name = Overlay && Overlay.valueByLabel
+    ? Overlay.valueByLabel(data, '姓名', 0)
+    : (((data.universal || {}).personal || {}).name) || '';
   return !!data.test_only || version.indexOf('test') >= 0 || name === '测一填';
 }
 
@@ -333,16 +336,18 @@ async function loadFillPayload(url) {
   const Policy = self.CareerOsFillPolicy;
   const fill_groups = Policy ? await Policy.load() : null;
 
-  if (overlay.enabled && overlay.profile) {
-    const name = (((overlay.profile.universal || {}).personal || {}).name) || '';
+  const notebook = overlay.notebook || overlay.profile;
+  if (overlay.enabled && notebook) {
+    const Overlay = self.CareerOsOverlay;
+    const name = Overlay && Overlay.valueByLabel ? Overlay.valueByLabel(notebook, '姓名', 0) : '';
     if (!name) {
       return {
         ok: true,
         mode: 'setup',
         allow_fill: false,
-        reason: '设置页已打开开关但未填姓名。点齿轮填底稿后点「一键导入并启用」。',
+        reason: '设置页已打开开关但未填姓名。点齿轮填内容库后点「一键导入并启用」。',
         autofill: null,
-        profile: overlay.profile,
+        profile: notebook,
         field_rules: bundle.field_rules,
         fill_groups: fill_groups,
         run_id: null,
@@ -356,7 +361,7 @@ async function loadFillPayload(url) {
       allow_fill: true,
       reason: '',
       autofill: null,
-      profile: overlay.profile,
+      profile: notebook,
       field_rules: bundle.field_rules,
       fill_groups: fill_groups,
       run_id: null,
@@ -516,6 +521,34 @@ async function broadcast(tabId, message) {
   return results;
 }
 
+async function collectActiveTabFields(explicitUrl) {
+  const atsRe = /zhiye\.com|italent\.cn|beisen\.com|mokahr\.com|moka\.com|dayee\.com|hotjob\.cn/;
+  const all = await chrome.tabs.query({});
+  const active = (all || []).filter((t) => t.active);
+  let tab = explicitUrl ? (all || []).find((t) => t.url === explicitUrl) : null;
+  if (!tab) tab = active.find((t) => atsRe.test(t.url || '')) || active[0];
+  if (!tab) tab = (all || []).find((t) => atsRe.test(t.url || ''));
+  if (!tab || !tab.id) {
+    return { ok: false, error: '没有打开的网申页。请先打开报名表。' };
+  }
+  await injectContent(tab.id);
+  const results = await broadcast(tab.id, { action: 'READ_FIELD_VALUES' });
+  const fields = [];
+  results.forEach((r) => {
+    if (r && r.ok && Array.isArray(r.fields)) {
+      r.fields.forEach((f) => fields.push(f));
+    }
+  });
+  return {
+    ok: fields.length > 0,
+    fields: fields,
+    count: fields.length,
+    title: tab.title || '',
+    url: tab.url || '',
+    error: fields.length ? '' : '当前页没有可读的表单，请先打开报名表'
+  };
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.action === 'APPEND_LOG') {
     appendRuntimeLog(msg.event || {}).then((res) => sendResponse(res));
@@ -570,31 +603,52 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   if (msg && msg.action === 'IMPORT_FROM_ACTIVE_TAB') {
-    const atsRe = /zhiye\.com|italent\.cn|beisen\.com|mokahr\.com|moka\.com|dayee\.com|hotjob\.cn/;
-    chrome.tabs.query({}).then(async (all) => {
-      const active = (all || []).filter((t) => t.active);
-      let tab = active.find((t) => atsRe.test(t.url || ''));
-      if (!tab) tab = (all || []).find((t) => atsRe.test(t.url || ''));
-      if (!tab || !tab.id) {
-        sendResponse({ ok: false, error: '没有打开的北森/Moka 网申页。请先打开报名表再点导入。' });
+    collectActiveTabFields().then((res) => sendResponse(res));
+    return true;
+  }
+
+  if (msg && msg.action === 'ADAPTIVE_FROM_TAB') {
+    collectActiveTabFields(msg.url).then(async (res) => {
+      if (!res.ok) {
+        sendResponse(res);
         return;
       }
-      await injectContent(tab.id);
-      const results = await broadcast(tab.id, { action: 'READ_FIELD_VALUES' });
-      const fields = [];
-      results.forEach((r) => {
-        if (r && r.ok && Array.isArray(r.fields)) {
-          r.fields.forEach((f) => fields.push(f));
-        }
-      });
+      const Overlay = self.CareerOsOverlay;
+      const pageKey = Overlay.makePageKey(res.url);
+      const ingested = Overlay.ingestPageFields((await Overlay.loadState()).notebook, res.fields || []);
+      await Overlay.saveShape(pageKey, ingested.shape);
+      const state = await Overlay.loadState();
+      await Overlay.saveState(state.enabled, ingested.notebook);
       sendResponse({
-        ok: fields.length > 0,
-        fields: fields,
-        count: fields.length,
-        title: tab.title || '',
-        url: tab.url || ''
+        ok: true,
+        fields: res.fields,
+        pageKey: pageKey,
+        shape: ingested.shape,
+        url: res.url
       });
-    });
+    }).catch((err) => sendResponse({ ok: false, error: String(err && err.message ? err.message : err) }));
+    return true;
+  }
+
+  if (msg && msg.action === 'APPLY_SAVED_SHAPE') {
+    (async () => {
+      const Overlay = self.CareerOsOverlay;
+      let url = msg.url || '';
+      if (!url) {
+        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+        url = (tabs && tabs[0] && tabs[0].url) || '';
+      }
+      const pageKey = Overlay.makePageKey(url);
+      const shapes = await Overlay.loadShapes();
+      const state = await Overlay.loadState();
+      const applied = Overlay.applySavedShape(state.notebook, shapes, pageKey);
+      if (!applied.ok) {
+        sendResponse({ ok: false, error: applied.reason || '这页还没有骨架，先点自适应', pageKey: pageKey, shapes: shapes });
+        return;
+      }
+      await Overlay.saveState(state.enabled, applied.notebook);
+      sendResponse({ ok: true, pageKey: pageKey, shapes: shapes, notebook: applied.notebook });
+    })().catch((err) => sendResponse({ ok: false, error: String(err && err.message ? err.message : err) }));
     return true;
   }
 

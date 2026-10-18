@@ -6,39 +6,83 @@ const assert = require('assert');
 
 const ROOT = path.resolve(__dirname, '../..');
 const src = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8');
-const sandbox = { self: {}, console, chrome: undefined };
-vm.runInNewContext(src, sandbox);
-const store = sandbox.self.CareerOsOverlay;
-assert.ok(store, 'CareerOsOverlay 未加载');
+
+function loadStore(chrome) {
+  const sandbox = { self: {}, console, chrome: chrome };
+  vm.runInNewContext(src, sandbox);
+  return sandbox.self.CareerOsOverlay;
+}
 
 function check(label, cond) {
   assert.ok(cond, label);
 }
 
-const empty = store.emptyProfile();
-check('默认实习为空数组', Array.isArray(empty.application.internships) && empty.application.internships.length === 0);
-check('默认项目为空数组', empty.application.projects.length === 0);
-check('默认证书为空数组', empty.application.certificate_records.length === 0);
-check('默认在校职务为空', empty.application.campus_roles.length === 0);
-check('默认教育经历为空数组', empty.universal.education.records.length === 0);
-check('默认家庭成员为空', empty.application.family_members.length === 0);
-check('默认培训经历为空', empty.application.training_records.length === 0);
+const store = loadStore(undefined);
+assert.ok(store, 'CareerOsOverlay 未加载');
 
-empty.universal.education.undergraduate = { school: '常州大学', major: '计科' };
-empty.universal.education.junior_college = { school: '某专科', major: '物联网' };
-store.compactProfile(empty);
-check('旧本科专科拆成两段 records', empty.universal.education.records.length === 2);
-check('第一段仍同步 undergraduate', empty.universal.education.undergraduate.school === '常州大学');
+const empty = store.emptyNotebook();
+check('默认空库无模块', Array.isArray(empty.modules) && empty.modules.length === 0);
+check('默认版本是 notebook', empty.version === '4.0-notebook');
 
-empty.application.projects = [
-  { name: '网关', role: '开发', keywords: '', start_date: '', end_date: '', full_text: '描述' },
-  store.emptyRow(),
-  { name: '第二段', role: '', keywords: '', start_date: '', end_date: '', full_text: '' }
-];
-empty.application.internships = [store.emptyRow()];
-store.compactProfile(empty);
-check('压缩后只留有内容的项目', empty.application.projects.length === 2);
-check('空实习被丢掉', empty.application.internships.length === 0);
-check('第二段有名称被保留', empty.application.projects[1].name === '第二段');
+const old = {
+  version: '3.0-overlay',
+  universal: {
+    personal: { name: '测一填' },
+    education: {
+      undergraduate: { school: '常州大学', major: '计科' },
+      junior_college: { school: '某专科', major: '物联网' }
+    }
+  },
+  application: {
+    projects: [
+      { name: '网关', role: '开发', full_text: '描述' },
+      {},
+      { name: '第二段' }
+    ],
+    internships: [{}]
+  }
+};
+const nb = store.normalizeImport(old);
+store.compactNotebook(nb);
+check('不再导出 emptyProfile', typeof store.emptyProfile !== 'function');
+check('不再导出 setByPath', typeof store.setByPath !== 'function');
+check('不再导出 applySlot', typeof store.applySlot !== 'function');
+check('normalizeImport 旧 JSON 仍有姓名', store.valueByLabel(nb, '姓名', 0) === '测一填');
+check('normalizeImport 旧 JSON 仍有学校', store.valueByLabel(nb, '学校名称', 0) === '常州大学');
+check('旧本科专科拆成两段学校', store.valueByLabel(nb, '学校名称', 0) === '常州大学' && store.valueByLabel(nb, '学校名称', 1) === '某专科');
+check('压缩后只留有内容的项目', store.valueByLabel(nb, '项目名称', 0) === '网关' && store.valueByLabel(nb, '项目名称', 1) === '第二段');
+check('空实习被丢掉', store.valueByLabel(nb, '单位名称', 0) === '');
 
-console.log('[OK] overlay-store.test.js');
+const bag = {};
+const chrome = {
+  storage: {
+    local: {
+      get: function (defaults, cb) {
+        const out = {};
+        Object.keys(defaults).forEach(function (k) {
+          out[k] = Object.prototype.hasOwnProperty.call(bag, k) ? bag[k] : defaults[k];
+        });
+        cb(out);
+      },
+      set: function (obj, cb) {
+        Object.keys(obj).forEach(function (k) { bag[k] = obj[k]; });
+        if (cb) cb();
+      }
+    }
+  }
+};
+const store2 = loadStore(chrome);
+bag.overlayEnabled = true;
+bag.overlayProfile = old;
+store2.loadState().then(function (state) {
+  check('读到旧 overlayProfile 自动迁入', state.notebook && state.notebook.version === '4.0-notebook');
+  check('迁入后能取姓名', store2.valueByLabel(state.notebook, '姓名', 0) === '测一填');
+  return store2.saveState(true, state.notebook);
+}).then(function () {
+  check('saveState 写入 overlayNotebook', bag.overlayNotebook && bag.overlayNotebook.version === '4.0-notebook');
+  check('saveState 不再把旧 profile 当权威', bag.overlayNotebook.modules.length > 0);
+  console.log('[OK] overlay-store.test.js');
+}).catch(function (err) {
+  console.error(err);
+  process.exit(1);
+});

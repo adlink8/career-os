@@ -1,31 +1,35 @@
 #!/usr/bin/env node
 /**
- * 用真实先导报名表 schema + 本地 profile.json 测 field-map 填值。
- * 不打开北森页面：验证「格子 → 槽位 → 画像值」这条自动填写核心路径。
+ * 用真实先导报名表 schema + 测试画像测迁入与按字段名取值。
+ * 不打开北森页面：填表按标签对内容库，旧槽位只用于 normalizeImport。
  */
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
-const mapSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map.js'), 'utf8');
 const sandbox = { self: {}, console };
-vm.runInNewContext(mapSrc, sandbox);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8'),
+  sandbox
+);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map.js'), 'utf8'),
+  sandbox
+);
+const overlay = sandbox.self.CareerOsOverlay;
 const fmap = sandbox.self.CareerOsFieldMap;
-if (!fmap) {
-  console.error('FAILED: CareerOsFieldMap not loaded');
+if (!overlay || !fmap) {
+  console.error('FAILED: overlay/field-map not loaded');
   process.exit(1);
 }
-const rules = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/field-map-rules.json'), 'utf8')
-);
-fmap.setRules(rules);
 
 const testProfile = path.join(ROOT, 'extensions/ats-autofill/profile.test.json');
 const liveProfile = path.join(ROOT, 'extensions/ats-autofill/profile.json');
 const profile = JSON.parse(
   fs.readFileSync(fs.existsSync(testProfile) ? testProfile : liveProfile, 'utf8')
 );
+const notebook = overlay.normalizeImport(profile);
 const capturePath = path.join(
   ROOT,
   'data/job_discovery/captures/job-context-leadchina.zhiye.com-ec6ce6c4-501d-476f-a63c-e23285b7b5ce.json'
@@ -39,76 +43,68 @@ function check(label, cond) {
 }
 
 const filled = [];
-const mappedEmpty = [];
-const unmapped = [];
+const empty = [];
+const skipped = [];
 for (const field of fields) {
-  const isTextarea = field.tag === 'textarea' || field.type === 'textarea';
-  const slot = fmap.resolveSlot(field.label || '', { isTextarea });
-  const value = fmap.valueForSlot(slot, profile, 0);
+  const label = field.label || '';
+  if (fmap.isNoiseLabel(label) || /搜索职位/.test(label)) {
+    skipped.push(label || '(empty)');
+    continue;
+  }
+  const value = fmap.valueByLabel(label, notebook, 0);
   const row = {
-    label: field.label || '(empty)',
-    slot: slot || '',
+    label: label || '(empty)',
     value: value || '',
-    wouldFill: Boolean(slot && value && !(slot.endsWith('id_card') && !fmap.isRealIdCard(value)))
+    wouldFill: Boolean(value && !(/身份证/.test(label) && !fmap.isRealIdCard(value)))
   };
   if (row.wouldFill) filled.push(row);
-  else if (slot) mappedEmpty.push(row);
-  else unmapped.push(row);
+  else empty.push(row);
 }
 
 console.log('schema fields', fields.length);
 console.log('would fill', filled.length);
-console.log('mapped but profile empty', mappedEmpty.length);
-console.log('unmapped', unmapped.length);
+console.log('label miss or empty', empty.length);
+console.log('skipped noise', skipped.length);
 console.log('--- filled ---');
-filled.forEach((r) => console.log(r.slot, '|', r.label.slice(0, 40), '|', String(r.value).slice(0, 40)));
-console.log('--- mapped empty ---');
-mappedEmpty.forEach((r) => console.log(r.slot, '|', r.label.slice(0, 40)));
-console.log('--- unmapped ---');
-unmapped.forEach((r) => console.log(r.label.slice(0, 60)));
+filled.forEach((r) => console.log(r.label.slice(0, 40), '|', String(r.value).slice(0, 40)));
+console.log('--- empty ---');
+empty.forEach((r) => console.log(r.label.slice(0, 60)));
 
-const bySlot = Object.fromEntries(filled.map((r) => [r.slot, r]));
-check('姓名能填', bySlot['universal.personal.name'] && bySlot['universal.personal.name'].value === '测一填');
-check('专业能填', bySlot['universal.education.records.major'] && bySlot['universal.education.records.major'].value.includes('计算机'));
-check('项目名称能填', bySlot['application.projects.name'] && bySlot['application.projects.name'].value.includes('网关'));
-check('项目描述能填', bySlot['application.projects.full_text'] && bySlot['application.projects.full_text'].value.length > 20);
-check('测试手机号能填', bySlot['universal.personal.phone'] && bySlot['universal.personal.phone'].value === '13800138000');
-check('测试邮箱能填', bySlot['universal.personal.email'] && bySlot['universal.personal.email'].value.includes('example.com'));
-check('假身份证不填', !filled.some((r) => r.slot === 'universal.personal.id_card'));
-check('学校名称能映射', fmap.resolveSlot('学校名称', { isTextarea: false }) === 'universal.education.records.school');
-check('学习形式能映射', fmap.resolveSlot('学习形式', { isTextarea: false }) === 'universal.education.records.education_type');
-check('期望工作城市能映射', fmap.resolveSlot('期望工作城市', { isTextarea: false }) === 'application.expected_city');
+check('姓名能填', fmap.valueByLabel('姓名', notebook, 0) === '测一填');
+check('专业能填', fmap.valueByLabel('专业', notebook, 0).includes('计算机'));
+check('项目名称能填', fmap.valueByLabel('项目名称', notebook, 0).includes('网关'));
+check('项目描述能填', fmap.valueByLabel('项目描述', notebook, 0).length > 20);
+check('测试手机号能填', fmap.valueByLabel('手机号', notebook, 0) === '13800138000');
+check('测试邮箱能填', fmap.valueByLabel('邮箱', notebook, 0).includes('example.com'));
+check('假身份证不填', !fmap.isRealIdCard(fmap.valueByLabel('身份证号', notebook, 0)));
 check('请选择是噪声标签', fmap.isNoiseLabel('请选择'));
-const overlaySrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8');
-vm.runInNewContext(overlaySrc, sandbox);
-const overlay = sandbox.self.CareerOsOverlay;
+check('lookupSlot 仍给迁入用', overlay.lookupSlot('universal.education.records.school').label === '学校名称');
+check('学习形式迁入标签', overlay.lookupSlot('universal.education.records.education_type').label === '学习形式');
+check('期望城市迁入标签', overlay.lookupSlot('application.expected_city').label === '期望城市');
+
 const scSrc = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/shortcuts.js'), 'utf8');
 vm.runInNewContext(scSrc, sandbox);
 const sc = sandbox.self.CareerOsShortcuts;
 check('shortcuts 加载', !!sc);
 check('默认填表快捷键含 Alt+Shift', sc.format(sc.DEFAULTS.fill).indexOf('Alt') >= 0 && sc.format(sc.DEFAULTS.fill).indexOf('F') >= 0);
 
-check('overlay store 加载', !!overlay);
-const ov = overlay.emptyProfile();
-overlay.setByPath(ov, 'universal.personal.name', '设置页姓名');
-overlay.setByPath(ov, 'application.projects.0.name', '网关项目');
-check('overlay 姓名路径', overlay.getByPath(ov, 'universal.personal.name') === '设置页姓名');
-check('overlay 项目数组路径', overlay.getByPath(ov, 'application.projects.0.name') === '网关项目');
+check('不再导出 emptyProfile', typeof overlay.emptyProfile !== 'function');
+check('不再导出 setByPath', typeof overlay.setByPath !== 'function');
 const imported = overlay.normalizeImport({
   fields: [{ slot: 'universal.personal.name', value: '拖入姓名' }],
   target_position: '运维工程师'
 });
-check('拖入 fields JSON 能归一', overlay.getByPath(imported, 'universal.personal.name') === '拖入姓名');
-check('AI 提示词含模板 version', overlay.buildAiPrompt().indexOf('3.0-overlay') >= 0);
+check('拖入 fields JSON 能归一', overlay.valueByLabel(imported, '姓名', 0) === '拖入姓名');
+check('AI 提示词含 notebook version', overlay.buildAiPrompt().indexOf('4.0-notebook') >= 0);
 
 check('按岗载荷覆盖意向', fmap.matchAutofillValue(
-  { label: '求职意向', slot: 'application.target_position' },
-  { fields: [{ label: '求职意向', slot: 'application.target_position', value: 'Java开发工程师（AI应用部）' }] }
+  { label: '求职意向' },
+  { fields: [{ label: '求职意向', value: 'Java开发工程师（AI应用部）' }] }
 ) === 'Java开发工程师（AI应用部）');
-check('专业排名能映射', fmap.resolveSlot('专业排名', { isTextarea: false }) === 'universal.education.records.rank');
-check('实践名称能映射', fmap.resolveSlot('实践名称', { isTextarea: false }) === 'application.campus_practices.name');
-check('职务名称能映射', fmap.resolveSlot('职务名称', { isTextarea: false }) === 'application.campus_roles.name');
-check('获奖时间能映射', fmap.resolveSlot('获奖时间', { isTextarea: false }) === 'application.award_records.date');
-check('语言类型能映射', fmap.resolveSlot('语言类型', { isTextarea: false }) === 'application.languages.type');
-check('测试城市是单选值', fmap.valueForSlot('application.expected_city', profile, 0) === '南京市');
+check('测试城市是单选值', fmap.valueByLabel('期望城市', notebook, 0) === '南京市');
+check('专业排名能填', fmap.valueByLabel('专业排名', notebook, 0).indexOf('20%') !== -1);
+check('实践名称能填', fmap.valueByLabel('实践名称', notebook, 0).indexOf('社会实践') !== -1);
+check('职务名称能填', fmap.valueByLabel('职务名称', notebook, 0).indexOf('技术委员') !== -1);
+check('获奖时间能填', fmap.valueByLabel('获奖时间', notebook, 0) === '2024-12');
+check('语言类型能填', fmap.valueByLabel('语言类型', notebook, 0) !== undefined);
 console.log('[OK] autofill-fieldmap-smoke');

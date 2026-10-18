@@ -192,6 +192,8 @@ input:focus, textarea:focus {
   margin-bottom: 8px;
 }
 .list-head h2 { margin: 0; }
+.module-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.list-head label { margin: 0; min-width: 180px; }
 .repeat-list { display: flex; flex-direction: column; gap: 10px; }
 .repeat-card {
   border: 1px solid #e2e8f0;

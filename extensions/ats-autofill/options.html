@@ -10,8 +10,8 @@
 <div class="shell">
   <header class="top">
     <div>
-      <h1>北森式填表底稿</h1>
-      <p class="sub">只装本插件就能用：填底稿或拖入 JSON，打开开关即可填网申。Career OS 是可选增强，关掉开关才去读它。</p>
+      <h1>填表内容库</h1>
+      <p class="sub">一份自由模块底稿，字段名可以改。换站请手动点「自适应配置」或「用本页上次配置」，不会按网址自动切。</p>
     </div>
     <label class="switch-wrap">
       <span id="switch-label">关闭 · 读本地 JSON</span>
@@ -22,8 +22,9 @@
 
   <div class="toolbar">
     <button type="button" class="btn primary" id="btn-import">一键导入并启用</button>
-    <button type="button" class="btn" id="btn-from-json">从本地 JSON 填入本页</button>
-    <button type="button" class="btn" id="btn-from-page">从当前网申页导入</button>
+    <button type="button" class="btn" id="btn-from-json">从本地 JSON 填入</button>
+    <button type="button" class="btn" id="btn-from-page">从当前网申页自适应</button>
+    <button type="button" class="btn" id="btn-apply-shape">用本页上次配置</button>
     <button type="button" class="btn danger" id="btn-clear">清空本页</button>
   </div>
   <div class="msg" id="msg" hidden></div>
@@ -31,7 +32,7 @@
   <div class="dropzone" id="sec-import">
     <input type="file" id="file-json" accept="application/json,.json" hidden>
     <strong>把 JSON 拖到这里导入</strong>
-    <span>也可点击选择文件。支持设置页画像，或带 fields[].slot 的 autofill.json。</span>
+    <span>按模块名/字段名灌进内容库。旧 universal 画像会一次性迁入。不要求固定槽位。</span>
     <div class="drop-actions">
       <button type="button" class="btn" id="btn-pick-json">选择 JSON 文件</button>
       <button type="button" class="btn primary" id="btn-copy-prompt">一键复制 AI 提示词</button>
@@ -47,7 +48,7 @@
 
   <section id="sec-fill-policy">
     <h2>一键填充范围</h2>
-    <p class="sub">只影响网申页的「一键填充 / 仅填空白」。勾选的类别才会写进表单；不勾选就跳过。格子旁「填入」仍可逐项手填。</p>
+    <p class="sub">按内容库模块标题勾选。只影响「一键填充 / 仅填空白」；格子旁「填入」仍可逐项手填。</p>
     <div class="fill-policy-actions">
       <button type="button" class="btn" id="btn-fill-all">全选</button>
       <button type="button" class="btn" id="btn-fill-none">全不选</button>
@@ -56,149 +57,17 @@
   </section>
 
   <form id="overlay-form">
-    <section id="sec-personal">
-      <h2>个人信息</h2>
-      <div class="grid">
-        <label>姓名 <input name="universal.personal.name"></label>
-        <label>性别 <input name="universal.personal.gender" placeholder="男 / 女"></label>
-        <label>手机号 <input name="universal.personal.phone"></label>
-        <label>邮箱 <input name="universal.personal.email"></label>
-        <label>出生日期 <input name="universal.personal.birth_date" placeholder="YYYY-MM-DD"></label>
-        <label>民族 <input name="universal.personal.ethnicity"></label>
-        <label>政治面貌 <input name="universal.personal.political_status"></label>
-        <label>籍贯 <input name="universal.personal.native_place"></label>
-        <label>现居住地 <input name="universal.personal.current_city"></label>
-        <label>婚姻 <input name="universal.personal.marriage"></label>
-        <label>健康状况 <input name="universal.personal.health"></label>
-        <label>身份证号 <input name="universal.personal.id_card"></label>
-        <label class="wide">详细地址 <input name="universal.personal.current_address"></label>
-        <label>紧急联系人 <input name="universal.personal.emergency_contact"></label>
-        <label>紧急电话 <input name="universal.personal.emergency_phone"></label>
-        <label>与本人关系 <input name="universal.personal.emergency_relation"></label>
-      </div>
-    </section>
-
-    <section id="sec-edu">
-      <div class="list-head">
-        <h2>教育经历</h2>
-        <button type="button" class="btn" data-add-list="edu">添加一段</button>
-      </div>
-      <p class="sub">专升本先加本科再加专科，有几段加几段。旧底稿里的本科/专科会自动拆成两段。</p>
-      <div class="repeat-list" id="list-edu"></div>
-    </section>
-
-    <section id="sec-intent">
-      <h2>求职意向</h2>
-      <div class="grid">
-        <label class="wide">应聘职位 / 求职意向 <input name="application.target_position" placeholder="填官网岗位全称"></label>
-        <label>期望城市 <input name="application.expected_city"></label>
-        <label>期望薪资 <input name="application.expected_salary"></label>
-        <label>到岗时间 <input name="universal.personal.available_time"></label>
-        <label>实习周期 <input name="universal.personal.internship_duration"></label>
-      </div>
-    </section>
-
-    <section id="sec-intern">
-      <div class="list-head">
-        <h2>实习经历</h2>
-        <button type="button" class="btn" data-add-list="intern">添加一段</button>
-      </div>
-      <p class="sub">没有实习就空着，或删掉卡片。网申要几段就加几段。</p>
-      <div class="repeat-list" id="list-intern"></div>
-    </section>
-
-    <section id="sec-projects">
-      <div class="list-head">
-        <h2>项目经历</h2>
-        <button type="button" class="btn" data-add-list="projects">添加一段</button>
-      </div>
-      <p class="sub">默认不预留两段。你有几段项目就加几段，不需要的点删除。</p>
-      <div class="repeat-list" id="list-projects"></div>
-    </section>
-
-    <section id="sec-family">
-      <div class="list-head">
-        <h2>家庭成员</h2>
-        <button type="button" class="btn" data-add-list="family">添加一位</button>
-      </div>
-      <p class="sub">网申要填家庭成员时再加。紧急联系人仍在个人信息里。</p>
-      <div class="repeat-list" id="list-family"></div>
-    </section>
-
-    <section id="sec-training">
-      <div class="list-head">
-        <h2>培训经历</h2>
-        <button type="button" class="btn" data-add-list="training">添加一段</button>
-      </div>
-      <p class="sub">没有培训就空着。和实习、项目分开填。</p>
-      <div class="repeat-list" id="list-training"></div>
-    </section>
-
-    <section id="sec-campus">
-      <div class="list-head">
-        <h2>在校职务</h2>
-        <button type="button" class="btn" data-add-list="campus_roles">添加一段</button>
-      </div>
-      <p class="sub">学生会、班委等。没有就不要添加。</p>
-      <div class="repeat-list" id="list-campus_roles"></div>
-      <div class="list-head" style="margin-top:14px;">
-        <h2>在校实践</h2>
-        <button type="button" class="btn" data-add-list="campus_practices">添加一段</button>
-      </div>
-      <div class="repeat-list" id="list-campus_practices"></div>
-    </section>
-
-    <section id="sec-award">
-      <div class="list-head">
-        <h2>获奖</h2>
-        <button type="button" class="btn" data-add-list="awards">添加一项</button>
-      </div>
-      <div class="repeat-list" id="list-awards"></div>
-      <div class="list-head" style="margin-top:14px;">
-        <h2>证书</h2>
-        <button type="button" class="btn" data-add-list="certs">添加一项</button>
-      </div>
-      <p class="sub">英语四级、计算机等级等，有几本加几项。</p>
-      <div class="repeat-list" id="list-certs"></div>
-      <div class="list-head" style="margin-top:14px;">
-        <h2>外语</h2>
-        <button type="button" class="btn" data-add-list="langs">添加一项</button>
-      </div>
-      <div class="grid" style="margin-bottom:10px;">
-        <label class="wide">外语能力总述 <input name="universal.languages" placeholder="CET-4 / CET-6"></label>
-      </div>
-      <div class="repeat-list" id="list-langs"></div>
-    </section>
-
-    <section id="sec-eval">
-      <h2>自我评价 / 技能</h2>
-      <div class="grid">
-        <label class="wide">自我评价 <textarea name="application.self_evaluation" rows="4"></textarea></label>
-        <label class="wide">专业技能 <textarea name="application.skills_summary" rows="3"></textarea></label>
-        <label>熟练技能 <input name="application.skills_proficient"></label>
-        <label>熟悉技能 <input name="application.skills_familiar"></label>
-        <label class="wide">兴趣爱好 <input name="universal.hobbies"></label>
-      </div>
-    </section>
+    <div id="notebook-root"></div>
+    <div class="toolbar">
+      <button type="button" class="btn" id="btn-add-module">添加模块</button>
+    </div>
   </form>
 
-  <p class="foot">不自动点网申提交。开关打开时优先用本页；关闭时走 Career OS 本地 profile.json / released / 海投载荷。</p>
+  <p class="foot">不自动点网申提交。开关打开时用本页内容库；关闭时走 Career OS 本地 JSON / 专投海投。换站不会自动改骨架。</p>
 </div>
 <nav class="toc" id="toc" aria-label="填写导航">
   <div class="toc-title">填写导航</div>
-  <a href="#sec-import">导入 JSON</a>
-  <a href="#sec-keys">快捷键</a>
-  <a href="#sec-fill-policy">一键范围</a>
-  <a href="#sec-personal">个人信息</a>
-  <a href="#sec-edu">教育经历</a>
-  <a href="#sec-intent">求职意向</a>
-  <a href="#sec-intern">实习经历</a>
-  <a href="#sec-family">家庭成员</a>
-  <a href="#sec-training">培训经历</a>
-  <a href="#sec-projects">项目经历</a>
-  <a href="#sec-campus">职务 / 实践</a>
-  <a href="#sec-award">获奖 / 证书</a>
-  <a href="#sec-eval">自我评价</a>
+  <div id="toc-links"></div>
 </nav>
 </div>
   <script src="overlay-store.js"></script>

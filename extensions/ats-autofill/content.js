@@ -62,10 +62,10 @@
     if (ctx && ctx.fill_groups) fillGroups = ctx.fill_groups;
   }
 
-  function policyAllows(slot) {
+  function policyAllows(label, section) {
     const policy = self.CareerOsFillPolicy;
     if (!policy) return true;
-    return policy.allowed(slot, fillGroups);
+    return policy.allowed(label, fillGroups, profile, section);
   }
 
   if (chrome.storage && chrome.storage.onChanged) {
@@ -84,66 +84,9 @@
   }
 
   function setNativeValue(element, value) {
-    if (!element || value === undefined || value === null) return false;
-    const str = String(value).trim();
-    if (!str) return false;
-    if (element.disabled) return false;
-
-    const tag = element.tagName.toLowerCase();
-    if (tag === 'select') {
-      const lower = str.toLowerCase();
-      let matched = false;
-      Array.from(element.options).forEach((opt) => {
-        const t = (opt.text || '').trim();
-        const v = (opt.value || '').trim();
-        if (t === str || v === str || t.includes(str) || str.includes(t) || t.toLowerCase() === lower) {
-          element.value = opt.value;
-          matched = true;
-        }
-      });
-      if (!matched) return false;
-      element.dispatchEvent(new Event('input', { bubbles: true }));
-      element.dispatchEvent(new Event('change', { bubbles: true }));
-      return true;
-    }
-
-    const wasReadOnly = element.readOnly;
-    if (wasReadOnly) {
-      try { element.readOnly = false; } catch (_) { /* ignore */ }
-    }
-
-    const isTextarea = tag === 'textarea';
-    const prototype = isTextarea ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
-    const valueSetter = Object.getOwnPropertyDescriptor(element, 'value')?.set;
-    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
-
-    let writeValue = str;
-    if (element.type === 'date' && /^\d{4}-\d{2}$/.test(str)) {
-      writeValue = str + '-01';
-    }
-
-    const tracker = element._valueTracker;
-    if (tracker && typeof tracker.setValue === 'function') tracker.setValue('');
-
-    if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
-      prototypeValueSetter.call(element, writeValue);
-    } else if (valueSetter) {
-      valueSetter.call(element, writeValue);
-    } else {
-      element.value = writeValue;
-    }
-
-    element.dispatchEvent(new Event('input', { bubbles: true }));
-    try {
-      element.dispatchEvent(new InputEvent('input', {
-        bubbles: true,
-        cancelable: true,
-        data: writeValue,
-        inputType: 'insertText'
-      }));
-    } catch (_) { /* older browsers */ }
-    element.dispatchEvent(new Event('change', { bubbles: true }));
-    return true;
+    const runtime = self.CareerOsFillRuntime;
+    if (runtime && runtime.setNativeValue) return runtime.setNativeValue(element, value);
+    return false;
   }
 
   function nearestFormItem(el) {
@@ -193,6 +136,8 @@
     const fields = nodes.map((el, index) => {
       const ctx = getFieldContext(el);
       const isTextarea = el.tagName.toLowerCase() === 'textarea';
+      const runtime = self.CareerOsFillRuntime;
+      const section = runtime && runtime.nearbySection ? runtime.nearbySection(el) : '';
       const slot = fmap ? fmap.resolveSlot(ctx, { isTextarea: isTextarea }) : '';
       if (isJunkField(el, ctx)) {
         return {
@@ -205,6 +150,7 @@
           required: false,
           placeholder: el.placeholder || '',
           slot: '',
+          section: section,
           junk: true,
           frame: isTop ? 'top' : location.href
         };
@@ -224,6 +170,7 @@
         required: required,
         placeholder: el.placeholder || '',
         slot: slot,
+        section: section,
         frame: isTop ? 'top' : location.href
       };
     });
@@ -340,8 +287,9 @@
       showToast(fillCtx.reason || '未放行，禁止填充');
       return { count: 0, blocked: true };
     }
-    if (!profile || !profile.universal || !profile.application) {
-      showToast('画像未加载，请运行 python bin/sync_autofill_profile.py');
+    const hasNotebook = !!(profile && Array.isArray(profile.modules));
+    if (!profile || (!hasNotebook && !(profile.universal && profile.application))) {
+      showToast('内容库未加载。请打开设置填模块，或导入 JSON。');
       return { count: 0 };
     }
     const blankOnly = !!opts.blankOnly;
@@ -364,11 +312,11 @@
     const collected = collectFormFields();
     const autofill = fillCtx.autofill;
     let count = 0;
-    const projectNameEls = [];
-    const slotSeen = {};
-    function slotIndex(slot) {
-      const i = slotSeen[slot] || 0;
-      slotSeen[slot] = i + 1;
+    const labelSeen = {};
+    function labelIndex(label) {
+      const key = String(label || '');
+      const i = labelSeen[key] || 0;
+      labelSeen[key] = i + 1;
       return i;
     }
     for (let i = 0; i < collected.fields.length; i++) {
@@ -381,53 +329,35 @@
         events.push({ op: 'fill_native', label: field.label, reason: 'already', ok: true });
         continue;
       }
-      if (fmap.isNoiseLabel(field.label) && !field.slot) {
+      if (fmap.isNoiseLabel(field.label)) {
         const near = (self.CareerOsFillRuntime && self.CareerOsFillRuntime.nearbyLabel)
           ? self.CareerOsFillRuntime.nearbyLabel(el)
           : '';
-        const recovered = near ? fmap.resolveSlot(near, { isTextarea: false }) : '';
-        if (!recovered) {
+        if (!near || fmap.isNoiseLabel(near)) {
           events.push({ op: 'fill_native', label: field.label, reason: 'noise', ok: false });
           continue;
         }
-        field.slot = recovered;
         field.label = near;
       }
-      let slot = field.slot || '';
-      if (!slot && autofill && Array.isArray(autofill.fields)) {
-        const row = (autofill.fields || []).find((r) => {
-          if (!r || !r.slot) return false;
-          return String(r.label || '').replace(/\s+/g, ' ').trim() === String(field.label || '').replace(/\s+/g, ' ').trim();
-        });
-        if (row) slot = row.slot;
-      }
-      if (slot === 'application.projects.name') {
-        if (!policyAllows(slot)) {
-          events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'policy_skip', ok: false });
-          continue;
-        }
-        projectNameEls.push(el);
-        continue;
-      }
-      let value = fmap.matchAutofillValue(field, autofill);
-      if (!value && slot) value = fmap.valueForSlot(slot, profile, slotIndex(slot));
-      if (slot === 'application.target_position' && autofill && autofill.target_position) {
+      let value = fmap.matchAutofillValue({ label: field.label }, autofill);
+      if (!value && fmap.valueByLabel) value = fmap.valueByLabel(field.label, profile, labelIndex(field.label));
+      if (autofill && autofill.target_position && /求职意向|应聘职位|期望岗位/.test(field.label || '')) {
         value = autofill.target_position;
       }
-      if (slot && !policyAllows(slot)) {
-        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'policy_skip', ok: false });
-        continue;
-      }
-      if (!slot && !value) {
-        events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
-        continue;
-      }
-      if (slot === 'universal.personal.id_card' && !fmap.isRealIdCard(value)) {
-        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'skip_id', ok: false });
+      if (!policyAllows(field.label, field.section)) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'policy_skip', ok: false });
         continue;
       }
       if (!value) {
-        events.push({ op: 'fill_native', label: field.label, slot: slot, reason: 'empty', ok: false });
+        events.push({ op: 'fill_native', label: field.label, reason: 'unmapped', ok: false });
+        continue;
+      }
+      if (/身份证/.test(field.label || '') && !fmap.isRealIdCard(value)) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'skip_id', ok: false });
+        continue;
+      }
+      if (!value) {
+        events.push({ op: 'fill_native', label: field.label, reason: 'empty', ok: false });
         continue;
       }
       let ok = setNativeValue(el, value);
@@ -448,23 +378,13 @@
       events.push({
         op: 'fill_native',
         label: field.label,
-        slot: slot,
         reason: how,
-        preview: log ? log.preview(value, slot) : '',
+        preview: log ? log.preview(value, field.label) : '',
         ok: ok
       });
       if (ok) count++;
     }
-    const projects = (profile.application && profile.application.projects) || [];
-    if (policyAllows('application.projects.name')) {
-      projects.forEach((proj, i) => {
-        if (projectNameEls[i] && !(blankOnly && fieldCurrentValue(projectNameEls[i])) && setNativeValue(projectNameEls[i], proj.name)) {
-          count++;
-          events.push({ op: 'fill_native', slot: 'application.projects.name', reason: 'input', ok: true, preview: proj.name });
-        }
-      });
-    }
-    if (policyAllows('universal.personal.gender')) count += fillRadios(profile.universal);
+    if (policyAllows('性别', '个人信息')) count += fillRadios();
     if (self.CareerOsBeisenFill && self.CareerOsBeisenFill.fill) {
       try {
         const extra = await self.CareerOsBeisenFill.fill(profile, { fillGroups: fillGroups });
@@ -486,7 +406,9 @@
       host: location.hostname,
       mode: fillCtx.mode,
       run_id: fillCtx.run_id || null,
-      profile: (profile.universal && profile.universal.personal && profile.universal.personal.name) || '',
+      profile: (self.CareerOsFieldMap && self.CareerOsFieldMap.valueByLabel
+        ? self.CareerOsFieldMap.valueByLabel('姓名', profile, 0)
+        : '') || '',
       test_only: fillCtx.mode === 'test',
       filled: count,
       attempted: events.length,
@@ -517,9 +439,10 @@
     return { count: count, coverage: coverage };
   }
 
-  function fillRadios(univ) {
-    const gender = ((univ.personal && univ.personal.gender) || '').trim();
-    const marriage = ((univ.personal && univ.personal.marriage) || '').trim();
+  function fillRadios() {
+    const fmap = self.CareerOsFieldMap;
+    const gender = fmap && fmap.valueByLabel ? String(fmap.valueByLabel('性别', profile, 0) || '').trim() : '';
+    const marriage = fmap && fmap.valueByLabel ? String(fmap.valueByLabel('婚姻', profile, 0) || '').trim() : '';
     let filledCount = 0;
     document.querySelectorAll('input[type="radio"]').forEach((radio) => {
       const label = radio.parentElement ? radio.parentElement.textContent.trim() : '';
@@ -631,11 +554,23 @@
     coverage.className = 'career-os-coverage';
     coverage.id = 'career-os-coverage';
 
+    const adaptiveBtn = document.createElement('button');
+    adaptiveBtn.className = 'career-os-btn-secondary';
+    adaptiveBtn.id = 'career-os-adaptive-btn';
+    adaptiveBtn.textContent = '自适应配置';
+
+    const applyShapeBtn = document.createElement('button');
+    applyShapeBtn.className = 'career-os-btn-secondary';
+    applyShapeBtn.id = 'career-os-apply-shape-btn';
+    applyShapeBtn.textContent = '用本页上次配置';
+
     const hint = document.createElement('div');
     hint.className = 'career-os-section-title';
     hint.textContent = '点格子旁小圆点展开填入/复制，不用滚回这里';
 
     body.appendChild(fillBtn);
+    body.appendChild(adaptiveBtn);
+    body.appendChild(applyShapeBtn);
     body.appendChild(settingsBtn);
     body.appendChild(blankBtn);
     body.appendChild(captureBtn);
@@ -670,6 +605,24 @@
     });
     fillBtn.addEventListener('click', () => {
       executeAutofill({ blankOnly: false });
+    });
+    adaptiveBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ action: 'ADAPTIVE_FROM_TAB', url: location.href }, (res) => {
+        if (!res || !res.ok) {
+          showToast((res && res.error) || '自适应失败，请先打开报名表');
+          return;
+        }
+        showToast('已按本页生成骨架并写入内容库空字段，未自动填表');
+      });
+    });
+    applyShapeBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ action: 'APPLY_SAVED_SHAPE', url: location.href }, (res) => {
+        if (!res || !res.ok) {
+          showToast((res && res.error) || '这页还没有骨架，先点自适应');
+          return;
+        }
+        showToast('已套用本页上次配置');
+      });
     });
     settingsBtn.addEventListener('click', () => {
       chrome.runtime.sendMessage({ action: 'OPEN_OPTIONS' });
@@ -737,26 +690,26 @@
     if (!card) return;
     card.textContent = '';
     const mode = (fillCtx && fillCtx.mode) || 'unknown';
-    const name = profile && profile.universal && profile.universal.personal
-      ? profile.universal.personal.name : '';
-    const edu = profile && profile.universal && profile.universal.education
-      ? profile.universal.education.undergraduate || {} : {};
+    const fmap = self.CareerOsFieldMap;
+    const name = fmap && fmap.valueByLabel ? fmap.valueByLabel('姓名', profile, 0) : '';
+    const school = fmap && fmap.valueByLabel ? fmap.valueByLabel('学校名称', profile, 0) : '';
+    const degree = fmap && fmap.valueByLabel ? fmap.valueByLabel('学历', profile, 0) : '';
     const title = (fillCtx && fillCtx.autofill && fillCtx.autofill.target_position)
       || (fillCtx && fillCtx.autofill && fillCtx.autofill.title)
-      || (profile && profile.application && profile.application.target_position)
+      || (fmap && fmap.valueByLabel ? fmap.valueByLabel('求职意向', profile, 0) : '')
       || '';
     const modeLabel = mode === 'released'
       ? ('专投 released #' + (fillCtx.run_id || ''))
       : (mode === 'volume'
         ? ('海投 #' + (fillCtx.run_id || '') + ' ' + ((fillCtx.autofill && fillCtx.autofill.track) || ''))
         : (mode === 'overlay'
-          ? '设置页画像'
+          ? '设置页内容库'
           : (mode === 'job_custom'
             ? ('校招定制: ' + (fillCtx.custom_company || '已匹配') + (fillCtx.custom_track ? (' · ' + fillCtx.custom_track) : ''))
             : (mode === 'test' ? '测试画像' : (mode === 'setup' ? '待设置底稿' : '未放行')))));
     setInfoRow(card, '模式', modeLabel);
     setInfoRow(card, '候选人', name + (mode === 'test' ? '（测试）' : ''));
-    setInfoRow(card, '院校', [edu.school, edu.degree].filter(Boolean).join(' · '));
+    setInfoRow(card, '院校', [school, degree].filter(Boolean).join(' · '));
     setInfoRow(card, '求职意向', title);
     const fillBtn = document.getElementById('career-os-fill-btn');
     const blankBtn = document.getElementById('career-os-blank-btn');
@@ -880,22 +833,11 @@
       return;
     }
     if (req && req.action === 'READ_FIELD_VALUES') {
-      const collected = collectFormFields();
-      const fields = collected.fields.map((field, i) => {
-        const el = collected.nodes[i];
-        let value = '';
-        if (el) {
-          if (el.type === 'checkbox' || el.type === 'radio') value = el.checked ? (el.value || '1') : '';
-          else value = String(el.value || '').trim();
-        }
-        return {
-          label: field.label,
-          slot: field.slot || '',
-          value: value,
-          required: !!field.required
-        };
-      }).filter((f) => f.value);
-      sendResponse({ ok: true, fields: fields });
+      const runtime = self.CareerOsFillRuntime;
+      const fields = (runtime && runtime.collectAdaptiveFields)
+        ? runtime.collectAdaptiveFields(document)
+        : [];
+      sendResponse({ ok: true, fields: fields, url: location.href });
       return;
     }
     if (req && req.action === 'AUTOFILL') {
@@ -918,15 +860,13 @@
     const fmap = self.CareerOsFieldMap;
     if (!fmap || !el) return null;
     const ctx = getFieldContext(el);
-    const isTextarea = el.tagName && el.tagName.toLowerCase() === 'textarea';
-    const slot = fmap.resolveSlot(ctx, { isTextarea: isTextarea });
-    let value = fmap.matchAutofillValue({ label: ctx, slot: slot }, fillCtx && fillCtx.autofill);
-    if (!value && slot && profile) value = fmap.valueForSlot(slot, profile, 0);
-    if (!value && fillCtx && fillCtx.autofill && fillCtx.autofill.target_position && slot === 'application.target_position') {
+    let value = fmap.matchAutofillValue({ label: ctx }, fillCtx && fillCtx.autofill);
+    if (!value && fmap.valueByLabel && profile) value = fmap.valueByLabel(ctx, profile, 0);
+    if (!value && fillCtx && fillCtx.autofill && fillCtx.autofill.target_position && /求职意向|应聘职位|期望岗位/.test(ctx || '')) {
       value = fillCtx.autofill.target_position;
     }
-    const shortLabel = (ctx || slot || '当前格子').replace(/\s+/g, ' ').trim().slice(0, 24);
-    return { label: shortLabel, slot: slot, value: value || '' };
+    const shortLabel = (ctx || '当前格子').replace(/\s+/g, ' ').trim().slice(0, 24);
+    return { label: shortLabel, value: value || '' };
   }
 
   function hideFieldChip() {

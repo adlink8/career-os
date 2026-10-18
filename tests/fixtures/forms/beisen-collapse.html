@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>北森折叠报名表</title></head>
+<body>
+  <header class="site-nav">
+    <input id="job-search" placeholder="搜索职位关键词">
+  </header>
+
+  <div class="el-collapse">
+    <div class="el-collapse-item">
+      <div class="el-collapse-item__header">个人信息</div>
+      <div class="el-collapse-item__wrap">
+        <div class="el-collapse-item__content">
+          <div class="el-form-item">
+            <label class="el-form-item__label">姓名</label>
+            <div class="el-form-item__content"><input id="name"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="el-collapse-item">
+      <div class="el-collapse-item__header">教育经历</div>
+      <div class="el-collapse-item__wrap">
+        <div class="el-collapse-item__content">
+          <div class="el-form-item">
+            <label class="el-form-item__label">学校名称</label>
+            <div class="el-form-item__content"><input id="school"></div>
+          </div>
+          <div class="el-form-item">
+            <label class="el-form-item__label">专业名称</label>
+            <div class="el-form-item__content"><input id="major"></div>
+          </div>
+          <div class="el-form-item">
+            <label class="el-form-item__label">开始时间</label>
+            <div class="el-form-item__content"><div class="el-date-editor"><input id="edu-start" placeholder="请选择"></div></div>
+          </div>
+          <button type="button" class="el-button">添加教育经历</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="el-collapse-item">
+      <div class="el-collapse-item__header">实习经历</div>
+      <div class="el-collapse-item__wrap">
+        <div class="el-collapse-item__content">
+          <div class="el-form-item">
+            <label class="el-form-item__label">单位名称</label>
+            <div class="el-form-item__content"><input id="intern-name"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="el-collapse-item">
+      <div class="el-collapse-item__header">项目经历</div>
+      <div class="el-collapse-item__wrap">
+        <div class="el-collapse-item__content">
+          <div class="el-form-item">
+            <label class="el-form-item__label">项目名称</label>
+            <div class="el-form-item__content"><input id="proj-name"></div>
+          </div>
+          <div class="el-form-item">
+            <label class="el-form-item__label">项目描述</label>
+            <div class="el-form-item__content"><textarea id="proj-desc"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input id="bare">
+</body>
+</html>

@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const store = self.CareerOsOverlay;
-  const form = document.getElementById('overlay-form');
   const toggle = document.getElementById('overlay-enabled');
   const switchLabel = document.getElementById('switch-label');
   const msgEl = document.getElementById('msg');
+  const root = document.getElementById('notebook-root');
+
+  let notebook = store.emptyNotebook();
 
   function showMsg(text, isErr) {
     msgEl.hidden = false;
@@ -15,248 +17,156 @@ document.addEventListener('DOMContentLoaded', () => {
     switchLabel.textContent = toggle.checked ? '打开 · 用本页填表（插件单独用）' : '关闭 · 若已装 Career OS 则读编排器';
   }
 
-  const MAX_LIST = 12;
-  const LIST_SPECS = {
-    edu: {
-      path: 'universal.education.records',
-      mount: 'list-edu',
-      title: '教育',
-      fields: [
-        { key: 'school', label: '学校名称' },
-        { key: 'college', label: '学院' },
-        { key: 'major', label: '专业' },
-        { key: 'degree', label: '学历', ph: '本科 / 大专' },
-        { key: 'education_type', label: '学习形式', ph: '全日制' },
-        { key: 'start_date', label: '入学时间', ph: 'YYYY-MM' },
-        { key: 'graduation', label: '毕业时间', ph: 'YYYY-MM' },
-        { key: 'gpa', label: 'GPA' },
-        { key: 'rank', label: '专业排名' }
-      ]
-    },
-    intern: {
-      path: 'application.internships',
-      mount: 'list-intern',
-      title: '实习',
-      fields: [
-        { key: 'name', label: '单位名称' },
-        { key: 'role', label: '职位名称' },
-        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
-        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
-        { key: 'duty', label: '实习内容', textarea: true, wide: true, rows: 3 }
-      ]
-    },
-    projects: {
-      path: 'application.projects',
-      mount: 'list-projects',
-      title: '项目',
-      fields: [
-        { key: 'name', label: '项目名称' },
-        { key: 'role', label: '担任角色' },
-        { key: 'keywords', label: '技术栈' },
-        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
-        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
-        { key: 'full_text', label: '项目描述', textarea: true, wide: true, rows: 4 }
-      ]
-    },
-    campus_roles: {
-      path: 'application.campus_roles',
-      mount: 'list-campus_roles',
-      title: '职务',
-      fields: [
-        { key: 'name', label: '职务名称' },
-        { key: 'description', label: '职务描述', textarea: true, wide: true, rows: 2 }
-      ]
-    },
-    campus_practices: {
-      path: 'application.campus_practices',
-      mount: 'list-campus_practices',
-      title: '实践',
-      fields: [
-        { key: 'name', label: '实践名称' },
-        { key: 'description', label: '实践描述', textarea: true, wide: true, rows: 2 }
-      ]
-    },
-    awards: {
-      path: 'application.award_records',
-      mount: 'list-awards',
-      title: '获奖',
-      fields: [
-        { key: 'name', label: '获奖项' },
-        { key: 'date', label: '获奖时间', ph: 'YYYY-MM' },
-        { key: 'level', label: '获奖级别' },
-        { key: 'description', label: '获奖描述', textarea: true, wide: true, rows: 2 }
-      ]
-    },
-    certs: {
-      path: 'application.certificate_records',
-      mount: 'list-certs',
-      title: '证书',
-      fields: [
-        { key: 'name', label: '证书名称' },
-        { key: 'date', label: '获得时间', ph: 'YYYY-MM' }
-      ]
-    },
-    langs: {
-      path: 'application.languages',
-      mount: 'list-langs',
-      title: '语种',
-      fields: [
-        { key: 'type', label: '语言类型', ph: '英语' },
-        { key: 'level', label: '掌握程度' }
-      ]
-    },
-    family: {
-      path: 'application.family_members',
-      mount: 'list-family',
-      title: '成员',
-      fields: [
-        { key: 'name', label: '姓名' },
-        { key: 'relation', label: '称谓', ph: '父亲 / 母亲' },
-        { key: 'work', label: '工作单位' },
-        { key: 'phone', label: '电话' }
-      ]
-    },
-    training: {
-      path: 'application.training_records',
-      mount: 'list-training',
-      title: '培训',
-      fields: [
-        { key: 'name', label: '培训名称' },
-        { key: 'org', label: '培训机构' },
-        { key: 'start_date', label: '开始时间', ph: 'YYYY-MM' },
-        { key: 'end_date', label: '结束时间', ph: 'YYYY-MM' },
-        { key: 'description', label: '培训内容', textarea: true, wide: true, rows: 2 }
-      ]
-    }
-  };
-
-  function listCount(id) {
-    const spec = LIST_SPECS[id];
-    const mount = document.getElementById(spec.mount);
-    return mount ? mount.querySelectorAll('.repeat-card').length : 0;
+  function starterNotebook() {
+    const nb = store.emptyNotebook();
+    store.upsertModule(nb, { id: 'm1', title: '个人信息' });
+    store.addItem(nb, 'm1');
+    ['姓名', '手机号', '邮箱', '身份证号'].forEach((lab) => store.setField(nb, 'm1', 0, lab, ''));
+    return nb;
   }
 
-  function renderList(id, rows) {
-    const spec = LIST_SPECS[id];
-    const mount = document.getElementById(spec.mount);
-    if (!spec || !mount) return;
-    const items = Array.isArray(rows) ? rows.slice() : [];
-    mount.textContent = '';
-    if (!items.length) {
-      const empty = document.createElement('div');
-      empty.className = 'repeat-empty';
-      empty.textContent = '还没有' + spec.title + '。需要几段就点右上角「添加」。';
-      mount.appendChild(empty);
-      return;
-    }
-    items.forEach((row, idx) => {
-      const card = document.createElement('div');
-      card.className = 'repeat-card';
+  function renderNotebook() {
+    if (!root) return;
+    root.textContent = '';
+    (notebook.modules || []).forEach((mod, mi) => {
+      const sec = document.createElement('section');
+      sec.id = 'mod-' + (mod.id || mi);
       const head = document.createElement('div');
-      head.className = 'repeat-card-head';
-      const title = document.createElement('div');
-      title.className = 'repeat-card-title';
-      title.textContent = spec.title + ' ' + (idx + 1);
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.className = 'btn danger';
-      del.textContent = '删除';
-      del.addEventListener('click', () => {
-        const current = readList(id);
-        current.splice(idx, 1);
-        renderList(id, current);
+      head.className = 'list-head';
+      const titleWrap = document.createElement('label');
+      titleWrap.textContent = '模块名';
+      const titleInp = document.createElement('input');
+      titleInp.value = mod.title || '';
+      titleInp.addEventListener('input', () => {
+        mod.title = titleInp.value;
+        renderFillPolicy();
+        renderToc();
       });
-      head.appendChild(title);
-      head.appendChild(del);
-      const grid = document.createElement('div');
-      grid.className = 'grid';
-      spec.fields.forEach((f) => {
-        const lab = document.createElement('label');
-        if (f.wide) lab.className = 'wide';
-        lab.appendChild(document.createTextNode(f.label + ' '));
-        const el = document.createElement(f.textarea ? 'textarea' : 'input');
-        el.name = spec.path + '.' + idx + '.' + f.key;
-        if (f.textarea) el.rows = f.rows || 3;
-        if (f.ph) el.placeholder = f.ph;
-        const val = row && row[f.key];
-        el.value = val == null ? '' : String(val);
-        lab.appendChild(el);
-        grid.appendChild(lab);
+      titleWrap.appendChild(titleInp);
+      const tools = document.createElement('div');
+      tools.className = 'module-tools';
+      const addItemBtn = document.createElement('button');
+      addItemBtn.type = 'button';
+      addItemBtn.className = 'btn';
+      addItemBtn.textContent = '添加一段';
+      addItemBtn.addEventListener('click', () => {
+        store.addItem(notebook, mod.id);
+        const last = mod.items[mod.items.length - 1];
+        const prev = mod.items[0];
+        if (prev && prev.fields && last) {
+          last.fields = prev.fields.map((f) => ({ label: f.label, value: '' }));
+        }
+        renderNotebook();
       });
-      card.appendChild(head);
-      card.appendChild(grid);
-      mount.appendChild(card);
-    });
-  }
-
-  function readList(id) {
-    const spec = LIST_SPECS[id];
-    const n = listCount(id);
-    const rows = [];
-    for (let i = 0; i < n; i++) {
-      const row = store.emptyRow();
-      spec.fields.forEach((f) => {
-        const el = form.querySelector('[name="' + spec.path + '.' + i + '.' + f.key + '"]');
-        row[f.key] = el ? (el.value || '').trim() : '';
+      const addFieldBtn = document.createElement('button');
+      addFieldBtn.type = 'button';
+      addFieldBtn.className = 'btn';
+      addFieldBtn.textContent = '添加字段';
+      addFieldBtn.addEventListener('click', () => {
+        if (!mod.items.length) store.addItem(notebook, mod.id);
+        store.setField(notebook, mod.id, 0, '新字段', '');
+        renderNotebook();
       });
-      rows.push(row);
-    }
-    return rows;
-  }
+      const delMod = document.createElement('button');
+      delMod.type = 'button';
+      delMod.className = 'btn danger';
+      delMod.textContent = '删除模块';
+      delMod.addEventListener('click', () => {
+        notebook.modules = notebook.modules.filter((m) => m !== mod);
+        renderNotebook();
+      });
+      tools.appendChild(addItemBtn);
+      tools.appendChild(addFieldBtn);
+      tools.appendChild(delMod);
+      head.appendChild(titleWrap);
+      head.appendChild(tools);
+      sec.appendChild(head);
 
-  function addListItem(id) {
-    if (listCount(id) >= MAX_LIST) {
-      showMsg('最多 ' + MAX_LIST + ' 段', true);
-      return;
-    }
-    const rows = readList(id);
-    rows.push(store.emptyRow());
-    renderList(id, rows);
-  }
-
-  function fillLists(profile) {
-    Object.keys(LIST_SPECS).forEach((id) => {
-      const spec = LIST_SPECS[id];
-      let rows = store.getByPath(profile, spec.path);
-      if (id === 'edu' && store.educationRows) rows = store.educationRows(profile);
-      renderList(id, Array.isArray(rows) ? rows : []);
+      const list = document.createElement('div');
+      list.className = 'repeat-list';
+      if (!mod.items || !mod.items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'repeat-empty';
+        empty.textContent = '还没有内容。点「添加一段」或「添加字段」。';
+        list.appendChild(empty);
+      }
+      (mod.items || []).forEach((item, ii) => {
+        const card = document.createElement('div');
+        card.className = 'repeat-card';
+        const cardHead = document.createElement('div');
+        cardHead.className = 'repeat-card-head';
+        const cardTitle = document.createElement('div');
+        cardTitle.className = 'repeat-card-title';
+        cardTitle.textContent = (mod.title || '模块') + ' ' + (ii + 1);
+        const delItem = document.createElement('button');
+        delItem.type = 'button';
+        delItem.className = 'btn danger';
+        delItem.textContent = '删除这段';
+        delItem.addEventListener('click', () => {
+          mod.items.splice(ii, 1);
+          renderNotebook();
+        });
+        cardHead.appendChild(cardTitle);
+        cardHead.appendChild(delItem);
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        (item.fields || []).forEach((field, fi) => {
+          const lab = document.createElement('label');
+          if (fi === item.fields.length - 1 || String(field.value || '').length > 40) lab.className = 'wide';
+          const nameInp = document.createElement('input');
+          nameInp.value = field.label || '';
+          nameInp.placeholder = '字段名';
+          nameInp.addEventListener('input', () => { field.label = nameInp.value; });
+          const valEl = document.createElement(String(field.value || '').length > 60 ? 'textarea' : 'input');
+          if (valEl.tagName === 'TEXTAREA') valEl.rows = 3;
+          valEl.value = field.value || '';
+          valEl.placeholder = '内容';
+          valEl.addEventListener('input', () => { field.value = valEl.value; });
+          const delF = document.createElement('button');
+          delF.type = 'button';
+          delF.className = 'btn danger';
+          delF.textContent = '删字段';
+          delF.addEventListener('click', () => {
+            item.fields.splice(fi, 1);
+            renderNotebook();
+          });
+          lab.appendChild(nameInp);
+          lab.appendChild(valEl);
+          lab.appendChild(delF);
+          grid.appendChild(lab);
+        });
+        const extra = document.createElement('button');
+        extra.type = 'button';
+        extra.className = 'btn';
+        extra.textContent = '本段加字段';
+        extra.addEventListener('click', () => {
+          store.setField(notebook, mod.id, ii, '新字段', '');
+          renderNotebook();
+        });
+        card.appendChild(cardHead);
+        card.appendChild(grid);
+        card.appendChild(extra);
+        list.appendChild(card);
+      });
+      sec.appendChild(list);
+      root.appendChild(sec);
     });
+    renderFillPolicy();
+    renderToc();
   }
 
-  function fillForm(profile) {
-    fillLists(profile);
-    form.querySelectorAll('input[name], textarea[name]').forEach((el) => {
-      if (el.closest('.repeat-list')) return;
-      const val = store.getByPath(profile, el.name);
-      el.value = val == null ? '' : String(val);
-    });
-  }
-
-  function readForm() {
-    const profile = store.emptyProfile();
-    form.querySelectorAll('input[name], textarea[name]').forEach((el) => {
-      if (el.closest('.repeat-list')) return;
-      const v = (el.value || '').trim();
-      if (!v) return;
-      store.setByPath(profile, el.name, v);
-    });
-    Object.keys(LIST_SPECS).forEach((id) => {
-      const spec = LIST_SPECS[id];
-      store.setByPath(profile, spec.path, readList(id));
-    });
-    return store.compactProfile(profile);
-  }
-
-  async function persist(enabled, profile, notice) {
-    await store.saveState(enabled, profile);
+  async function persist(enabled, notice) {
+    await store.saveState(enabled, notebook);
     toggle.checked = !!enabled;
     updateSwitchLabel();
-    showMsg(notice || (enabled ? '已导入并启用设置页画像' : '已保存（开关关闭，填表仍读本地 JSON）'));
+    showMsg(notice || (enabled ? '已导入并启用内容库' : '已保存（开关关闭，填表仍读本地 JSON）'));
   }
 
   function applyImported(raw, notice) {
-    const profile = store.normalizeImport(raw);
-    fillForm(profile);
+    const incoming = store.normalizeImport(raw);
+    if (!notebook.modules.length) notebook = incoming;
+    else store.mergeNotebook(notebook, incoming);
+    renderNotebook();
     showMsg(notice || '已导入 JSON，确认后点「一键导入并启用」');
   }
 
@@ -280,13 +190,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const policyApi = self.CareerOsFillPolicy;
-  let fillGroups = policyApi ? policyApi.defaults() : {};
+  let fillGroups = {};
 
   function renderFillPolicy() {
     const grid = document.getElementById('fill-policy-grid');
     if (!grid || !policyApi) return;
     grid.textContent = '';
-    policyApi.GROUPS.forEach((g) => {
+    const groups = policyApi.groupsFrom(notebook);
+    if (!groups.length) {
+      const empty = document.createElement('div');
+      empty.className = 'repeat-empty';
+      empty.textContent = '还没有模块。添加模块后可在这里勾选一键范围。';
+      grid.appendChild(empty);
+      return;
+    }
+    fillGroups = policyApi.normalize(fillGroups, notebook);
+    groups.forEach((g) => {
       const lab = document.createElement('label');
       lab.className = 'fill-policy-item';
       const box = document.createElement('input');
@@ -295,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
       box.addEventListener('change', async () => {
         fillGroups[g.id] = box.checked;
         fillGroups = await policyApi.save(fillGroups);
-        const n = policyApi.selectedIds(fillGroups).length;
-        showMsg('一键填充将写入 ' + n + ' / ' + policyApi.GROUPS.length + ' 类。格子旁「填入」不受影响。');
+        const n = policyApi.selectedIds(fillGroups, notebook).length;
+        showMsg('一键填充将写入 ' + n + ' / ' + groups.length + ' 个模块。格子旁「填入」不受影响。');
       });
       lab.appendChild(box);
       lab.appendChild(document.createTextNode(g.label));
@@ -307,24 +226,97 @@ document.addEventListener('DOMContentLoaded', () => {
   async function setFillPolicyAll(on) {
     if (!policyApi) return;
     const next = {};
-    policyApi.GROUPS.forEach((g) => { next[g.id] = !!on; });
+    policyApi.groupsFrom(notebook).forEach((g) => { next[g.id] = !!on; });
     fillGroups = await policyApi.save(next);
     renderFillPolicy();
-    showMsg(on ? '已全选：一键填充会写本页能对上的类别' : '已全不选：一键填充不会写任何类别，请用格子旁「填入」');
+    showMsg(on ? '已全选：一键填充会写对上的模块' : '已全不选：一键填充不会写任何模块，请用格子旁「填入」');
   }
 
-  document.querySelectorAll('[data-add-list]').forEach((btn) => {
-    btn.addEventListener('click', () => addListItem(btn.getAttribute('data-add-list')));
+  function renderToc() {
+    const box = document.getElementById('toc-links');
+    if (!box) return;
+    box.textContent = '';
+    const links = [
+      { href: '#sec-import', text: '导入 JSON' },
+      { href: '#sec-keys', text: '快捷键' },
+      { href: '#sec-fill-policy', text: '一键范围' }
+    ].concat((notebook.modules || []).map((m, i) => ({
+      href: '#mod-' + (m.id || i),
+      text: m.title || ('模块 ' + (i + 1))
+    })));
+    links.forEach((row) => {
+      const a = document.createElement('a');
+      a.href = row.href;
+      a.textContent = row.text;
+      box.appendChild(a);
+    });
+    bindToc();
+  }
+
+  let tocBound = false;
+  function bindToc() {
+    const toc = document.getElementById('toc');
+    if (!toc || tocBound) {
+      if (toc && toc._setActive) {
+        const first = toc.querySelector('a[href^="#"]');
+        if (first) toc._setActive(first.getAttribute('href').slice(1));
+      }
+      return;
+    }
+    tocBound = true;
+    const links = () => Array.from(toc.querySelectorAll('a[href^="#"]'));
+    function setActive(id) {
+      links().forEach((a) => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+    toc._setActive = setActive;
+    let tocLock = '';
+    let tocUnlockTimer = 0;
+    function headerOffset() {
+      const top = document.querySelector('.top');
+      return (top ? top.getBoundingClientRect().height : 72) + 12;
+    }
+    function unlockToc() {
+      tocLock = '';
+      if (tocUnlockTimer) {
+        clearTimeout(tocUnlockTimer);
+        tocUnlockTimer = 0;
+      }
+    }
+    toc.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      e.preventDefault();
+      const el = document.getElementById(a.getAttribute('href').slice(1));
+      if (!el) return;
+      setActive(el.id);
+      tocLock = el.id;
+      if (tocUnlockTimer) clearTimeout(tocUnlockTimer);
+      const y = window.scrollY + el.getBoundingClientRect().top - headerOffset();
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      tocUnlockTimer = setTimeout(unlockToc, 700);
+    });
+  }
+
+  document.getElementById('btn-add-module').addEventListener('click', () => {
+    const mod = store.upsertModule(notebook, { title: '新模块' });
+    store.addItem(notebook, mod.id);
+    store.setField(notebook, mod.id, 0, '新字段', '');
+    renderNotebook();
   });
 
   store.loadState().then((state) => {
     toggle.checked = !!state.enabled;
     updateSwitchLabel();
-    fillForm(state.profile);
+    notebook = state.notebook && state.notebook.modules && state.notebook.modules.length
+      ? state.notebook
+      : starterNotebook();
+    renderNotebook();
   });
   if (policyApi) {
     policyApi.load().then((map) => {
-      fillGroups = map;
+      fillGroups = map || {};
       renderFillPolicy();
     });
     const allBtn = document.getElementById('btn-fill-all');
@@ -334,19 +326,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   toggle.addEventListener('change', async () => {
-    await persist(toggle.checked, readForm(), toggle.checked
+    await persist(toggle.checked, toggle.checked
       ? '开关已打开：网申页将用本页内容填'
       : '开关已关闭：网申页改读本地 JSON / 专投海投');
   });
 
   document.getElementById('btn-import').addEventListener('click', async () => {
-    const profile = readForm();
-    const name = store.getByPath(profile, 'universal.personal.name');
+    const name = store.valueByLabel(notebook, '姓名', 0);
     if (!name) {
       showMsg('请至少填写姓名后再导入', true);
       return;
     }
-    await persist(true, profile, '已一键导入并启用。打开北森/Moka 页点「一键填充」即可。');
+    await persist(true, '已一键导入并启用。打开网申页点「一键填充」即可。');
   });
 
   document.getElementById('btn-from-json').addEventListener('click', () => {
@@ -355,34 +346,44 @@ document.addEventListener('DOMContentLoaded', () => {
         showMsg((res && res.error) || '读本地 JSON 失败。请先运行 python bin/sync_autofill_profile.py', true);
         return;
       }
-      fillForm(res.data);
-      showMsg('已把本地 profile.json 填进本页，确认后点「一键导入并启用」');
+      applyImported(res.data, '已把本地 profile.json 灌进内容库，确认后点「一键导入并启用」');
     });
   });
 
   document.getElementById('btn-from-page').addEventListener('click', () => {
-    chrome.runtime.sendMessage({ action: 'IMPORT_FROM_ACTIVE_TAB' }, (res) => {
+    chrome.runtime.sendMessage({ action: 'ADAPTIVE_FROM_TAB' }, (res) => {
       if (!res || !res.ok) {
-        showMsg((res && res.error) || '当前页没有可读的表单，请先打开北森报名页', true);
+        showMsg((res && res.error) || '当前页没有可读的表单，请先打开报名表', true);
         return;
       }
-      const profile = store.emptyProfile();
-      const counts = {};
-      (res.fields || []).forEach((item) => {
-        if (!item.slot || !item.value) return;
-        const key = item.slot;
-        const idx = counts[key] || 0;
-        store.applySlot(profile, item.slot, item.value, idx);
-        counts[key] = idx + 1;
-      });
-      fillForm(profile);
-      showMsg('已从当前网申页导入 ' + (res.fields || []).filter((x) => x.value).length + ' 项，确认后点「一键导入并启用」');
+      const ingested = store.ingestPageFields(notebook, res.fields || []);
+      notebook = ingested.notebook;
+      renderNotebook();
+      showMsg('已按本页生成骨架并补空字段，已填值按标签写入。无关模块正文未覆盖。');
+    });
+  });
+
+  document.getElementById('btn-apply-shape').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ action: 'APPLY_SAVED_SHAPE' }, (res) => {
+      if (!res || !res.ok) {
+        showMsg((res && res.error) || '这页还没有骨架，先点自适应', true);
+        return;
+      }
+      const applied = store.applySavedShape(notebook, res.shapes || {}, res.pageKey);
+      if (!applied.ok) {
+        showMsg(applied.reason || '这页还没有骨架，先点自适应', true);
+        return;
+      }
+      notebook = applied.notebook;
+      renderNotebook();
+      showMsg('已套用本页上次骨架，内容库正文未改。');
     });
   });
 
   document.getElementById('btn-clear').addEventListener('click', async () => {
-    fillForm(store.emptyProfile());
-    await persist(false, store.emptyProfile(), '已清空本页，并关闭开关');
+    notebook = store.emptyNotebook();
+    renderNotebook();
+    await persist(false, '已清空本页，并关闭开关');
   });
 
   const keysApi = self.CareerOsShortcuts;
@@ -417,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const dropzone = document.getElementById('sec-import') || document.getElementById('dropzone');
+  const dropzone = document.getElementById('sec-import');
   const fileInput = document.getElementById('file-json');
   if (dropzone) {
     ['dragenter', 'dragover'].forEach((ev) => {
@@ -466,60 +467,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showMsg('复制失败，请检查剪贴板权限', true);
       }
     });
-  }
-
-  const toc = document.getElementById('toc');
-  if (toc) {
-    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
-    const targets = links
-      .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
-      .filter(Boolean);
-    function setActive(id) {
-      links.forEach((a) => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
-      });
-    }
-    let tocLock = '';
-    let tocUnlockTimer = 0;
-    function headerOffset() {
-      const top = document.querySelector('.top');
-      return (top ? top.getBoundingClientRect().height : 72) + 12;
-    }
-    function unlockToc() {
-      tocLock = '';
-      if (tocUnlockTimer) {
-        clearTimeout(tocUnlockTimer);
-        tocUnlockTimer = 0;
-      }
-    }
-    toc.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href^="#"]');
-      if (!a) return;
-      e.preventDefault();
-      const el = document.getElementById(a.getAttribute('href').slice(1));
-      if (!el) return;
-      setActive(el.id);
-      tocLock = el.id;
-      if (tocUnlockTimer) clearTimeout(tocUnlockTimer);
-      const y = window.scrollY + el.getBoundingClientRect().top - headerOffset();
-      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-      const onEnd = () => {
-        window.removeEventListener('scrollend', onEnd);
-        unlockToc();
-      };
-      window.addEventListener('scrollend', onEnd);
-      tocUnlockTimer = setTimeout(unlockToc, 700);
-    });
-    if ('IntersectionObserver' in window && targets.length) {
-      const io = new IntersectionObserver((entries) => {
-        if (tocLock) return;
-        const vis = entries
-          .filter((en) => en.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (vis && vis.target && vis.target.id) setActive(vis.target.id);
-      }, { rootMargin: '-90px 0px -55% 0px', threshold: [0.15, 0.4, 0.8] });
-      targets.forEach((el) => io.observe(el));
-    }
   }
 
   if (keysApi) {

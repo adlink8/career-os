@@ -5,9 +5,15 @@ const vm = require('vm');
 const assert = require('assert');
 
 const ROOT = path.resolve(__dirname, '../..');
-const src = fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/fill-policy.js'), 'utf8');
 const sandbox = { self: {}, console };
-vm.runInNewContext(src, sandbox);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/overlay-store.js'), 'utf8'),
+  sandbox
+);
+vm.runInNewContext(
+  fs.readFileSync(path.join(ROOT, 'extensions/ats-autofill/fill-policy.js'), 'utf8'),
+  sandbox
+);
 const policy = sandbox.self.CareerOsFillPolicy;
 assert.ok(policy, 'CareerOsFillPolicy 未加载');
 
@@ -15,27 +21,25 @@ function check(label, cond) {
   assert.ok(cond, label);
 }
 
-check('默认 9 类全开', policy.GROUPS.length === 9 && policy.selectedIds(null).length === 9);
-check('姓名归个人信息', policy.groupForSlot('universal.personal.name') === 'personal');
-check('教育 records 归教育', policy.groupForSlot('universal.education.records.school') === 'education');
-check('家庭成员归个人信息', policy.groupForSlot('application.family_members.name') === 'personal');
-check('培训归实习类', policy.groupForSlot('application.training_records.name') === 'intern');
-check('到岗时间归求职意向', policy.groupForSlot('universal.personal.available_time') === 'intent');
-check('项目归项目', policy.groupForSlot('application.projects.full_text') === 'projects');
-check('证书归获奖证书', policy.groupForSlot('application.certificate_records.name') === 'award');
-check('开放题', policy.groupForSlot('open.why_us') === 'open');
+const notebook = {
+  version: '4.0-notebook',
+  modules: [
+    { id: 'm1', title: '个人信息', items: [{ fields: [{ label: '姓名', value: '测一填' }, { label: '手机号', value: '13800138000' }] }] },
+    { id: 'm2', title: '项目经历', items: [{ fields: [{ label: '项目名称', value: '网关' }] }] }
+  ]
+};
 
-const onlyPersonal = policy.normalize({ personal: true });
-policy.GROUPS.forEach((g) => {
-  if (g.id !== 'personal') onlyPersonal[g.id] = false;
-});
-check('只勾个人信息时姓名可填', policy.allowed('universal.personal.name', onlyPersonal) === true);
-check('只勾个人信息时项目不填', policy.allowed('application.projects.name', onlyPersonal) === false);
-check('未写进存储的类别默认勾选', policy.allowed('application.projects.name', policy.normalize({})) === true);
+const groups = policy.groupsFrom(notebook);
+check('分组来自模块标题', groups.length === 2 && groups[0].label === '个人信息' && groups[1].label === '项目经历');
+check('默认按模块全开', policy.selectedIds(null, notebook).length === 2);
 
-const none = {};
-policy.GROUPS.forEach((g) => { none[g.id] = false; });
-check('显式全不选则跳过姓名', policy.allowed('universal.personal.phone', none) === false);
-check('未知槽位仍放行', policy.allowed('custom.unknown', none) === true);
+const onlyPersonal = policy.normalize({ m1: true, m2: false }, notebook);
+check('只勾个人信息时姓名可填', policy.allowed('姓名', onlyPersonal, notebook) === true);
+check('只勾个人信息时项目不填', policy.allowed('项目名称', onlyPersonal, notebook) === false);
+check('未写进存储的模块默认勾选', policy.allowed('项目名称', policy.normalize({}, notebook), notebook) === true);
+
+const none = policy.normalize({ m1: false, m2: false }, notebook);
+check('显式全不选则跳过姓名', policy.allowed('手机号', none, notebook) === false);
+check('未知标签仍放行', policy.allowed('自定义栏', none, notebook) === true);
 
 console.log('[OK] fill-policy.test.js');

@@ -5,6 +5,8 @@
   'use strict';
 
   function sleep(ms) {
+    var runtime = root.CareerOsFillRuntime;
+    if (runtime && runtime.sleep) return runtime.sleep(ms);
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
   }
 
@@ -34,82 +36,62 @@
     return out;
   }
 
-  function itemLabel(item) {
-    if (!item) return '';
+  function collectItems() {
     var runtime = root.CareerOsFillRuntime;
-    if (runtime && runtime.nearbyLabel) {
-      var near = runtime.nearbyLabel(item.querySelector('input, textarea, select') || item);
-      if (near) return near;
-    }
-    var lab = item.querySelector('.el-form-item__label, .ant-form-item-label, .bs-form-item-label, label');
-    var t = textOf(lab);
-    if (t && t.length <= 20 && !/首页|投递记录|上传简历/.test(t)) return t;
-    return '';
+    if (runtime && runtime.collectFormItems) return runtime.collectFormItems(document);
+    return [];
   }
 
-  function collectItems() {
-    var seen = [];
-    var out = [];
-    function push(item, label) {
-      if (!item || seen.indexOf(item) !== -1) return;
-      if (item.closest && item.closest('#career-os-floating-root')) return;
-      label = String(label || '').replace(/\s+/g, ' ').trim();
-      if (!label || label.length > 40) return;
-      if (/搜索职位|添加|暂存|取消|预览并提交|立即投递|至今/.test(label)) return;
-      seen.push(item);
-      out.push({ item: item, label: label });
-    }
-    document.querySelectorAll('.el-form-item, .ant-form-item, .bs-form-item').forEach(function (item) {
-      push(item, itemLabel(item));
+  function asNotebook(profile) {
+    var overlay = root.CareerOsOverlay;
+    if (!overlay || !profile) return profile;
+    if (overlay.isNotebook(profile)) return profile;
+    try { return overlay.normalizeImport(profile); } catch (_) { return profile; }
+  }
+
+  function matchModule(nb, section) {
+    if (!nb || !Array.isArray(nb.modules) || !section) return null;
+    var hit = null;
+    nb.modules.forEach(function (m) {
+      if (m && m.title === section) hit = m;
     });
-    document.querySelectorAll(
-      '.el-date-editor, .el-select, .el-input, .el-textarea, .ant-select, .ant-picker, .el-cascader'
-    ).forEach(function (widget) {
-      var item = widget.closest('.el-form-item, .ant-form-item, .bs-form-item') || widget.parentElement;
-      if (!item || seen.indexOf(item) !== -1) return;
-      push(item, itemLabel(item) || itemLabel(widget.parentElement));
+    if (hit) return hit;
+    nb.modules.forEach(function (m) {
+      if (hit || !m || !m.title) return;
+      if (section.indexOf(m.title) !== -1 || m.title.indexOf(section) !== -1) hit = m;
     });
-    return out;
+    return hit;
   }
 
   function pickValue(label, section, profile, fmap, index) {
-    var slot = fmap.resolveSlot(label, {
-      isTextarea: /描述|内容|评价|介绍/.test(label)
-    });
-    if (/开始时间|起始|就读时间|起止时间|活动时间/.test(label)) {
-      if (section === 'edu') slot = 'universal.education.records.start_date';
-      else if (section === 'project') slot = 'application.projects.start_date';
-      else if (section === 'intern') slot = 'application.internships.start_date';
-      else if (section === 'practice') slot = 'application.campus_practices.start_date';
-      else if (section === 'campus_role') slot = 'application.campus_roles.start_date';
-      else if (section === 'award') slot = 'application.award_records.date';
-      else if (section === 'training') slot = 'application.training_records.start_date';
-    } else if (/结束时间|毕业时间/.test(label)) {
-      if (section === 'edu') slot = 'universal.education.records.graduation';
-      else if (section === 'project') slot = 'application.projects.end_date';
-      else if (section === 'intern') slot = 'application.internships.end_date';
-      else if (section === 'practice') slot = 'application.campus_practices.end_date';
-      else if (section === 'campus_role') slot = 'application.campus_roles.end_date';
-      else if (section === 'training') slot = 'application.training_records.end_date';
-    } else if (/^城市$|所在城市/.test(label) && section === 'edu') {
-      slot = 'universal.personal.current_city';
+    var overlay = root.CareerOsOverlay;
+    var nb = asNotebook(profile);
+    var value = '';
+    var want = overlay && overlay.normalizeLabel ? overlay.normalizeLabel(label) : String(label || '').trim();
+    var mod = matchModule(nb, section);
+    if (mod && Array.isArray(mod.items)) {
+      var item = mod.items[index || 0] || {};
+      (item.fields || []).forEach(function (f) {
+        var lab = overlay && overlay.normalizeLabel ? overlay.normalizeLabel(f.label) : String(f.label || '').trim();
+        if (lab === want && f.value) value = String(f.value).trim();
+      });
     }
-    var value = fmap.valueForSlot(slot, profile, index || 0);
-    return { slot: slot, value: value };
+    if (!value && fmap && fmap.valueByLabel) value = fmap.valueByLabel(label, nb, index || 0);
+    return { slot: label, value: value };
   }
 
   function detectSection(label, prev) {
-    if (/教育经历|教育背景|学校名称|所学专业|学习形式|^学历$|专业排名|学院名称|成绩/.test(label)) return 'edu';
-    if (/家庭成员|成员姓名|^称谓$/.test(label)) return 'family';
-    if (/培训经历|培训名称|培训机构/.test(label)) return 'training';
-    if (/实习经历|单位名称/.test(label)) return 'intern';
-    if (/项目经历|项目经验|项目名称/.test(label)) return 'project';
-    if (/在校实践|实践名称|实践描述|活动时间/.test(label)) return 'practice';
-    if (/职务名称|职务描述|在校职务/.test(label)) return 'campus_role';
-    if (/获奖/.test(label)) return 'award';
-    if (/证书名称|获得时间/.test(label)) return 'cert';
-    if (/语言类型|掌握程度|^听说$|^读写$/.test(label)) return 'lang';
-    if (/个人信息|姓名|手机|邮箱/.test(label)) return 'personal';
+    if (/教育经历|教育背景|学校名称|所学专业|学习形式|^学历$|专业排名|学院名称|成绩/.test(label)) return '教育经历';
+    if (/家庭成员|成员姓名|^称谓$/.test(label)) return '家庭成员';
+    if (/培训经历|培训名称|培训机构/.test(label)) return '培训经历';
+    if (/实习经历|单位名称/.test(label)) return '实习经历';
+    if (/项目经历|项目经验|项目名称/.test(label)) return '项目经历';
+    if (/在校实践|实践名称|实践描述|活动时间/.test(label)) return '在校实践';
+    if (/职务名称|职务描述|在校职务/.test(label)) return '在校职务';
+    if (/获奖/.test(label)) return '获奖';
+    if (/证书名称|获得时间/.test(label)) return '证书';
+    if (/语言类型|掌握程度|^听说$|^读写$/.test(label)) return '外语';
+    if (/个人信息|姓名|手机|邮箱/.test(label)) return '个人信息';
     return prev;
   }
 
@@ -123,25 +105,10 @@
   }
 
   function setInput(el, value) {
+    var runtime = root.CareerOsFillRuntime;
+    if (runtime && runtime.setNativeValue) return runtime.setNativeValue(el, value);
     if (!el || !value) return false;
-    if (el.readOnly) {
-      try { el.readOnly = false; } catch (_) { /* ignore */ }
-    }
-    var proto = el.tagName.toLowerCase() === 'textarea'
-      ? window.HTMLTextAreaElement.prototype
-      : window.HTMLInputElement.prototype;
-    var desc = Object.getOwnPropertyDescriptor(proto, 'value');
-    if (el._valueTracker && typeof el._valueTracker.setValue === 'function') {
-      el._valueTracker.setValue('');
-    }
-    if (desc && desc.set) desc.set.call(el, value);
-    else el.value = value;
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-    try {
-      el.dispatchEvent(new InputEvent('input', { bubbles: true, data: value, inputType: 'insertText' }));
-    } catch (_) { /* ignore */ }
-    el.dispatchEvent(new Event('change', { bubbles: true }));
-    el.dispatchEvent(new Event('blur', { bubbles: true }));
+    el.value = value;
     return true;
   }
 
@@ -351,23 +318,18 @@
   async function fillItem(entry, section, profile, fmap, groups, counters) {
     var label = entry.label;
     var item = entry.item;
-    var slotHint = fmap.resolveSlot(label, { isTextarea: /描述|内容|评价|介绍/.test(label) });
-    var idx = 0;
-    var hit = String(slotHint || '').match(/^(universal\.education\.records|application\.(?:projects|internships|campus_practices|campus_roles|award_records|certificate_records|languages|family_members|training_records))/);
-    if (hit) {
-      idx = counters[slotHint] || 0;
-      counters[slotHint] = idx + 1;
-    }
+    var idxKey = (section || '') + '|' + label;
+    var idx = counters[idxKey] || 0;
+    counters[idxKey] = idx + 1;
     var picked = pickValue(label, section, profile, fmap, idx);
     var value = picked.value;
-    var slot = picked.slot || '';
-    if (!slot) return { ok: false, reason: 'unmapped', slot: '', value: '' };
+    var slot = picked.slot || label;
     var policy = root.CareerOsFillPolicy;
-    if (policy && groups && !policy.allowed(slot, groups)) {
+    if (policy && groups && !policy.allowed(label, groups, profile, section)) {
       return { ok: false, reason: 'policy_skip', slot: slot, value: '' };
     }
     if (!value) return { ok: false, reason: 'empty', slot: slot, value: '' };
-    if (slot.indexOf('id_card') !== -1 && !fmap.isRealIdCard(value)) {
+    if (/身份证/.test(label) && fmap.isRealIdCard && !fmap.isRealIdCard(value)) {
       return { ok: false, reason: 'skip_id', slot: slot, value: '' };
     }
 
@@ -409,11 +371,12 @@
     var groups = opts && opts.fillGroups;
     var counters = {};
     var items = collectItems();
-    var section = 'personal';
+    profile = asNotebook(profile);
+    var section = '个人信息';
     var count = 0;
     for (var i = 0; i < items.length; i++) {
       var entry = items[i];
-      section = detectSection(entry.label, section);
+      section = entry.section || detectSection(entry.label, section);
       try {
         var result = await fillItem(entry, section, profile, fmap, groups, counters);
         events.push({
