@@ -18,11 +18,9 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 try:
-    from career_os_store import add_timeline_event, get_db
-    from services.job_service import JobService
+    from career_os_store import get_db
 except ModuleNotFoundError:
-    from bin.career_os_store import add_timeline_event, get_db
-    from bin.services.job_service import JobService
+    from bin.career_os_store import get_db
 
 
 DEFAULT_ASSESSMENT_KIND = "career-personality-v1"
@@ -196,9 +194,6 @@ def run_personality_assessment(
         return False
 
     report = score_personality(rows, selected)
-    job = None
-    if job_id:
-        job = JobService.get_job(int(job_id), conn=conn)
     cur = conn.execute(
         """
         INSERT INTO mock_exam_records
@@ -228,15 +223,6 @@ def run_personality_assessment(
             VALUES (?, ?, ?, ?, ?)
             """,
             (record_id, question["id"], str(answer["selected"]), 0, response_times[index]),
-        )
-    if job:
-        add_timeline_event(
-            conn,
-            job_id=job["id"],
-            company_name=job["company_name"],
-            job_title=job["job_title"],
-            event_type="职业性格测评完成",
-            notes=f"综合倾向指数 {report['overall']}/100；仅作职业准备参考",
         )
     conn.commit()
     conn.close()

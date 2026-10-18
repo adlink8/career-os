@@ -76,7 +76,7 @@ def main() -> int:
         assert set(report_kinds) == {"career-personality-v1", "career-personality-ipip-neo-120"}, report_kinds
         assert all(row[1] == "local-rubric" and row[3] == 100 for row in report_kinds.values()), report_kinds
         assert answer_count == question_count + full_count, (answer_count, question_count, full_count)
-        assert timeline_count == 2, timeline_count
+        assert timeline_count == 0, timeline_count
     print("Personality smoke: PASS (temporary DB only)")
     return 0
 

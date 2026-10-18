@@ -14,7 +14,7 @@
 
 - **文件**：`data/career_jobs.sqlite`
 - **唯一迁移/访问入口**：`bin/career_os_store.py`（`DB_PATH` 常量，可用 `CAREER_OS_DB_PATH` 环境变量覆盖）
-- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v23
+- **迁移规则**：只新增表/列，不删除或改写既有求职数据；当前 `career_os_schema_migrations` 已到 v24
 - **简历二进制不进库**：PDF/DOCX/MD 原文件留在 `data/cv/`，库里只存元数据（SHA-256 为内容身份），见 `docs/resume-registry.md`
 
 ## 2. 业务表分域
@@ -34,6 +34,7 @@
 
 | `applications` | 2 | 正式投递记录（关联简历版本与提交物） |
 | `application_timeline` | 2 | 投递后流程事件（笔试/面试/offer） |
+| `night_lead_staging` | 0 | 夜间高量搜集**暂存区**（v24，非权威）：契约刻意宽松，仅 `url` 非空且唯一（即去重键），其余字段全可空。每日 23:00–次日 08:30 定时搜集写入（`staging-add`，批次号 `night-YYYYMMDD-HHMM`），白天人工复核后 `staging-review <ID> promote --job-id <jobs.ID>` 关联晋升或 `reject` 拒绝。**promote 前必须先经 `import-jobs` 正式入 `jobs` 表**；本表永远不作为投递决策依据 |
 
 ### B. 简历域
 

@@ -233,6 +233,7 @@ class JobService:
         """
         跃迁岗位状态并自动写入审计时间线（Timeline Event）。
         保证状态更新与事件插入的事务原子性。
+        同一事务内同步 applications.status，避免申请台账与岗位管线状态漂移。
         """
         close_needed = False
         if conn is None:
@@ -247,6 +248,10 @@ class JobService:
 
             conn.execute(
                 "UPDATE jobs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+                (new_status, int(job_id)),
+            )
+            conn.execute(
+                "UPDATE applications SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE job_id = ?",
                 (new_status, int(job_id)),
             )
 

@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = Path(os.environ.get("CAREER_OS_DB_PATH", ROOT / "data" / "career_jobs.sqlite"))
-SCHEMA_VERSION = 23
+SCHEMA_VERSION = 24
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -1411,6 +1411,41 @@ body {
     # v23: 公司池分层。active=中小/创业/已投；archive_big=超大厂不主动投。
     _add_column(conn, "companies", "pool", "TEXT NOT NULL DEFAULT 'unclassified'")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_companies_pool ON companies(pool)")
+
+    # v24: 夜间高量搜集暂存表。契约刻意宽松——除 url 外全部可空：
+    # 夜搜以量为先，白天人工复核后才允许晋升进 jobs / platform_recruitment_leads。
+    # 本表永远不是权威事实源；url 唯一约束即去重键，重复插入静默忽略。
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS night_lead_staging (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            batch_id TEXT NOT NULL DEFAULT '',
+            source TEXT NOT NULL DEFAULT '',
+            company_name TEXT NOT NULL DEFAULT '',
+            job_title TEXT NOT NULL DEFAULT '',
+            city TEXT NOT NULL DEFAULT '',
+            education_req TEXT NOT NULL DEFAULT '',
+            salary_text TEXT NOT NULL DEFAULT '',
+            deadline TEXT NOT NULL DEFAULT '',
+            url TEXT NOT NULL UNIQUE,
+            url_kind TEXT NOT NULL DEFAULT 'apply',
+            note TEXT NOT NULL DEFAULT '',
+            status TEXT NOT NULL DEFAULT 'new',
+            review_note TEXT NOT NULL DEFAULT '',
+            promoted_job_id INTEGER,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            reviewed_at TEXT NOT NULL DEFAULT ''
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_night_lead_staging_status "
+        "ON night_lead_staging(status, created_at)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_night_lead_staging_batch "
+        "ON night_lead_staging(batch_id)"
+    )
 
     conn.execute(
         "INSERT OR IGNORE INTO career_os_schema_migrations(version, applied_at) VALUES (?, ?)",

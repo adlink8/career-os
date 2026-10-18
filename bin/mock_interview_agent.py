@@ -13,9 +13,9 @@ import sys
 from datetime import datetime, timezone
 
 try:
-    from career_os_store import add_timeline_event, get_db
+    from career_os_store import get_db
 except ModuleNotFoundError:
-    from bin.career_os_store import add_timeline_event, get_db
+    from bin.career_os_store import get_db
 
 try:
     from jd_assessment_mapper import infer_assessment_profile
@@ -637,9 +637,6 @@ def run_mock_interview(company_target: str, job_id: int | None = None):
             "INSERT INTO interview_turns (report_id, turn_no, question, answer, score_json) VALUES (?, ?, ?, ?, ?)",
             (report_id, str(item["turn"]), item["question"], item["answer"], json.dumps(item["score"], ensure_ascii=False)),
         )
-    if job:
-        add_timeline_event(conn, job_id=selected_job_id, company_name=cname, job_title=job_title,
-                           event_type="模拟面试完成", notes=f"{active_provider} {avg}/100，评级 {grade}")
     conn.commit()
     conn.close()
 

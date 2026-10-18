@@ -14,12 +14,12 @@ from collections import defaultdict
 from datetime import datetime, timezone
 
 try:
-    from career_os_store import add_timeline_event, get_db
+    from career_os_store import get_db
     from code_runner import configured_runner
     from jd_assessment_mapper import infer_assessment_profile
     from services.job_service import JobService
 except ModuleNotFoundError:
-    from bin.career_os_store import add_timeline_event, get_db
+    from bin.career_os_store import get_db
     from bin.code_runner import configured_runner
     from bin.jd_assessment_mapper import infer_assessment_profile
     from bin.services.job_service import JobService
@@ -31,12 +31,6 @@ if hasattr(sys.stdout, "reconfigure"):
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
-
-
-def _job_context(conn, job_id: int | None):
-    if not job_id:
-        return None
-    return JobService.get_job(int(job_id), conn=conn)
 
 
 def _job_question_tracks(conn, job_id: int | None) -> list[str]:
@@ -114,7 +108,6 @@ def run_choice_quiz(
         params,
     ).fetchall()
     started_at = _now()
-    job = _job_context(conn, job_id)
     if not rows:
         conn.close()
         print("❌ 当前没有可用客观题。")
@@ -211,9 +204,6 @@ def run_choice_quiz(
             """,
             (record_id, item["question_id"], item["selected_answer"], int(item["correct"]), item["response_ms"]),
         )
-    if job:
-        add_timeline_event(conn, job_id=job["id"], company_name=job["company_name"], job_title=job["job_title"],
-                           event_type="模拟笔试完成", notes=f"得分 {score}/{total}，得分率 {pass_rate}%")
     conn.commit()
     conn.close()
 
@@ -230,7 +220,6 @@ def run_code_sandbox(question_id: int = 5, trusted_local: bool = False, job_id: 
         "SELECT title, starter_code, test_cases_json, explanation FROM mock_questions WHERE id = ? AND question_type = 'code'",
         (question_id,),
     ).fetchone()
-    job = _job_context(conn, job_id)
     if not row:
         conn.close()
         print("❌ 未找到指定的编程题！")
@@ -273,9 +262,6 @@ def run_code_sandbox(question_id: int = 5, trusted_local: bool = False, job_id: 
         "INSERT INTO mock_exam_answers (exam_record_id, question_id, selected_answer, correct) VALUES (?, ?, ?, ?)",
         (cur.lastrowid, question_id, result.status, int(result.passed)),
     )
-    if job:
-        add_timeline_event(conn, job_id=job["id"], company_name=job["company_name"], job_title=job["job_title"],
-                           event_type="模拟代码题完成", notes=f"{result.status}，后端 {runner.name}")
     conn.commit()
     conn.close()
     return result.passed

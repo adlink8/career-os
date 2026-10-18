@@ -29,8 +29,8 @@ def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_schema_v23_and_fill_ready_stages(isolated_db):
-    assert SCHEMA_VERSION == 23
+def test_schema_v24_and_fill_ready_stages(isolated_db):
+    assert SCHEMA_VERSION == 24
     cols = {r[1] for r in isolated_db.execute("PRAGMA table_info(job_apply_runs)")}
     assert "apply_mode" in cols
     company_cols = {r[1] for r in isolated_db.execute("PRAGMA table_info(companies)")}
@@ -43,6 +43,7 @@ def test_schema_v23_and_fill_ready_stages(isolated_db):
     }
     assert "job_apply_runs" in tables
     assert "job_apply_run_events" in tables
+    assert "night_lead_staging" in tables
     assert FILL_READY_STAGES == ("released", "volume_ready", "awaiting_human")
 
 

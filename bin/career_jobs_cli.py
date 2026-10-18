@@ -32,6 +32,13 @@ def list_jobs():
     print("-" * 110)
     for r in rows:
         jid, cname, title, cat, city, sal, match, status = r
+        cname = cname or ""
+        title = title or ""
+        cat = cat or ""
+        city = city or ""
+        sal = sal or "面议"
+        match = match or "待评估"
+        status = status or "待投递"
         print(f"{jid:<4} | {cname[:23]:<25} | {title[:30]:<32} | {cat:<10} | {city[:14]:<16} | {sal:<15} | {match:<10} | {status}")
     print("="*110)
     print("💡 使用 'python career_jobs_cli.py detail <ID>' 查看岗位详情与投递直达链接")
@@ -288,6 +295,152 @@ def _flag_value(args, flag: str, default=None):
     return args[pos + 1] if pos + 1 < len(args) else default
 
 
+STAGING_FIELDS = (
+    "url", "company_name", "job_title", "city", "education_req",
+    "salary_text", "deadline", "source", "url_kind", "note",
+)
+
+
+def staging_add(json_path, batch_id=None):
+    """夜间高量搜集入口：JSON 数组批量进暂存表，url 唯一去重、重复静默跳过。"""
+    if json_path == "-":
+        payload = json.load(sys.stdin)
+    else:
+        payload = json.loads(Path(json_path).read_text(encoding="utf-8"))
+    if isinstance(payload, dict):
+        payload = payload.get("leads", [])
+    if not isinstance(payload, list):
+        print("❌ staging-add 输入必须是 JSON 数组（或含 leads 键的对象）")
+        return
+    batch_id = batch_id or f"adhoc-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    conn = get_db()
+    try:
+        inserted = skipped = 0
+        for item in payload:
+            if not isinstance(item, dict) or not str(item.get("url", "")).strip():
+                skipped += 1
+                continue
+            row = {f: str(item.get(f, "") or "").strip() for f in STAGING_FIELDS}
+            cur = conn.execute(
+                """
+                INSERT OR IGNORE INTO night_lead_staging
+                    (batch_id, source, company_name, job_title, city, education_req,
+                     salary_text, deadline, url, url_kind, note)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    batch_id, row["source"], row["company_name"], row["job_title"],
+                    row["city"], row["education_req"], row["salary_text"],
+                    row["deadline"], row["url"], row["url_kind"] or "apply", row["note"],
+                ),
+            )
+            inserted += cur.rowcount
+            skipped += 1 - cur.rowcount
+        conn.commit()
+        print(f"✅ 批次 {batch_id}: 新增 {inserted} 条，URL 重复/缺 url 跳过 {skipped} 条（暂存表共 "
+              f"{conn.execute('SELECT COUNT(*) FROM night_lead_staging').fetchone()[0]} 条）")
+    finally:
+        conn.close()
+
+
+def staging_stats():
+    """白天验收入口：今晚/总量/状态分布 + 最近批次一览。"""
+    conn = get_db()
+    try:
+        total = conn.execute("SELECT COUNT(*) FROM night_lead_staging").fetchone()[0]
+        by_status = conn.execute(
+            "SELECT status, COUNT(*) FROM night_lead_staging GROUP BY status ORDER BY 2 DESC"
+        ).fetchall()
+        tonight = conn.execute(
+            "SELECT COUNT(*) FROM night_lead_staging WHERE date(created_at,'localtime')=date('now','localtime')"
+        ).fetchone()[0]
+        print(f"🌙 夜搜暂存表：总量 {total} 条 | 今天入库 {tonight} 条")
+        print("   状态分布: " + " | ".join(f"{r[0]}={r[1]}" for r in by_status))
+        print("\n最近 5 个批次:")
+        for r in conn.execute(
+            """
+            SELECT batch_id, COUNT(*) AS n,
+                   SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) AS pending,
+                   MIN(datetime(created_at,'localtime')), MAX(datetime(created_at,'localtime'))
+            FROM night_lead_staging GROUP BY batch_id ORDER BY MAX(created_at) DESC LIMIT 5
+            """
+        ):
+            print(f"  {r[0]}: {r[1]} 条（待复核 {r[2]}） {r[3]} ~ {r[4]}")
+        top = conn.execute(
+            """
+            SELECT company_name, COUNT(*) FROM night_lead_staging
+            WHERE status='new' GROUP BY company_name ORDER BY 2 DESC LIMIT 5
+            """
+        ).fetchall()
+        if top:
+            print("\n待复核最多公司: " + " | ".join(f"{r[0] or '(空)'}×{r[1]}" for r in top))
+    finally:
+        conn.close()
+
+
+def staging_list(status="new", limit=50):
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            """
+            SELECT id, batch_id, company_name, job_title, city, deadline, source, url
+            FROM night_lead_staging WHERE status=? ORDER BY id DESC LIMIT ?
+            """,
+            (status, int(limit)),
+        ).fetchall()
+        if not rows:
+            print(f"📭 暂无 status={status} 的暂存线索")
+            return
+        print(f"\n📋 暂存线索 status={status}（{len(rows)} 条）")
+        for r in rows:
+            print(f"  [{r[0]}] {r[2] or '?'} | {r[3] or '?'} | {r[4] or '?'} | 截止:{r[5] or '?'} | {r[6] or '?'}")
+            print(f"        {r[7]}")
+    finally:
+        conn.close()
+
+
+def staging_review(lead_id, action, job_id=None, note=""):
+    """人工复核：promote 需配 --job-id 指向已入库岗位；reject 记原因。"""
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT id, company_name, job_title, status FROM night_lead_staging WHERE id=?", (lead_id,)).fetchone()
+        if not row:
+            print(f"❌ 暂存线索 {lead_id} 不存在")
+            return
+        if action == "promote":
+            if job_id is None:
+                print("❌ promote 必须带 --job-id <jobs 表 ID>（先用 import-jobs 正式入库，再回来关联）")
+                return
+            if not conn.execute("SELECT 1 FROM jobs WHERE id=?", (job_id,)).fetchone():
+                print(f"❌ jobs 表不存在 ID={job_id}")
+                return
+            conn.execute(
+                """
+                UPDATE night_lead_staging
+                SET status='promoted', promoted_job_id=?, review_note=?, reviewed_at=?
+                WHERE id=?
+                """,
+                (job_id, note, datetime.now(timezone.utc).isoformat(timespec="seconds"), lead_id),
+            )
+            print(f"✅ 线索 {lead_id}（{row['company_name']} {row['job_title']}）已晋升 -> jobs#{job_id}")
+        elif action == "reject":
+            conn.execute(
+                """
+                UPDATE night_lead_staging
+                SET status='rejected', review_note=?, reviewed_at=?
+                WHERE id=?
+                """,
+                (note, datetime.now(timezone.utc).isoformat(timespec="seconds"), lead_id),
+            )
+            print(f"🗑️ 线索 {lead_id}（{row['company_name']} {row['job_title']}）已标记拒绝")
+        else:
+            print("❌ 动作只支持 promote / reject")
+            return
+        conn.commit()
+    finally:
+        conn.close()
+
+
 def project_candidates_command(args):
     """管理 JD 驱动的 GitHub 项目候选库和人工确认提案。"""
 
@@ -527,6 +680,22 @@ def main():
             print(f"✅ 岗位导入完成: 新增 {result['inserted']}，更新 {result['updated']}，企业 {result['companies']} 家")
         else:
             print(f"👀 岗位导入预览: {result['preview']} 条 / {result['companies']} 家；加 --apply 才写入")
+    elif cmd == 'staging-add' and len(sys.argv) > 2:
+        batch_id = _flag_value(sys.argv[2:], "--batch")
+        staging_add(sys.argv[2], batch_id=batch_id)
+    elif cmd == 'staging-stats':
+        staging_stats()
+    elif cmd == 'staging-list':
+        status = _flag_value(sys.argv[2:], "--status", "new")
+        limit = _flag_value(sys.argv[2:], "--limit", "50")
+        staging_list(status=status, limit=limit)
+    elif cmd == 'staging-review' and len(sys.argv) > 3:
+        lead_id = sys.argv[2]
+        action = sys.argv[3].lower()
+        job_id = _flag_value(sys.argv[4:], "--job-id")
+        job_id = int(job_id) if job_id and str(job_id).isdigit() else None
+        note = _flag_value(sys.argv[4:], "--note", "")
+        staging_review(int(lead_id), action, job_id=job_id, note=note)
     elif cmd == 'exam':
         from mock_oa_sandbox import run_choice_quiz
         args = sys.argv[2:]
@@ -602,7 +771,7 @@ def main():
         run_mock_interview(target, job_id=job_id)
     else:
         print(f"❌ 未知命令: {cmd}")
-        print("💡 支持命令: list, detail <ID>, guide <ID/Name>, track, apply <ID>, project-candidates search|list|confirm|apply|proposals, exam [job_id] [--limit N] [--minutes N] [--seed N] [--all], personality [job_id] [--full|--kind quick|full], assessment-intel [企业名|--job <ID>|--all-jobs], code-sandbox <ID> [--trusted-local], interview <ID> [job_id], plugins, import-questions <file> --source <plugin>, import-jobs <file> [--source <plugin>] [--apply], stats")
+        print("💡 支持命令: list, detail <ID>, guide <ID/Name>, track, apply <ID>, project-candidates search|list|confirm|apply|proposals, exam [job_id] [--limit N] [--minutes N] [--seed N] [--all], personality [job_id] [--full|--kind quick|full], assessment-intel [企业名|--job <ID>|--all-jobs], code-sandbox <ID> [--trusted-local], interview <ID> [job_id], plugins, import-questions <file> --source <plugin>, import-jobs <file> [--source <plugin>] [--apply], staging-add <json|--> [--batch <id>], staging-stats, staging-list [--status new] [--limit N], staging-review <ID> promote --job-id <ID>|reject [--note ...], stats")
 
 if __name__ == "__main__":
     main()
