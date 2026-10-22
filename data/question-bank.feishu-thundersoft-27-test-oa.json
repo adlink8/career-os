@@ -1,0 +1,818 @@
+{
+  "name": "中科创达 2027 届校园招聘 · 测试岗位笔试题（全场 45 题）",
+  "schema": "career-os-question-bank-v1",
+  "description": "飞书考试中心在线笔试真题回忆存档。题目、选项、卷面瑕疵与考点解析完整入库；correct_answer 有意留空，等官方判分或逐题对账后回填，避免把未验证的推断写成事实源。my_answer 是本场考生实际作答，仅供复盘派生视图使用，导入器会忽略该键。",
+  "source": "https://exam.feishu.cn/examinee/7699408112771499546",
+  "paper": {
+    "company": "中科创达",
+    "exam_title": "中科创达-27届校园招聘-测试岗位笔试题",
+    "platform": "飞书考试中心",
+    "recorded_at": "2026-10-22",
+    "question_count": 45,
+    "total_score": 100,
+    "duration": "01:00:00",
+    "pass_score": 0,
+    "score_structure": "单选 25×2=50 + 多选 10×3=30 + 判断 10×2=20 = 100（配分闭合，无单题异常权重）",
+    "related_jobs": [398, 399],
+    "related_applications": [47, 48],
+    "scoring_rule_gap": "卷面未公布多选题漏选/错选计分规则，多选 30 分是不确定性最大的一块",
+    "confidentiality": "企业笔试题目通常属保密内容，仅作个人复盘与面试备考用途，不得公开发布或外传"
+  },
+  "questions": [
+    {
+      "source_question_id": "ts-27oa-q01",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "对于提交的bug，以下哪种情况下不应当关闭（）",
+      "options": [
+        "A. 根因与其他已修复问题一致，并且在新软件上验证没有复现，可以关闭",
+        "B. 经过分析为无效问题，可以关闭",
+        "C. 在新软件上验证通过，可以关闭",
+        "D. 未进行修复，但研发找我进行沟通解释，应研发要求关闭"
+      ],
+      "correct_answer": "",
+      "my_answer": "D",
+      "explanation": "缺陷可关闭的前提是测试侧有验证结论：已修复且在新版本回归通过、同根因已修且不复现、判为无效或重复（理由与记录都要留下）。仅凭研发口头解释、或按研发单方要求关闭，等于把关闭权交给被验证方，是流程违规。"
+    },
+    {
+      "source_question_id": "ts-27oa-q02",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "判断下列（）不是Bug",
+      "options": [
+        "A. BBS论坛上提交的问题在网页上不能自动刷新，需要手动刷新",
+        "B. 一个程序用来模拟多个客户端登陆时，如果同时登陆两个客户端，当第一个客户端退出时，第二个客户端无论发送什么字符，都会自动退出",
+        "C. 在MSN中输入“某网站网址”提示“单击此链接可能会给计算机的安全带来风险。了解仿冒网站和其他风险”（卷面此句重复粘贴了两遍）",
+        "D. 时间从1999/12/31跳转到下一日期时，日期显示为0000/01/01"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "判 Bug 的准绳是「是否偏离规格或用户可预期行为」。安全风险提示是设计内的正常机制，不是缺陷；多客户端互相踢下线、千年虫式日期跳变都是明确缺陷；不能自动刷新是否算缺陷取决于需求有无约定。"
+    },
+    {
+      "source_question_id": "ts-27oa-q03",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下说法正确的是()",
+      "options": [
+        "A. 代码评审员一般由测试员担任",
+        "B. 验收测试是由最终用户来实施的",
+        "C. 测试只要做到语句覆盖和分支覆盖，就可以发现程序中的所有错误",
+        "D. 功能测试是系统测试的主要内容，检查系统的功能、性能是否与需求规格说明相同"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "A 错（代码评审由同行专家/开发承担）；C 错（覆盖率高推不出无缺陷）。B 与 D 在通用教材里都站得住：验收测试的实施主体在不同体系分别写作「最终用户/客户组织，测试团队参与」，功能测试是系统测试的主要内容也是标准表述。本题属题面双解，卷面未给出判定依据文档。"
+    },
+    {
+      "source_question_id": "ts-27oa-q04",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试数据与效率",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "为了提高测试的效率，应该()",
+      "options": [
+        "A. 选择发现错误的可能性大的数据作为测试数据",
+        "B. 取一切可能的输入数据作为测试数据",
+        "C. 随机地选取测试数据",
+        "D. 在完成编码以后制定软件的测试计划"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "测试的目的是以最小成本暴露缺陷，因此测试数据要按「发现错误概率」来选（等价类+边界值就是这套思路）。穷举输入不可行，随机选取效率低，测试计划应随需求/设计阶段同步制定而非编码后。"
+    },
+    {
+      "source_question_id": "ts-27oa-q05",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "Linux系统中，()命令可以打印出设备的ip地址",
+      "options": [
+        "A. ifconfig",
+        "B. network",
+        "C. ipconfig",
+        "D. systemd service"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "Linux 用 ifconfig（或新派生用法 ip addr / ip a）查看网卡与 IP；ipconfig 是 Windows 命令；network、systemd service 与查 IP 无关。"
+    },
+    {
+      "source_question_id": "ts-27oa-q06",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下issue流程正确的是()",
+      "options": [
+        "A. 测试创建问题单—测试经理审核—研发修改—研发审核—测试人员回归—测试经理确认关闭",
+        "B. 测试创建问题单—测试经理审核—研发修改—研发审核—测试经理审核—测试人员回归—测试经理确认关闭",
+        "C. 测试创建问题单—测试经理审核—研发修改—研发审核—测试人员回归—测试人员确认关闭",
+        "D. 测试创建问题单—测试经理审核—研发修改—研发审核—测试经理回归—测试人员确认关闭"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "流程骨架：提单（测试）→ 测试侧审核 → 研发修复 → 研发侧审核 → 回归验证 → 确认关闭。四个选项的差别只在最后两环的执行角色，各公司实际权限设置（回归由测试人员执行、关闭由谁确认）不统一，属培训题库口径题；判分时需按该公司材料口径，不能靠通用原理反推。"
+    },
+    {
+      "source_question_id": "ts-27oa-q07",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "在以下几项测试活动中，全部属于测试开发阶段的是（）",
+      "options": [
+        "A. 分析测试需求，设计测试用例",
+        "B. 准备测试数据，开发测试工具",
+        "C. 设计测试用例，开发测试工具",
+        "D. 分析测试需求，准备测试数据"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "测试过程通常切分为测试设计（分析测试需求、设计用例）与测试开发/准备（准备测试数据、开发测试工具与脚本）。按这条轴，两项都落在开发阶段的是「准备测试数据 + 开发测试工具」；其余选项都混入了设计或需求分析活动。"
+    },
+    {
+      "source_question_id": "ts-27oa-q08",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "导致软件缺陷的最大原因是()",
+      "options": [
+        "A. 编码",
+        "B. 设计方案",
+        "C. 软件需求说明书",
+        "D. 维护"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "行业统计与教材一致：缺陷占比最高的来源是需求（不完整、二义、频繁变更、错误理解），且越靠后阶段发现修复成本越高——这也是测试左移的根据。"
+    },
+    {
+      "source_question_id": "ts-27oa-q09",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "编程语言基础",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下()不是合法的标识符",
+      "options": [
+        "A. STRING",
+        "B. dnf",
+        "C. x3",
+        "D. void"
+      ],
+      "correct_answer": "",
+      "my_answer": "D",
+      "explanation": "标识符规则：字母或下划线开头、不由数字开头、只能含字母数字下划线、且不能是语言关键字。void 是 C/Java 关键字所以非法；大小写敏感，STRING 只是普通名字，与 string 不同。"
+    },
+    {
+      "source_question_id": "ts-27oa-q10",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "编程语言基础",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "下面代码输出结果是（）。\nint i=0,s=0;\ndo{\nif (i%2 = = 0 ){\ni++;\ncontinue;\n}\ni++;\ns = s + i;\n} while (i<7);\nSystem.out.println(s);",
+      "options": [
+        "A. 21",
+        "B. 28",
+        "C. 16",
+        "D. 12"
+      ],
+      "correct_answer": "",
+      "my_answer": "D",
+      "explanation": "两个考点：continue 跳过本次循环剩余语句但仍会判断 while 条件；偶数分支里 i++ 写在 continue 之前，因此不会死循环。逐轮推演 i=0→1（跳过）、i=1→s=2、i=2→3、i=3→s=6、i=4→5、i=5→s=12、i=6→7，此时 i<7 不成立退出，s=12。卷面瑕疵：等号被拆成「= =」，且变量声明写在方法体外，按字面无法编译，只能按出题意图执行。"
+    },
+    {
+      "source_question_id": "ts-27oa-q11",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "编程语言基础",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "“ab”+”c”*2 结果是（）",
+      "options": [
+        "A. bcabc",
+        "B. ababcc",
+        "C. abcc",
+        "D. abc2"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "Python 先算 * 再算 +：\"c\"*2 得 'cc'，再与 'ab' 拼接得 'abcc'。字符串 * 只能配整数，+ 不能混数字（'abc'+2 直接报 TypeError）。卷面瑕疵：题干使用全角引号，原样进解释器会语法错误。"
+    },
+    {
+      "source_question_id": "ts-27oa-q12",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "性能测试",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "登录某测试网站，输入账号密码所花时间为5s，网络加载花费1.5s，服务器处理操作花费0.5s，浏览器刷新花费1.2s，那么实际登录响应时间为（）s",
+      "options": [
+        "A. 3.2",
+        "B. 9.7",
+        "C. 4.7",
+        "D. 8.2"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "响应时间的口径是从请求发出到页面呈现完成，不含人工输入耗时：1.5+0.5+1.2=3.2。把 5s 输入计入得 8.2 是本题主要干扰项；性能工具（JMeter 等）报告的 Response Time 同样不含 Think Time。"
+    },
+    {
+      "source_question_id": "ts-27oa-q13",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "Linux 磁盘管理好坏直接关系到整个系统的性能。以下()命令不是Linux 磁盘管理常用命令",
+      "options": [
+        "A. fdisk",
+        "B. udisk",
+        "C. du",
+        "D. df"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "磁盘管理常用命令族：fdisk（分区）、df（文件系统用量）、du（目录占用）、mkfs、lsblk、mount、fsck 等；udisk 是早期 U 盘自动挂载守护程序，不属磁盘管理命令。"
+    },
+    {
+      "source_question_id": "ts-27oa-q14",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "定义缺陷的等级有多个维度，不包括以下哪一条()",
+      "options": [
+        "A. Availability(有效性)",
+        "B. Severity(严重程度)",
+        "C. Usage Rate(使用场景)",
+        "D. Repoducibility(复现概率)"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "缺陷定级维度描述的是单个缺陷自身属性：严重程度 Severity、使用场景/频率 Usage Rate、复现概率 Reproducibility。Availability（有效性）是软件质量层面的特性（3A 之一），不用来给单缺陷定级。卷面瑕疵：D 选项把 Reproducibility 拼成 Repoducibility。"
+    },
+    {
+      "source_question_id": "ts-27oa-q15",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试用例设计",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "设计测试用例时，不需要参考()",
+      "options": [
+        "A. 设计说明书",
+        "B. 项目开发计划",
+        "C. 需求规格说明书",
+        "D. 源程序"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "用例设计的技术输入是需求规格说明书、设计说明书，白盒用例还参考源程序。项目开发计划是进度、人力与里程碑类的管理文档，不指导用例内容。"
+    },
+    {
+      "source_question_id": "ts-27oa-q16",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试用例设计",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "按照有效等价类的划分原则，参考标准：年龄[20-45]，身高[160-176]，体重[50-75]，以下属于正确范围的测试用例是（）",
+      "options": [
+        "A. 年龄18，身高177，体重70",
+        "B. 年龄38，身高167，体重60",
+        "C. 年龄20，身高174，体重65",
+        "D. 年龄25，身高170，体重76"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "有效等价类要同时落在所有区间内。A（年龄 18、身高 177）与 D（体重 76）越界。题面写作闭区间，则 C 的年龄 20 恰在下边界、同样落在有效范围内——B 与 C 都成立，属双解风险题：稳妥做法是取「三项都在区间内部」的代表值，边界值另做专项用例。"
+    },
+    {
+      "source_question_id": "ts-27oa-q17",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "在Linux系统中，一个文件的访问权限是555，其含义是()",
+      "options": [
+        "A. 文件所有者对该文件具有读、写权限",
+        "B. 文件所有者对该文件具有写、执行权限",
+        "C. 文件所有者对该文件具有读、执行权限",
+        "D. 文件所有者对该文件具有读、写、执行权限"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "权限位 4=r、2=w、1=x。5=4+1 → r-x，三段依次是所有者/组/其他，555 表示所有者可读可执行、不可写。7 是全权限，6=rw，4=只读。"
+    },
+    {
+      "source_question_id": "ts-27oa-q18",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "Linux系统中，在vi中退出不保存的命令是()",
+      "options": [
+        "A. :w",
+        "B. :q!",
+        "C. :wq",
+        "D. :q"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": ":w 只保存不退出；:q 正常退出（文件未修改时有效）；:wq 保存并退出；:q! 强制退出不保存（有改动时唯一出路，另一写法是 :q! 等价的 :qa! 全退）。"
+    },
+    {
+      "source_question_id": "ts-27oa-q19",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下()不属于软件缺陷",
+      "options": [
+        "A. 软件中出现了产品规格说明不应该出现的功能",
+        "B. 软件实现了 产品规格没有提到的功能",
+        "C. 软件没有实现产品规格说明所要求的功能",
+        "D. 软件实现了产品规格说明所要求的功能但因受性能限制而不能实现"
+      ],
+      "correct_answer": "",
+      "my_answer": "D",
+      "explanation": "缺陷的经典判据围绕「与规格或合理预期不符」：出现规格不该有的功能、实现规格未提及的功能、未实现规格要求的功能，三条都属缺陷。D 句本身自相矛盾（既说实现又说不能实现），是卷面病句，此题实际靠排除法完成。"
+    },
+    {
+      "source_question_id": "ts-27oa-q20",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "覆盖与测试设计方法",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "如果一个判断中的复合条件表达式为（A>1）or(B <=3),则为了达到100%的条件覆盖率，至少需要设计()个测试用例",
+      "options": [
+        "A. 2",
+        "B. 3",
+        "C. 1",
+        "D. 4"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "条件覆盖只要求每个原子条件的真与假各至少出现一次：用例1（A>1 真、B<=3 真）+ 用例2（A>1 假、B<=3 假）即满足，最少 2 个。判定覆盖同样是 2 个。若问的是条件组合覆盖（A、B 真假 4 种组合全出现）才需要 4 个。覆盖准则强弱链：语句 < 判定 < 条件 ≈ 判定-条件 < 条件组合 < 路径。"
+    },
+    {
+      "source_question_id": "ts-27oa-q21",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "汽车电子与功能安全",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,iot-embedded,校招笔试",
+      "title": "ISO 26262标准是汽车行业哪个领域的核心规范？",
+      "options": [
+        "A. 电子功能安全 (Functional Safety)",
+        "B. 网络安全 (Cybersecurity)",
+        "C. 基础软件架构 (AUTOSAR)",
+        "D. 软件过程改进 (ASPICE)"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "ISO 26262 是道路车辆电子电气系统的功能安全标准（含危害分析与 ASIL 分级）。对照记：网络安全 ISO/SAE 21434，过程改进 Automotive SPICE，架构规范 AUTOSAR。"
+    },
+    {
+      "source_question_id": "ts-27oa-q22",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "汽车电子与功能安全",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,iot-embedded,校招笔试",
+      "title": "在SAE J3016标准中，L4级别的自动驾驶意味着什么？",
+      "options": [
+        "A. 车辆可以实现全天候、全场景的完全自动驾驶",
+        "B. 车辆可以在特定条件下完全自动驾驶，但驾驶员需要随时准备接管",
+        "C. 车辆可以在特定场景（如高速公路）下实现高度自动驾驶，无需人类干预",
+        "D. 驾驶员辅助系统，如自适应巡航"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "J3016 分级看「谁负责兜底接管」：L2 辅助驾驶，驾驶员全程监控；L3 有条件自动驾驶，可脱眼但必须随时准备接管；L4 高度自动驾驶，在限定运行设计域 ODD（如高速公路）内无需人类干预；L5 才是全天候全场景。B 描述 L3，A 描述 L5。"
+    },
+    {
+      "source_question_id": "ts-27oa-q23",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "覆盖与测试设计方法",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "下列哪项技术是黑盒测试用例设计方法中最常用于处理输入条件组合爆炸问题的？",
+      "options": [
+        "A. 判定表驱动法",
+        "B. 边界值分析",
+        "C. 因果图法",
+        "D. 等价类划分"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "多条件组合的正规解法是判定表驱动法：列全条件桩与动作桩再合并冗余列，直接消解组合爆炸。因果图是判定表的图形化前身（约束记号更有用但产出仍转成判定表）；等价类与边界值解决的是单个输入的取值划分，不处理组合。进一步的削减手段是正交表/配对测试。"
+    },
+    {
+      "source_question_id": "ts-27oa-q24",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "重构与代码质量",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "“在不改变软件外部行为的前提下，修改软件的内部结构，以提高其可理解性、降低其修改成本” 的活动被称为？",
+      "options": [
+        "A. 调试 (Debugging)",
+        "B. 优化 (Optimization)",
+        "C. 重构 (Refactoring)",
+        "D. 回归测试 (Regression Testing)"
+      ],
+      "correct_answer": "",
+      "my_answer": "C",
+      "explanation": "重构的定义即「不改外部行为、只改内部结构」以提升可理解性并降低修改成本；优化的目标是性能/资源占用，调试是定位并修复缺陷，回归测试是保障改动没破坏既有行为（重构的安全网）。"
+    },
+    {
+      "source_question_id": "ts-27oa-q25",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试类型与工具",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "静态代码分析工具可以在不运行代码的情况下发现问题，它不能发现以下哪种类型的缺陷？",
+      "options": [
+        "A. 不符合编码规范的代码",
+        "B. 内存泄漏问题",
+        "C. 空指针引用",
+        "D. 未使用的变量"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "静态分析擅长纯文本/数据流可判定的问题：规范违例、未使用变量与死代码、可疑空指针、复杂度异常、危险 API。真实内存泄漏是否发生取决于运行期路径与资源生命周期，静态工具只能标可疑点，不能确证——这正是需要动态分析（Valgrind、ASan、泄漏检测）的边界。"
+    },
+    {
+      "source_question_id": "ts-27oa-q26",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "发现失效需要测试员具有（）",
+      "options": [
+        "A. 对常见的错误进行判断的经验",
+        "B. 与开发人员良好的沟通能力",
+        "C. 一双挑剔的眼睛",
+        "D. 好奇心"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABCD",
+      "explanation": "发现失效依赖四项素质：常见错误的经验判断、怀疑与挑剔的眼光、好奇驱动的去试、把失效描述清楚并推进修复的沟通力。"
+    },
+    {
+      "source_question_id": "ts-27oa-q27",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "网络与协议",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "TCP/IP协议在一定程度上参考了OSI的体系结构，但是简化成了四个层次，分别是哪四个层次()",
+      "options": [
+        "A. 网络接口层",
+        "B. 应用层",
+        "C. 数据链路层",
+        "D. 网络层",
+        "E. 运输层"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABDE",
+      "explanation": "TCP/IP 四层：网络接口层（链路层）、网络层/网际层、运输层、应用层。「数据链路层」是 OSI 七层的叫法，四层模型里对应的是网络接口层，因此不重复入选。"
+    },
+    {
+      "source_question_id": "ts-27oa-q28",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试用例设计",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "测试用例通常包括哪些内容（）",
+      "options": [
+        "A. 预期结果",
+        "B. 用例标题",
+        "C. 实际结果",
+        "D. 测试环境",
+        "E. 用例编号",
+        "F. 输入数据"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABDEF",
+      "explanation": "用例设计阶段的要素：编号、标题、前置条件、测试环境、输入数据、执行步骤、预期结果。实际结果是执行时填的运行记录，不属于用例本身的内容——用例在没跑之前就该写完整。"
+    },
+    {
+      "source_question_id": "ts-27oa-q29",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件质量模型",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "软件质量具有3A特性()",
+      "options": [
+        "A. accessibility(易用性) 对于用户，产品或服务非常容易使用并且一定是非常有用的功能(例如：确认测试和用户可用性测试)",
+        "B. Acceptability(可接受性)对于市场，产品或服务的接受程度越高，说明软件质量越好",
+        "C. accountability(可说明性）用户可以基于产品或服务的描述和定义加以使用",
+        "D. availability(有效性) 产品或服务对于客户的需求是否能保障有效，如具有99.99%有效性，可以说达到质量要求"
+      ],
+      "correct_answer": "",
+      "my_answer": "ACD",
+      "explanation": "培训体系里的 3A 是 accessibility（易用性）、acceptability（可接受性）、availability（有效性），分别对用户、对市场、对需求保障；accountability（可说明性/问责）属质量治理与审计概念，不在这三条里。卷面瑕疵：四个选项全部以 A 开头且未标明选几项。"
+    },
+    {
+      "source_question_id": "ts-27oa-q30",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试类型与工具",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "对于软件代码的测试，通常通过黑盒与白盒两种方法来测试，其中通过黑盒测试可以进行以下确认()",
+      "options": [
+        "A. 初始化和中止错误",
+        "B. 界面是否错误，是否不美观",
+        "C. 访问外部信息是否有错",
+        "D. 是否有不正确或遗漏了的功能；",
+        "E. 性能上是否满足要求",
+        "F. 在接口上，能否正确地接受输入，能否产生正确的输出信息；"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABCDEF",
+      "explanation": "黑盒测试的经典可确认清单是五条：功能是否正确或有遗漏、接口能否正确接收输入并产生输出、外部信息（数据库/文件）访问是否有错、性能是否满足要求、初始化与终止错误。「界面是否不美观」是主观可用性评价，不在经典清单内（界面错误可查，美观不可判）。多选题全选是少数情况，此项需再审。"
+    },
+    {
+      "source_question_id": "ts-27oa-q31",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "测试设计员的职责有（）",
+      "options": [
+        "A. 设计测试用例",
+        "B. 设计测试过程、脚本",
+        "C. 评估测试活动",
+        "D. 制定测试计划"
+      ],
+      "correct_answer": "",
+      "my_answer": "AB",
+      "explanation": "职责分层：测试设计员做用例设计与测试过程/脚本设计；测试经理或负责人制定测试计划、评估测试活动与结果。"
+    },
+    {
+      "source_question_id": "ts-27oa-q32",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件质量模型",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "软件质量有以下三部分组成()",
+      "options": [
+        "A. 软件开发过程的质量，即能否满足开发所带来的成本，时间和风险等要求",
+        "B. 应用领域或业务上的质量",
+        "C. 软件产品的质量，即满足使用要求的程度",
+        "D. 应当有合理有效的测试设计来保障软件质量"
+      ],
+      "correct_answer": "",
+      "my_answer": "AB",
+      "explanation": "题面问的是「组成部分」，答案应是三条并列的质量对象：过程质量（成本/时间/风险）、业务或应用领域质量、产品质量（满足使用要求的程度）。D 是保障质量的主张/手段，不是质量的组成。漏选会直接扣分，此处需再审。"
+    },
+    {
+      "source_question_id": "ts-27oa-q33",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "编程语言基础",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "某次调试程序没有出现预计的结果，下列可能导致问题出现的原因有（）",
+      "options": [
+        "A. 代码输入有误",
+        "B. 循环控制出错",
+        "C. 编写的语句书写格式不规范",
+        "D. 变量没有初始化"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABD",
+      "explanation": "能改变运行结果的典型根因：录入/抄写出错、循环边界与终止条件出错、变量未初始化（读到脏值）。书写格式不规范一般只影响可读性与可维护性，不改变结果（Python 缩进属语义范畴，是例外）。"
+    },
+    {
+      "source_question_id": "ts-27oa-q34",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "覆盖与测试设计方法",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下测试方法，属于白盒测试技术的是（）",
+      "options": [
+        "A. 边界值分析",
+        "B. 基本路径测试",
+        "C. 判定覆盖",
+        "D. 语句覆盖"
+      ],
+      "correct_answer": "",
+      "my_answer": "BCD",
+      "explanation": "白盒技术基于程序内部结构：语句覆盖、判定覆盖、条件覆盖、条件组合覆盖、路径覆盖、基本路径测试（圈复杂度）。边界值分析与等价类划分只看输入输出，属黑盒。"
+    },
+    {
+      "source_question_id": "ts-27oa-q35",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "汽车电子与功能安全",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,iot-embedded,校招笔试",
+      "title": "汽车ECU（电子控制单元）的典型测试活动包括哪些？",
+      "options": [
+        "A. 实车道路测试",
+        "B. 单元测试",
+        "C. 硬件在环(HIL)测试",
+        "D. 静态代码分析"
+      ],
+      "correct_answer": "",
+      "my_answer": "ABCD",
+      "explanation": "ECU 开发按 V 模型展开，测试活动沿左臂下行、右臂上行铺满：静态代码分析与单元测试（软件级）、HIL 硬件在环（控制器与模拟环境闭环）、实车道路测试（整车级集成与验证）。四项都是典型活动。"
+    },
+    {
+      "source_question_id": "ts-27oa-q36",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,iot-embedded,校招笔试",
+      "title": "安卓系统的adb命令非常强大，通过以下命令可以对于手机截图:adb shell screencap -p /sdcard/screen.png。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "adb shell screencap -p /sdcard/screen.png 是标准截图命令，-p 表示以 png 格式输出到指定路径，再用 adb pull 取回本地。一条命令式写法是 adb exec-out screencap -p > screen.png。"
+    },
+    {
+      "source_question_id": "ts-27oa-q37",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "Linux 与命令",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下命令可以在/tmp底下创建数个新目录：\n[root@www ~]# cd /tmp\n[root@www tmp]# mkdir test1/test2/test3/test4",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "不带 -p 时 mkdir 遇到不存在的父目录会直接报错（No such file or directory），多级目录必须 mkdir -p test1/test2/test3/test4（-p 还让已存在目录不报错）。这是高频判断题考点。"
+    },
+    {
+      "source_question_id": "ts-27oa-q38",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "缺陷管理与测试流程",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "测试工程师在测试活动中担当功能测试或软件测试的测试用例设计与测试实施。前者完成测试用例的编写；后者执行测试用例，实施测试活动。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "考点是用例设计与测试实施两项活动的分工定义：设计侧产出用例，实施侧执行用例并记录结果。表述与流程定义一致。"
+    },
+    {
+      "source_question_id": "ts-27oa-q39",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "测试开始得越早，发现和修复缺陷的成本就越低。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "缺陷修复成本随阶段指数上升（需求阶段最低，上线后最高），因此测试要左移、尽早介入评审与静态验证。"
+    },
+    {
+      "source_question_id": "ts-27oa-q40",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试类型与工具",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "回归测试的目的是为了检查新增加的功能是否能够正常工作。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "回归测试的目的是验证代码变更、缺陷修复没有破坏既有功能，重点在「旧功能仍然好」；只测新增功能是把它与功能验证混为一谈，也正是最常见的误区。"
+    },
+    {
+      "source_question_id": "ts-27oa-q41",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "覆盖与测试设计方法",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "100%的语句覆盖率意味着代码中不存在任何缺陷。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "语句覆盖只保证每行被走过，不校验判定逻辑、边界取值、数据处理与需求符合度。覆盖率是「测了多少」的度量，不是「对不对」的结论。"
+    },
+    {
+      "source_question_id": "ts-27oa-q42",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "软件测试基础",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "敏捷开发模式下，测试活动通常在开发活动全部完成后才开始。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "B",
+      "explanation": "敏捷里测试与开发并行、在每个迭代内持续进行（用户故事验收标准先行、自动化测试随代码提交跑），「开发全部完成后才测」是瀑布式做法。"
+    },
+    {
+      "source_question_id": "ts-27oa-q43",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "汽车电子与功能安全",
+      "difficulty": "中",
+      "company_tags": "中科创达,software-testing-ops,iot-embedded,校招笔试",
+      "title": "CAN总线采用差分信号传输，可以有效抵抗电磁干扰。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "CAN 用 CAN_H/CAN_L 差分信号传输，显性与隐性电平以两线压差表示，共模干扰在差分端被抵消，因此抗 EMI 能力强、适合车载环境（配套还有终端电阻与屏蔽双绞）。"
+    },
+    {
+      "source_question_id": "ts-27oa-q44",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "测试类型与工具",
+      "difficulty": "易",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "验收测试（UAT）通常由最终用户或客户来进行，以确认系统是否满足其业务需求。",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "UAT 的定位就是由需方/最终用户在真实业务场景确认系统满足业务需求，测试团队通常只提供环境与用例支持。"
+    },
+    {
+      "source_question_id": "ts-27oa-q45",
+      "question_type": "choice",
+      "assessment_kind": "online-aptitude",
+      "category": "编程语言基础",
+      "difficulty": "难",
+      "company_tags": "中科创达,software-testing-ops,校招笔试",
+      "title": "以下实例使用了嵌套循环打印2~100这些数字，并且判断是否为素数：\n#!/usr/bin/python\ni = 2\nwhile(i < 100):\n    j = 2\n    while(j <= (i/j)):\n        if not(i%j): break\n        j = j + 1\n    if (j > i/j) : print i, \" 是素数\"\n    i = i + 1\nprint \"Good bye!\"",
+      "options": [
+        "A. 正确",
+        "B. 错误"
+      ],
+      "correct_answer": "",
+      "my_answer": "A",
+      "explanation": "内层 while(j <= i/j) 用除法替代开方做试算上界，i%j 为 0 即 break 跳出；结束时 j > i/j 说明没有找到因子，判为素数并打印，外层 i 自增——这是经典素数示例，按 Python 2 语义逻辑成立。两处口径风险：print 语句是 Python 2 写法（Python 3 下语法直接报错），且代码只打印素数、i < 100 也不含 100，与题面「打印 2~100 这些数字」的措辞不符。"
+    }
+  ]
+}

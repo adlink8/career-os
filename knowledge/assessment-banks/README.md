@@ -26,12 +26,13 @@
 - `assessment-intelligence.md` — 企业官方流程与社区面经题型信号（带年份、证据等级和版权边界）
 - `../../data/assessment-intelligence.json` — 可供 CLI 查询的结构化测评情报
 - `mock-questions.md`、`../../data/assessment-bank.example.json` 与 `../../data/assessment-bank.project.json` — Career OS 本项目既有题库，继续作为通用题库来源
+- `thundersoft-27-test-oa.md` 与 `../../data/question-bank.feishu-thundersoft-27-test-oa.json` — 中科创达 2027 校招测试岗笔试全场 45 题（2026-10-22 飞书考试中心实测记录，库 id 1201–1245），含卷面瑕疵与双解/口径题标注；`correct_answer` 待官方判分后回填。**企业专有题目，仅限个人复盘与面试备考，禁止外传或公开发布。**
 
 ## 当前可用边界（2026-09-02）
 
 | JD 轨道 | 已达到可训练规模的部分 | 当前状态 | 仍未覆盖的专向维度 |
 |---|---|---|---|
-| 软件测试 / 运维 / SRE | Python 测试、覆盖率、静态检查、系统自动化、网络、容器、CI/CD、可观测性（按标签计 580 题） | 基础训练可用 | Linux 命令/权限/进程专项、真实故障场景 SJT |
+| 软件测试 / 运维 / SRE | Python 测试、覆盖率、静态检查、系统自动化、网络、容器、CI/CD、可观测性（按标签计 580 题）+ 缺陷流程、覆盖准则、Linux 权限与命令、汽车电子功能安全（中科创达真实笔试 45 题，暂无官方答案） | 基础训练可用 | 进程/内存调度专项、真实故障场景 SJT、企业真题的官方答案对账 |
 | 数据分析 | SQL、事务/迁移、ORM、pandas、统计、可视化、Jupyter（252 题） | 基础训练可用 | 业务案例、指标推导、资料分析整套题 |
 | AI 应用 / RAG / Agent | Python/API、机器学习、神经网络、数据库、异步与服务端基础（471 题） | 工程基础可用 | chunking、向量库、rerank、Agent 状态/工具、Prompt 注入与 RAG 评测 |
 | 技术支持 / FAE | Python/网络/API/系统基础（325 题） | 基础训练可用 | C/C++、硬件接口、现场排障和客户冲突情景 |

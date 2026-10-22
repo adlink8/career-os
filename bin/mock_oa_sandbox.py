@@ -94,7 +94,8 @@ def run_choice_quiz(
 
     conn = get_db()
     tracks = _job_question_tracks(conn, job_id)
-    where = "question_type = 'choice'"
+    # 未回填官方答案的题目（企业真题回忆）不进判分池，否则任何作答都必判错。
+    where = "question_type = 'choice' AND TRIM(COALESCE(correct_answer, '')) <> ''"
     params: list[str] = []
     if tracks:
         where += " AND (" + " OR ".join("company_tags LIKE ?" for _ in tracks) + ")"
