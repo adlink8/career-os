@@ -104,7 +104,7 @@ def line_hash(line: str) -> str:
 def list_staged() -> list[str]:
     out = subprocess.run(
         ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z"],
-        cwd=REPO_ROOT, capture_output=True, text=True, check=True,
+        cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", check=True,
     ).stdout
     return [f for f in out.split("\0") if f]
 
@@ -114,13 +114,13 @@ def list_ci_changed() -> list[str]:
     subprocess.run(["git", "fetch", "--quiet", "origin"], cwd=REPO_ROOT, capture_output=True)
     out = subprocess.run(
         ["git", "diff", "--name-only", "--diff-filter=ACMR", f"{base}...HEAD", "-z"],
-        cwd=REPO_ROOT, capture_output=True, text=True, check=True,
+        cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", check=True,
     ).stdout
     return [f for f in out.split("\0") if f]
 
 
 def list_all_tracked() -> list[str]:
-    out = subprocess.run(["git", "ls-files", "-z"], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout
+    out = subprocess.run(["git", "ls-files", "-z"], cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8", check=True).stdout
     return [f for f in out.split("\0") if f]
 
 
@@ -200,3 +200,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
