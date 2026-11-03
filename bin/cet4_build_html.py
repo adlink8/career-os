@@ -80,10 +80,10 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
 #tbPanel button.active{background:#111;color:#fff;border-color:#111}
 #tbPanel .span2{display:block;width:100%;text-align:left}
 #tbPanel select{font-size:12px;margin:2px 2px 0 0;padding:3px 4px;border:1px solid #ccc;border-radius:6px;background:#fafafa}
-.audioBar{width:595.32pt;margin:0 auto 6pt;display:flex;gap:10px;align-items:center;font:12px/1.5 -apple-system,"Microsoft YaHei"}
+.audioBar{width:595.32pt;margin:0 auto 6pt;display:flex;gap:10px;align-items:center;font:12px/1.5 -apple-system,"Microsoft YaHei";position:sticky;top:0;z-index:25;background:#fff;padding:6pt 0 4pt;box-shadow:0 4px 10px -6px rgba(0,0,0,.35)}
 .audioBar audio{width:320px;height:32px}
 .audioBar{flex-wrap:wrap}
-#subs{flex:1 1 100%;max-height:92px;overflow:auto;border:1px solid #ddd;border-radius:6px;padding:4px 6px;background:#fcfcf8}
+#subs{flex:1 1 100%;max-height:58px;overflow:auto;border:1px solid #ddd;border-radius:6px;padding:4px 6px;background:#fcfcf8}
 #subs div{padding:1px 2px;border-radius:3px;cursor:pointer;color:#444}
 #subs div.on{background:#fff3a8;color:#000;font-weight:600}
 #vocab{display:none;margin:10pt 0 4pt;padding:8pt 10pt;border:1px solid #ddd;border-radius:6pt;background:#fcfcf8}
