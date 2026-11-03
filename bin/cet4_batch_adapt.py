@@ -53,6 +53,7 @@ JSON 结构：
 5) evidence 必须逐字出现在 passage 里。
 6) sentences 的 en 拼接后必须与 passage 完全一致（含标点与空格）。
 7) 参考真题风格（不要照抄）：{anchors}
+8) 题材红线：毒品/自杀/自残/暴力/具体药物疗效一律改写或回避；保持四级通用社会、教育、健康、职场话题。
 
 文章标题：{title}
 文章正文：
@@ -146,7 +147,14 @@ def main():
     args = ap.parse_args()
 
     raw = json.loads(Path(args.candidates).read_text(encoding="utf-8"))["picked"]
-    filtered = [c for c in raw if usable(c)]
+    seen = set()
+    filtered = []
+    for c in raw:
+        key = c.get("title", "").strip().lower()
+        if key in seen or not usable(c):
+            continue
+        seen.add(key)
+        filtered.append(c)
     filtered.sort(key=lambda c: (-c.get("score", 0), -c.get("words", 0)))
     cands = filtered[: args.limit]
     Path(ROOT / "var" / "cet4-daily" / "batch-log.jsonl").parent.mkdir(parents=True, exist_ok=True)
