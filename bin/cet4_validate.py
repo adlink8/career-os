@@ -61,10 +61,23 @@ def check(payload):
             errs.append(f"Q{no}: missing trap")
     if len(set(answers)) < 3:
         errs.append("answers too concentrated: " + "".join(answers))
-    ss = payload.get("sentences") or []
-    joined = re.sub(r"\s+", " ", " ".join(s.get("en", "") for s in ss)).strip().lower()
-    if re.sub(r"\s+", " ", p).strip().lower() != joined:
-        errs.append("sentences.en do not concatenate to passage")
+    pn = re.sub(r"\s+", " ", p).strip().lower()
+    paras = payload.get("paragraphs") or []
+    if paras:
+        joined = re.sub(r"\s+", " ", " ".join(x.get("en", "") for x in paras)).strip().lower()
+        if pn != joined:
+            errs.append("paragraphs.en do not concatenate to passage")
+        for i, para in enumerate(paras, 1):
+            for key in ("cn", "main", "structure"):
+                if not (para.get(key) or "").strip():
+                    errs.append(f"paragraph {i} missing {key}")
+        if len(paras) < 3:
+            errs.append(f"paragraphs={len(paras)} < 3")
+    else:
+        ss = payload.get("sentences") or []
+        joined = re.sub(r"\s+", " ", " ".join(x.get("en", "") for x in ss)).strip().lower()
+        if pn != joined:
+            errs.append("sentences.en do not concatenate to passage")
     return {"words": n, "avg_sentence": round(avg, 1), "long10_pct": round(long10, 1),
             "questions": len(qs), "errors": errs, "ok": not errs}
 

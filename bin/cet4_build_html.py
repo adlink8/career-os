@@ -23,7 +23,11 @@ h1{font-size:20px;margin:0}
 #timer{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
 button{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:8px;padding:6px 12px;font-size:14px}
 button:hover{background:rgba(127,127,127,.12)}
-.p{white-space:pre-wrap;margin:0 0 16px}
+.p{white-space:pre-wrap;margin:0 0 10px}
+#passage{white-space:normal}
+.para{margin:0 0 22px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
+.para-ans{display:none;background:rgba(127,127,127,.06);border-left:3px solid var(--hl);padding:8px 12px;border-radius:6px}
+.para-ans.show{display:block}
 .q{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
 .q b{color:var(--muted)}
 .opt{display:block;padding:6px 8px;border-radius:6px;margin:2px 0;cursor:pointer}
@@ -38,17 +42,24 @@ button:hover{background:rgba(127,127,127,.12)}
 .cell.done{background:rgba(127,127,127,.15)}
 .cell.ok{background:rgba(10,125,50,.2)}
 .cell.bad{background:rgba(198,40,40,.2)}
-.bi{margin:10px 0;padding:10px;border-left:3px solid var(--hl);background:rgba(255,243,191,.18);display:none}
+.bi{display:none} .bi{margin:10px 0;padding:10px;border-left:3px solid var(--hl);background:rgba(255,243,191,.18);display:none}
 .bi.show{display:block}
 .bi .en{font-weight:600}
 .bi .cn{color:var(--muted);font-size:14px}
 .chip{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:10px;padding:0 8px;margin:2px 4px 2px 0;color:var(--muted)}
 #score{font-weight:700}
 .small{font-size:13px;color:var(--muted)}
+.examhead{margin:6px 0 18px}.examhead p{margin:4px 0}.examhead .dir{font-style:italic;color:var(--muted);font-size:14px}
 footer{margin-top:40px;font-size:12px;color:var(--muted)}
 </style></head><body><div class="wrap">
-<header><h1>__TITLE__</h1><div class="bar"><span id="timer">40:00</span><span id="progress">0/5</span><button onclick="toggleBi()">双语逐句</button><button onclick="toggleTheme()">深色</button></div></header>
+<header><h1>__TITLE__</h1><div class="bar"><span id="timer">40:00</span><span id="progress">0/5</span><button onclick="toggleBi()">段落解析</button><button onclick="toggleTheme()">深色</button></div></header>
 <div class="small">__META__</div>
+<div class="examhead">
+  <p><b>Part III &nbsp; Reading Comprehension</b> &nbsp;(40 minutes)</p>
+  <p><b>Section C</b></p>
+  <p class="dir">Directions: Read the following passage carefully. For each question, choose the best answer from the four choices marked A), B), C) and D).</p>
+  <p><b>Passage One</b></p>
+</div>
 <div id="passage" class="p"></div>
 <div id="qs"></div>
 <div class="sheet" id="sheet"></div>
@@ -68,22 +79,48 @@ function fmt(s){const m=String(Math.floor(s/60)).padStart(2,'0');const x=String(
 function tickTimer(){ if(left<=0){clearInterval(tick); document.getElementById('score').textContent='时间到'; return;} left--; document.getElementById('timer').textContent=fmt(left); }
 
 function render(){
-  document.getElementById('passage').textContent = PAPER.passage;
+  const pv = document.getElementById('passage');
+  if (PAPER.paragraphs && PAPER.paragraphs.length) {
+    pv.innerHTML = PAPER.paragraphs.map((para, i) => `
+      <div class="para">
+        <div class="p">${(para.en || '').trim()}</div>
+        <div class="para-ans">
+          <div class="cn">${(para.cn || '').trim()}</div>
+          ${para.main ? `<div class="small">本段主旨：${para.main}</div>` : ''}
+          ${para.structure ? `<div class="small">段落作用：${para.structure}</div>` : ''}
+          ${(para.sentences||[]).map(s => `<div class="small">关键句：${s.en}</div>${(s.chunks||[]).map(c=>`<span class="chip">${c.en} → ${c.cn}</span>`).join('')}`).join('')}
+        </div>
+      </div>`).join('');
+  } else {
+    pv.style.whiteSpace = 'pre-wrap'; pv.textContent = PAPER.passage;
+  }
   const qs = document.getElementById('qs');
   qs.innerHTML = PAPER.questions.map(q => {
     const opts = q.options.map(o => {
       const letter = o[0];
       return `<label class="opt" data-q="${q.no}" data-l="${letter}"><input type="radio" name="q${q.no}" value="${letter}" onchange="pick(${q.no})"> ${o}</label>`;
     }).join('');
-    return `<div class="q" id="q${q.no}"><b>Q${q.no}</b> ${q.stem}<div>${opts}</div>
+    return `<div class="q" id="q${q.no}"><b>Q${q.no + 45}</b> ${q.stem}<div>${opts}</div>
       <div class="ans" id="a${q.no}"><span class="tag">答案 ${q.answer}</span>${q.evidence ? '<div class="small">定位：'+q.evidence+'</div>' : ''}
       ${q.paraphrase ? '<div class="small">同义替换：'+q.paraphrase.original+' → '+q.paraphrase.option+'</div>' : ''}
       ${q.trap ? '<div class="small">陷阱：'+q.trap+'</div>' : ''}</div></div>`;
   }).join('');
   const sheet = document.getElementById('sheet');
-  sheet.innerHTML = PAPER.questions.map(q => `<div class="cell" id="c${q.no}" onclick="jump(${q.no})">${q.no}</div>`).join('');
+  sheet.innerHTML = PAPER.questions.map(q => `<div class="cell" id="c${q.no}" onclick="jump(${q.no})">${q.no + 45}</div>`).join('');
   const bis = document.getElementById('bis');
-  bis.innerHTML = PAPER.sentences.map(s => `<div class="bi"><div class="en">${s.en}</div><div class="cn">${s.cn}</div>${(s.chunks||[]).map(c=>`<span class="chip">${c.en} → ${c.cn}</span>`).join('')}</div>`).join('');
+  if (PAPER.paragraphs && PAPER.paragraphs.length) {
+    bis.innerHTML = '';
+    bis.innerHTML = PAPER.paragraphs.map((para, i) => `
+      <div class="bi">
+        <div class="en">¶${i+1} ${para.en}</div>
+        <div class="cn">${(para.cn || '').trim()}</div>
+        ${para.main ? `<div class="small">主旨：${para.main}</div>` : ''}
+        ${para.structure ? `<div class="small">作用：${para.structure}</div>` : ''}
+        ${(para.sentences||[]).map(s => `<div class="small">· ${s.en}</div>${(s.chunks||[]).map(c=>`<span class="chip">${c.en} → ${c.cn}</span>`).join('')}`).join('')}
+      </div>`).join('');
+  } else {
+    bis.innerHTML = (PAPER.sentences||[]).map(s => `<div class="bi"><div class="en">${s.en}</div><div class="cn">${s.cn}</div>${(s.chunks||[]).map(c=>`<span class="chip">${c.en} → ${c.cn}</span>`).join('')}</div>`).join('');
+  }
 }
 function pick(n){
   const v = document.querySelector(`input[name=q${n}]:checked`);
@@ -110,11 +147,11 @@ function check(){
   document.getElementById('score').textContent = '得分 '+right+'/5（已答 '+answered()+'）';
   document.getElementById('explain').classList.add('show');
   document.getElementById('explainBody').innerHTML = PAPER.questions.map(q =>
-    `<div class="small"><b>Q${q.no}</b> 正确答案 ${q.answer}；${q.paraphrase?('同义替换：'+q.paraphrase.original+' → '+q.paraphrase.option):''}${q.trap?('；陷阱：'+q.trap):''}</div>`).join('');
+    `<div class="small"><b>Q${q.no + 45}</b> 正确答案 ${q.answer}；${q.paraphrase?('同义替换：'+q.paraphrase.original+' → '+q.paraphrase.option):''}${q.trap?('；陷阱：'+q.trap):''}</div>`).join('');
   save();
 }
 function resetAll(){ if(!confirm('清空作答？')) return; localStorage.removeItem(KEY); location.reload(); }
-function toggleBi(){ biOn=!biOn; document.querySelectorAll('.bi').forEach(e=>e.classList.toggle('show',biOn)); }
+function toggleBi(){ biOn=!biOn; document.querySelectorAll('.para-ans').forEach(e=>e.classList.toggle('show',biOn)); document.querySelectorAll('.bi').forEach(e=>e.classList.toggle('show',biOn)); }
 function toggleTheme(){ const d=document.documentElement; const n=d.getAttribute('data-theme')==='dark'?'light':'dark'; d.setAttribute('data-theme',n); localStorage.setItem('cet4-sim-theme',n); }
 function save(){ try{ const ans={}; PAPER.questions.forEach(q=>{const v=document.querySelector(`input[name=q${q.no}]:checked`); if(v) ans[q.no]=v.value;}); localStorage.setItem(KEY, JSON.stringify({ans,left})); }catch(e){} }
 function load(){ try{ const raw=localStorage.getItem(KEY); if(!raw) return; const d=JSON.parse(raw); if(d.left) {left=d.left; document.getElementById('timer').textContent=fmt(left);} Object.entries(d.ans||{}).forEach(([n,v])=>{const el=document.querySelector(`input[name=q${n}][value="${v}"]`); if(el){el.checked=true; document.getElementById('c'+n).classList.add('done');}}); document.getElementById('progress').textContent=answered()+'/5'; }catch(e){} }
