@@ -31,8 +31,10 @@ def parse_writing(text):
 
 def parse_translation(text):
     blk = part(text, "IV")
-    body = re.sub(r"^\*\*Directions:\*\*.*?_\s*", "", blk, flags=re.S).strip()
+    body = re.sub(r"^#+\s*Part IV.*?\n", "", blk, flags=re.S)
+    body = re.sub(r"\*\*Directions:\*\*.*?_\s*", "", body, flags=re.S)
     body = re.sub(r"\s+", "", body)
+    body = "".join(re.findall(r"[\u4e00-\u9fff，。；、：！？]", body))
     sents = [s for s in re.split(r"[。；]", body) if s.strip()]
     return {"zh": body, "chars": len(body), "sentences": len(sents),
             "avg_sentence_chars": round(len(body) / max(1, len(sents)), 1)}
