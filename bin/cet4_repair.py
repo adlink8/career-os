@@ -31,6 +31,8 @@ PROMPT = """你是四级命题老师，现在按审查报告修改这套阅读�
 3) 答案覆盖至少 3 个不同字母；每题 evidence 必须逐字在原文。
 4) 题号必须是 46-50；每题给 stem_cn 与 options_cn（顺流直译中文）。
 4b) 同题选项长度差 <=3 词，正确项不得总是最长。
+4c) 题干必须指向原文的具体对象（哪两个地点/哪类记忆），不得换对象；正确项不得越出原文（如把 may sound like 写成 is）。
+4d) 保留可核细节：国家/机构类型、样本量、数据、研究结论，不要只剩抽象概括。
 5) 只输出 JSON：{{"questions":[...]}}，结构与原题一致（含 option_analysis）。
 """
 
@@ -52,6 +54,17 @@ def parse_json(text: str):
     except json.JSONDecodeError:
         return None
 
+
+
+def refresh_difficulty(paper):
+    import re as _re
+    p = paper.get("passage", "")
+    ws = _re.findall(r"[A-Za-z][A-Za-z'-]*", p)
+    n = len(ws)
+    sents = [x for x in _re.split(r"(?<=[.!?])\s+", p) if len(_re.findall(r"[A-Za-z][A-Za-z'-]*", x)) >= 4]
+    avg = round(n / max(1, len(sents)), 1)
+    long10 = round(100 * sum(1 for w in ws if len(w) >= 10) / max(1, n), 1)
+    paper["difficulty"] = {**(paper.get("difficulty") or {}), "words": n, "avg_sentence": avg, "long10_pct": long10}
 
 def review(paper_path: Path):
     subprocess.run([sys.executable, str(ROOT / "bin" / "cet4_review.py"), str(paper_path)],
@@ -82,6 +95,7 @@ def main():
         paper["questions"] = data["questions"]
         res = check(paper)
         print(f"round {r}: validate={res['ok']} {res['errors'][:3]}")
+        refresh_difficulty(paper)
         pp.write_text(json.dumps(paper, ensure_ascii=False, indent=1), encoding="utf-8")
         # 题目改了必须重建音频/字幕/HTML，否则纸面与音频不同源
         subprocess.run([sys.executable, str(ROOT / "bin" / "cet4_tts.py"), str(pp)], check=False,
