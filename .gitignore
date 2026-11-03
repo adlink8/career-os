@@ -114,3 +114,7 @@ scripts/generate_ops_resumes.py
 /tmp_*.html
 /tmp_*.json
 /.mimosa/
+
+# 四级每日选材运行产物（日志/候选，不入库）
+var/cet4-daily/
+
