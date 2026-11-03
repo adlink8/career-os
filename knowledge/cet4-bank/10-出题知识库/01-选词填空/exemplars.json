@@ -1,12 +1,12 @@
 {
- "count": 12,
+ "count": 21,
  "passage_words": {
   "min": 188,
-  "max": 267,
-  "avg": 236.3
+  "max": 316,
+  "avg": 243.4
  },
  "bank_sizes": {
-  "15": 12
+  "15": 21
  },
  "answer_distribution": {
   "D": 9,
@@ -27,103 +27,70 @@
  },
  "examples": [
   {
-   "file": "cet4-2024-06-1.md",
-   "passage": "It's well known that physical exercise is beneficial not just to physical health but also to mental health. Yet whereas most countries have __26__ evidence-backed guidelines on the type and intensity of exercise __27__ for various physical health benefits, such guidelines do not yet exist for exercise and mood. This is __28__ due to a lack of necessary evidence. However, a new systematic review brings us usefully up-to-date on the current findings in this area. Before __29__ into some of the key take-aways, an important __30__ made in the review is between aerobic exercise and anaerobic. The former __31__ such things as walking, jogging and cycling and means exercising in such a way that your body is able to use oxygen to burn fat for energy. In contrast, anaerobic exercise—such as lifting heavy weights—is of such __32__ intensity that your body does not have time to use oxygen to create energy and so instead it breaks down glucose (葡萄糖) in your blood or muscles. Beginning first with the influence of exercise intensity on the mood benefits of aerobic exercise, the researchers, led by John Chan at Shenzhen University, found __33__ results from 19 relevant studies. Some favoured higher intensity, others low, while seven studies found that intensity made no __34__ to mood benefits. In relation to the intensity of anaerobic exercise, however, the results were far clearer—the optimum (最佳选择) for improving mood is __35__ intensity, perhaps because low intensity is too dull while high intensity is too unpleasant.\n\n|  |  |\n| --- | --- |",
+   "file": "cet4-2023-06-1.md",
+   "passage": "You probably haven't taken the time to think of all the work that went into creating the shirt on your back. I mean, how hard it could be to create fabric and __26__ it into a shirt shape. Don't machines do all that? Well, creating fabric from cotton, which is the most __27__ clothing material, is actually a process that involves a lot of water, 2, 700 liters per shirt to be __28__. Take a look at the video below from _National Geographic_ for some more mind-blowing. __29__ about cotton clothing production.\n\nClean water is __30__ becoming one of the most sought-after resources in the world. Given how large the __31__ and cotton industries are, they take up a lot of our fresh water demands across the world, according to _The Huffington Post_. The video from _National Geographic_ was created to spread __32__ of how environmentally harmful cotton is. But the situation can be made better. Through better water management and farming practices, water usage in cotton production can be cut down by . __33__ 40 percent.\n\nCalled “Better Cotton”, this environmentally conscious product will save millions of liters of water a year simply from __35__ the demands of cotton production. Cotton doesn't have to go, since it is, after all, one of the most useful cash crops across the globe. However, as water supplies __35__, farmers and consumers need to be more conscious of the effect that these products have on the environment as a whole.\n\n|                 |               |\n| --------------- | ------------- |",
    "bank": {
-    "A": "constitutes",
-    "I": "involves",
-    "B": "contradictory",
-    "J": "moderate",
-    "C": "decision",
-    "K": "notified",
-    "D": "detailed",
-    "L": "partly",
-    "E": "difference",
-    "M": "required",
-    "F": "dipping",
-    "N": "traditionally",
-    "G": "distinction",
-    "O": "vigorous",
-    "H": "falling"
+    "A": "abstracts",
+    "I": "nearly",
+    "B": "abundant",
+    "J": "reckoning",
+    "C": "awareness",
+    "K": "reducing",
+    "D": "conscience",
+    "L": "sew",
+    "E": "exact",
+    "M": "shrink",
+    "F": "increasingly",
+    "N": "statistics",
+    "G": "intense",
+    "O": "textile",
+    "H": "mend"
    },
-   "answers": {
-    "26": "D",
-    "27": "M",
-    "28": "L",
-    "29": "F",
-    "30": "G",
-    "31": "I",
-    "32": "O",
-    "33": "B",
-    "34": "E",
-    "35": "J"
-   }
+   "answers": {}
   },
   {
-   "file": "cet4-2024-06-2.md",
-   "passage": "A team of researchers led by Priyanka Joshi examined the degree to which men and women relied on “communicative abstraction” to verbally convey their ideas and emotions. Communicative abstraction, according to the researchers, reflects the tendency of people to use “abstract speech that focuses on the broader picture and __26__ purpose of action rather than concrete speech focusing on details and the means of __27__ action.” Interestingly, they found that men were far more likely to speak in the abstract than were women. To arrive at this __28__, the researchers examined the linguistic (语言的) patterns of men and women in over 600,000 blog posts written on websites. To do this, the researchers computed abstractness ratings for __29__ 40,000 commonly used words in the English language. Words considered to be concrete could be easily visualized such as “table” or “chair”. Words that were more __30__ to visualize, for example, “justice” or “morality” were considered to be more abstract. They found that men used __31__ more abstract language in their blog posts. What is the __32__ of this effect? The researchers suggest that power differences between the genders — that is, men having more power in society — might be a key determinant (决定因素) .For instance, in a follow-up study conducted with a sample of 300 students, the researchers __33__ power dynamics in an interpersonal setting to see if this would influence communicative abstraction. They found that participants in a high-power interviewer role were more likely to give abstract descriptions of behaviors than were participants in a low-power interviewee role. This suggests that communicating more abstractly does not reflect a __34__ tendency of men or women but rather __35__ within specific contexts.\n\n|  |  |\n| --- | --- |",
+   "file": "cet4-2023-06-2.md",
+   "passage": "Morocco is responding to increasing energy demands by setting up one of the largest solar plants in the world.\n\nThe Noor solar power station is __26__ in the city of Ouarzazate and, once completed, will generate 580 million watts of electricity. The World Bank estimates it will serve 1.1 million people. It's __27__ to be completed soon.\n\nMorocco's current energy comes __28__ from imports. The nation hopes to get 50 percent of its energy from renewable sources by 2030. With demand for energy __29__ at an annual rate of 7 percent, the new solar plant could be a __30__ part of that goal.\n\n“This makes Morocco a big __32__ in the field of solar energy in the Arab region and the African continent. It could also be a forerunner for many other countries in the world that __32__ on foreign imports of energy,” said Ali Hajji, a solar energy specialist and engineering professor.\n\nExperts believe that the Middle East and North Africa have huge __33__ for solar energy projects. This is partly because of adequate sunlight and partly because technology has become more __34__ in the region.\n\n“The last few years have seen a realization of __35__ how competitive solar technologies can be,” said Michael Taylor, a senior analyst at the International Renewable Energy Agency.\n\n|               |              |\n| ------------- | ------------ |",
    "bank": {
-    "A": "approximately",
-    "I": "manipulated",
-    "B": "attaining",
-    "J": "recommended",
-    "C": "conclusion",
-    "K": "refraining",
-    "D": "difficult",
-    "L": "signals",
-    "E": "emerges",
-    "M": "significantly",
-    "F": "fixed",
-    "N": "source",
-    "G": "ignored",
-    "O": "ultimate",
-    "H": "legally"
+    "A": "affordable",
+    "I": "mostly",
+    "B": "ancestor",
+    "J": "operating",
+    "C": "crucial",
+    "K": "perhaps",
+    "D": "depend",
+    "L": "pioneer",
+    "E": "initial",
+    "M": "potential",
+    "F": "insist",
+    "N": "rising",
+    "G": "just",
+    "O": "scheduled",
+    "H": "located"
    },
-   "answers": {
-    "26": "O",
-    "27": "B",
-    "28": "C",
-    "29": "A",
-    "30": "D",
-    "31": "M",
-    "32": "N",
-    "33": "I",
-    "34": "F",
-    "35": "E"
-   }
+   "answers": {}
   },
   {
-   "file": "cet4-2024-06-3.md",
-   "passage": "Over the coming decades, millions of jobs will be threatened by robotics and artificial intelligence. Despite intensive academic __26__ on these developments, there has been little study on how workers __27__ to being replaced through technology. To find out, business researchers at TUM and Erasmus University Rotterdam conducted 11 studies and surveys with over 2,000 persons from several countries. The findings show: in principle, most people view it more __28__ when workers are replaced by other people than by robots or intelligent software. This preference __29__, however, when it refers to people’s own jobs. When that is the case, the majority of workers find it less upsetting to see their own jobs go to robots than to other employees. In the long term, however, the same people see machines as more threatening to their future role in the workforce. These effects can also be observed among people who have recently become unemployed. The researchers were able to identify the causes behind these __30__ paradoxica results, too: People tend to __31__ themselves less with machines than with other people. Consequently, being replaced by a robot or software __32__ less of a threat to their feeling of self-worth. This reduced self-threat could even be observed when participants assumed that they were being replaced by other employees who relied on technological abilities such as artificial intelligence in their work. “Even when unemployment results from the __33__ of new technologies, people still judge it in a social context,” says Christoph Fuchs, one of the authors of the study. “It is important to understand these __34__ effects when trying to manage the massive changes in the working world to minimize __35__ in society.”\n\n|  |  |\n| --- | --- |",
+   "file": "cet4-2023-06-3.md",
+   "passage": "Whether you're just having a down day or a down period, taking a walk can instantly lift your mood, especially when you go outdoors. Not only can walking make you less depressed, but according to a new study, depression sufferers who took a __26__ walk showed just as much improvement in their __27__ as people taking medicine. In fact, 60 - 70 percent of the participants in the study could no longer even be __28__ as depressed.\n\nBone density may not be one of the most exciting health benefits of walking, but it's an important one. People with stronger bones avoid _osteoporosis_ (骨质疏松症) and all the problems that __29__ with it, like breaks and other disabilities. And the best way to get strong, healthy bones is by doing weight-bearing exercises like running, dancing, and walking, according to a large study. But as regards bones, it's __30__ use it or lose it: To keep your bones strong, you have to keep exercising. The researchers found that adults who walked regularly had better bone density throughout their lives than their __31__ friends.\n\nTaking a walk can be great for __32__ your head or blowing off some steam. It also provides a great opportunity to __33__ with friends and family, far away from electronics and other __34__ at home. Even better, you set a powerful example because when they see you __35__ the benefits of walking, they'll be encouraged to walk more, too.\n\n|               |                 |\n| ------------- | --------------- |",
    "bank": {
-    "A": "compare",
-    "I": "introduction",
-    "B": "contradicts",
-    "J": "modifications",
-    "C": "conventional",
-    "K": "poses",
-    "D": "debate",
-    "L": "psychological",
-    "E": "disruptions",
-    "M": "react",
-    "F": "drastically",
-    "N": "reverses",
-    "G": "favorably",
-    "O": "seemingly",
-    "H": "guarantee"
+    "A": "accompany",
+    "I": "distractions",
+    "B": "approved",
+    "J": "exclusively",
+    "C": "bond",
+    "K": "inactive",
+    "D": "classified",
+    "L": "occurrences",
+    "E": "clearing",
+    "M": "reaping",
+    "F": "come",
+    "N": "symptoms",
+    "G": "daily",
+    "O": "typical",
+    "H": "definitely"
    },
-   "answers": {
-    "26": "D",
-    "27": "M",
-    "28": "G",
-    "29": "N",
-    "30": "O",
-    "31": "A",
-    "32": "K",
-    "33": "I",
-    "34": "L",
-    "35": "E"
-   }
+   "answers": {}
   }
  ]
 }

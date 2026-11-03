@@ -96,16 +96,16 @@ def main():
         set_idx = str(int(m.group(3)) - 1)
         table = (answers.get(key) or {}).get(set_idx) or {}
         reading = table.get("reading") or []
-        if len(reading) < 30:
-            continue
+        # 无答案也纳入统计（后续由答题 CB 产出推荐答案）
         block = part3(md.read_text(encoding="utf-8", errors="ignore"))
         a = parse_section_a(block)
         b = parse_section_b(block)
         c = parse_section_c(block)
         row = {"file": md.name, "set": set_idx, "A": a, "B": b, "C": c,
-               "answers_A": dict(zip([str(i) for i in range(26, 36)], reading[0:10])),
-               "answers_B": dict(zip([str(i) for i in range(36, 46)], reading[10:20])),
-               "answers_C": dict(zip([str(i) for i in range(46, 56)], reading[20:30]))}
+               "has_answers": len(reading) >= 30,
+               "answers_A": dict(zip([str(i) for i in range(26, 36)], reading[0:10])) if len(reading) >= 30 else {},
+               "answers_B": dict(zip([str(i) for i in range(36, 46)], reading[10:20])) if len(reading) >= 30 else {},
+               "answers_C": dict(zip([str(i) for i in range(46, 56)], reading[20:30])) if len(reading) >= 30 else {}}
         rows.append(row)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")

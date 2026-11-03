@@ -19,7 +19,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CB = Path(r"C:\Users\li\AppData\Roaming\npm\codebuddy.cmd")
 KB = ROOT / "knowledge" / "cet4-bank" / "10-出题知识库"
-DIRS = {"cloze": "01-选词填空", "match": "02-长篇匹配", "reading": "03-仔细阅读"}
+DIRS = {"cloze": "01-选词填空", "match": "02-长篇匹配", "reading": "03-仔细阅读",
+        "listening": "04-听力", "translation": "05-翻译", "writing": "06-写作"}
+
+SOLVER = {
+    "reading": """你是四级答题老师。给你文章与 5 道题，独立作答并给出依据。
+只输出 JSON：{{"answers":{{"46":"A",...}},"reasons":[{{"no":46,"reason":"为什么选它","evidence":"原文依据"}}]}}
+文章：
+{article}
+题目：
+{questions}
+""",
+}
 
 WRITER = {
     "cloze": """你是四级选词填空命题老师。给你一篇文章，改成 Section A：
@@ -52,6 +63,23 @@ REVIEWER = {
     "match": """你是四级长篇匹配审查老师。对照下面 2 套真题范例，审查候选卷。
 只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
 审查点：每段是否可辨、陈述是否改写（非照抄）、每条是否单一信息点、答案是否分散、是否有 1-2 段纯干扰。
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+    "listening": """你是四级听力审查老师。对照 2 套真题，审查候选听力题（音频文本若缺失请指出）。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+    "translation": """你是四级翻译审查老师。对照 2 套真题，审查候选汉译英段落与参考译文。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
+审查点：字数 140-180、句数 6-9、文化负载词、是否有官方提示、参考译文是否准确通顺。
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+    "writing": """你是四级写作审查老师。对照 2 套真题，审查候选作文题与范文。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
+审查点：情景式命题、话题贴近校园/社会、120-180 词、观点明确、结构完整。
 【真题范例】{examples}
 【候选卷】{paper}
 """,
@@ -114,7 +142,7 @@ def parse_json(text: str):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--type", required=True, choices=list(DIRS))
-    ap.add_argument("--role", required=True, choices=["writer", "reviewer"])
+    ap.add_argument("--role", required=True, choices=["writer", "reviewer", "solver"])
     ap.add_argument("--input", required=True)
     ap.add_argument("--out", default="")
     args = ap.parse_args()
@@ -123,6 +151,9 @@ def main():
     if args.role == "writer":
         article = paper.get("article") or paper.get("passage") or ""
         prompt = WRITER[args.type].format(article=article[:8000])
+    elif args.role == "solver":
+        prompt = SOLVER["reading"].format(article=(paper.get("passage") or "")[:8000],
+                                          questions=json.dumps(paper.get("questions") or [], ensure_ascii=False)[:6000])
     else:
         prompt = REVIEWER[args.type].format(examples=examples_for(args.type),
                                             paper=json.dumps(paper, ensure_ascii=False)[:12000])
@@ -134,6 +165,8 @@ def main():
     out.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     if args.role == "reviewer":
         print(f"verdict={data.get('verdict')} score={data.get('score')} fixes={len(data.get('must_fix') or [])}")
+    elif args.role == "solver":
+        print("answers", data.get("answers"))
     else:
         print("keys:", list(data)[:6])
     print("saved", out)

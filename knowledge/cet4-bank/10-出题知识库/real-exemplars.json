@@ -1,5 +1,1223 @@
 [
  {
+  "file": "cet4-2023-06-1.md",
+  "set": "0",
+  "A": {
+   "passage": "You probably haven't taken the time to think of all the work that went into creating the shirt on your back. I mean, how hard it could be to create fabric and __26__ it into a shirt shape. Don't machines do all that? Well, creating fabric from cotton, which is the most __27__ clothing material, is actually a process that involves a lot of water, 2, 700 liters per shirt to be __28__. Take a look at the video below from _National Geographic_ for some more mind-blowing. __29__ about cotton clothing production.\n\nClean water is __30__ becoming one of the most sought-after resources in the world. Given how large the __31__ and cotton industries are, they take up a lot of our fresh water demands across the world, according to _The Huffington Post_. The video from _National Geographic_ was created to spread __32__ of how environmentally harmful cotton is. But the situation can be made better. Through better water management and farming practices, water usage in cotton production can be cut down by . __33__ 40 percent.\n\nCalled “Better Cotton”, this environmentally conscious product will save millions of liters of water a year simply from __35__ the demands of cotton production. Cotton doesn't have to go, since it is, after all, one of the most useful cash crops across the globe. However, as water supplies __35__, farmers and consumers need to be more conscious of the effect that these products have on the environment as a whole.\n\n|                 |               |\n| --------------- | ------------- |",
+   "bank": {
+    "A": "abstracts",
+    "I": "nearly",
+    "B": "abundant",
+    "J": "reckoning",
+    "C": "awareness",
+    "K": "reducing",
+    "D": "conscience",
+    "L": "sew",
+    "E": "exact",
+    "M": "shrink",
+    "F": "increasingly",
+    "N": "statistics",
+    "G": "intense",
+    "O": "textile",
+    "H": "mend"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    35,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "We're growing more used to chatting to our computers, phones and smart speakers through voice assistants like Amazon's Alexa, Apple's Siri and Microsoft's Cortana. Blind and partially sighted people have been using text-to-speech converters for decades.",
+    "Out of these assistants, Siri is the most well-known. The assistant uses voice inquiries and a natural-language user _interface_ (界面)to answer questions. The software adapts to users' individual language usages, searches, and preferences, with continuing use.",
+    "Some think voice could soon take over from typing and clicking as the main way to interact online. But what are the challenges of moving to “the spoken web”?",
+    "What use is written online content if you can't read? That is the situation facing _illiterate_ (不识字的)African farmers. They are often denied crucial information the web offers many others. With a literacy rate in some parts of Africa at only 22.6%, farmers are often “underpaid for their produce because they might be unaware of the prevailing prices,” says Francis Dittoh, a researcher behind Mr Meteo, a speech-based weather information service.",
+    "“The most frequently heard complaint is about rainfall predictions,” says Mr Dittoh, who lives in Tamale, northern Ghana. “They tell us the methods their forefathers used to predict the weather don't seem to work as well these days. \"This is down to climate change, he believes. Yet knowing when it's going to rain is vital for farmers wanting to sow seeds, irrigate crops or take their animals out to the fields to feed on grass.",
+    "Mr Dittoh says the idea of converting online weather reports into speech came from the farmers themselves, after a workshop in the village of Guabuligah. \"They came up with this,” he says. Mr Meteo takes the online weather forecast, converts it to a short recording in the appropriate language and makes it available on a basic phone. Farmers ring up to receive the information. The local language Dagbani is spoken by 1. 2 million people but is not served by any online translation applications. The service was designed to be cheap and easy to run, says Mr Dittoh. He plans to begin field tests this month, working with Tamale's Savanna Agricultural Research Institute.",
+    "The spoken web could also help the one-in-five adults in Europe and the U.S. with poor reading skills. But building the spoken web-web-to-voice and voice-to-web-isn't straightforward. For software to understand pizza is served at Italian restaurants is easy. To cover multiple domains and to be able to have a conversation with users on every single topic is still a long way off.",
+    "So although many computer assistants can answer simple questions about the weather and play music for us, anything resembling a wide-ranging human conversation is decades away. Artificial intelligence just isn't smart enough yet. Even turning your voice into text — automatic speech recognition — is one of the hardest problems to solve, as there are as many ways to pronounce things as there are people on the planet.",
+    "Siri has often been praised for its ability to interpret our casual language and deliver very specific and accurate results, sometimes even providing additional information. But it is still somewhat restricted, particularly when the language moves away from stiffer commands into more human interactions. In one example, the phrase “Send a text to Jason, Clint, Sam, and Lee saying we're having dinner at Silver Cloud restaurant” was interpreted as sending a message to Jason only, containing the text “Clint Sam and Lee saying we're having dinner at Silver Cloud restaurant\". It has also been noted that Siri lacks a proper editing function, as saying “Edit message to say: we're at Silver Cloud restaurant and you should come find us\"generates \"Clint Sam and Lee saying we're having dinner at Silver Cloud restaurant to say we're at Silver Cloud restaurant and you should come find us\".",
+    "Using voice interaction feels far more intimate than surfing the net the old-fashioned way. This is intentional as the informal tone of the assistant helps create an emotional attachment. But if something speaks, it must also listen. Our phones are always near us and they are collecting data about us all the time. This has already raised privacy concerns. The American Civil Liberties Union has stated that digital assistants create a threat to privacy from hackers. Some people have other concerns. They worry assistants will one day be used to deliver advertising directly to us.",
+    "But digital voices need more personality to make them popular. Robots are not yet witty, Siri is boring. The benefits of using voice instead of tapping fingers obviously. depend on the context. Doctors completing online forms about their patients by speech, for example, can dictate 150 words a minute, three times faster than typing on a keyboard. This enables them to spend less time on administration and more time with patients.\n\nL) Last year, speech recognition company Nuance helped a doctors' surgery in Dukinfield, near Manchester, set up a speech system for the practice's six doctors. Now they can dictate notes on a patient's health condition and treatment and a smart assistant automatically enters the information into the right fields on a web form. Previously, the doctors made voice recordings that were then transcribed by secretaries — a process that was costly and likely to cause delays. The new system means letters to patients now have more detail.\n\nM) Using voice also makes sense when you're doing other things with your hands. Think about when you're cooking, and you just want to know what the next step in the recipe is. Your hands are covered with oil; you're not going to get on the iPad, so it's a lot more natural to talk. And speech obviously makes sense when you're driving. In the U.S., 29%of drivers admit they surf behind the wheel, according to insurance firm State Farm. This is up from 13% in 2009. No wonder using mobile phones while driving causes more crashes a year than drink driving, says the U.S. National Safety Council."
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "According to Francis Dittoh, their speech-based weather information service was meant to be inexpensive and easy to use."
+    },
+    {
+     "no": 37,
+     "text": "Using voice instead of typing enables doctors to spend more time taking care of patients."
+    },
+    {
+     "no": 38,
+     "text": "It is extremely difficult to convert voice into text because of different pronunciations."
+    },
+    {
+     "no": 39,
+     "text": "African farmers unable to read often don't have access to important information conveyed online."
+    },
+    {
+     "no": 40,
+     "text": "Some phone users worry advertisers will take advantage of voice assistants to send ads directly to them."
+    },
+    {
+     "no": 41,
+     "text": "The spoken web is helpful when one's hands are occupied."
+    },
+    {
+     "no": 42,
+     "text": "Some people believe online interaction would soon depend mainly on voice."
+    },
+    {
+     "no": 43,
+     "text": "Setting up a spoken web is by no means an easy task."
+    },
+    {
+     "no": 44,
+     "text": "Weather information is extremely important to farmers."
+    },
+    {
+     "no": 45,
+     "text": "Some people are concerned about privacy because their phones are constantly collecting their personal information."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nThe United States is facing a housing crisis: Affordable housing is inadequate, while luxury homes _abound_ (充裕), and homelessness remains a persistent problem. Despite this, popular culture and the housing industry market happiness as living with both more space and more _amenities_ (便利设施). Big houses are adverted as a reward for hard work and diligence, turning housing from a basic necessity into a luxury.\n\nThis is reflected in our homes. The average single-family home built in the United States before 1970 was less than 1,500 square feet in size. By 2016, the average size of a new, single-family home was 2,422 square feet. What's more, homes built in the 2000s were more likely than earlier models to have more of all types of spaces: bedrooms, bathrooms, living rooms, dining rooms, recreation rooms and garages.\n\nThere are consequences of living big. As middle-class houses have grown larger, two things have happened. First, large houses take time to maintain, so cleaners and other low-wage service workers are required to keep these houses in order. Second, once-public spaces, where people from diverse backgrounds used to come together, have increasingly become privatized, leading to a reduction in the number of public facilities available to all, and a reduced quality of life for many. Take swimming pools. While in 1950, only 2,500 U.S. families owned pools, by 1999 this number was 4 million. At the same time, public municipal pools were often closed, leaving low-income people nowhere to swim.\n\nThe trend for bigger housing thus poses ethical questions. Should Americans accept a system in which the middle and upper classes enjoy a luxurious lifestyle, using the low-wage labor of others? Are we willing to accept a system in which an increase in amenities purchased by the affluent means a reduction in amenities for the poor?\n\nI believe neither is acceptable. We must change the way we think: living well does not need to mean having more private spaces; instead, it could mean having more public spaces. A better goal than building bigger houses for some is to create more publicly accessible spaces and amenities for all.\n\n46. What are big houses promoted to be in the United States?  \n    A) A luxury for the homeless.  \n    B) A reward for industriousness.  \n    C) An abundant source of comforts.  \n    D) An absolute necessity for happiness.\n\n47. What is one of the consequences of living big?  \n    A) Many Americans' quality of life has become lower.  \n    B) People from diverse backgrounds no longer socialize.  \n    C) People no longer have access to public swimming pools.  \n    D) Many Americans' private life has been negatively affected.\n\n48. What questions arises from living big?  \n    A) Questions related to moral principles.  \n    B) Questions having to do with labor cost.  \n    C) Questions about what lifestyle to promote.  \n    D) Questions concerning housing development.\n\n49. What ki",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What are big houses promoted to be in the United States?",
+     "options": [
+      "A) A luxury for the homeless.",
+      "B) A reward for industriousness.",
+      "C) An abundant source of comforts.",
+      "D) An absolute necessity for happiness."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What is one of the consequences of living big?",
+     "options": [
+      "A) Many Americans' quality of life has become lower.",
+      "B) People from diverse backgrounds no longer socialize.",
+      "C) People no longer have access to public swimming pools.",
+      "D) Many Americans' private life has been negatively affected."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What questions arises from living big?",
+     "options": [
+      "A) Questions related to moral principles.",
+      "B) Questions having to do with labor cost.",
+      "C) Questions about what lifestyle to promote.",
+      "D) Questions concerning housing development."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What kind of social system does the author think is unacceptable?",
+     "options": [
+      "A) One in which the wealthy exploit the low-wage laborers building their houses.",
+      "B) One in which the rich purchase amenities at an increasingly unjustifiable price.",
+      "C) One in which the upper classes deprive the lower classes of affordable housing.",
+      "D) One in which the affluent enjoy a more comfortable life at the expense of the poor."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What does the author advocate for people to live well?",
+     "options": [
+      "A) Finding ways to turn private spaces into public ones.",
+      "B) Building more houses affordable to those less affluent.",
+      "C) More public spaces created for everyone to enjoy.",
+      "D) All amenities made accessible to the rich and the poor alike."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What does the author think of most entrepreneurs?",
+     "options": [
+      "A) They are more willing to risk their own lives.",
+      "B) They are more ambitious than ordinary people.",
+      "C) They achieve greater nonconventional success.",
+      "D) They have more positive qualities than most of us."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What does the author imply by saying “this isn't always the case” (Line l, Para.3)?",
+     "options": [
+      "A) Ambitious people may not have a greater chance of success.",
+      "B) Ambitious people may not have more positive qualities.",
+      "C) Entrepreneurs' ambition does as much good as harm.",
+      "D) Entrepreneurs are more naturally driven to success."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What does the author say is of extreme importance for one to become a successful entrepreneur?",
+     "options": [
+      "A) Holding on to one's original vision.",
+      "B) Being able to adapt to new situations.",
+      "C) Focusing determinedly on one particular goal.",
+      "D) Avoiding radical change in one's career direction."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "How do the most ambitious entrepreneurs regard failure in their endeavor?",
+     "options": [
+      "A) It will awaken them to reality.",
+      "B) It is a lesson they have to learn.",
+      "C) It means the end of their career.",
+      "D) It will result in a slow recovery."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What does the author advise us to do concerning ambition?",
+     "options": [
+      "A) Distinguish between conventional success and our life goal.",
+      "B) Follow the example of the most ambitious entrepreneurs.",
+      "C) Avoid taking unnecessary risks when starting a business.",
+      "D) Prioritize health and happiness over material success."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2023-06-2.md",
+  "set": "1",
+  "A": {
+   "passage": "Morocco is responding to increasing energy demands by setting up one of the largest solar plants in the world.\n\nThe Noor solar power station is __26__ in the city of Ouarzazate and, once completed, will generate 580 million watts of electricity. The World Bank estimates it will serve 1.1 million people. It's __27__ to be completed soon.\n\nMorocco's current energy comes __28__ from imports. The nation hopes to get 50 percent of its energy from renewable sources by 2030. With demand for energy __29__ at an annual rate of 7 percent, the new solar plant could be a __30__ part of that goal.\n\n“This makes Morocco a big __32__ in the field of solar energy in the Arab region and the African continent. It could also be a forerunner for many other countries in the world that __32__ on foreign imports of energy,” said Ali Hajji, a solar energy specialist and engineering professor.\n\nExperts believe that the Middle East and North Africa have huge __33__ for solar energy projects. This is partly because of adequate sunlight and partly because technology has become more __34__ in the region.\n\n“The last few years have seen a realization of __35__ how competitive solar technologies can be,” said Michael Taylor, a senior analyst at the International Renewable Energy Agency.\n\n|               |              |\n| ------------- | ------------ |",
+   "bank": {
+    "A": "affordable",
+    "I": "mostly",
+    "B": "ancestor",
+    "J": "operating",
+    "C": "crucial",
+    "K": "perhaps",
+    "D": "depend",
+    "L": "pioneer",
+    "E": "initial",
+    "M": "potential",
+    "F": "insist",
+    "N": "rising",
+    "G": "just",
+    "O": "scheduled",
+    "H": "located"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    32,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "For the past four decades, the leader of Formula One car racing, one of the biggest annual sporting series in the world, was Bernie Ecclestone, a former motorcycle parts dealer who built it into an international presence essentially on his own.",
+    "A skilled backroom operator who speaks without a filter, Ecclestone said often that in his opinion, the sport was at its best when he was allowed to act as “a dictator.”",
+    "Yet now the dictator is gone. After an American company, Liberty Media, acquired the Formula One competition recently, Chase Carey—a former executive with Fox Broadcasting Company and DirecTV who by his own admission is not a fierce racing fan-was named to replace Ecclestone and to try to renovate the organization's management, reach and ambition.",
+    "Among the goals, Carey said in an interview on Tuesday, is one that just about every global sport seems interested in chasing: increasing interest in the United States. “People have said we're going to 'Americanize'it,\" Carey said. \"And we're not going to do that totally. But realistically, there are some elements of Americanization that the sport could use.”",
+    "While Formula One commands enormous audiences throughout much of the world, many American sports fans know it as that other motorsport, the one that is not _Nascar_ (纳斯卡车赛). Formula One teams race far more technologically advanced vehicles around tracks all over the world-in magnificent events in places like Malaysia, Monaco, Singapore and the United Arab Emirates, and on tradition-rich tracks like Silverstone in England and Monza in Italy too.",
+    "The series has an annual race in Austin, Texas. But within “a few years,” Carey said, he plans to bring another to a destination American city, like New York, Los Angeles, Miami or Las Vegas. Carey's ambitious plan is two-fold: first, change the business model of Formula One, which he said was a“one-man show”under Ecclestone that had a largely narrow vision when it came to negotiating partnership deals; and second, alter the way fans experience the sport, both in person and remotely, so that connections between the audience and people within the series are easier to make.",
+    "Increased digital access for fans, a more behind-the-scenes experience for broadcast viewers and innovation in areas like virtual reality — what is it like to speed around a track inside a Ferrari? — are among the possibilities. “The sport has clearly been underserved,” Carey said. “It doesn't do anything digitally. There's no marketing. It doesn't tell any stories. The goal in this is to make the fans connect to the live experience as much as possible, and the tools you have to do that, we're not using at all.”",
+    "The larger question, though, is a familiar one: Is there room for Formula One in the ever-crowded sports landscape of the United States? Opinions vary, particularly because viewing habits among consumers continue to evolve. John Bloom, a professor at Shippensburg University who has studied American sports history, said the biggest challenge for any sport trying to increase its presence in the United States was framing itself in a way that had lasting appeal. “Sports generally become popular in some way because they establish a narrative,” Bloom said. “When I think of motorsports in the U.S., what we all think of is Nascar, and the narrative of Nascar is sort of rural, white, working-class Americans, mostly in the South, connecting with the atmosphere of those races. That's the narrative. When I think of the narrative of Formula One, it's a very different kind of audience.”",
+    "That difference, Carey said, is significant. While some might immediately link Formula One to Nascar in terms of American growth, Carey said Formula One's brand research had indicated there was very little crossover; rather, Formula One fans generally cite other so-called elite events, like Wimbledon or the Ryder Cup, as competitions they enjoy. “Other than they're both cars, the Nascar fan base is a very different fan base,” Carey said. “It's a very regional fan base. Formula One is a global, famous brand of stars. These are machines that shock and awe you.”",
+    "Carey's background is in deal making and innovation. At Fox Broadcasting Company, he was a top advisor for years, known for his skill in helping to lead the launch of the company into sports, as well as the start of Fox News Channel. After going to DirecTV, he positioned the satellite provider as a mainstream option in millions of households.",
+    "Now, after Liberty Media paid $4.4 billion to acquire Formula One, he is charged with making the investment pay off. \"I think they can build Formula One in the U.S.,\" said Patrick Crakes, an executive at InVivo Media Group who spent 25 years at Fox Broadcasting Company before leaving in 2016 as a senior manager at Fox Sports. “People don't work on their cars anymore. They don't want that connection anymore. It's about technology and pushing the limits. It's about speed, danger and risk. And Formula One has that more than any other racing series.”\n\nL) That is what hooked Carey, and he said he thought his experience was not unusual. He recalled attending Formula One's Monaco race last year and being overwhelmed by the ceremony leading up to the event, the way the race charmed the city for days ahead of the start. In his mind, it felt like a _Super Bowl_ (超级碗橄榄球赛).\n\nM) Then, on race day, he watched as the cars rocketed out of a tunnel and went screaming toward a tight turn with the city's harbor and the Mediterranean Sea in the background framing the scene. He was fascinated. “You can't help but be awed,” he said, “and I think that feeling can be translated to the viewer.”\n\nN) He added: “The broader sport is a little too inward-looking, and we need to be more open. In some ways, I'm glad to be coming from the outside. The guys who are in the sport forever are sitting there saying: ‘We can't do that. We can't do that because it's never been done that way.”"
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "Chase Carey believes greater use should be made of digital technology to make Formula One more accessible to its fans."
+    },
+    {
+     "no": 37,
+     "text": "Chase Carey was deeply impressed by the ceremony preceding last year's Monaco race."
+    },
+    {
+     "no": 38,
+     "text": "One of Chase Carey's goals is to make Formula One more appealing to Americans."
+    },
+    {
+     "no": 39,
+     "text": "A former motorbike parts dealer led Formula One for the past forty years."
+    },
+    {
+     "no": 40,
+     "text": "Chase Carey thought the audience of Formula One could be made to share his feeling about the race."
+    },
+    {
+     "no": 41,
+     "text": "Chase Carey used to serve as a top advisor for a major broadcasting company."
+    },
+    {
+     "no": 42,
+     "text": "Chase Carey intends to make connections easier between the audience and the Formula One racers."
+    },
+    {
+     "no": 43,
+     "text": "The new leader of Formula One admitted he was not super interested in car racing."
+    },
+    {
+     "no": 44,
+     "text": "People's opinions differ as to whether Formula One can be promoted in the U.S."
+    },
+    {
+     "no": 45,
+     "text": "Compared with other racing series, Formula One focuses more on speed and involves more danger."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nSupermarkets have long been suffering as one of the thinnest-margined businesses in existence and one of the least-looked-forward-to places to work or visit. For more than a decade, they have been under attack from e-commerce giants, blamed for making Americans fat, and accused of contributing to climate change.\n\nSupermarkets can technically be defined as giants housing 15,000 to 60,000 different products. The revolutionary idea of a self-service grocery, where people could hunt and gather food from aisles rather than asking a clerk to fetch items from behind a counter, first came about in America. There is some debate about which was the very first, but over the years a consensus has built around King Kullen Supermarket, founded in New York in 1930.\n\nFor some 300 years, Americans had fed themselves from small stores and public markets. Shopping for food involved mud, noisy chickens, clouds of flies, nasty smells, bargaining, and getting short-changed. The supermarket imitated the Fordist factory, with its emphasis on efficiency and standardization, and reimagined it as a place to buy food. Supermarkets may not feel cutting-edge now, but they were a revolution in distribution at the time. They were such strange marvels that, on her first official state visit to the United States in 1957, Queen Elizabeth II insisted on an _impromptu_ (即兴的)tour of a suburban-Maryland Giant Food.\n\nThe typical supermarket layout has barely changed over the past 90 years. Most stores open with flowers, fruit and vegetables at the front as a breath of freshness to arouse our appetite. Meanwhile, they keep the milk, eggs, and other daily basics all the way back so you'll travel through as much of the store as possible, and be tempted along the way.\n\nIn the early days, as the supermarket multiplied, so did our suspicion of it. We have long feared that this “revolution in distribution”uses corporate black magic on our appetite. The book _The Hidden Persuaders_, published in 1957, warned that supermarkets were putting women in a “_hypnoidal trance_ (催眠恍惚状态),“ causing them to wander aisles bumping into boxes and “picking things off shelves at random.”\n\n46. What problem have supermarkets been facing?  \n    A) They are actually on the way to bankruptcy.  \n    B) They have been losing customers and profits.  \n    C) They are forced to use e-commerce strategies.  \n    D) They have difficulty adapting to climate change.\n\n47. What does the passage say about the idea of a self-service grocery?  \n    A) It was put forward by King Kullen.  \n    B) It originated in the United States.  \n    C) It has been under constant debate.  \n    D) It proves revolutionary even today.\n\n48. What did supermarkets do by adopting the Fordist factory approach?  \n    A) They modernized traditional groceries in many ways.  \n    B) They introduced cutting-edge layout of their store s.\n    C) They improved the quality of the food they sold.  \n  ",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What problem have supermarkets been facing?",
+     "options": [
+      "A) They are actually on the way to bankruptcy.",
+      "B) They have been losing customers and profits.",
+      "C) They are forced to use e-commerce strategies.",
+      "D) They have difficulty adapting to climate change."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What does the passage say about the idea of a self-service grocery?",
+     "options": [
+      "A) It was put forward by King Kullen.",
+      "B) It originated in the United States.",
+      "C) It has been under constant debate.",
+      "D) It proves revolutionary even today."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What did supermarkets do by adopting the Fordist factory approach?",
+     "options": [
+      "A) They modernized traditional groceries in many ways.",
+      "B) They introduced cutting-edge layout of their store s.",
+      "C) They improved the quality of the food they sold.",
+      "D) They revolutionized the distribution of goods."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What is the typical supermarket layout intended to do?",
+     "options": [
+      "A) Arouse customers' appetite to buy flowers, fruit and vegetables.",
+      "B) Provide customers easy access to items they want to buy.",
+      "C) Induce customers to make more unplanned purchases.",
+      "D) Enable customers to have a more enjoyable shopping experience."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What have people long feared about supermarkets?",
+     "options": [
+      "A) They use tricky strategies to promote their business.",
+      "B) They are going to replace the local groceries entirely.",
+      "C) They apply corporate black magic to the goods on display.",
+      "D) They take advantage of the weaknesses of women shoppers."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "Why did America's traditional school year have a three-month summer vacation?",
+     "options": [
+      "A) Students needed to help with farm work.",
+      "B) Students needed time to learn necessary farming skills.",
+      "C) The agricultural society then attached less importance to academics.",
+      "D) America lagged behind other countries in making a scientific school calendar."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What benefit will year-round schooling bring students in addition, to improving their learning?",
+     "options": [
+      "A) It will help them get back to where their lessons started.",
+      "B) It will enable them to absorb what they have learned.",
+      "C) It will familiarize them with the school environment.",
+      "D) It will strengthen their relationship with teachers."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What do some childhood development experts believe about the long summer vacation?",
+     "options": [
+      "A) It meets students' need to study on their own.",
+      "B) It enables students to learn about the outside world.",
+      "C) It satisfies students' desire to stay longer at home.",
+      "D) It contributes to students' healthy growth."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What is the argument against the experts' idea of a long summer vacation?",
+     "options": [
+      "A) It does little good to most students.",
+      "B) It benefits few students playing outside.",
+      "C) It leads students to neglect their studies.",
+      "D) It makes students addicted to computer games."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What does the author think of the traditional school year in the U.S. today?",
+     "options": [
+      "A) Well-grounded.",
+      "B) Culture-bound",
+      "C) Outdated.",
+      "D) Welcomed."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2023-06-3.md",
+  "set": "2",
+  "A": {
+   "passage": "Whether you're just having a down day or a down period, taking a walk can instantly lift your mood, especially when you go outdoors. Not only can walking make you less depressed, but according to a new study, depression sufferers who took a __26__ walk showed just as much improvement in their __27__ as people taking medicine. In fact, 60 - 70 percent of the participants in the study could no longer even be __28__ as depressed.\n\nBone density may not be one of the most exciting health benefits of walking, but it's an important one. People with stronger bones avoid _osteoporosis_ (骨质疏松症) and all the problems that __29__ with it, like breaks and other disabilities. And the best way to get strong, healthy bones is by doing weight-bearing exercises like running, dancing, and walking, according to a large study. But as regards bones, it's __30__ use it or lose it: To keep your bones strong, you have to keep exercising. The researchers found that adults who walked regularly had better bone density throughout their lives than their __31__ friends.\n\nTaking a walk can be great for __32__ your head or blowing off some steam. It also provides a great opportunity to __33__ with friends and family, far away from electronics and other __34__ at home. Even better, you set a powerful example because when they see you __35__ the benefits of walking, they'll be encouraged to walk more, too.\n\n|               |                 |\n| ------------- | --------------- |",
+   "bank": {
+    "A": "accompany",
+    "I": "distractions",
+    "B": "approved",
+    "J": "exclusively",
+    "C": "bond",
+    "K": "inactive",
+    "D": "classified",
+    "L": "occurrences",
+    "E": "clearing",
+    "M": "reaping",
+    "F": "come",
+    "N": "symptoms",
+    "G": "daily",
+    "O": "typical",
+    "H": "definitely"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "The first thing you notice in the staircase to the fourth-floor studio on Canal Street in Manhattan, New York, is the measured _thumping_ (嘭嘭声) coming from behind a metal door. Just beyond the entrance, large lion masks were twisting and turning to the drum-beat. On a recent Friday evening, the teenagers made their way across the studio floor as they practiced Chinese lion dancing.",
+    "“You want to play in a circle,” Victor Fong, aged 24, told his students at the New York Chinese Freemasons Athletic Club. “Take it slow and do it again.\" The dance group, made up of 60 members, performs throughout the year but was now preparing for its biggest events, Chinese Lunar New Year celebrations, which will begin on Saturday and conclude on February 15. Teenagers comprise about half of the group, many of whom began lion dancing at the age of 14. About 100 current and past members of the dance group — which has been performing since 1956 — will be among the 220 groups marching through Chinatown in Manhattan for the 18th Lunar New Year Parade on February 5.",
+    "Mr. Fong has been involved in the organization since he was 15 and began teaching lion dancing three years ago. But the club also acts as a recreation center and safe _haven_ (庇 护所) for teenagers, with video games readily available. As many as 20 students show up after school. “The basic requirement for hanging out here is you have to learn how to lion dance,” Mr. Fong said. While that is not a formal requirement for being a member, everyone finds a way to participate in the Lunar New Year Parade, whether it's by dancing, carrying a flag, or beating a drum.",
+    "Alvin Chau, aged 26, is an environmental consultant by day and a lion dancer on weekends. He has been a club member for 10 years and joined because of an interest in lion dance. “We're a big family,” he said, shaking hands with other members as they walked through the door. “You know everyone.”",
+    "It is believed that the lion dance began in the third century. Stories vary about how lion dancing came to be, but most of them include a monster named Nian who would terrorize a village. The villagers finally banded together and scared the beast away with _firecrackers_ (爆竹) and drums. While lions are not native to China, some versions of the story include the villagers creating a monster of their own in the shape of a lion to fight off the beast.",
+    "Today, the dancers travel across Chinatown going from business to business to bring good luck for the coming year. The new year — according to the Chinese lunar calendar — will begin on Saturday and marks the _Year of the Rooster_ (鸡年), which is thought to be a symbol of positivity. “It's almost like the dark night is ending and the sun is coming up,” said Ya Yung Teng, the digital collections coordinator for the Museum of Chinese in America. “It's hopeful that we're going to have a new day.” Roosters and chickens are not particularly strong creatures, Ms. Teng said, but they are numerous. “In a way,” she said, the rooster “stands for ‘We the People.’”",
+    "The lion head and tail are operated by two people. As one person controls the head, a second follows under a train of fabric representing the body. The dancers move in harmony as they imitate the animal's natural movements in the wild, including the aggressiveness of an attack. A lion head figure weighs under 10 pounds and sits squarely on the dancer's shoulders. Inside, the dancer manipulates strings that open and close the lion's eyes, shake its ears, and open its mouth to reveal a fire-orange tongue.",
+    "\"A good lion dancer will imitate a living creature,\" said Karlin Chan, aged 59, who heads the athletic club's community public relations. \"I started lion dancing when I was a kid,\" he said. \"Chinatown was much smaller then and it was a celebration with fireworks and firecrackers, which added a lot of flavor and meaning to it.\"",
+    "Mr. Chan buys a new lion head each year when he travels to China. A head costs about $1,500. \"If you want the good stuff, the quality, you have to see it for yourself,\" he said. \"I'll inspect the product before we put it in the container and ship it over.\" Mr. Chan, who has been involved with the club for nearly 50 years, said that passing the dance from one generation to the next was vital. \"You need to pass on the traditions and the culture, and this is a part of our culture,\" he said. \"It's a great way to promote cultural understanding and exchange; we welcome that.\"",
+    "For Sara Pore, aged 17, another club member, lion dance is more than just tradition; it provides a creative outlet. \"Lion dancing started 2,000 years ago — that's incredible,\" she said. \"But what makes you a competent lion dancer is that there's a sense of imagination involved. Lion dancing teaches competence in leadership because of this. You're constantly forced to push yourself past your limit.\"",
+    "Back at _rehearsal_ (排练), Justin Le, aged 18, tied a red ribbon around his waist to practice jumping. The dancers use the ribbons to pull themselves up over their partners' heads. The room's ceilings are too low to wear the lion heads for jumping practice, so once up on his partner's head, Mr. Le held out his arms as if in offering.\n\nL) Mr. Le comes by the dance as a _legacy_ (传承). \"I was born into it,\" Mr. Le said, noting that his uncle and father were club members. \"Growing up, I would always watch my family and see the lion dance, and I slowly grew interested in it.\" By the age of 14, he was fully enrolled in the athletic club's lion dance group. \"I value my culture and tradition, being Chinese or Asian-American. I have a lot of pride in that,\" he said. \"I want to contribute and give back to the community.\""
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "The lion dancers perform from door to door to bring New Year wishes to business people."
+    },
+    {
+     "no": 37,
+     "text": "The New York dance club also serves as a place for entertainment where youngsters can enjoy themselves safely."
+    },
+    {
+     "no": 38,
+     "text": "Lion dancers need to have a little imagination to perform well."
+    },
+    {
+     "no": 39,
+     "text": "There are a number of different versions about the origin of the lion dance."
+    },
+    {
+     "no": 40,
+     "text": "Some 50% of the members of a New York lion dance club are teenagers."
+    },
+    {
+     "no": 41,
+     "text": "One club member says he feels proud of his cultural tradition."
+    },
+    {
+     "no": 42,
+     "text": "Two dancers coordinate their movements,one manipulating the lion's head and the other its body."
+    },
+    {
+     "no": 43,
+     "text": "One lion dancer compares their New York dance club to a family."
+    },
+    {
+     "no": 44,
+     "text": "Lion dance should be handed down to future generations as part of Chinese culture."
+    },
+    {
+     "no": 45,
+     "text": "One lion dancer learned how to perform from his elders."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nSuperTeam-building exercises have become popular for managers trying to increase organisational and team harmony and productivity. Unfortunately, many employees resent compulsory bonding and often regard these exercises as a nuisance.\n\nA paper published this week by University of Sydney researchers in Social Networks has reported participants' feelings about team-building _interventions_ (干预), revealing ethical implications in forcing employees to take part.\n\n\"Many people see team-building activities as a waste of time, so we decided to look in more depth at what's behind this,\" said the paper's lead researcher, Dr Peter Matous.\n\n\"Teams are formed, combined, and restructured. Staff are relocated and office spaces redesigned. All this is done with the aim of improving workplace efficiency, collaboration, and cohesion. But does any of this work?\" said Dr Matous.\n\nThe study found that team-building exercises which focused on the sharing of and intervening into personal attitudes and relationships between team members were considered too heavy-handed and intrusive, although the researchers say some degree of openness and vulnerability is often necessary to make deep, effective connections with colleagues.\n\n\"Some participants were against team-building exercises because they were implicitly compulsory. They didn't welcome management's interest in their lives beyond their direct work performance,\" said Matous. \"Many people don't want to be forced into having fun or making friends, especially not on top of their busy jobs. They feel management is being too nosy or trying to control their lives too much.\"\n\nIn this study, the researchers recommended a self-_disclosure_ (表露) approach where participants were guided through a series of questions that allowed them to increasingly disclose personal information and values. The method is well-tested and has been shown to increase interpersonal closeness. However, to be successful, it must be voluntary.\n\nThe researchers said there are numerous schools of thought that propose differing psychological methods for strengthening relationships. \"With caution, many relational methods to improve teams and organisations can be borrowed from other fields. The question is how to apply them effectively to strengthen an entire collective, which is more than just the sum of individual relationships,\" said Dr Matous.\n\n46. Why are many employees opposed to team-building exercises?  \n    A) They consider such exercises annoying.  \n    B) They deem these exercises counter-productive.  \n    C) They see such exercises as harmful to harmony.  \n    D) They find these exercises too demanding.\n\n47. What did Dr Matous and his team do to find out whether team-building activities would improve productivity?  \n    A) They relocated team leaders and their offices.  \n    B) They rearranged the staff and office spaces.  \n    C) They redesigned the staff's work schedules.  \n    D) Th",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "Why are many employees opposed to team-building exercises?",
+     "options": [
+      "A) They consider such exercises annoying.",
+      "B) They deem these exercises counter-productive.",
+      "C) They see such exercises as harmful to harmony.",
+      "D) They find these exercises too demanding."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What did Dr Matous and his team do to find out whether team-building activities would improve productivity?",
+     "options": [
+      "A) They relocated team leaders and their offices.",
+      "B) They rearranged the staff and office spaces.",
+      "C) They redesigned the staff's work schedules.",
+      "D) They reintroduced some cohesive activities."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What did the study by Matous' team find about some team-building exercises?",
+     "options": [
+      "A) They were intended to share personal attitudes and relationships.",
+      "B) They implicitly added to the vulnerability of team members.",
+      "C) They invariably strengthened connections among colleagues.",
+      "D) They were regarded as an intrusion into employees' private lives."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "How can the self-disclosure approach succeed in increasing interpersonal closeness?",
+     "options": [
+      "A) By allowing participants freedom to express themselves.",
+      "B) By applying it to employees who volunteer to participate.",
+      "C) By arranging in proper order the questions participants face.",
+      "D) By guiding employees through a series of steps in team building."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What does Matous think of the various psychological methods borrowed from other fields for strengthening relationships?",
+     "options": [
+      "A) They must be used in combination for an entire collective.",
+      "B) They prioritise some psychological aspects over others.",
+      "C) They place too much stress on individual relationships.",
+      "D) They have to be applied cautiously to be effective."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "Why did the citizens of Los Angeles vote to raise their own taxes?",
+     "options": [
+      "A) To combat the county's homelessness.",
+      "B) To reform the county's service system.",
+      "C) To fund the development of local infrastructure.",
+      "D) To narrow the gap between the rich and the poor."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What do people tend to believe about the homeless?",
+     "options": [
+      "A) They seldom meet the descriptions of homelessness .",
+      "B) They are the victims of fast economic development.",
+      "C) They are responsible for their own condition.",
+      "D) They account for the majority of drug addicts."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What is one of the causes for more and more people in Los Angeles to become homeless?",
+     "options": [
+      "A) They find it increasingly difficult to afford a place to live.",
+      "B) The divorce rate in the county has been on a steady rise.",
+      "C) They have been compelled to take low-paying jobs.",
+      "D) The society fails to forgive them for their mistakes."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What do we learn from the new Los Angeles Homeless Services Authority report?",
+     "options": [
+      "A) Supplying enough job opportunities for the homeless remains a challenge.",
+      "B) Everyone is pulling in the same direction to solve the homelessness problem.",
+      "C) The increase in new housing falls short of the demand of the growing homeless population.",
+      "D) Los Angeles' homeless condition is deteriorating faster than many people predict."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "How do most Los Angeles residents now feel about homelessness?",
+     "options": [
+      "A) They are increasingly ashamed about its scale.",
+      "B) They find it no more scaring than it appears.",
+      "C) They are less and less indifferent to it.",
+      "D) They no longer find it shocking."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2023-12-1.md",
+  "set": "0",
+  "A": {
+   "passage": "Exercising for just 10 minutes a week is linked to a longer life, according to a new study published in _The British Journal of Sports Medicine_.\n\nSeveral recent studies have found that even low-intensity exercise, done for a short amount of time, can have a meaningful __26__ on health. Still, the idea that exercising for just 10 minutes a week may be enough to increase your lifespan is novel. It’s also somewhat __27__, since the federal physical activity guidelines recommend getting at least 75 minutes of vigorous exercise or 150 minutes of __28__ exercise each week.\n\nThe study was based on data from more than 88,000 U.S. adults who __29__ in the National Health Interview Survey between 1997 and 2008.\n\nContrary to some research that has found an __30__ limit to the amount of exercise that is healthy, the researchers found that there was __31__ no limit to the _longevity_ (长寿) benefits of exercise. Even the small group of people who got 10 times the amount of exercise recommended by the federal government had a 46% lower __32__ of death than the least active group.\n\nStill, observational studies like this one cannot prove cause and effect; they can only find __33__. The researchers also were not able to __34__ for certain lifestyle factors that could affect lifespan, including dietary habits and changes in physical activity over time. Despite these __35__, the study’s results are yet another indication of the power of physical activity, even in small amounts.\n\n|                  |                 |\n| ---------------- | --------------- |",
+   "bank": {
+    "A": "adjust",
+    "I": "participated",
+    "B": "alter",
+    "J": "patterns",
+    "C": "approximately",
+    "K": "populated",
+    "D": "controversial",
+    "L": "risk",
+    "E": "coordinates",
+    "M": "seemingly",
+    "F": "impact",
+    "N": "type",
+    "G": "limitations",
+    "O": "upper",
+    "H": "moderate"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "Earlier this year, scientists warned that one in six animal species could go _extinct_ (灭绝的) due to climate change. Could the same thing happen to our crops and other foodstuffs too?",
+    "It’s clear that farmers in many parts of the world are going to find things harder in the coming decades. Last week, BBC Future explored one scientist’s efforts to help crops cope with the increased probability of droughts. By using the genes from _resurrection_ (复活) plants, Jill Farrant of the University of Cape Town is exploring whether she can design crops to survive for much longer periods without water.",
+    "But if we can’t find ways to protect other foods, will they survive climate change? Fortunately, there is some good news on this front. Despite alarmist headlines about “foods that are going extinct,” there is no evidence that major food types like beans, chocolate, wine, corn or wheat will cease to exist.",
+    "But that doesn’t mean it’s all good news for future food. We will probably have to change where we grow certain crops, as some regions get too hot. The disadvantage, obviously, is that local farmers will suffer under this situation. And some people may struggle to get the same access to certain foods. “Even if overall food production may be unaffected, food security can still be impacted,” says Margaret Walsh, a scientist at the U.S. Department of Agriculture’s Climate Change Program Office. In other words, even if a certain food is still grown on some corner of the Earth, it doesn’t mean that everyone will continue to have the same degree of access as today.",
+    "Overall, the yields of many foods, from staples to life-enhancing extras such as coffee and chocolate, will likely be impacted by climate change too. How those decreases will be felt will depend on the degree of warming and the crop in question, but in general, “anything over about 30°C is very bad for crops,” says Wolfram Schlenker, an associate professor of international and public affairs at Columbia University. For example, statistical studies that he and a colleague built of corn and _soybean_ (大豆) production in the U.S. show a steep decline after crossing the 30°C temperature _threshold_ (临界点).",
+    "In the U.S. — the world’s largest producer of corn and soybeans — farms can move north to some degree, Schlenker says. But eventually, yields will likely suffer because the soil north of Iowa declines in quality — a legacy of _glacial_ (冰川的) expansion. Other studies, including studies of wheat in India and corn in Africa, also found that there is a threshold above which yields sharply decline: crops can adapt and move, but only to a point. “What’s common to all studies is the finding that extreme heat is damaging to crop growth, although exact cutoffs vary by crop,” Schlenker says. “If predictions for the end of the century are true, though, I think a lot of agricultural areas in the U.S. will see significant hits.”",
+    "Under current conditions, about 4% of the world’s croplands experience drought in any given year, but by the end of the century those conditions are forecasted to jump to about 18% per year. Some studies indicate that horticulture crops — generally, everything besides staples — may be impacted most severely, largely because they tend to be confined to a smaller geographic area. Researcher Andrew Jarvis and his colleagues found that 80% of coffee-growing zones in Central America and Brazil could become unsuitable by 2050, for example, while climate change will likely have “great impacts” on _cocoa_ (可可粉) production in West Africa. “High quality chocolate will be less available in the future, and if you want it, you’ll have to pay a lot more for it,” Jarvis says.",
+    "This means that, for those who can afford it, some foods will simply cost them more in the future. But for poorer people, those same price jumps will likely cause certain foods to go extinct from their diets. “The more you reduce, the shorter the supply, and the higher the price will jump,” Schlenker says.",
+    "Another potential climate change-induced problem is our dependence on commodity crops — wheat, soybeans, corn and rice — which currently provide humanity with 75% of its calories, either directly or indirectly through the animals we raise on those crops. Jarvis and his colleagues also found that, over the past five decades, the world has seen an increasing standardisation of diets; the foods we eat globally today are 36% more similar than they were in 1961. While this can be good news for the world’s poorest people who now consume more calories, protein and fat than in the past, _homogeneity_ (同一性) and overdependence on a handful of staples leaves us vulnerable to threats such as drought, disease and pests — all of which are predicted to worsen in many parts of the world as a result of climate change.",
+    "There are ways we could soften the coming blow to the global food supply, however. Like Farrant’s work with resurrection crops, a number of companies, organisations and researchers are aiming to create drought- and temperature-resistant crops through genetic engineering and conventional breeding. For now, the jury is still out as to how successful those endeavours will be. “The people at Monsanto who I’ve talked to are much more optimistic that they’ll be able to engineer heat-tolerant crops,” Schlenker says. “On the other hand, scientists at the USDA who I’ve spoken with are much more cautious.”",
+    "Until genetic engineering comes to fruition, other strategies might also help in some places, including applying more fertiliser, implementing better irrigation, using machinery that gets crops out of the field faster or installing storage facilities to delay spoilage. “Many places could benefit a great deal just by using technologies that already exist,” Walsh says. “General farm management can go a long way toward easing changes.”\n\nL) Finally, diversifying our diet away from heat-sensitive wheat, corn, rice and other crops could also help. “We’ve seen profound changes in the last decades in what we eat largely as a result of international trade, and I think that trend toward more diversification will continue,” Jarvis says. “Depending on a greater number of plant species creates a more vigorous and less risky food system — and one that provides a broader range of nutritional requirements.”"
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "One consequence of climate change is that some people may not have adequate access to certain foods."
+    },
+    {
+     "no": 37,
+     "text": "People around the world are eating foods more similar than what they used to eat."
+    },
+    {
+     "no": 38,
+     "text": "A recent news report talked about scientific efforts to help crops survive droughts through genetic engineering."
+    },
+    {
+     "no": 39,
+     "text": "It is predicted that climate change will affect the availability and price of quality chocolate."
+    },
+    {
+     "no": 40,
+     "text": "People wonder if certain crops and foodstuffs could disappear like some animal species due to climate change."
+    },
+    {
+     "no": 41,
+     "text": "Although farms in the U.S. can move a bit northward, crop yields may decrease."
+    },
+    {
+     "no": 42,
+     "text": "One possible solution to the food security problem is diversification of diet."
+    },
+    {
+     "no": 43,
+     "text": "It remains unsettled whether the global food supply problem can be solved by creating heat-tolerant crops through genetic engineering."
+    },
+    {
+     "no": 44,
+     "text": "Poor people may have to give up eating certain foods because of their high prices."
+    },
+    {
+     "no": 45,
+     "text": "A number of existing farming technologies could be used to reduce the negative effect of climate change on food production."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nOne of my bad habits is saying “busy” when people ask me how I’m doing. Sometimes it’s because I actually am busy, but other times it’s because that’s what I think I’m supposed to say. That’s what important people say. That’s what people who get promoted say. But working long hours doesn’t drive better results. Never taking a vacation won’t lead to a promotion. So why are we so proud to talk about how busy we are all the time?\n\nIn 2016, researchers from Columbia, Harvard, and Georgetown conducted a study to figure it out. They found busy people are perceived to be of high status, and interestingly, these status attributions are heavily influenced by our own beliefs about social mobility. In other words, the more we believe that one has the opportunity for success based on hard work, the more we tend to think that people who skip leisure and work all the time are of higher standing.\n\nThat’s why we feel like we have to appear busy, and there’s a real perception that if someone is knee-deep in meetings, emails and stress, then they’re probably a big deal. This culture of busyness is making it hard for employees to find work-life balance. According to a recent study, one in five highly engaged employees are at risk of _burnout_ (精疲力竭).\n\nPersonally, I’m going to stop saying “busy” when people ask me how I am. It sounds _self-righteous_ (自以为是的) and sets the wrong tone. Phrases like “I have limited access to email” and “I’ll respond as soon as I get back” sound like you’re being held against your will from working as opposed to making the most of your time off.\n\nThat’s why we recently launched the Out of Office Email Generator, a free tool you can use before your next long weekend or trip. You can share loud and proud that you won’t be checking email until you’re back. Managers need to think twice about emailing their teams on the weekend and talking about how busy they are. Leaders should take time off themselves and encourage employees to do the same.\n\n46. What is a reason for the author to be in the habit of saying “busy” when asked how he is doing?  \n    A) He just follows successful people’s example.  \n    B) He is actually proud to be fully occupied.  \n    C) He thinks everyone should be devoted to work.  \n    D) He believes busyness ensures accomplishments.\n\n47. Why do we tend to think that busy people are of high status?  \n    A) Our status can be attributed to our social mobility.  \n    B) We hold the belief that hard work leads to success.  \n    C) Our own opportunity for success never comes easily.  \n    D) We find few people of high status have time for leisure.\n\n48. What do we learn about the culture of busyness from a recent study?  \n    A) It places employees in endless meetings, emails and stress.  \n    B) It compels some 20% of employees to appear always busy.  \n    C) It distorts many employees’ belief of what a satisfying life is.  \n    D) It does much harm to many busy emp",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What is a reason for the author to be in the habit of saying “busy” when asked how he is doing?",
+     "options": [
+      "A) He just follows successful people’s example.",
+      "B) He is actually proud to be fully occupied.",
+      "C) He thinks everyone should be devoted to work.",
+      "D) He believes busyness ensures accomplishments."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "Why do we tend to think that busy people are of high status?",
+     "options": [
+      "A) Our status can be attributed to our social mobility.",
+      "B) We hold the belief that hard work leads to success.",
+      "C) Our own opportunity for success never comes easily.",
+      "D) We find few people of high status have time for leisure."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What do we learn about the culture of busyness from a recent study?",
+     "options": [
+      "A) It places employees in endless meetings, emails and stress.",
+      "B) It compels some 20% of employees to appear always busy.",
+      "C) It distorts many employees’ belief of what a satisfying life is.",
+      "D) It does much harm to many busy employees’ well-being."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What do such utterances as “I have limited access to email” sound like according to the author?",
+     "options": [
+      "A) One is too busy to check all emails in time.",
+      "B) One is opposed to the prevailing work culture.",
+      "C) One is forced by circumstances to stop working.",
+      "D) One is simply enjoying their time off work."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "Why did the author and his colleagues launch the Out of Office Email Generator?",
+     "options": [
+      "A) To enable busy employees to spend less time checking emails.",
+      "B) To ensure employees as well as employers truly have time off.",
+      "C) To stop managers from talking about how busy their teams usually are.",
+      "D) To encourage both employers and employees to answer emails promptly."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What did the author’s team conclude about the gender difference in airfares from their further investigation?",
+     "options": [
+      "A) It is largely attributed to women booking earlier than men.",
+      "B) It is largely explained by women’s choosing cheaper flights.",
+      "C) It is mainly accounted for by male employees’ readiness to pay more.",
+      "D) It is due to the fact that women care more about their company’s money."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What did the researchers want to determine by testing a variety of possible explanations?",
+     "options": [
+      "A) What made male frequent travelers book air tickets late.",
+      "B) What caused women to plan ahead in booking business trips.",
+      "C) What motivated women to book cheaper flights.",
+      "D) What accounted for the gender gap in airfares."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What happened when the negative reciprocity variable was taken into account?",
+     "options": [
+      "A) Both men and women were found to engage in negative behaviors.",
+      "B) Neither men nor women viewed booking late as a bad behavior.",
+      "C) The gender difference in airfare expenses no longer existed.",
+      "D) The gender gap tended to narrow to a significant degree."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What did prior research on negative reciprocity among workers find?",
+     "options": [
+      "A) It can do more harm to the workplace than to employees.",
+      "B) It contributes to the male-female divide in the workplace.",
+      "C) It proves to be counterproductive in a number of ways.",
+      "D) It can result in increasing labor-management conflicts."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What does the author emphasize about their analysis in the last paragraph?",
+     "options": [
+      "A) It can help companies increase their savings significantly.",
+      "B) It can duly contribute to companies’ business performance.",
+      "C) It can translate women’s booking practice into men’s behavior.",
+      "D) It can enhance large multinational companies’ competitiveness."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2023-12-2.md",
+  "set": "1",
+  "A": {
+   "passage": "A number of studies have looked at how family life can affect productivity and satisfaction in the workplace. However, there has been __26__ little research on the influence of leisure activities. So Ciara Kelly and colleagues recruited 129 hobbyists to look at how the time spent on their hobbies __27__ their work life.\n\nThe researchers found that when participants spent longer than __28__ on their leisure activity, their belief in their ability to perform their job was strengthened. But this was only the __29__ when they had a serious hobby that was dissimilar to their job, or when their hobby was similar to their work but they only did it __30__. When their hobby was both serious and similar to their job, then spending more time on it actually decreased their work __31__.\n\nWhy might that be? To maintain a serious hobby, people need to invest significant psychological resources, say the authors—so if the activity has the same kinds of demands as their work, they may be left __32__ and unable to perform well at their job. But if their hobby is quite different from their career, it may not __33__ in the same way but instead help them develop other knowledge and skills that can __34__ their confidence at work. \"Consider a scientist who is a keen rock climber,\" says Kelly. Since climbing is so far __35__ from their day-to-day work activities, they can still recover from the demands of their job with plenty of resources.\n\n|               |                 |\n| ------------- | --------------- |",
+   "bank": {
+    "A": "boost",
+    "I": "normal",
+    "B": "case",
+    "J": "prevalent",
+    "C": "casually",
+    "K": "relative",
+    "D": "efficiency",
+    "L": "removed",
+    "E": "estate",
+    "M": "scratch",
+    "F": "exhausted",
+    "N": "shaped",
+    "G": "faculty",
+    "O": "surprisingly",
+    "H": "interfere"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "Attitudes towards _paternity leave_ (陪产假) have drastically changed in America in the last five years as more fathers feel comfortable taking extended time off, but gender bias persists when it comes to career prospects and the home, according to a new study of working parents.",
+    "Research by the Boston College Center for Work & Family, which surveyed new parents at four large US companies who were qualified for taking at least six weeks paid parental leave, found that 81% of the 1,240 employees surveyed said the notion of fathers taking leave has become more acceptable.",
+    "Of those surveyed, 62% of fathers took the maximum amount of time off compared to 93% of mothers, and around three-quarters of workers said their employer was equally supportive of mothers and fathers taking parental leave and over half said leave policies had made workplace culture better.",
+    "The US is one of only three countries in the world not to offer _statutory_ (法定的) paid leave, but increasingly states and companies are starting to take up the issue. So far, eight states and the District of Columbia have their own paid family leave laws.",
+    "Brad Harrington, executive director of the center and lead author of the study, estimates only 20% to 30% of companies in the US offer paid parental leave. He feels the research findings reflect an obvious change in corporate attitudes to new fathers taking time off.",
+    "“We did a study on paternity leave five years ago. Compared with those findings, these numbers were shocking to me. I did not expect 80% of people to say the organisation finds dads taking this leave acceptable and three-quarters to say it's equally supportive of women and men taking leave,” Harrington said.",
+    "The previous study found that nearly three-quarters of fathers saw two to four weeks as an appropriate duration for paternity leave and 76% said they would prefer not to take all their time off at once.",
+    "Since then, there have been a number of legal cases against companies involving paternity leave, including cases against JPMorgan Chase and Estee Lauder, which have helped put pressure on companies to make their parental leave policies gender neutral.",
+    "However, the study also shows how traditional gender roles endure both at work, where more women than men reported changes in their perceived career potential, and at home—even among workers who claim to have a strong desire for equality.",
+    "The vast majority of men, 97%, said one of the top reasons to take leave was to share caregiving with their partner. But when they were asked about how caregiving and household tasks were divided, their answers painted a different picture. While about 75% of employees said both genders should give the same amount of care, the majority of men and nearly half of women admitted that in reality the female actually did most of it. A tiny fraction, 2%, of men said they did more of the childcare.",
+    "Men and women's experiences of the return to work following parental leave were also considerably different. Of the women surveyed, 32% reported a downturn in their job satisfaction, while 14% said it increased. In comparison, 17% of men said their job satisfaction went down and 20% said it went up. Meanwhile, more women reported an increase in their responsibilities and manager expectations after childbirth. Half of the women said they used flexible work arrangements after becoming a parent, while just 27% of men did. Similar percentages of men and women said they enjoyed their careers and that it gave them a sense of achievement, while around half of women and 44% of men said it was a key part of their identity.\n\nL) On the subject of career advancement, 59% of women and 49% of men said leave could be limiting and both genders said they feared it would have an impact on their progress long-term. But on opportunity for promotion, more than double the number of women, 30% compared with 15% of men, believed their chances to be lower after becoming a parent. Despite progress, the struggle for women to reach the highest positions of power is demonstrated in this year's Fortune 500 list, which featured a record 33 female CEOs, but this still represents a tiny fraction of the total.\n\nM) Harrington said culture change depends on companies putting more focus on men and their responsibilities. “By that I mean companies need to give men paternity leave and encourage men to take time off to be with their kids early on in the kids' life. They also need to recognise that men have to make significant adjustments when they become parents. Companies cannot do all these things to enhance women's advancement and then turn around and say, ‘Oh, but we don't expect the men to take over for the women at home.’ ”\n\nN) In May, the American Civil Liberties Union (ACLU) and Outten & Golden LLP announced a historic class-action $5m settlement with JPMorgan Chase on behalf of male employees who claim they were illegally denied access to paid parental leave. Derek Rotondo, 35, filed the discrimination charge against his company after he was allegedly told by his HR department that mothers were considered primary caregivers. Thus they were allowed to take 16 weeks of paid parental leave. Fathers, however, could take just two weeks.\n\nO) The father of two from Columbus, Ohio, who still works at the company as an associate and investigator, said he has witnessed a “_domino effect (多米诺效应)_” across companies since the settlement, but that there is still substantial progress to be made towards changing attitudes towards paternity leave.\n\nP) “I do think there's still some way to go ... there's still going to be sort of the unstated expectation for new dads to essentially come right back to work, but I think the research is showing that's starting to change.” He said equal parental leave is an essential component to creating gender equality in the workplace. “The old standard of women staying home, having babies, and cooking doesn't apply and hasn't applied for a long time.”"
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "In the absence of Federal legislation, some states in the US have passed laws concerning paid family leave."
+    },
+    {
+     "no": 37,
+     "text": "Most fathers admitted that even during their paternity leave they actually did much less childcare than the mother."
+    },
+    {
+     "no": 38,
+     "text": "According to one father, equal parental leave is indispensable to achieving gender equality in the workplace."
+    },
+    {
+     "no": 39,
+     "text": "One survey indicated there is now less objection to paternity leave."
+    },
+    {
+     "no": 40,
+     "text": "Compared to five years ago, according to one researcher, many more people said their organisation gave the same support to men and women taking parental leave."
+    },
+    {
+     "no": 41,
+     "text": "One study finds that even workers who claim to desire gender equality stick to traditional gender roles both at work and at home."
+    },
+    {
+     "no": 42,
+     "text": "The majority of workers surveyed said parental leave policies had improved workplace culture."
+    },
+    {
+     "no": 43,
+     "text": "In spite of progress, the number of women in top positions of big companies remains extremely small."
+    },
+    {
+     "no": 44,
+     "text": "According to one estimate, less than one third of companies in the US provide paid parental leave."
+    },
+    {
+     "no": 45,
+     "text": "A number of lawsuits have pressured companies to formulate gender neutral policies on parental leave."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nHaving a rival can keep you committed to achieving your goals and enhance your overall performance. But before you go out and find an entrepreneur to outcompete, it's important to understand and avoid the traps that often come with rivalry. After all, competitive rivalry can also hinder effective decision-making and increase your willingness to take risks, behaviors that can ultimately hurt your venture's success.\n\nFinding someone you're committed to outcompeting can be a great way to stay focused on your goals and push your venture to the next level. But when you're intently focused on outperforming your rivals, you may begin to develop a \"win-at-all-costs\" mentality that causes you to ignore how you achieve success. One group of researchers, for example, examined the link between rivalry and unethical behavior. They found that when people compete against their rivals, they are more willing to behave unethically to win. But such behavior may stain your reputation and strain relationships important to your success. One way to avoid this trap is to stop and reflect on what's important. While outperforming your rivals may provide short-term benefits, the loss of your integrity will have long-term consequences.\n\nOne reason having a rival can enhance your venture's performance is that it creates a level of excitement that drives you to work harder. But this eagerness to win may also hurt your venture's success, particularly when it causes you to make impulsive, insensible decisions. But it's possible to avoid such costly mistakes by making a habit of engaging in critical thinking, such as considering opposing viewpoints and conducting cost-benefit analyses, especially for those decisions that are complex and can determine the future of your venture.\n\nThe sense of eagerness that comes with having a rival can not only cause you to make poorer decisions, but it can also lead you to take greater risks that put your venture in peril. One way you can overcome the risk-inducing effects of rivalry that stand to endanger your venture's success is to remain attentive to your emotional state and actively monitor how such feelings are affecting your decision-making.\n\n46. How can competitive rivalry benefit entrepreneurs according to the passage?  \n    A) By enabling them to outcompete other entrepreneurs.  \n    B) By enabling them to make their venture a success.  \n    C) By helping them to reach long-term goals.  \n    D) By helping them to stay goal-oriented.\n\n47. What is one of the traps entrepreneurs may often fall into when competing with rivals?  \n    A) They may adopt strategies that are bound to ruin their venture.  \n    B) They may resort to unethical means to outperform their rivals.  \n    C) They may be too eager to succeed while ignoring the huge labor cost.  \n    D) They may be intently focused on winning at the current market level.\n\n48. What are entrepreneurs advised to do to avoid traps",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "How can competitive rivalry benefit entrepreneurs according to the passage?",
+     "options": [
+      "A) By enabling them to outcompete other entrepreneurs.",
+      "B) By enabling them to make their venture a success.",
+      "C) By helping them to reach long-term goals.",
+      "D) By helping them to stay goal-oriented."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What is one of the traps entrepreneurs may often fall into when competing with rivals?",
+     "options": [
+      "A) They may adopt strategies that are bound to ruin their venture.",
+      "B) They may resort to unethical means to outperform their rivals.",
+      "C) They may be too eager to succeed while ignoring the huge labor cost.",
+      "D) They may be intently focused on winning at the current market level."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What are entrepreneurs advised to do to avoid traps that often accompany rivalry?",
+     "options": [
+      "A) Deliberate on what really matters.",
+      "B) Prioritize reaping immediate benefits.",
+      "C) Estimate the long-term consequences.",
+      "D) Reflect on what successes are achievable."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "How can entrepreneurs avoid making impulsive and insensible decisions?",
+     "options": [
+      "A) By engaging themselves in critical reasoning.",
+      "B) By developing a habit of keeping their integrity.",
+      "C) By criticizing themselves for previous poor performances.",
+      "D) By refraining from being too excited about their successes."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "How can entrepreneurs overcome the risk-inducing effects of rivalry?",
+     "options": [
+      "A) By paying close attention to their current performance.",
+      "B) By taking steps that stand to endanger their rivals' success.",
+      "C) By monitoring how their decision-making impacts their mentality.",
+      "D) By keeping their emotions in check to avoid making poor decisions."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What does \"multitasker\" originally refer to?",
+     "options": [
+      "A) An operating system capable of doing several tasks at once.",
+      "B) A skilled worker executing more than one task at the same time.",
+      "C) A sophisticated technology doing several tasks effectively at once.",
+      "D) An efficient person able to perform multiple tasks at the same time."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "Why can't people really be multitaskers according to neuroscientists?",
+     "options": [
+      "A) They are not sufficiently exposed to multitasking situations.",
+      "B) They are not comparable to mechanical operating systems.",
+      "C) Their brains do not allow them to multitask.",
+      "D) Their attention span cannot be expanded."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What do we learn from the conclusion of a recent study on multitasking?",
+     "options": [
+      "A) People make greater achievements by maintaining whatever they are doing is multitasking.",
+      "B) People's performance benefits from the perception of what they are doing as multitasking.",
+      "C) People's active mental processes exert a positive effect on their multitasking.",
+      "D) People can improve their capabilities by handling multitasking situations."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "How does the business world view multitasking?",
+     "options": [
+      "A) It is a rare skill often found in fluid organisations.",
+      "B) It is an adaptable capability required of all workers.",
+      "C) It is an essential quality many employees lack.",
+      "D) It is a desirable ability that can be developed."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What does the author imply we should do if we have to focus on some task and do it well?",
+     "options": [
+      "A) Work in a flexible way.",
+      "B) Learn from mistakes.",
+      "C) Avoid multitasking.",
+      "D) Increase efficiency."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2023-12-3.md",
+  "set": "2",
+  "A": {
+   "passage": "When people set out to improve their health, they usually take a familiar path: starting a healthy diet, getting better sleep, and doing regular exercise. Each of these behaviors is important, of course, but they all __26__ on physical health and a growing body of research suggests that social health is just as, if not more, important to __27__ well-being.\n\nOne recent study published in the journal PLOS ONE, for example, found that the strength of a person's social circle was a better __28__ of self-reported stress, happiness and well-being levels than fitness tracker data on physical activity, heart rate and sleep. That finding suggests that the “__29__ self” represented by endless amounts of health data doesn't tell the whole __30__.\n\nThere's also a qualified self, which is who I am, what are my activities, my social network, and all of these aspects are not __31__ in any of these measurements.\n\nThis idea is supported by plenty of __32__ research. Studies have shown that social support whether it comes from friends, family members or a spouse is __33__ associated with better mental and physical health. A rich social life, these studies suggest, can lower stress levels, improve mood, encourage positive health behaviors and discourage damaging ones, boost heart health and improve illness __34__ rates.\n\nSocial isolation, meanwhile, is linked to higher rates of physical diseases and mental health conditions. It's a significant problem, __35__ since loneliness is emerging as a widespread public health problem in many countries.\n\n|               |               |\n| ------------- | ------------- |",
+   "bank": {
+    "A": "base",
+    "I": "prompt",
+    "B": "eagerly",
+    "J": "puzzle",
+    "C": "especially",
+    "K": "quantified",
+    "D": "focus",
+    "L": "recovery",
+    "E": "indicator",
+    "M": "reflected",
+    "F": "overall",
+    "N": "story",
+    "G": "preached",
+    "O": "strongly",
+    "H": "prior"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions",
+   "paragraphs": [
+    "As a parent of two boys at primary school, I worry about the issues associated with teenagers and social media. Newspapers are constantly filled with frightening accounts of drug addiction and aggressive behaviour supposedly caused by violent videogames. But even when these accounts touch on real concerns, they do not really reflect the great mass of everyday teenage social behaviour: the online chat, the texting, the surfing, and the emergence of a new teenage sphere that is conducted digitally.",
+    "New technologies always provoke generational panic, which usually has more to do with adult fears than with the lives of teenagers. In the 1930s, parents worried that radio was gaining an irresistible hold of their children. In the 80s, the great danger was the Sony _Walkman_ (随身听). When you look at today's digital activity, the facts are much more positive than you might expect.",
+    "Indeed, social scientists who study young people have found that their digital use can be inventive and even beneficial. This is true not just in terms of their social lives, but their education too. So if you use a ton of social media, do you become unable, or unwilling, to engage in face-to-face contact? The evidence suggests not. Research by Amanda Lenhart of the Pew Research Centre, a US think tank, found that the most passionate texters are also the kids most likely to spend time with friends in person. One form of socialising doesn't replace the other. It expands it.",
+    "\"Kids still spend time face to face,\" Lenhart says. Indeed, as they get older and are given more freedom, they often ease up on social networking. Early on, the web is their \"third space\", but by the late teens, it's replaced in reaction to greater independence. They have to be on Facebook, to know what's going on among friends and family, but they are _ambivalent_ (有矛盾心理的) about it, says Rebecca Eynon, a research fellow at the Oxford Internet Institute, who has interviewed about 200 British teenagers over three years. As they gain experience with living online, they begin to adjust their behaviour, struggling with new communication skills, as they do in the real world.",
+    "Parents are wrong to worry that kids don't care about privacy. In fact, they spend hours changing Facebook settings or using quick-delete sharing tools, such as Snapchat, to minimise their traces. Or they post a photograph on Instagram, have a pleasant conversation with friends and then delete it so that no traces remain.",
+    "This is not to say that kids always use good judgment. Like everyone else, they make mistakes - sometimes serious ones. But working out how to behave online is a new social skill. While there's plenty of drama and messiness online, it is not, for most teens, a cycle of non-stop abuse: a Pew study found only 15% of teens said someone had bullied them online in the last 12 months.",
+    "But surely all this short-form writing is affecting literacy? Certainly, teachers worry. They say that kids use overly casual language and text-speak in writing, and don't have as much patience for long reading and complex arguments. Yet studies of first-year college papers suggest these anxieties may be partly based on misguided _nostalgia_ (怀旧). When Stanford University scholar Andrea Lunsford gathered data on the rates of errors in “freshman composition” papers going back to 1917, she found that they were virtually identical to today.",
+    "But even as error rates stayed stable, student essays have blossomed in size and complexity. They are now six times longer and, unlike older “what I did this summer” essays, they offer arguments supported by evidence. Why? Computers have vastly increased the ability of students to gather information, sample different points of view, and write more fluidly.",
+    "When linguist Naomi Baron studied students' instant messaging even there she found surprisingly rare usage of short forms such as “u” for “you”, and as students got older, they began to write in more grammatical sentences. That is because they want to appear more adult, and they know how adults are expected to write. Clearly, teaching teens formal writing is still crucial, but texting probably isn't destroying their ability to learn it.",
+    "It is probably true that fewer kids are heavy readers compared with two generations ago, when cheap paperbacks boosted rates of reading. But even back then, a minority of people - perhaps 20% - were lifelong heavy readers, and it was cable TV, not the internet, that struck a blow at that culture in the 1980s. Still, 15% or more of kids are found to be deeply bookish. In fact, the online world offers kids remarkable opportunities to become literate and creative because young people can now publish ideas not just to their friends, but to the world. And it turns out that when they write for strangers, their sense of \"authentic audience\" makes them work harder, push themselves further, and create powerful new communicative forms.",
+    "Few would deny that too much time online can be harmful. Some of the dangers are emotional: hurting someone from a distance is not the same as hurting them face to face. If we're lucky, the legal environment will change to make teenagers' online lives less likely to haunt them later on. Just last week, California passed a law allowing minors to demand that internet firms erase their digital past, and the EU has considered similar legislation.\n\nL) Distraction is also a serious issue. When kids switch from chat to music to homework, they are indeed likely to have trouble doing each task well. And studies show that pupils don't fact-check information online—\"smart searching\" is a skill schools need to teach urgently. It's also true that too much social networking and game playing can cut into schoolwork and sleep. This is precisely why parents still need to set firm boundaries around it, as with any other distraction.\n\nM) So what's the best way to cope? The same boring old advice that applies to everything in parenting: moderation. Rebecca Eynon argues that it's key to model good behaviour. Parents who stare non-stop at their phones and don't read books are likely to breed kids who will do the same. As ever, we ought to be careful about our own behaviour."
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "Research has found the use of digital technology benefits not only teenagers' social lives but also their studies."
+    },
+    {
+     "no": 37,
+     "text": "It is urgent that schools teach kids how to verify online information."
+    },
+    {
+     "no": 38,
+     "text": "Students now write longer and more complex essays than their counterparts in previous decades while the error rates remain unchanged."
+    },
+    {
+     "no": 39,
+     "text": "Newspaper reports of teenagers give a false picture of their behaviour."
+    },
+    {
+     "no": 40,
+     "text": "Parents are advised to mind their own digital behaviour and set a good example for their kids."
+    },
+    {
+     "no": 41,
+     "text": "Contrary to parents' belief, kids try hard to leave as few traces as possible on the web."
+    },
+    {
+     "no": 42,
+     "text": "Students' ability to learn formal writing is unlikely to be affected by texting."
+    },
+    {
+     "no": 43,
+     "text": "Historically, new technologies have always caused great fears among parents."
+    },
+    {
+     "no": 44,
+     "text": "The reading culture was seriously affected by cable television some four decades ago."
+    },
+    {
+     "no": 45,
+     "text": "Teachers say that kids' writing is too casual, using language characteristic of text messages."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nIn the history of horse racing, few horses have captured the affection of the British public like Red Rum. Today, three decades after his retirement, he is still one of the best-known and most beloved racehorses of all time.\n\nRed Rum was passed around to several owners before being purchased for Noel Le Mar. The agent who made the purchase was the now-legendary horse trainer Donald \"Ginger\" McCain.\n\nIt wasn't apparent at the time, but Red Rum had a serious bone disease in his foot. For many horses (and many trainers) this would mean the end of a racing career before it even began. For Ginger and Red Rum, though, it was just an obstacle to greatness that had to be overcome.\n\nRed Rum's true talent came out in _steeplechases_ (障碍赛马). His power, speed, and jumping ability carried him to his first Grand National title in 1973. The very next year, Red Rum returned to take his second title. He was the first horse to take successive firsts since Reynoldstown in 1935-1936. Red Rum's spirit and grace had already begun to charm the leagues of Grand National fans.\n\nIn the following two years, Red Rum lost out on the title, coming in second both times. When he returned in 1977 to try again, he was largely regarded as past his prime. He was 12 years old and not expected to place highly. He surprised sporting fans around the world when he came in a remarkable 25 lengths ahead of the nearest horse, taking his third Grand National win. To this day, Red Rum's third win is known as one of the greatest moments in horse racing history.\n\nRed Rum was headed for the Grand National once again in 1978 but suffered an injury in one of his heels shortly before the race. He was retired soon after, but his public life and fame by no means decreased with the end of his career. Red Rum traveled all over the country for various engagements. He often led pre-race parades at Aintree Racecourse and was a popular guest at charity benefits and public events.\n\n46. What do we learn from the passage about Red Rum the racehorse?  \n    A) He captured public affection long before he won national titles.  \n    B) He won enormous fame and love from British people.  \n    C) He became a myth three decades after his retirement.  \n    D) He owed his great success to several well-known horse trainers.\n\n47. What did the serious bone disease in Red Rum's foot mean to himself and his trainer?  \n    A) It was simply a hindrance they had to get over to excel.  \n    B) It was surely a disadvantage though not considered fatal.  \n    C) It was actually the end of a racing career that had just begun.  \n    D) It was really a major obstacle hard to overcome on their own.\n\n48. What does the author say Red Rum did with his power, speed, and jumping ability?  \n    A) He won his first Grand National title at 12.  \n    B) He took two firsts successively in 1935-1936.  \n    C) He surprised sporting fans worldwide in 1973.  \n    D) He took three Grand ",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What do we learn from the passage about Red Rum the racehorse?",
+     "options": [
+      "A) He captured public affection long before he won national titles.",
+      "B) He won enormous fame and love from British people.",
+      "C) He became a myth three decades after his retirement.",
+      "D) He owed his great success to several well-known horse trainers."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What did the serious bone disease in Red Rum's foot mean to himself and his trainer?",
+     "options": [
+      "A) It was simply a hindrance they had to get over to excel.",
+      "B) It was surely a disadvantage though not considered fatal.",
+      "C) It was actually the end of a racing career that had just begun.",
+      "D) It was really a major obstacle hard to overcome on their own."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What does the author say Red Rum did with his power, speed, and jumping ability?",
+     "options": [
+      "A) He won his first Grand National title at 12.",
+      "B) He took two firsts successively in 1935-1936.",
+      "C) He surprised sporting fans worldwide in 1973.",
+      "D) He took three Grand National wins in the 1970s."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What did people generally think of Red Rum when he returned to the racecourse in 1977?",
+     "options": [
+      "A) He had already passed the peak of his racing life.",
+      "B) He would have no rival in Grand National steeplechases.",
+      "C) He had lost his charm with the leagues of Grand National fans.",
+      "D) He could be expected to repeat his glory in the prime of his career."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What became of Red Rum after his career ended?",
+     "options": [
+      "A) He suffered from severe pain in a heel.",
+      "B) He spent almost all his time traveling.",
+      "C) He lived on various charity benefits.",
+      "D) He remained famous and popular."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What does the author say businesspeople often do?",
+     "options": [
+      "A) Strive to make sense of some unknown forces.",
+      "B) Avoid being driven by their own feelings.",
+      "C) Draw on a vast wealth of past experience.",
+      "D) Rely on instincts in decision-making."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What should we take into account in order to make informed decisions?",
+     "options": [
+      "A) The likelihood of errors.",
+      "B) Systematic data and analysis.",
+      "C) The complexity of circumstances.",
+      "D) Personal feelings and business strategies."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What should people do in a decision-making process if instincts disagree with data?",
+     "options": [
+      "A) Resolve the dilemma with previous experience.",
+      "B) Figure out which of the two is more reliable.",
+      "C) Combine the two together.",
+      "D) Prioritize instincts over data."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What should we do when facing various factors that limit the practicality of data?",
+     "options": [
+      "A) Make a rational and systematic analysis.",
+      "B) Explore the most feasible options.",
+      "C) Resort to our inner wisdom.",
+      "D) Apply definitive criteria."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What does it take for decisions to become the best according to the author?",
+     "options": [
+      "A) Applying instincts and data in conjunction.",
+      "B) Assessing all factors when making a choice.",
+      "C) Recalling what has actually worked in the past.",
+      "D) Refraining from trusting instincts arbitrarily."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
   "file": "cet4-2024-06-1.md",
   "set": "0",
   "A": {
@@ -197,6 +1415,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "D",
    "27": "M",
@@ -432,6 +1651,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "O",
    "27": "B",
@@ -666,6 +1886,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "D",
    "27": "M",
@@ -901,6 +2122,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "N",
    "27": "I",
@@ -1136,6 +2358,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "L",
    "27": "D",
@@ -1371,6 +2594,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "J",
    "27": "K",
@@ -1606,6 +2830,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "D",
    "27": "G",
@@ -1841,6 +3066,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "J",
    "27": "B",
@@ -2076,6 +3302,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "G",
    "27": "F",
@@ -2311,6 +3538,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "C",
    "27": "N",
@@ -2546,6 +3774,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "D",
    "27": "E",
@@ -2781,6 +4010,7 @@
     }
    ]
   },
+  "has_answers": true,
   "answers_A": {
    "26": "M",
    "27": "G",
@@ -2817,5 +4047,614 @@
    "54": "B",
    "55": "D"
   }
+ },
+ {
+  "file": "cet4-2026-06-1.md",
+  "set": "0",
+  "A": {
+   "passage": "blank from a list of choices given in a word bank following the passage. Read the passage through carefully before making your choices. Each choice in the bank is identified by a letter. Please mark the corresponding letter for each item on Answer Sheet 2 with a single line through the centre. You may not use any of the words in the bank more than once. One of the biggest controversies over the Industrial Revolution is how it affected the working class. The oldest debates were over whether the standards of living rose or fell. Those that believed they fell claimed that the capitalists __26__ every ounce of surplus they could from the working class. Those that believed the standards of living rose claimed that the environment was consumer-friendly, with more and more goods __27__ to the working class every year. Today’s historians agree that overall, the standards of living __28__ . They do not agree, however, on when this improvement __29__ . In an effort to solve this controversy, historians have attempted to define __30__ what “standard of living” means. They all seem to agree that it should mean happiness, but happiness is impossible to measure. Instead, historians __31__ use “real income” as the measure for the standards of living. Real income is money __32__ and then adjusted according to the cost of living. However, it does not take into account unemployment, pollution, health, life expectancy, or free time. After __33__ debate and analysis of the average income, historians have agreed to disagree on whether there was rapid or slow economic growth during the Industrial Revolution. Instead, they have decided to __34__ how the Industrial Revolution was affected by other events. They have determined that the Industrial Revolution had an overall positive __35__ , but it quite possibly was neutralized by negative events such as wars, high taxes, and rapid population growth.\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "available",
+    "I": "increased",
+    "B": "deteriorating",
+    "J": "interpret",
+    "C": "earned",
+    "K": "occurred",
+    "D": "effect",
+    "L": "peculiar",
+    "E": "enhance",
+    "M": "probably",
+    "F": "exactly",
+    "N": "squeezed",
+    "G": "exhausting",
+    "O": "typically",
+    "H": "experience"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions:",
+   "paragraphs": [
+    "I was glad I had such terrible jetlag. Wide awake at 3:30 am with our nine-year-old daughter on our lodge balcony, I stared for hours at the most incredible night sky I’ve ever seen before the dawn slowly started to rub out the stars on the horizon and the multiple shooting stars faded away.",
+    "We were going to my wife’s big family reunion in Auckland, New Zealand, but when we found out that Great Barrier Island, just off the coast, had been recently awarded Dark Sky Sanctuary status—a typically remote area that has an “exceptional or distinguished quality of starry nights”—we thought it would be the perfect place to relax before our busy schedule. It’s the first island and only the fourth location in the world to achieve this status.",
+    "After a 28-hour flight with two travel-sick children, our hearts sank when we saw the tiny twin engine 10-seater that was to take us the 90 km across the Hauraki Gulf to Great Barrier Island. But we needn’t have worried. Whether it was the gravity force of the plane climbing or the noise of the engine, it put our three-year-old daughter instantly to sleep until we bumped down on the grass at Claris Airport. Our first empty sick bag against all the odds... Things were looking up.",
+    "Great Barrier Island has no public facilities and the 950 people living there (though only about half permanently) rely on solar and wind energy, and bottled gas for cooking. There are no streetlights. There are no cash machines or banks. The police force comprises a husband and wife, and there’s one postman. It’s not just the lack of light but the lack of noise that’s so delightful on this unique and gorgeous scene. It was first discovered by East Polynesians about 700 years ago and the Maori name for the island is Aotea. Captain Cook gave the island its European name, because it acts as a barrier between the Pacific and the Hauraki Gulf.",
+    "The climate here is subtropical (亚热带的) like Auckland’s. The island boasts a beautiful wilderness with dense forests, glorious, unspoilt sandy beaches and plenty of bays and a few mountainous areas where there are good walking tracks among the wetlands and valleys. You can birdwatch, dive, surf and boat. The best beaches are on the eastern side of the island where the surf is better, too. The sheltered western side is where you'll find the best diving and boating. Lots of people come here for the fantastic fishing spots around the island. Like a lot of spots in New Zealand, there are whale- watching trips and you might just catch sight of sharks.",
+    "It’s rare to find an island that really does feel undiscovered—but this is it. When one of my wife’s relations, who comes here regularly, found out that we’d been there, he whispered to us, only half- joking: “Shh—don’t tell anyone!” The locals are a relaxed and friendly bunch—a lot of them told us that it’s like what Waiheke Island (now in effect a suburb of Auckland) was in the 1970s when it was a commune of artists and people wanting to escape the city.",
+    "Our guide for some of our stay was the inestimable Hilde Hoven, a Dark Sky ambassador who runs Good Heavens with Deborah Kilgallon and Orla Cumisky. They bring their Dobsonian telescope and beanbags (it’s hard work staring up wide-eyed in wonder without neck support) and, our elder daughter was glad to hear, hot chocolate to wherever you are on the island. “It’s odd but when the light readings were done,” said Hilde, explaining how the island was awarded its special status, “they found there was more light pollution on the northern side coming from Fiji, which is about 3,000 km away, than Auckland to the south. It’s pretty dark!”",
+    "Beginning their astronomical PowerPoint demonstration using a green laser pointer, Hilde and Orla showed us the Messier 4 spherical cluster (星团) with white dwarf stars (白矮星), Saturn and its rings, the Southern Cross and the Milky Way, which stretched across the sky. Our daughter was especially taken with Hilde’s narrating of the Maori myth of Maui’s fish hook to explain the shape of Scorpius. In the fable, Maui hauled the North Island of New Zealand from the bottom of the ocean with his hook.",
+    "We stayed at Mount St Paul’s Estate, a luxurious lodge run by the friendly Chris and Teara, both from Canada. Teara used to be a chef at the Langham in Auckland and so dinner, eaten around a huge circular table (made of one of the most ancient trees in the world), was every bit as mouth-watering as you'd expect. Eating pancakes on the balcony overlooking the unspoilt white sandy beach was a great way to start the day.",
+    "Another highlight was an hour-long walk to Kaitoke hot pools in the centre of the island, through wetlands and a forest, where we whiled away a good hour sitting in the pools shaded from the heat by layers of delicate umbrella-like plants.",
+    "We also loved visiting the potter (陶艺家) Sarah Harrison, who showed us round her studio at Shoal Bay harbour, and her many pots and jugs, plates and bowls and colourful mosaics (马赛克). In her work, she also uses a lot of materials found on the beach. Our elder daughter loved the gorgeous hidden pool at Medlands beach where the water is separated from the sea in a private rock pool. Other high points were the ancient pohutukawa trees and the incredible views of Okiwi Basin and Whangapoua beach from the top of Windy Canyon, just a 10-minute hike through a narrow valley up some steep wooden steps on the eastern side of the island.\n\nL) Apparently the island council turned down famous musician Paul McCartney’s application to buy a property at Great Barrier Island because of the unwelcome attention he would have brought. You can see why he wanted to come here; equally, the island knows exactly what kind of star watching it prefers."
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "The author’s daughter slept throughout the last leg of their flight to Great Barrier Island."
+    },
+    {
+     "no": 37,
+     "text": "The lodge where the author stayed provided very delicious food."
+    },
+    {
+     "no": 38,
+     "text": "Many people are attracted to Great Barrier Island because of the incredible fishing sites around it."
+    },
+    {
+     "no": 39,
+     "text": "A well-known artist failed to purchase a house on Great Barrier Island."
+    },
+    {
+     "no": 40,
+     "text": "Unable to fall asleep after a long flight, the author was pleased to enjoy the most gorgeous view of the night sky in his life."
+    },
+    {
+     "no": 41,
+     "text": "Great Barrier Island is compared to another island which attracted a lot of artists and people who wished to stay away from city life half a century ago."
+    },
+    {
+     "no": 42,
+     "text": "One most memorable part of the author’s visit to Great Barrier Island was a one-hour walk to its centre’s hot springs."
+    },
+    {
+     "no": 43,
+     "text": "Great Barrier Island has officially been recognized for its extraordinary starry nights."
+    },
+    {
+     "no": 44,
+     "text": "Great Barrier Island is not connected to any public power supply lines."
+    },
+    {
+     "no": 45,
+     "text": "It is strange that light pollution on Great Barrier Island mainly comes from a faraway island to the north."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nIs organic food worth the higher price? It’s the classic grocery store dilemma. On the one hand, your family dinner table deserves only the best. On the other hand, your wallet can only stretch so far. Whether or not to buy organic is a personal decision, said Mike von Massow, professor of Food Agriculture. Science won’t give a clear-cut answer to the question of whether organic food is “better.” There are often trade-offs (权衡) and answers become less definitive depending on the product under consideration. One thing is definitive: Organic and conventionally grown food are equally nutritious. From a nutrition point of view, there is no difference between organic and traditionally grown products. Organic products don’t necessarily have fewer pesticides (杀虫剂)—in fact, they may have more. There is also no big difference between organic and non-organic products from a food-safety perspective. Even organic growers use pesticides. Testing shows little if any pesticide remains on conventionally grown products. In fact, organic farmers often use larger quantities of pesticide because they can only use the natural variety of insect-killers. Chemical pesticides generally kill a much wider range of pests (害虫) than any single natural pesticide. The use of animal waste in organic agriculture can also be a factor in the spread of bacteria like E. coli and salmonella. Over the past 10 years, Canada has seen more food-safety recalls for organic products, proportionally, than for conventional products. On the whole, organic agriculture may have a smaller environmental footprint. That’s mostly because the risk of groundwater contamination from organic farming is lower. Organic farmers never used neonics, the controversial pesticides that have been linked to shrinking bee populations worldwide. Traditional agriculture has been making “dramatic improvements” to reduce its impact on the environment. It isn’t a black-and-white picture, though. Organic farming is much less efficient when it comes to land use, although yields vary considerably depending on the crop. On the other hand, advocates of organic farming argue yields and efficiency could be significantly improved if the food industry devoted as much research and money to organic farming as it does conventional agriculture.\n\n46. What is the classic grocery store dilemma?\n    A) Whether or not one should eat organic food.\n    B) Whether or not one can stretch their wallet far.\n    C) Organic food costs more but it certainly tastes better.\n    D) One wants the best food but their budget is limited.\n\n47. What do we learn about organic food from science?\n    A) Whether it is any better remains uncertain.\n    B) Whether it is healthier is under consideration.\n    C) Whether it is more nutritious than conventional food is arguable.\n    D) Whether it is going to replace conventional food is still unclear.\n\n48. What does the passage say about organic and non-",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What is the classic grocery store dilemma?",
+     "options": [
+      "A) Whether or not one should eat organic food.",
+      "B) Whether or not one can stretch their wallet far.",
+      "C) Organic food costs more but it certainly tastes better.",
+      "D) One wants the best food but their budget is limited."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What do we learn about organic food from science?",
+     "options": [
+      "A) Whether it is any better remains uncertain.",
+      "B) Whether it is healthier is under consideration.",
+      "C) Whether it is more nutritious than conventional food is arguable.",
+      "D) Whether it is going to replace conventional food is still unclear."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What does the passage say about organic and non-organic products as far as food safety is concerned?",
+     "options": [
+      "A) Their difference is the conventions used to test them.",
+      "B) They differ in how much pesticide remains on them.",
+      "C) One relies on pesticides whereas the other does not.",
+      "D) There is no substantial difference between the two."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What does the author say about organic farming?",
+     "options": [
+      "A) It may be blamed for the shrinking bee populations in the world.",
+      "B) It minimizes the use of controversial pesticides in its operations.",
+      "C) It may impact the environment less than conventional farming.",
+      "D) It contaminates groundwater as much as conventional farming."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What do advocates of organic farming argue about its yields and efficiency?",
+     "options": [
+      "A) They would increase quickly with the emergence of new technologies.",
+      "B) They would improve remarkably with more research and investment.",
+      "C) They would be achieved along with enormous health benefits.",
+      "D) They would considerably lower the cost to the environment."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What is the finding of one recent study about being selfish?",
+     "options": [
+      "A) It may bring certain benefits in the short term.",
+      "B) It usually yields more disadvantages than advantages.",
+      "C) It serves individual interest rather than a collective’s.",
+      "D) It may give way to cooperating in the long run."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What have researchers found by studying identical and non-identical twins?",
+     "options": [
+      "A) They are overwhelmingly different in the amounts of genes.",
+      "B) One’s behavior is largely determined by their genetic traits.",
+      "C) One’s biological roots can be identified by their genes.",
+      "D) They differ from each other in their behavior patterns."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What did the author and colleagues identify in their recent research?",
+     "options": [
+      "A) A gene-related selfish behavior in preschool children.",
+      "B) Key factors that determine one’s altruistic behavior.",
+      "C) A specific gene associated with altruistic behavior.",
+      "D) Roles played by genes in shaping one’s character."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What do we learn from evolutionary scientists about cooperative behavior?",
+     "options": [
+      "A) It may have initially originated in individuals linked by blood.",
+      "B) It may have caused the diversification of communities.",
+      "C) It helps to build relationships among blood-related people.",
+      "D) It guarantees the achievement of goals otherwise unattainable."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What can we infer from the last paragraph?",
+     "options": [
+      "A) Cooperative behavior is evident among identical twins.",
+      "B) One is born either cooperative or non-cooperative.",
+      "C) Genes determine one’s tendency to cooperate.",
+      "D) Cooperative behavior may be cultivated."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2026-06-2.md",
+  "set": "1",
+  "A": {
+   "passage": "blank from a list of choices given in a word bank following the passage. Read the passage through carefully before making your choices. Each choice in the bank is identified by a letter. Please mark the corresponding letter for each item on Answer Sheet 2 with a single line through the centre. You may not use any of the words in the bank more than once. It may sound surprising, but people who are supersensitive to coffee’s bitter taste actually drink more of it, a new study finds. This sensitivity isn’t __26__ a matter of taste, either, but rather is influenced by a person’s genetic makeup, the researchers said in the study. “You'd expect that people who are particularly sensitive to the bitter taste of caffeine would drink less coffee,” said study senior researcher Marilyn Cornelis. “The __27__ results of our study suggest coffee consumers acquire a taste for or an ability to detect the bitterness of caffeine due to the learned positive __28__ brought out by caffeine.” Put another way, people who have a __29__ ability to taste the bitterness of coffee learn to associate “good things with it,” Cornelis said. This finding is surprising, given that bitterness often serves as a warning mechanism to __30__ people to spit out harmful substances, scientists said. Researchers conducted the study to understand how genetics influences people’s __31__ of tea, coffee and alcohol which tend to taste bitter, said lead study researcher Jue Sheng Ong. “While all bitter flavors may seem the same, we __32__ the bitterness of Brussels sprouts (抱子甘蓝), quinine (奎宁) and caffeine __33__ ,” Ong told Live Science. “The degree to which we find these flavors bitter is, in part, determined by your genes.” People with the genes to taste the bitterness of green vegetables are more likely to prefer tea to coffee. In __34__ , people who were more sensitive to quinine’s bitter flavors and those found in green vegetables tended to __35__ coffee.\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "addition",
+    "I": "opposite",
+    "B": "approximately",
+    "J": "perceive",
+    "C": "avoid",
+    "K": "prospect",
+    "D": "consumption",
+    "L": "reinforcement",
+    "E": "converted",
+    "M": "separately",
+    "F": "convince",
+    "N": "simply",
+    "G": "heightened",
+    "O": "targeted",
+    "H": "omission"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions:",
+   "paragraphs": [
+    "If this doesn’t encourage you to squeeze in a workout today, nothing will: a new study from Sweden shows that women who were highly fit in mid-life were nearly 90% less likely to get dementia (失智) decades later.",
+    "After initial exercise tests in middle age, researchers followed the women for 44 years. Both groups lived just as long, but those who could ride an exercise bike at a fast rate for 6 minutes in the initial test had a much lower risk of dementia later on than those who couldn’t complete the workout.",
+    "The study, published Wednesday in the journal Neurology, couldn’t prove that exercise prevented dementia, and the findings aren’t a surprise—it’s long been known there’s a correlation between exercise and decreased dementia risk—but the results were particularly dramatic. About 5% of the women with the highest peak workload—those who were able to bike the hardest over those 6 minutes—developed dementia, compared to 25% of those with medium fitness and 45% who weren’t fit enough to finish the test, the study found. Overall, women who were highly fit compared to those who were moderately fit decreased their risk of dementia by 88%. The few highly fit women who did develop dementia became symptomatic at age 90 on average, 11 years later than the moderately fit.",
+    "“I’m very surprised that the finding was so strong,” said Ingmar Skoog, the paper’s senior author and a psychiatry (精神病学) professor at The University of Gothenburg in Sweden. “It really shows the importance of exercise.”",
+    "Dementia, as defined in medical dictionaries, is a broad term that describes a loss of thinking ability, memory, attention, logical reasoning, and other mental abilities. These changes are severe enough to interfere with social or occupational functioning. Dementia isn’t a disease. Instead, it’s a group of symptoms caused by other conditions. It happens when the parts of your brain used for learning, memory, decision making, and language are damaged or diseased. About 5%–8% of adults over age 65 have some form of dementia. This percentage doubles every 5 years after 65. As many as half of people in their 80s have some dementia.",
+    "Dementia is not temporary confusion or forgetfulness that might result from an infection that heals without treatment. It can also come from an underlying (潜在的) illness or side effects of medications. Dementia typically gets worse over time. People with dementia have problems with thinking and remembering that affect their ability to manage their daily life.",
+    "Dementia is typically associated with declines in cognitive function. Yet researchers have found an association between dementia and declines in hearing and other basic sensory functions.",
+    "Though the study mentioned above was fairly small(only 191 women took the initial fitness test, which means it’s hard to maintain statistical significance while breaking the group down into sub- categories of more or less fit), it does give us hope that dementia can be prevented or delayed through exercise in one’s middle age.",
+    "Alzheimer’s (阿尔茨海默症) and other dementias are believed to begin 15–20 years before symptoms even appear, so it makes sense that exercising in mid-life would affect the risk, Skoog said. Exercise alone is not likely to prevent Alzheimer’s, but the study shows people are not helpless in the face of one of the most feared, costliest and common diseases of old age, he added. And the same activities that help prevent Alzheimer’s—including avoiding smoking, getting adequate exercise and sleep and eating a healthy diet—also prevent heart disease, he said, making them even more worthwhile.“ You can do something yourself to decrease your odds,” Skoog said.",
+    "Maintaining a healthy lifestyle in mid-life, decades before disease sets in, makes sense, said David Knopman, a fellow of the American Academy of Neurology, who was not involved in the study. “I suspect it’s a dose,” said Knopman, also associate director of the Alzheimer’s Disease Research Center at Mayo Clinic in Rochester, Minnesota. “Starting in late life is better than not starting at all, but starting in mid-life seems to offer a larger benefit.”",
+    "Although it is not entirely clear why exercise helps put off or prevent Alzheimer’s, Knopman said it’s likely that exercise maintains good blood flow to the brain. “When the brain is healthier from a vascular (血管的) point of view, it can absorb more Alzheimer’s pathogen (病原体) before people become symptomatic,” he said.\n\nL) The message isn’t that everyone needs to run marathons in middle age, Knopman said, but a healthy lifestyle pays off.\n\nM) This type of study can’t say exactly what kind of exercise is best, or how much is needed—only a study that has a placebo (安慰剂) group and tracks people going forward can do that, said Keith Fargo, director of scientific programs and outreach at the non-profit Alzheimer’s Association. “The literature has not yet settled on an amount or type of exercise that is going to be key, although the bulk of literature has suggested that aerobic (有氧的) exercise is what you need to be doing,” he said. That doesn’t mean you have to compete in marathons but “more than a 10-min dog walk” would be a good idea, Fargo said.\n\nN) Several lifestyle studies are getting underway soon, including one backed by the Alzheimer’s Association called the US POINTER study, which will offer at-risk adults, ages 60–79, a series of lifestyle interventions (干预) to see if they impact Alzheimer’s risk. That and other Alzheimer’s- related studies are always looking for volunteers to participate, he said.\n\nO) In the next three to five years, these studies should allow researchers to provide clearer recommendations for exercise and other lifestyle modifications that might reduce Alzheimer’s risk, such as sleep, diet and social activities, Fargo said. But it’s already quite clear that exercising at any point in life is better for your brain than not exercising at all, Fargo added. P) “If you don’t want to have dementia when you’re 80, the time to start getting fit is now,” he said. “It may not necessarily give you a longer life, but there’s a compelling body of work that it will give you more good years.”"
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "It is typical for dementia to worsen with the passage of time."
+    },
+    {
+     "no": 37,
+     "text": "According to Knopman, the study gives the message that a healthy lifestyle is beneficial, but not that all the middle-aged need heavy exercise."
+    },
+    {
+     "no": 38,
+     "text": "The results of a new study will encourage middle-aged women to find time exercising however busy they are."
+    },
+    {
+     "no": 39,
+     "text": "Hopefully, one can postpone or prevent dementia by exercising in their mid-life."
+    },
+    {
+     "no": 40,
+     "text": "In a few years, researchers should be able to offer clearer advice on exercise and other lifestyle changes for reducing the incidence of Alzheimer’s."
+    },
+    {
+     "no": 41,
+     "text": "Dementia refers to a loss of multiple mental abilities such as memory and logical reasoning."
+    },
+    {
+     "no": 42,
+     "text": "One researcher believes that exercise may keep the brain well supplied with blood."
+    },
+    {
+     "no": 43,
+     "text": "Medical literature has not concluded as to what exercise or how much exercise is crucial, although it generally agrees that people should do aerobic exercise."
+    },
+    {
+     "no": 44,
+     "text": "It has long been common knowledge that exercise correlates with reduced risk of dementia."
+    },
+    {
+     "no": 45,
+     "text": "Activities helpful in the prevention of Alzheimer’s also prevent heart disease."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nPeople who systematically underestimate themselves and their own performance suffer from the so- called Impostor Phenomenon. They think that any success is due to external circumstances or just luck and chance. Those people live in constant fear that their “deception” will be exposed. It is common for people to question their abilities now and again. A healthy amount of reflection and self-doubt can protect a person from acting impulsively. However, there are people who are permanently plagued by a massive amount of self-doubt despite delivering a good performance. They think that all of their successes are not a product of their skill or hard work, instead they attribute their own successes to external circumstances, for example, to luck and chance, or believe that their performance is massively overestimated by others. Failures, on the other hand, are always internalised as the result of their own shortcomings. Psychologists from Martin Luther University Halle-Wittenberg examined the topic for the first time under real-life conditions. Seventy-six participants completed a range of intelligence tests and received positive feedback on them, regardless of their actual performance. They were then asked why they think they did so well. The study showed two things: First, the self-reported degree of Impostor Phenomenon is not related to actual measured intelligence or performance. Secondly, the test supported the assumption that people with a tendency to exhibit the Impostor Phenomenon devalue their objectively measured performance and attribute positive results to external causes such as luck and chance, but not to their own abilities. These results are also completely unrelated to age and gender. A permanent underestimation of one’s own abilities is often accompanied by the fear that this supposed intellectual deception will be exposed sooner or later and that they will pay the price for this. The Impostor Phenomenon was first described in 1978 by US psychologists Pauline Clance and Suzanne Imes. They observed that there is a particularly high number of successful women who do not think they are very intelligent. The Impostor Phenomenon is not defined as a mental illness. However, people who suffer from it show a higher vulnerability to depression.\n\n46. What do we learn from the passage about people who suffer from the so-called Impostor Phenomenon?\n    A) They systematically underestimate their chance of success.\n    B) They tend to attribute their achievements to good fortune.\n    C) They seem to live in constant fear of being deceived.\n    D) They generally rely on luck and chance for success.\n\n47. What do people with a healthy amount of reflection and self-doubt tend to do?\n    A) Credit all their successes to hard work.\n    B) Strive hard to perfect their skills.\n    C) Refrain from acting on impulse.\n    D) Deliver a better performance.\n\n48. What do Impostor Phenomenon sufferers of",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What do we learn from the passage about people who suffer from the so-called Impostor Phenomenon?",
+     "options": [
+      "A) They systematically underestimate their chance of success.",
+      "B) They tend to attribute their achievements to good fortune.",
+      "C) They seem to live in constant fear of being deceived.",
+      "D) They generally rely on luck and chance for success."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "What do people with a healthy amount of reflection and self-doubt tend to do?",
+     "options": [
+      "A) Credit all their successes to hard work.",
+      "B) Strive hard to perfect their skills.",
+      "C) Refrain from acting on impulse.",
+      "D) Deliver a better performance."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "What do Impostor Phenomenon sufferers often do according to psychologists from Martin Luther University Halle-Wittenberg?",
+     "options": [
+      "A) Attribute their accomplishments to others.",
+      "B) Deny their actual measured intelligence.",
+      "C) Claim to have confidence in their own abilities.",
+      "D) Mark down their objectively rated performance."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What happens when a person permanently underestimates their own abilities?",
+     "options": [
+      "A) They will focus their attention on external factors.",
+      "B) They will be fearful of potential consequences.",
+      "C) They will count on good fortune for success.",
+      "D) They will keep improving their own skills."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What did US psychologists Pauline Clance and Suzanne Imes say about Impostor Phenomenon sufferers?",
+     "options": [
+      "A) They are more liable to have depression.",
+      "B) They seldom realise their potential fully.",
+      "C) They will develop mental illnesses.",
+      "D) They will pay higher prices one day."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "In what way is music important?",
+     "options": [
+      "A) It is able to create novel and extraordinary emotions.",
+      "B) It has the power to unite people throughout the world.",
+      "C) It allows different cultural groups to sing in harmony.",
+      "D) It is the only language favored by all peoples of the world."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "Why does the author like to see musicians from different cultures perform together?",
+     "options": [
+      "A) Their musical experience can be compared.",
+      "B) A novel language can be created.",
+      "C) Their unique skills can be displayed.",
+      "D) Fantastic results can be achieved."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What does the passage say about the pentatonic scale?",
+     "options": [
+      "A) It is present in music all around the world.",
+      "B) It is helpful to understanding music.",
+      "C) It is the basis for musicians’ creation.",
+      "D) It is a medium for ordinary people to relate."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "What is the fundamental role of music in people’s life?",
+     "options": [
+      "A) To bring them together.",
+      "B) To show their identity.",
+      "C) To express their emotions.",
+      "D) To keep them entertained."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "In what aspect is music similar throughout the world?",
+     "options": [
+      "A) The way people respond to it.",
+      "B) The role it plays in society.",
+      "C) The joy it brings to people.",
+      "D) The way it is made use of."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
+ },
+ {
+  "file": "cet4-2026-06-3.md",
+  "set": "2",
+  "A": {
+   "passage": "blank from a list of choices given in a word bank following the passage. Read the passage through carefully before making your choices. Each choice in the bank is identified by a letter. Please mark the corresponding letter for each item on Answer Sheet 2 with a single line through the centre. You may not use any of the words in the bank more than once. Junk-food lovers who try to cut back on fries or chocolate may experience symptoms similar to drug withdrawal, a new study suggests. Researchers found that people attempting to cut down on eating highly processed foods experience some of the same __26__ and psychological symptoms—such as mood swings, anxiety, headaches and poor sleep—as those __27__ smoking cigarettes or using drugs, according to the study. The new study __28__ the first evidence that these withdrawal-like symptoms can occur when people cut down on highly processed foods, said lead study author Erica Schulte. Based on the participants’ self-reported symptoms, withdrawal symptoms were __29__ more intense between the second and fifth days after attempting to reduce junk-food consumption, which __30__ the time span people live through during drug withdrawal. The idea that food may be addictive after “heavy” use by some individuals is a __31__ subject, Schulte said. Although prior studies in animals and humans have shown some biological and behavioral similarities between substance-use disorders and addictive-like consumption of highly processed foods, no studies have looked at whether reducing junk food can __32__ withdrawal symptoms in people, she noted. Raising __33__ that people may experience irritability (烦躁) or headaches when cutting down on junk food can help individuals __34__ coping strategies in advance, Schulte noted. The findings may also __35__ light on the barriers people face when changing eating habits—barriers that may play a role in people dropping out of treatments, she said.\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "awareness",
+    "I": "physical",
+    "B": "canceling",
+    "J": "prepare",
+    "C": "controversial",
+    "K": "prospects",
+    "D": "emptiness",
+    "L": "quitting",
+    "E": "monstrous",
+    "M": "shed",
+    "F": "offers",
+    "N": "significantly",
+    "G": "parallels",
+    "O": "trigger",
+    "H": "permanently"
+   },
+   "blanks": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+   ]
+  },
+  "B": {
+   "title": "Directions:",
+   "paragraphs": [
+    "These days, phone interviews are an unavoidable part of the job interview process, and for good reason: They save time and effort. But that doesn’t mean that phone calls require zero energy on the part of the candidate. Many companies treat phone screening as the official first round of the hiring process. That means candidates are expected to go into them prepared with as much information as possible about the company, position, and their own skills and strengths.",
+    "A big mistake people often make is talking about their personal lives. Don’t talk about your personal life unless you’re directly asked a question about what you like to do in your off-hours. “The point of a phone interview is to focus on getting to know a candidate’s professional experience and goals,” says Mckenzie Roark, campus talent specialist at Lithko Contracting. “A recruiter is trying to see if they are the best fit for a role, and learning about their personal life doesn’t help. For example, when asked where you see yourself in five years, we don’t want to know that you hope to be married or that you want to buy a new house. That is nice, but that isn’t relative to anything professional.”",
+    "It might be tempting to cross something off your to-do list while on a phone interview, but recruiters and hiring managers can easily tell if your attention is elsewhere. Many interviewers are annoyed to see people who decide to multitask while on the phone interview. There are candidates who wash dishes, go for walks, or do grocery shopping during the interview. Needless to say, this doesn’t reflect well on your level of interest in the position you’re interviewing for.",
+    "The question regarding pay is also best avoided. To be frank, it’s simply too early in the process for you to be the one who brings up salary expectations. “Chances are if a candidate is participating in a phone interview, this is the first time they have talked with the company, and the first call isn’t the appropriate time to talk about ‘ what’s in it for you,’” says Justina Strnad, the Talent Acquisition Manager for Shiftgig. “Trust me, if you are a great candidate and make it to the next step, the hiring team is going to be very transparent about what’s in it for you later on.”",
+    "“After wrapping up a phone interview, it is typical that the interviewer will ask the candidate if they have any questions. I can’t stress this enough: ALWAYS ask questions,” says Roark. “If we have had a great phone interview and then we wrap up and they don’t have any questions for me, it pretty much ruins the whole interview. It tells me that the candidate is uninterested in the role, which in reality might not be the case at all,” she notes. But surely, if you’re interested in a job, you can think of something to ask your interviewer.",
+    "It seems basic, but surprisingly, a lot of people are late to phone interviews. “About a quarter of the people with whom I schedule phone interviews aren’t on time,” says Sophie Cikovsky, who handles U.S. recruiting for Infinite Global. “While this bothers me personally, it’s also indicative of someone who isn’t very detail-oriented,” she explains. “In order to identify this early in the hiring process, I started asking all candidates a few years ago to call me as opposed to calling them at an agreed-upon time. That way, if I hear from them at 1:13 p.m. or 12:49 p.m. instead of our planned 1:00 p.m. interview time, I have an early indicator that they might not be a great fit.”",
+    "“Make sure you test your headset and connection before dialing in,” recommends Roark. “There is nothing more frustrating for a recruiter who has a structured interview guide in place having to repeatedly ask the same question over and over because they could not understand your answer due to dropped signals.” Test-call a friend beforehand, or even call yourself from a landline if necessary; it will take less than a minute.",
+    "You might be eager to get your point across or talk about your experience, but interrupting the interviewer is awkward and rude. “Interviewing can be stressful, and sometimes that stress manifests itself in speaking too fast, speaking too loud, talking over the interviewer, or attempting to answer the interviewer’s question before they have actually finished asking the question,” says Chris Dardis, a recruiting expert. “Don’t do this.” There’s a big difference between being assertive (自信的) and being aggressive, and interviewers can always recognize it.",
+    "It’s tough not to say things like “um,” “uh,” and “like” in everyday speech, but these verbal habits become much more pronounced when speaking on the phone, says Dardis. “In face-to-face interviews, they’re not as noticeable, because there are other things like your hair, suit, or body language to distract people.” But in a phone interview, the only thing you have to go on is what you say and how you say it. “That’s why it’s so important to eliminate these words from your speech when doing a phone interview.”",
+    "Not knowing anything about the company or job you’re interviewing for is way more obvious than you’d think. “Many people think that they don’t have to put as much effort into researching the role or the company,” says Steve Pritchard, an HR consultant. And if you have your laptop in front of you during the interview to do a few quick searches, they won’t know the difference, right? Not exactly. “Seasoned interviewers will know whether an interviewee is researching while on the phone. The interviewer can often even hear the typing as they ask the question,” he adds.",
+    "“The key to success during a phone interview is clear and concise answers,” says Dardis. “People’s attention spans tend to be shorter over the phone. You don’t want your future employer to lose interest in the conversation.” He recommends practicing answers to questions you know will be asked ahead of time in order to be clear on what you’re going to say. That way, you can prevent talking in an aimless manner."
+   ],
+   "statements": [
+    {
+     "no": 36,
+     "text": "Interviewees are advised not to ask questions about pay during a phone interview."
+    },
+    {
+     "no": 37,
+     "text": "Experienced interviewers will know if an applicant is searching for information online while talking on the phone."
+    },
+    {
+     "no": 38,
+     "text": "Many employers regard the phone interview as the first step of the official recruiting process."
+    },
+    {
+     "no": 39,
+     "text": "Applicants who don’t ask questions at the end of an interview most probably ruin their chance of getting the position."
+    },
+    {
+     "no": 40,
+     "text": "The interviewee should test their phone connection before they call the interviewer."
+    },
+    {
+     "no": 41,
+     "text": "It is annoying to the interviewer to find the applicant doing other tasks while being interviewed."
+    },
+    {
+     "no": 42,
+     "text": "To pass a phone interview, the most important thing is to answer questions clearly and concisely."
+    },
+    {
+     "no": 43,
+     "text": "If you fail to call the interviewer on time, they might not see you as a suitable candidate."
+    },
+    {
+     "no": 44,
+     "text": "Applicants should avoid talking about their personal lives if the interviewer has only asked about their professional background and goals."
+    },
+    {
+     "no": 45,
+     "text": "It is impolite for an interviewee to interrupt the interviewer in the phone conversation."
+    }
+   ]
+  },
+  "C": {
+   "passage": "\n\n**Questions 46 to 50 are based on the following passage.**\n\nDisgust is a universal human emotion. One type of disgust is called physical disgust, which protects us from eating or touching things that could be dangerous for us, such as raw meat or insects. Children experience physical disgust from a very early age, but do not achieve an understanding of the concept until they are around four years old. Some researchers maintain that there is another type of disgust, called moral disgust, that protects us from engaging in activities that can be perceived as morally wrong. Examples of moral disgust are stealing, lying or cheating. However, not all academics think that moral disgust really exists. Some say that when we refer to disgust in relation to moral issues, we are using disgust as a metaphor (隐喻), and what we are feeling is in reality anger. If moral disgust appears quite late in development, it makes sense to think that there is actually a social component to it. Children learn about emotions in many different ways. Of special relevance are parents-children conversations about emotions. Indeed, children whose parents talk about emotions often have a better emotional understanding than children whose parents do not discuss emotions often. However, there are no studies that have examined how parents and children talk about disgust. This is what we set up to examine in our study. We asked 68 English-speaking mothers and their four-, six- or eight-year-old children to discuss some stories about moral and physical disgust. Our preliminary findings show mothers and children do talk about disgust, but mainly about physical disgust and not so much about moral disgust. When we asked mothers and children to discuss moral issues, such as whether it is OK to play with a child who has stolen someone else’s snack, they linked this type of moral wrongdoing with the emotion of anger and not disgust. Does this mean that moral disgust does not exist? Some researchers suggest moral disgust exists in adults. Our findings suggest that moral disgust is either understood at a later age or is only used metaphorically, if at all, in children as old as eight years.\n\n46. What does the passage tell us about physical disgust?\n    A) It is an emotion as contrasted with thoughts.\n    B) It is a concept beyond children’s understanding.\n    C) It is a mechanism to keep us from being harmed.\n    D) It is an experience gained from any form of danger.\n\n47. How do some researchers perceive moral disgust?\n    A) It tends to appear in various forms of wrongdoing.\n    B) It is just as annoying to people as physical disgust.\n    C) It is a term used by common folk to describe anger.\n    D) It stops people from doing anything morally wrong.\n\n48. Why does moral disgust appear quite late in children’s development?\n    A) It needs to be learnt through social interactions.\n    B) They have little control over its learning process.\n    C) It is too complex for them to acquire.\n    D) Th",
+   "questions": [
+    {
+     "no": 46,
+     "stem": "What does the passage tell us about physical disgust?",
+     "options": [
+      "A) It is an emotion as contrasted with thoughts.",
+      "B) It is a concept beyond children’s understanding.",
+      "C) It is a mechanism to keep us from being harmed.",
+      "D) It is an experience gained from any form of danger."
+     ]
+    },
+    {
+     "no": 47,
+     "stem": "How do some researchers perceive moral disgust?",
+     "options": [
+      "A) It tends to appear in various forms of wrongdoing.",
+      "B) It is just as annoying to people as physical disgust.",
+      "C) It is a term used by common folk to describe anger.",
+      "D) It stops people from doing anything morally wrong."
+     ]
+    },
+    {
+     "no": 48,
+     "stem": "Why does moral disgust appear quite late in children’s development?",
+     "options": [
+      "A) It needs to be learnt through social interactions.",
+      "B) They have little control over its learning process.",
+      "C) It is too complex for them to acquire.",
+      "D) Their parents seldom talk about emotions."
+     ]
+    },
+    {
+     "no": 49,
+     "stem": "What did the author and his colleagues want to examine in their experiment?",
+     "options": [
+      "A) What parents tell children against moral wrongdoing.",
+      "B) What parents and children link moral wrongdoing to.",
+      "C) How moral disgust is seen by children aged 4, 6 and 8.",
+      "D) How disgust is discussed between parents and children."
+     ]
+    },
+    {
+     "no": 50,
+     "stem": "What can we infer about moral disgust from the author and his colleagues’ findings?",
+     "options": [
+      "A) It is a notion hardly comprehensible to children.",
+      "B) It rarely exists in children younger than eight.",
+      "C) It is a term most parents use when talking to children.",
+      "D) It exists in adults with a strong sense of justice."
+     ]
+    },
+    {
+     "no": 51,
+     "stem": "What is the finding of a recent study in Nature?",
+     "options": [
+      "A) People are more honest with those who know them than with total strangers.",
+      "B) People we want to have detailed information about are keen to know about us.",
+      "C) People who get to know about a person wrongly assume the person knows them too.",
+      "D) People who are familiar with each other tend to behave honestly in their everyday dealings."
+     ]
+    },
+    {
+     "no": 52,
+     "stem": "What does the passage say about the assumption that social relationships are reciprocal?",
+     "options": [
+      "A) It is more the exception than the rule.",
+      "B) It does not hold true in every situation.",
+      "C) It does not apply to complex relationships.",
+      "D) It is more accurate in one-sided social ties."
+     ]
+    },
+    {
+     "no": 53,
+     "stem": "What did Anuj Shah and Michael LaForest want to find out about the belief that social relationships are reciprocal?",
+     "options": [
+      "A) Whether it may resolve misunderstandings about social ties.",
+      "B) Whether it could help develop one’s relationships with strangers.",
+      "C) Whether it could help strengthen interpersonal relationships.",
+      "D) Whether it may lead to false assumptions about a stranger."
+     ]
+    },
+    {
+     "no": 54,
+     "stem": "When did Anuj Shah and Michael LaForest find something really interesting in their research?",
+     "options": [
+      "A) During lab-based studies.",
+      "B) During a field experiment.",
+      "C) While investigating local residents’ crime.",
+      "D) While talking to police officers nearby."
+     ]
+    },
+    {
+     "no": 55,
+     "stem": "What happened in the areas around the housing developments subjected to the studies?",
+     "options": [
+      "A) They saw fewer crimes than the control developments.",
+      "B) They witnessed a swifter elimination of illegal activities.",
+      "C) Local police responded more quickly to criminal complaints than before.",
+      "D) Local police related better to residents there than to those in other areas."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_A": {},
+  "answers_B": {},
+  "answers_C": {}
  }
 ]

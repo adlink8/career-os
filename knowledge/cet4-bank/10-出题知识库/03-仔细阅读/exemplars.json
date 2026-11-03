@@ -1,5 +1,5 @@
 {
- "count": 120,
+ "count": 210,
  "answer_distribution": {
   "C": 30,
   "B": 29,
@@ -8,238 +8,216 @@
  },
  "examples": [
   {
-   "file": "cet4-2024-06-1.md",
+   "file": "cet4-2023-06-1.md",
    "questions": [
     {
      "no": 46,
-     "stem": "What can we conclude from Lao Zi's quotation?",
+     "stem": "What are big houses promoted to be in the United States?",
      "options": [
-      "A) We should see through other peoples’ attempt to make a prisoner of us.",
-      "B) We can never really please other people even if we try as hard as we can.",
-      "C) We can never be truly free if taking to heart others’ opinion of us.",
-      "D) We should care about other peoples’ view as much as they care about our own."
+      "A) A luxury for the homeless.",
+      "B) A reward for industriousness.",
+      "C) An abundant source of comforts.",
+      "D) An absolute necessity for happiness."
      ]
     },
     {
      "no": 47,
-     "stem": "What will happen if we base our self-worth on other people’s approval?",
+     "stem": "What is one of the consequences of living big?",
      "options": [
-      "A) Our desire to be loved will be fulfilled.",
-      "B) Our life will be unfruitful and exhausting",
-      "C) Our identity as social beings will be affected.",
-      "D) Our sense of self will be sharpened and enhanced."
+      "A) Many Americans' quality of life has become lower.",
+      "B) People from diverse backgrounds no longer socialize.",
+      "C) People no longer have access to public swimming pools.",
+      "D) Many Americans' private life has been negatively affected."
      ]
     },
     {
      "no": 48,
-     "stem": "What may account for our need to be liked or approved of?",
+     "stem": "What questions arises from living big?",
      "options": [
-      "A) Our desperate longing for interactions with others.",
-      "B) Our understanding of the workings of the world.",
-      "C) Our knowledge about the pain of abandonment.",
-      "D) Our early childhood fear of being deserted."
+      "A) Questions related to moral principles.",
+      "B) Questions having to do with labor cost.",
+      "C) Questions about what lifestyle to promote.",
+      "D) Questions concerning housing development."
      ]
     },
     {
      "no": 49,
-     "stem": "What can we do when we become better able to provide ourselves with the desired approval?",
+     "stem": "What kind of social system does the author think is unacceptable?",
      "options": [
-      "A) Enjoy a happier life.",
-      "B) Exercise self-restraint.",
-      "C) Receive more external validation.",
-      "D) Strengthen our power of imagination."
+      "A) One in which the wealthy exploit the low-wage laborers building their houses.",
+      "B) One in which the rich purchase amenities at an increasingly unjustifiable price.",
+      "C) One in which the upper classes deprive the lower classes of affordable housing.",
+      "D) One in which the affluent enjoy a more comfortable life at the expense of the poor."
      ]
     },
     {
      "no": 50,
-     "stem": "What does the author advise us to do in the last paragraph?",
+     "stem": "What does the author advocate for people to live well?",
      "options": [
-      "A) Embrace life for ourselves and for others.",
-      "B) Base our worth on others' opinions.",
-      "C) See our experiences as assets.",
-      "D) Love ourselves as we are."
+      "A) Finding ways to turn private spaces into public ones.",
+      "B) Building more houses affordable to those less affluent.",
+      "C) More public spaces created for everyone to enjoy.",
+      "D) All amenities made accessible to the rich and the poor alike."
      ]
     },
     {
      "no": 51,
-     "stem": "What do some people think of aging adults?",
+     "stem": "What does the author think of most entrepreneurs?",
      "options": [
-      "A) Their wisdom grows as time goes by.",
-      "B) Their memory gradually deteriorates",
-      "C) They can benefit from late-in-life learning.",
-      "D) They are likely to have mental health issues."
+      "A) They are more willing to risk their own lives.",
+      "B) They are more ambitious than ordinary people.",
+      "C) They achieve greater nonconventional success.",
+      "D) They have more positive qualities than most of us."
      ]
     },
     {
      "no": 52,
-     "stem": "What can we conclude from Geoffrey Raisman’s finding?",
+     "stem": "What does the author imply by saying “this isn't always the case” (Line l, Para.3)?",
      "options": [
-      "A) Brain damage seriously hinders one's learning.",
-      "B) Brain power weakens slower than we imagine.",
-      "C) Brains can refresh and improve with learning.",
-      "D) Brains forge connections under new conditions"
+      "A) Ambitious people may not have a greater chance of success.",
+      "B) Ambitious people may not have more positive qualities.",
+      "C) Entrepreneurs' ambition does as much good as harm.",
+      "D) Entrepreneurs are more naturally driven to success."
      ]
     },
     {
      "no": 53,
-     "stem": "What is one thing that helps maintain the health of our brain even as it shrinks2",
+     "stem": "What does the author say is of extreme importance for one to become a successful entrepreneur?",
      "options": [
-      "A) Doing daily routines by conventional means.",
-      "B) Avoiding worrying about our mental durability.",
-      "C) Imitating old dogs’ way of learning new tricks",
-      "D) Approaching everyday tasks in novel ways."
+      "A) Holding on to one's original vision.",
+      "B) Being able to adapt to new situations.",
+      "C) Focusing determinedly on one particular goal.",
+      "D) Avoiding radical change in one's career direction."
      ]
     },
     {
      "no": 54,
-     "stem": "What does the author say can contribute to the improvement of brain function?",
+     "stem": "How do the most ambitious entrepreneurs regard failure in their endeavor?",
      "options": [
-      "A) Being curious and desiring knowledge.",
-      "B) Being eager to pass brain tests at an old age.",
-      "C) Rising to life's challenges and avoiding risks.",
-      "D) Boosting immunity to serious mental diseases."
+      "A) It will awaken them to reality.",
+      "B) It is a lesson they have to learn.",
+      "C) It means the end of their career.",
+      "D) It will result in a slow recovery."
      ]
     },
     {
      "no": 55,
-     "stem": "What is the finding of the 2012 study in the journal Psychology and Aging?",
+     "stem": "What does the author advise us to do concerning ambition?",
      "options": [
-      "A) Wishing to solve puzzles enhances one's reasoning power.",
-      "B) Playing number games unexpectedly stimulates one's memory.",
-      "C) Desiring new experiences can help to renovate the brain.",
-      "D) Learning new tricks should not be confined to old dogs only."
+      "A) Distinguish between conventional success and our life goal.",
+      "B) Follow the example of the most ambitious entrepreneurs.",
+      "C) Avoid taking unnecessary risks when starting a business.",
+      "D) Prioritize health and happiness over material success."
      ]
     }
    ],
-   "answers": {
-    "46": "C",
-    "47": "B",
-    "48": "D",
-    "49": "A",
-    "50": "D",
-    "51": "B",
-    "52": "C",
-    "53": "D",
-    "54": "A",
-    "55": "C"
-   }
+   "answers": {}
   },
   {
-   "file": "cet4-2024-06-2.md",
+   "file": "cet4-2023-06-2.md",
    "questions": [
     {
      "no": 46,
-     "stem": "What does the author say we need to do to strengthen our willpower?",
+     "stem": "What problem have supermarkets been facing?",
      "options": [
-      "A) Keep it under control.",
-      "B) Apply it continuously.",
-      "C) Learn from entrepreneurs.",
-      "D) Aim at success determinedly."
+      "A) They are actually on the way to bankruptcy.",
+      "B) They have been losing customers and profits.",
+      "C) They are forced to use e-commerce strategies.",
+      "D) They have difficulty adapting to climate change."
      ]
     },
     {
      "no": 47,
-     "stem": "How are almost half of our daily actions performed according to the passage?",
+     "stem": "What does the passage say about the idea of a self-service grocery?",
      "options": [
-      "A) Out of habit.",
-      "B) With determination.",
-      "C) Like muscle building.",
-      "D) By self-discipline"
+      "A) It was put forward by King Kullen.",
+      "B) It originated in the United States.",
+      "C) It has been under constant debate.",
+      "D) It proves revolutionary even today."
      ]
     },
     {
      "no": 48,
-     "stem": "What will help people stick to doing something constructive automatically?",
+     "stem": "What did supermarkets do by adopting the Fordist factory approach?",
      "options": [
-      "A) Practising it on a day-to-day basis.",
-      "B) Associating it with improving health.",
-      "C) Possessing a reasonable amount of talent",
-      "D) Foreseeing the desired outcome it will yield."
+      "A) They modernized traditional groceries in many ways.",
+      "B) They introduced cutting-edge layout of their store s.",
+      "C) They improved the quality of the food they sold.",
+      "D) They revolutionized the distribution of goods."
      ]
     },
     {
      "no": 49,
-     "stem": "How does the art of self-control help us succeed?",
+     "stem": "What is the typical supermarket layout intended to do?",
      "options": [
-      "A) By allowing us to remain clear-headed permanently.",
-      "B) By enabling us to alter our behaviors constantly.",
-      "C) By enabling us to take positive actions",
-      "D) By allowing us to avoid taking risks."
+      "A) Arouse customers' appetite to buy flowers, fruit and vegetables.",
+      "B) Provide customers easy access to items they want to buy.",
+      "C) Induce customers to make more unplanned purchases.",
+      "D) Enable customers to have a more enjoyable shopping experience."
      ]
     },
     {
      "no": 50,
-     "stem": "Why can it be difficult for us to maintain self-control?",
+     "stem": "What have people long feared about supermarkets?",
      "options": [
-      "A) Most of us are not in the habit of exercising self-control.",
-      "B) We may not get immediate rewards from self-control.",
-      "C) Self-control tends to be associated with pains.",
-      "D) Self-control only brings about small benefits."
+      "A) They use tricky strategies to promote their business.",
+      "B) They are going to replace the local groceries entirely.",
+      "C) They apply corporate black magic to the goods on display.",
+      "D) They take advantage of the weaknesses of women shoppers."
      ]
     },
     {
      "no": 51,
-     "stem": "What does the passage mainly discuss regarding scientific research?",
+     "stem": "Why did America's traditional school year have a three-month summer vacation?",
      "options": [
-      "A) Its foundation.",
-      "B) Its rewards.",
-      "C) Its prospect.",
-      "D) Its funding."
+      "A) Students needed to help with farm work.",
+      "B) Students needed time to learn necessary farming skills.",
+      "C) The agricultural society then attached less importance to academics.",
+      "D) America lagged behind other countries in making a scientific school calendar."
      ]
     },
     {
      "no": 52,
-     "stem": "What do we learn from the passage about researchers like birdwatchers and rock collectors?",
+     "stem": "What benefit will year-round schooling bring students in addition, to improving their learning?",
      "options": [
-      "A) They have little access to government funding.",
-      "B) They can do research with limited resources.",
-      "C) They can do amateur work in their own fields",
-      "D) They have no means for large-scale research."
+      "A) It will help them get back to where their lessons started.",
+      "B) It will enable them to absorb what they have learned.",
+      "C) It will familiarize them with the school environment.",
+      "D) It will strengthen their relationship with teachers."
      ]
     },
     {
      "no": 53,
-     "stem": "What would scientific studies look like in a perfect world according to the author?",
+     "stem": "What do some childhood development experts believe about the long summer vacation?",
      "options": [
-      "A) They would be totally unbiased.",
-      "B) They would be independently funded.",
-      "C) They would be responsibly conducted.",
-      "D) They would be strictly supervised."
+      "A) It meets students' need to study on their own.",
+      "B) It enables students to learn about the outside world.",
+      "C) It satisfies students' desire to stay longer at home.",
+      "D) It contributes to students' healthy growth."
      ]
     },
     {
      "no": 54,
-     "stem": "What does the author say about companies and special interest groups?",
+     "stem": "What is the argument against the experts' idea of a long summer vacation?",
      "options": [
-      "A) They try hard to pull down the safeguards for research.",
-      "B) They make extra efforts to research their own products.",
-      "C) They provide valuable resources for scientific research.",
-      "D) They reap the most benefits from scientific research"
+      "A) It does little good to most students.",
+      "B) It benefits few students playing outside.",
+      "C) It leads students to neglect their studies.",
+      "D) It makes students addicted to computer games."
      ]
     },
     {
      "no": 55,
-     "stem": "What does the author think of research funded by industry or special interest groups?",
+     "stem": "What does the author think of the traditional school year in the U.S. today?",
      "options": [
-      "A) Its recommendations should be examined for feasibility.",
-      "B) Its misleading results should be corrected in time.",
-      "C) Its validity should be checked with additional care.",
-      "D) Its hidden biases should be identified independently"
+      "A) Well-grounded.",
+      "B) Culture-bound",
+      "C) Outdated.",
+      "D) Welcomed."
      ]
     }
    ],
-   "answers": {
-    "46": "B",
-    "47": "A",
-    "48": "D",
-    "49": "C",
-    "50": "B",
-    "51": "D",
-    "52": "B",
-    "53": "A",
-    "54": "C",
-    "55": "C"
-   }
+   "answers": {}
   }
  ]
 }

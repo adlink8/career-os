@@ -1,0 +1,3836 @@
+[
+ {
+  "file": "cet4-2023-06-1.md",
+  "writing": {
+   "directions": "Suppose your university is conducting a survey to collect students' opinions of online classes. You are to write a response to the survey about their advantages and disadvantages,and what improvements can be made. You will have 30 minutes for the task. You should write at least <u>120</u> words but no more than <u>180</u> words.",
+   "topic": "their advantages and disadvantages,and what improvements can be made",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._中国越来越重视终身教育，发展继续教育是构建终身教育体系的有效途径。高校作为人才培养的基地，拥有先进的教学理念和优越的教学资源，理应成为继续教育的办学主体。因此，近年来许多高校适应社会需求，加强与用人单位沟通，努力探索一条符合中国国情的继续教育发展新路，以使继续教育在国家发展战略中发挥更大的作用。",
+   "chars": 316,
+   "sentences": 3,
+   "avg_sentence_chars": 105.3
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) She was involved in a conflict with bird lovers.",
+      "B) She was charged with mistreating animals.",
+      "C) She was on bad terms with her neighbors.",
+      "D) She was accused of violating a city law."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) It will take time to solve the rat problem.",
+      "B) All wild animals should be well protected.",
+      "C) The woman was not to blame for the situation.",
+      "D) No one should go unpunished for violating law."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) Communicate with astronauts in Mars Dune Alpha.",
+      "B) Work in an environment resembling Mars.",
+      "C) Build a Martian habitat in Houston.",
+      "D) Send in applications before Friday."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) Ready-made food.",
+      "B) Food that is organic.",
+      "C) Food they grow.",
+      "D) Potatoes mostly."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) He apologized for scratching an athlete's gold medal.",
+      "B) He was asked to present a gold medal to Miu Goto.",
+      "C) He bit a softball player's Olympic gold medal.",
+      "D) He attracted public attention at a media event."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) Have another picture taken with the Olympic medalist.",
+      "B) Apologize to the International Olympic Committee.",
+      "C) Get the damaged medal repaired.",
+      "D) Pay for the cost of a new medal."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Allow no one to touch them.",
+      "B) See them as symbols of honor.",
+      "C) Treat them as treasures.",
+      "D) Keep them in a safe place."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) She covered its screen with a plastic sheet.",
+      "B) She connected it with her smartphone.",
+      "C) She decorated it with colorful stickers.",
+      "D) She bought some new software for it."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) It may not be simply blue.",
+      "B) It includes unnatural light.",
+      "C) It is more harmful to young people.",
+      "D) It induces people to fall asleep."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) He has had much trouble falling asleep.",
+      "B) He has had some sort of health problems.",
+      "C) He has stayed up playing computer games.",
+      "D) He has been burdened with excessive work."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Exposure to blue light is the chief cause of obesity.",
+      "B) Sleep may be more important than people assumed.",
+      "C) Sleep may also be negatively affected by natural light.",
+      "D) Overuse of electronic devices may cause heart disease."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) What they wanted to be when grown up.",
+      "B) What their favorite cartoon character was.",
+      "C) What they learned from computer games.",
+      "D) What they liked to do most after school."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) A stock broker.",
+      "B) A pop singer.",
+      "C) A mechanical engineer.",
+      "D) A basketball player."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) Ambitious",
+      "B) Sensible.",
+      "C) Imaginative.",
+      "D) Practical."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Relax their strict control of their kids.",
+      "B) Help their kids understand themselves.",
+      "C) Impose their own dreams on their kids.",
+      "D) Dismiss their high expectations of their kids."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) Set up company branches.",
+      "B) Improve its infrastructure.",
+      "C) Introduce iPhones into its markets.",
+      "D) Promote Internet-ready phones."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) They cater to Africans' needs.",
+      "B) They are more expensive models.",
+      "C) They are more powerful and capable.",
+      "D) They boast the longest battery life."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) A large touchscreen.",
+      "B) An old-school keypad.",
+      "C) A voice-response device.",
+      "D) A digitally-designed system."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) It ensured sustainable economic growth.",
+      "B) It was strongly opposed by manufacturers.",
+      "C) It was cheaper than using fossil fuel plastic.",
+      "D) It satisfied consumer demands on the whole."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) The capacity to mass produce it.",
+      "B) The U.S.federal government's regulations.",
+      "C) A boom in market demand for clear plastic bottles.",
+      "D) A rapid increase in U.S.petroleum chemical production."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Require companies to use 30%of new plastic.",
+      "B) Increase the supply of new plastic in the market.",
+      "C) Reduce the amount of plastic pollution in local areas.",
+      "D) Take measures to promote the use of recycled plastic."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) It studies dreams.",
+      "B) It rents a place for nap-takers.",
+      "C) It is a hotel for business people.",
+      "D) It is a nap research institute."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) To find out creative people's work performance.",
+      "B) To see how many people can go without napping.",
+      "C) To understand the obvious importance of napping.",
+      "D) To feel how difficult it is to get his idea across."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) They decline due to pointless meetings.",
+      "B) They depend on his ability to concentrate.",
+      "C) They enable him to enjoy a creative career.",
+      "D) They are affected by the overuse of social media."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Some bosses associate napping with laziness.",
+      "B) Many office workers nap during work hours.",
+      "C) Some bosses can concentrate without napping.",
+      "D) Many of his friends daydream in the office."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2023-06-2.md",
+  "writing": {
+   "directions": "Suppose the student union of your university is organizing an online discussion on interpersonal relationships. You are to write an essay on ways to maintain a warm and friendly relationship with your classmates and on the benefits of such a relationship. You will have 30 minutes for the task. You should write at least <u>120</u> words but no more than <u>180</u> words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._改革开放40多年以来，中国政府对高等教育越来越重视，高等教育已经进入稳步发展阶段。高校学生总数已接近4,700万人，位居世界第一。随着我国经济的快速发展，人民生活水平不断提高，越来越多的人渴望接受高等教育。我国高校的数量和学科专业持续增加，招生人数逐年上升，教学质量也在不断改进，为更多年轻人创造了接受高等教育的机会。",
+   "chars": 327,
+   "sentences": 4,
+   "avg_sentence_chars": 81.8
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) A man was bitten by a snake.",
+      "B) A man was taken to a hospital.",
+      "C) A man kept a 4-foot snake as a pet.",
+      "D) A man fell off his toilet seat."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Where the snake had been taken.",
+      "B) Whether the snake was infected.",
+      "C) How the snake was captured.",
+      "D) Who owned the snake."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) Taking her trash out in fancy dresses.",
+      "B) Amusing herself by going to ball parties.",
+      "C) Sharing her photos with famous movie stars.",
+      "D) Posting her daughter's photos on social media."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) To make herself popular.",
+      "B) To amuse people.",
+      "C) To please her daughter.",
+      "D) To record her achievements."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) Eat as much as they want for $10.",
+      "B) Have a chance of winning a $100 prize.",
+      "C) Have a meal even if they have no money.",
+      "D) Get a free meal after answering some questions."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) It was brought up by two staffers.",
+      "B) It helped to popularize her restaurant.",
+      "C) It originated from a donation to her staff.",
+      "D) It was suggested by some of her customers."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Fifty customers have offered donations.",
+      "B) More people have been giving than taking.",
+      "C) Many people have come to eat at the restaurant.",
+      "D) Most staffers have received messages of kindness."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) He is a psychologist.",
+      "B) He is a famous writer.",
+      "C) He is a host for a TV program.",
+      "D) He is a primary school teacher."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) Why social media accounts vanish without a trace.",
+      "B) Why parents raise their children in different ways.",
+      "C) Why people fail to respond to emails promptly.",
+      "D) Why friends break off contact all of a sudden."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) They simply shut themselves down.",
+      "B) They avoid showing their emotions.",
+      "C) They scream to get their parents back.",
+      "D) They attempt to ignore the whole situation."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) They may regard any difference as the end of a relationship.",
+      "B) They are on better terms with friends and romantic partners.",
+      "C) They try to express their feelings and thoughts effectively.",
+      "D) They attach more value to their relationships with others."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) Their price.",
+      "B) Their color.",
+      "C) Their quality.",
+      "D) Their design."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Jeans are a typical American garment.",
+      "B) America makes the best-known brands of jeans.",
+      "C) America has the best weaving tools in the world.",
+      "D) Jeans are available in a greater variety in America."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) They are artificial.",
+      "B) They are natural.",
+      "C) They are unique.",
+      "D) They are special."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) They are for casual wearing.",
+      "B) They are popular with boys.",
+      "C) They are much too pricey.",
+      "D) They are worth the price."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) He desires more in life.",
+      "B) He wants to see it again.",
+      "C) He feels as inspired as other audience members.",
+      "D) He longs to become a superstar himself."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) It is rather unrealistic.",
+      "B) It is extremely artistic.",
+      "C) It is somewhat complicated.",
+      "D) It is relatively predictable."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) They are biased against women.",
+      "B) They are basically misleading.",
+      "C) They are full of shootings.",
+      "D) They are too simple."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) It can highlight leadership.",
+      "B) It can help connect people.",
+      "C) It is a means to inspire creative thinking.",
+      "D) It is an intuitive way to solidify friendship."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Allow them to recite data points.",
+      "B) Make them more open to learning.",
+      "C) Enable them to remember the main idea.",
+      "D) Stimulate them to engage in discussions."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Inspire listeners' imagination.",
+      "B) Enrich their own experience.",
+      "C) Convey fundamental values.",
+      "D) Explain insightful ideas."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) Immigrants outnumber U.S.-born Americans.",
+      "B) Immigrants have been contributing to the U.S.",
+      "C) Another wave of immigrants is hitting the U.S.",
+      "D) The number of immigrants to the U.S. is declining."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) More of them expect their children to succeed in business.",
+      "B) They have fewer chances to be hired by U.S. companies.",
+      "C) They have founded most Fortune 500 companies.",
+      "D) More of them are successful business people."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) They have higher installment loan debt than native-born Americans.",
+      "B) Nineteen percent of them borrow money from friends and family.",
+      "C) Their level of debt is lower than that of native-born Americans.",
+      "D) Thirty-four percent of them use credit for their daily purchases."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Keep their traditional values and old habits.",
+      "B) Find employment in competitive businesses.",
+      "C) Borrow money from financial institutions.",
+      "D) Collaborate with native-born Americans."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2023-06-3.md",
+  "writing": {
+   "directions": "Suppose the student union of your university is organizing an online discussion on college students doing community service. You are to write an essay on its benefits and the service you can provide to the community. You will have 30 minutes for the task. You should write at least <u>120</u> words but no more than <u>180</u> words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._中国政府一直大力推行<u>义务教育</u>(compulsoryeducation),以使每个儿童都享有受教育的机会。自1986年《义务教育法》生效以来，经过不懈努力，实现了在全国推行义务教育的目标。如今，在中国，儿童年满六周岁开始上小学，从小学到初中一共接受九年义务教育。从2008年秋季学期开始，义务教育阶段学生无须缴纳学费。随着一系列教育改革举措的实施，中国义务教育的质量也有显著提高。",
+   "chars": 364,
+   "sentences": 5,
+   "avg_sentence_chars": 72.8
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2023-12-1.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming edition on a campus event that has impressed them most. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least **120** words but no more than **180** words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._中国政府十分重视人民的健康<u>饮食</u>（diet）。通过大力提倡健康饮食，人们对合理营养增进健康的重要性有了更加深刻的认识。“吃得安全、吃得营养、吃得健康”是人民对美好生活的基本需要，是提升人民幸福感的必然要求，也为食品产业的发展提供了新机遇。目前，各级政府都在采取多种举措确保人民饮食健康，推进健康中国的建设。",
+   "chars": 327,
+   "sentences": 4,
+   "avg_sentence_chars": 81.8
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) Their brains work in harmony.",
+      "B) They are generally the same age.",
+      "C) Their interests are quite similar.",
+      "D) They have the same ethnic background."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) It can be touching.",
+      "B) It is hard to predict.",
+      "C) It can work both ways.",
+      "D) It resembles family ties."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) Search for their half-brothers.",
+      "B) Identify their biological fathers",
+      "C) Find out more about their ancestry.",
+      "D) See whether they are actually related"
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) They were both given up for adoption.",
+      "B) They were born to the same mother.",
+      "C) They flew 737 airplanes as pilots.",
+      "D) They were both 60 years of age."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) One of his friends was caught littering.",
+      "B) The kilometer-long beach was practically deserted.",
+      "C) The beautiful beach was spoiled with lots of trash.",
+      "D) Other tourists refused to join in the cleanup."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) A passerby.",
+      "B) One of the five tourists.",
+      "C) The beach authorities.",
+      "D) A local woman."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) The tourists' good deed was not noticed by the locals.",
+      "B) Some natives were selling poor-quality food to tourists.",
+      "C) The number of tourists to the beach is on a steady decline.",
+      "D) It was tourists not natives who were cleaning up the beach."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) He has to play football with workmates.",
+      "B) He has got some books to read.",
+      "C) He is going to visit a friend",
+      "D) He is physically unfit for it."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) To teach kids about animal protection.",
+      "B) To learn how popular zoos could be.",
+      "C) To see some rare animals in cages.",
+      "D) To give her little nephew a treat."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) He enjoys excellent health.",
+      "B) He is keen on extreme sports.",
+      "C) He coaches tennis players every week.",
+      "D) He spends most of his time in the gym."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Tending to his swollen ankle.",
+      "B) Concentrating on reading.",
+      "C) Writing three book reports.",
+      "D) Planning Christmas celebrations."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) It is being debated by hundreds of retirees.",
+      "B) It is attracting many people's attention.",
+      "C) It partly records his own experience.",
+      "D) It argues for postponing retirement."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) One should foresee a financial crisis.",
+      "B) One should trust financial planners' figures.",
+      "C) One should have one million dollars to retire.",
+      "D) One should start saving as early as possible."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) It doesn't need to be permanent.",
+      "B) It shouldn't be considered risky.",
+      "C) It helps to reduce travel expenses.",
+      "D) It is the way to quit a job one hates."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) By keeping close contact with one's employers",
+      "B) By retiring when one reaches sixty years old.",
+      "C) By investing half of one's monthly income.",
+      "D) By following the counsel of financial planners."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) They tended to be easily anticipated by those belonging to their own race.",
+      "B) They tended to be arbitrarily judged by individuals of opposing groups.",
+      "C) They were readily shared among members of the same social or racial group.",
+      "D) They were influenced by the presence of someone from an outsider group."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) When they tried to make a positive impression on the researchers.",
+      "B) When an unknown student from another university was present.",
+      "C) When an experimenter from the research team took notice.",
+      "D) When they were offered both candy and fruit as a snack"
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) By advertising its social benefits.",
+      "C) By supporting struggling consumers.",
+      "B) By teaching consumers diet strategies.",
+      "D) By maintaining its positive image."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) The academic and learning issues struggling students encounter.",
+      "B) The risk students face due to a history of mental health problems.",
+      "C) The effect of interacting with therapy dogs on students under pressure.",
+      "D) The work universities are doing to help students succeed academically."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Their communicative skills.",
+      "B) Their executive functioning.",
+      "C) Their academic networking.",
+      "D) Their leadership capacities."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Rid students of their anxiety.",
+      "B) Add to some students' stress.",
+      "C) Contribute little to typical students' success.",
+      "D) Help students with mental issues pull through."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) Work hard and plan carefully.",
+      "B) Attempt to succeed at any cost.",
+      "C) Aim high and expect great results.",
+      "D) Remain optimistic even in difficulty."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) Regarding failure as something inevitable.",
+      "B) Trying out innovative marketing strategies.",
+      "C) Venturing into sectors never explored before.",
+      "D) Being willing to experiment with novel ideas."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) Expect future success so as to move forward.",
+      "B) Learn from our failure and forge ahead.",
+      "C) Distinguish between good and bad risks.",
+      "D) Examine our strategies and find out weaknesses."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Fresher offers.",
+      "B) Safer operation.",
+      "C) More challenges.",
+      "D) Less competition."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2023-12-2.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming edition on the recent development in their hometown. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least **120** words but no more than **180** words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._改革开放以来，中国人的<u>饮食</u>（diet）发生了显著变化。过去由于经济落后，食品种类有限、数量不足，人们仅仅满足于吃得饱。如今中国经济快速发展，食品不仅更加丰富多样，质量也大幅提高。随着生活水平不断提升，人们对饮食的要求越来越高，更加注重吃得营养健康。因此，目前市场上推出的低脂、低糖、有机食品受到人们的普遍欢迎。",
+   "chars": 330,
+   "sentences": 5,
+   "avg_sentence_chars": 66.0
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) He noticed the driver was too young to drive.",
+      "B) He found there was no one sitting at the wheel.",
+      "C) He thought something must be wrong with the driver.",
+      "D) He saw the driver changing lanes much too frequently."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Buy a sports car.",
+      "B) Drive across town.",
+      "C) Leave California.",
+      "D) Visit his sister."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) How they change the way we shop.",
+      "B) How they alter human skeletons.",
+      "C) How they cause increased headaches.",
+      "D) How they affect our communication."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) It loosens.",
+      "B) It brightens.",
+      "C) It hardens.",
+      "D) It softens."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) Create Internet pages for him.",
+      "B) Ask a local pet shop to adopt him.",
+      "C) Name an orange tree after him.",
+      "D) Hold a birthday party for him."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) He is a bold and aggressive pet.",
+      "B) He pays regular visits to village shops.",
+      "C) He once bit a doctor’s receptionist.",
+      "D) He likes to sit on the hairdresser’s chair."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) He is fond of luxury cat food.",
+      "B) He likes to stay in villagers’ houses.",
+      "C) He knows everybody in the village.",
+      "D) He often seeks food around her pub."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) Who to order the food.",
+      "B) Whether to have sandwiches.",
+      "C) When to go for their meal.",
+      "D) Where to have their lunch."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) In the shopping center nearby.",
+      "B) In the expensive Italian style diner.",
+      "C) At the sandwich place on Camden Street.",
+      "D) At the American restaurant they frequent."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) There is to be a conference call.",
+      "B) She has to meet with her boss then.",
+      "C) There will be crowds of people waiting for her.",
+      "D) She will have a photo taken with Brigette Clark."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) She doesn’t deem homemade soup tasty.",
+      "B) She doesn’t think his wife cooks well.",
+      "C) She feels Jeremy would rather dine out.",
+      "D) She has found the soup smells terrible."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) A landlady.",
+      "B) A waitress.",
+      "C) A receptionist.",
+      "D) A saleswoman."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) He was involved in a terrible car accident last April.",
+      "B) He has much difficulty getting up and down stairs.",
+      "C) He is expected to undergo a knee operation.",
+      "D) He prefers to stay next door to the children."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) To please his parents-in-law.",
+      "B) To find the best trip for his kids.",
+      "C) To satisfy his curiosity.",
+      "D) To compare prices."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Visit a local art gallery.",
+      "B) Go on a boat trip.",
+      "C) Take some photos of the islands.",
+      "D) Try her hand-made clothing."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) They are more intelligent than many of us.",
+      "B) They have already become our new friends.",
+      "C) They have begun to affect our social behavior.",
+      "D) They play increasingly more important roles."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Whether it might have any effect on the way we negotiate.",
+      "B) Whether it might actually outperform human negotiators.",
+      "C) Whether it can facilitate business transactions.",
+      "D) Whether it can speed up legal procedures."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Choose to be tough.",
+      "B) Sympathize with their opponent.",
+      "C) Use deceptive strategies.",
+      "D) Appear to be pleasant."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) They were perceived differently by some academics.",
+      "B) They still existed six months after the course ended.",
+      "C) They varied greatly among the course participants.",
+      "D) They were only measurable within seven weeks."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) They can be easily seen among participants in a healthy weight range.",
+      "B) They should be attributed to participants’ change in diet behaviors.",
+      "C) They are linked to cooking confidence and cooking satisfaction.",
+      "D) They actually result from eating more fruits and vegetables."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Gender.",
+      "B) Confidence.",
+      "C) Health.",
+      "D) Practice."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) It keeps others away.",
+      "B) It causes discomfort.",
+      "C) It remains visible.",
+      "D) It varies in size."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) It makes us feel uncomfortable.",
+      "B) It renders the acquaintance a stranger.",
+      "C) It brings the acquaintance closer to us.",
+      "D) It causes the bubble around us to vanish."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) In personal space.",
+      "B) In social space.",
+      "C) Within a distance of 18 inches.",
+      "D) Over 2 feet away from one another."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) When we begin to feel fear.",
+      "B) When we develop a sense of space.",
+      "C) When we are 3 or 4 years old.",
+      "D) When we enter our teens."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2023-12-3.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming edition on what in their university impresses them most. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least **120** words but no more than **180** words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.Youshouldwriteyouransweron**AnswerSheet2**._改革开放以来，中国人民生活水平不断提高，这在人们的<u>饮食</u>（diet）变化上得到充分体现。如今，人们不再满足于吃得饱，而是追求吃得更加安全、更加营养、更加健康，食物也愈来愈丰富多样，不再限于本地的农产品。<u>物流业</u>（logisticsindustry）的发展使人们很容易品尝到全国各地的特产。毫无疑问，食品质量与饮食结构的改善为增进人们健康提供了有力的保障。",
+   "chars": 357,
+   "sentences": 4,
+   "avg_sentence_chars": 89.2
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2024-06-1.md",
+  "writing": {
+   "directions": "Suppose your university is seeking students' opinions on whether university libraries should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.",
+   "topic": "whether university libraries should be open to the public",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._四合院(Siheyuan)是中国一种传统的住宅建筑，其特点是房屋建造在一个院子的四周，将院子合围在中间。四合院通常冬暖夏凉，环境舒适，尤其适合大家庭居住。四合院在中国各地有多种类型，其中以北京的四合院最为典型。如今，随着现代城市的发展，传统的四合院已逐渐减少，但因其独特的建筑风格，四合院对中国文化的传承和中国历史的研究具有重要意义。",
+   "chars": 331,
+   "sentences": 4,
+   "avg_sentence_chars": 82.8
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) Due to a fire alarm in their apartments.",
+      "B) Because of the smoke and heat damage",
+      "C) Due to the water used to extinguish the flames.",
+      "D) Because of the collapse of the three-story building."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Investigating the cause of the incident.",
+      "B) Helping search for the suspect of the crime.",
+      "C) Rescuing he businessmen trapped in the building.",
+      "D) Checking town records for the property developer."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) It plays a less important role in one's health than nutrient intake.",
+      "B) It impacts people’s health to a lesser degree than sun exposure.",
+      "C) It is associated with people’s mental health conditions.",
+      "D) It is linked with older adult’s symptoms of depression."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) It was indefinite.",
+      "B) It was systematic.",
+      "C) It was straightforward.",
+      "D) It was insignificant."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) It has helped solve several murder cases.",
+      "B) It has become a star police dog in Beijing.",
+      "C) It has surpassed its mother in performance.",
+      "D) it has done better than naturally born dogs."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) To speed up investigation into criminal cases.",
+      "B) To test the feasibility of cloning technology.",
+      "C) To cut down training expenses.",
+      "D) To reduce their training time."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Cloning is too complicated a process.",
+      "B) The technology is yet to be accepted.",
+      "C) Cloning is ethically controversial.",
+      "D) The technology is too expensive."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) He read it somewhere online.",
+      "B) He heard about it from a coworker.",
+      "C) He read an article reviewing it.",
+      "D) He watched a TV series based on it."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) His publications.",
+      "B) His first book.",
+      "C) His address.",
+      "D) His name."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) Collect a lot more data.",
+      "B) Relax a bit less often.",
+      "C) Clarify many new concepts.",
+      "D) Read more reference books."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Find out the show's most interesting episodes.",
+      "B) Watch the series together with the woman.",
+      "C) Get an e-Copy of the book to read.",
+      "D) Check to see when the show starts."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) To check the prices of his farm produce.",
+      "B) To ask the way to the Newcastle City Hall.",
+      "C) To inquire about the vegetarian food festival.",
+      "D) To seek the man's help with her work on the farm."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Bakers.",
+      "B) Vendors.",
+      "C) Vegetarians.",
+      "D) Organisers."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) The issuing of certificates to vendors.",
+      "B) The completion of the baking task.",
+      "C) The festival they are organising.",
+      "D) The deadline for application."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) The closing date of submission.",
+      "B) The website of his company.",
+      "C) The details of the ceremony.",
+      "D) The organiser’s address."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) Most scenic sites have been closed.",
+      "B) Access to official campsites is limited.",
+      "C) Health experts advise going outdoors.",
+      "D) People have more time during the summer."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) It is strongly opposed by nearby residents.",
+      "B) It leads to much waste of public money.",
+      "C) It has caused environmental concerns.",
+      "D) It has created conflicts among campers."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Look for open land in Scotland.",
+      "B) Leave no trace of their camping.",
+      "C) Avoid getting close to wilderness.",
+      "D) Ask for permission from authorities."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) They outcompete mythical creatures.",
+      "B) They usually mind their own business.",
+      "C) They truly exist in the Amazon region.",
+      "D) They resemble alarmingly large snakes."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Scar tissue from dolphins' fighting.",
+      "B) Skin infection from water pollution.",
+      "C) Unhealed wounds from snake bites.",
+      "D) Swimming along in seasonal floods."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) It has been shrinking at an astonishing pace.",
+      "B) It has been placed under international protection.",
+      "C) It has been appealing to both freshwater and sea dolphins.",
+      "D) It has been abandoned as a battleground for male dolphins."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) About 58% of young adults call parental support the new normal.",
+      "B) Most adult children enjoy increasing sources of financial support.",
+      "C) A full 70% of the young adults cannot afford to buy a car by themselves.",
+      "D) Most early adults cannot sustain their lifestyles without parental support."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) It renders them dependent.",
+      "B) It causes them to lose dignity.",
+      "C) It makes them mentally immature.",
+      "D) It hinders them from getting ahead."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) It challenges one's willpower.",
+      "B) It results from education.",
+      "C) It calls for due assistance.",
+      "D) It defines adulthood."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Current lifestyles.",
+      "B) Poor budgeting.",
+      "C) College loans.",
+      "D) Emergency expenses."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "B",
+   "2": "A",
+   "3": "C",
+   "4": "D",
+   "5": "D",
+   "6": "D",
+   "7": "D",
+   "8": "B",
+   "9": "D",
+   "10": "A",
+   "11": "C",
+   "12": "C",
+   "13": "B",
+   "14": "D",
+   "15": "A",
+   "16": "B",
+   "17": "C",
+   "18": "B",
+   "19": "C",
+   "20": "A",
+   "21": "B",
+   "22": "D",
+   "23": "A",
+   "24": "D",
+   "25": "C"
+  }
+ },
+ {
+  "file": "cet4-2024-06-2.md",
+  "writing": {
+   "directions": "Suppose your university is seeking students' opinions on whether university sports facilities should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.",
+   "topic": "whether university sports facilities should be open to the public",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispartyouareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._农历(thelunarcalendar)起源于数千年前的中国,根据太阳和月亮的运行规律制定。长期以来,农历在农业生产和人们日常生活中发挥着重要作用。古人依据农历记录日期、安排农活,以便最有效地利用自然资源和气候条件,提高农作物的产量和质量。中国的春节、中秋节等传统节日的日期都基于农历。农历是中国传统文化的重要组成部分,当今依然广为使用。",
+   "chars": 332,
+   "sentences": 5,
+   "avg_sentence_chars": 66.4
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) It hit a bird shortly after takeoff.",
+      "B) Its crew members went on strike.",
+      "C) It narrowly escaped a plane crash when turning around.",
+      "D) Its captain got slightly injured during the forced landing."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Panic.",
+      "B) Nervous.",
+      "C) Relieved.",
+      "D) Contented."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) He is now kept in a secure area.",
+      "B) He has escaped the zoo once again.",
+      "C) He has been caught a second time.",
+      "D) He finally disappeared six days ago."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) Squeezed.",
+      "B) Threatened.",
+      "C) Disappointed.",
+      "D) Frustrated."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) It is condemned as a crazy idea.",
+      "B) It is enriching the city’s night life.",
+      "C) It is questioned by local residents.",
+      "D) It is giving rise to safety concerns."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) Avoid entering one-way streets",
+      "B) Ensure the safety of pedestrians.",
+      "C) Follow all the traffic rules drivers do.",
+      "D) Give way to automobiles at all times."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) To ease the city’s busy traffic.",
+      "B) To bring new life into the city.",
+      "C) To add a new means of transport.",
+      "D) To reduce the city’s air pollution."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) Take it seriously.",
+      "B) Discuss it regularly.",
+      "C) Make it sound scary.",
+      "D) Talk about it openly."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) By shopping around for the best deals.",
+      "B) By making abstract sums relevant.",
+      "C) By citing concrete examples.",
+      "D) By visiting discount stores."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) Paying their kids to help with housework.",
+      "B) Setting kids a good example by sharing chores.",
+      "C) Giving kids pocket money according to their needs.",
+      "D) Urging kids to deposit some of their gift money."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) The importance of cutting down family expenses.",
+      "B) The need to learn important lessons from her elders.",
+      "C) The delight in seeing their savings grow.",
+      "D) The necessity of saving into a pension."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) He is a successful businessman.",
+      "B) He reviews books on political affairs.",
+      "C) He has published a new bestseller.",
+      "D) He has worked in several banks."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) The man's ideas about education.",
+      "B) The man's academic background.",
+      "C) The man's attempts at drawing public attention.",
+      "D) The man's proposals to solve economic problems."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) To reduce students' financial burden.",
+      "B) To motivate all students to be successful.",
+      "C) To give students incentive to excel in economics.",
+      "D) To provide remedies for students' poor performance."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Improving school budgeting.",
+      "B) Increasing tuition fees.",
+      "C) Seeking donations.",
+      "D) Raising taxes."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) To show his sympathy towards people always being busy.",
+      "B) To prevent people from complaining about being “busy”.",
+      "C) To call on busy people to take care of themselves.",
+      "D) To help busy people to sort out their priorities."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Avoid saying we are busy.",
+      "B) Reflect on their true purpose.",
+      "C) Describe our schedule in detail.",
+      "D) Respond as most busy people do."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) To show their achievements resulted from great efforts.",
+      "B) To prove they stand out as accomplished professionals.",
+      "C) To cover up their failure to achieve some purpose.",
+      "D) To tell others a complete lie about their inability."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) They will help one reduce fear.",
+      "B) They should become so popular.",
+      "C) They will be less challenging after a time.",
+      "D) They should cover so many different types"
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) To break one's ultimate limits.",
+      "B) To stop being extremely afraid.",
+      "C) To avoid dangerous mistakes.",
+      "D) To enjoy the sports to the full."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) By allowing our motivation to be at an all-time high.",
+      "B) By stopping us hurting the same muscles repeatedly.",
+      "C) By burning as many as 300 calories per hour.",
+      "D) By enabling us to get an all-over workout."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) It is natural.",
+      "B) It is instrumental.",
+      "C) It is personal",
+      "D) It is vital."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) To guard against being perceived negatively.",
+      "B) To prevent themselves from being isolated.",
+      "C) To conceal personality preferences.",
+      "D) To maintain workplace harmony."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) It helps to enhance team spirit.",
+      "B) It stimulates innovative ideas.",
+      "C) It helps to resolve problems.",
+      "D) It facilitates policy-making."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) An innovative mind.",
+      "B) Corporate culture.",
+      "C) Mutual trust.",
+      "D) A healthy mentality."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "A",
+   "2": "C",
+   "3": "B",
+   "4": "D",
+   "5": "D",
+   "6": "C",
+   "7": "B",
+   "8": "B",
+   "9": "C",
+   "10": "A",
+   "11": "D",
+   "12": "C",
+   "13": "A",
+   "14": "B",
+   "15": "D",
+   "16": "B",
+   "17": "A",
+   "18": "C",
+   "19": "A",
+   "20": "C",
+   "21": "D",
+   "22": "A",
+   "23": "D",
+   "24": "B",
+   "25": "C"
+  }
+ },
+ {
+  "file": "cet4-2024-06-3.md",
+  "writing": {
+   "directions": "Suppose your university is seeking students' opinions on whether university canteens should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.",
+   "topic": "whether university canteens should be open to the public",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._汉语中的“福”字(thecharacterfu)表示幸福和好运,是中国传统文化中最常用的吉祥(auspicious)符号之一。人们通常将一个大大的福字写在红纸上,寓意期盼家庭社会安定、国家昌盛。春节贴福字是民间由来已久的习俗。为了欢庆春节,家家户户都会将福字贴在门上或墙上,表达对幸福生活的向往、对美好未来的期待。人们有时还将福字倒过来贴,表示幸福已到、好运已到。",
+   "chars": 346,
+   "sentences": 5,
+   "avg_sentence_chars": 69.2
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2024-12-1.md",
+  "writing": {
+   "directions": "Suppose the business school of your university is conducting a survey to collect students’ opinions on the express delivery service industry in China. You are to write a response about its recent development and its impact on people's lives. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "the express delivery service industry in China",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._中国政府十分重视环境保护。近年来,中国在减少空气、水和土壤污染上取得了显著成效。为了不断改善人们的生活环境,中国采取了一系列有效措施,包括大力发展清洁能源,改善公共交通,推广共享单车,实施垃圾分类。通过这些措施,中国的城市和农村正在绿起来、美起来。中国还积极参与国际合作,为全球环境保护做出了重要贡献。",
+   "chars": 315,
+   "sentences": 5,
+   "avg_sentence_chars": 63.0
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) She is making a special effort to be recognized.",
+      "B) She has been living in Fayetteville for 25 years.",
+      "C) She has been driving a school bus ever since 2009.",
+      "D) She is the longest-serving bus driver in Fayetteville."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) The importance of their service to the city.",
+      "B) The number of riders they serve in the city.",
+      "C) The new proclamation issued early this week.",
+      "D) The significance of the event to take place March 18."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) Budgeted $56.7 million for the coming school year.",
+      "B) Requested to raise teachers’ salaries by 3 percent.",
+      "C) Proposed a spending increase by 5.99 percent.",
+      "D) Kept raising funds for at least 8 budget cycles."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) Decrease in salaries for school administrators.",
+      "B) Reduction in federal and state funding.",
+      "C) Firing of less qualified faculty members.",
+      "D) Closing down of some less competitive schools."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) They often take place in the Scottish Highlands.",
+      "B) They usually happen in the middle of the night.",
+      "C) Their damage can be as serious as that of bombs.",
+      "D) Their loud claps can be confused with explosions."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) They sent out a message to calm them down.",
+      "B) They promised to stop the construction work.",
+      "C) They told them the military exercise was over.",
+      "D) They set off to inspect the site of the plane crash."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Keep warm.",
+      "B) Take caution.",
+      "C) Avoid driving.",
+      "D) Use rail service."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) Why the man is so anxious to buy a new phone.",
+      "B) How the man could possibly afford a new phone.",
+      "C) How the man got into the habit of being wasteful.",
+      "D) Why the man is so fond of using his credit card."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) It is not in fashion any more.",
+      "B) It goes out of order frequently.",
+      "C) It is not as fancy as his colleagues’.",
+      "D) It lacks functions office work requires."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) It enables him to buy a new phone at a more favorable price.",
+      "B) It is a special offer to recent college graduates working in offices.",
+      "C) It is available to office workers who have a good enough credit score.",
+      "D) It allows him to borrow money without paying interest for six months."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) She borrowed money to pay her debt.",
+      "B) She developed a habit of overspending.",
+      "C) She enjoys buying a lot of fancy things.",
+      "D) She regrets ignoring the woman’s advice."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) Blog writing and natural resources saving.",
+      "B) Joint efforts to improve the local community.",
+      "C) Audience participation in The Morning Show.",
+      "D) Home ownership and environmental protection."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Not a realistic size for families.",
+      "B) Not welcomed by most Americans.",
+      "C) Only fit for families of four or less.",
+      "D) Only suitable for renting to the poor."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) It should be changed.",
+      "B) It isn’t easy to realize.",
+      "C) It will come true sooner or later.",
+      "D) It doesn’t appeal to average families."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) They help to lower housing prices.",
+      "B) They help to save up for larger houses.",
+      "C) They are a good choice for many people.",
+      "D) They are vital to reducing waste worldwide."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) Play outdoors and enjoy themselves.",
+      "B) Beat challenges and take risks.",
+      "C) Take care of their well-being.",
+      "D) Grow up strong and healthy."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Enable them to develop their motor skills.",
+      "B) Help them to conceal their frustration.",
+      "C) Reduce their stress and depression.",
+      "D) Prevent them from feeling lonely."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) It begins early.",
+      "B) It proves demanding.",
+      "C) It calls for lifelong efforts.",
+      "D) It lies in nature experiences."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) When companies share their information online.",
+      "B) When their job search criteria are met fully.",
+      "C) When companies embrace greater diversity",
+      "D) When they find job postings visually attractive."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Emails in the normal format.",
+      "B) Major companies in one location.",
+      "C) All companies in the same sector",
+      "D) Various aspects of a company’s workforce."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Job security",
+      "B) Potential pay raises.",
+      "C) Minimum base salary.",
+      "D) Information about diversity."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) Positive.",
+      "B) Original.",
+      "C) Important.",
+      "D) Surprising."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) Dogs match their behavior with kids as much as with adults.",
+      "B) Kids and adults alike find in dogs a source of attachment.",
+      "C) Kids’ attitude to dogs is influenced by adults.",
+      "D) Dogs can help kids in many ways."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) Dogs pay much attention to the kids they live with.",
+      "B) Dogs view both adults and kids as social companions.",
+      "C) Kids differ from adults in their behavior towards dogs.",
+      "D) Kids need to be aware of the risks in playing with dogs."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Understanding dogs.",
+      "B) Training dogs.",
+      "C) Taking care of dogs.",
+      "D) Associating with dogs."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "D",
+   "2": "A",
+   "3": "C",
+   "4": "B",
+   "5": "D",
+   "6": "A",
+   "7": "B",
+   "8": "B",
+   "9": "C",
+   "10": "D",
+   "11": "B",
+   "12": "D",
+   "13": "A",
+   "14": "A",
+   "15": "C",
+   "16": "B",
+   "17": "C",
+   "18": "A",
+   "19": "C",
+   "20": "A",
+   "21": "D",
+   "22": "C",
+   "23": "D",
+   "24": "A",
+   "25": "B"
+  }
+ },
+ {
+  "file": "cet4-2024-12-2.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming edition on how to enrich students’ knowledge of traditional Chinese culture. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._近年来,中国新能源汽车产业发展迅速。目前,中国新能源汽车年产量已高达近千万辆,占全球市场份额超过60%,出口量不断创出新高。中国政府通过加大资金投入和政策引导,鼓励新能源汽车企业进行技术创新,不断提高产品在市场上的竞争力。中国新能源汽车产业的发展不仅有力推动了国内经济发展,也为全球新能源利用和环境保护做出了积极贡献。",
+   "chars": 323,
+   "sentences": 4,
+   "avg_sentence_chars": 80.8
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) They will see a 27% higher price to buy natural gas.",
+      "B) They will have insufficient heating oil to keep warm.",
+      "C) They will have a costly bill to pay to heat their homes.",
+      "D) They will experience the coldest winter in four decades."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Provided additional funding to Low Income Home Energy Assistance Program.",
+      "B) Assured U.S. citizens of an increase in energy supplies by the end of this year.",
+      "C) Predicted a 10% jump in heating bills for most U.S. households this winter.",
+      "D) Decided on this year’s energy assistance package of $8 billion in total."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) They care less about their diet now than before.",
+      "B) They may lack adequate knowledge of healthy food.",
+      "C) They may hold too optimistic a view about their diet.",
+      "D) They pay insufficient attention to their choice of food."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) Those who finished 24-hour food questionnaires.",
+      "B) Those who fully understood the rating scale.",
+      "C) Those who cared about food quality.",
+      "D) Those who rated their diet as poor."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) They experienced a heartbreaking moment.",
+      "B) They gathered together to rescue an elephant.",
+      "C) They heard a noise from the bottom of a well.",
+      "D) They found an elephant wandering around a well."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) To borrow their crane.",
+      "B) To ask them for help.",
+      "C) To report the strange noise.",
+      "D) To get food for the elephant."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) The elephant was able to return to the jungle.",
+      "B) The army officers were examined for injuries.",
+      "C) The army officers were rewarded for their rescue efforts.",
+      "D) The elephant was given medical treatment for many days."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) He found it had caused him much inconvenience.",
+      "B) It led him to spend more money than necessary.",
+      "C) It was much less secure than paying with cash.",
+      "D) He wanted to be less dependent on his phone."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) Living beyond her means.",
+      "B) Lack of budgeting strategies.",
+      "C) Fashion addiction.",
+      "D) Impulse purchasing."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) Eat healthier food with less money.",
+      "B) Order food like burgers and chips.",
+      "C) Avoid getting addicted to junk food.",
+      "D) Pay either in cash or with his phone."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Making a shopping list.",
+      "B) Sticking to his budget.",
+      "C) Withdrawing cash only once a month.",
+      "D) Thinking twice before buying something."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) He does not enjoy any ball games.",
+      "B) He has to prepare for the future.",
+      "C) He has breathing problems.",
+      "D) He is not up to anything challenging."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Soccer",
+      "B) Badminton.",
+      "C) Volleyball.",
+      "D) Basketball."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) The possibilities of joining the school sports team.",
+      "B) The opportunities of winning some championships.",
+      "C) The chances of getting an athletic scholarship later on.",
+      "D) The odds of becoming a professional sportsman someday."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) It differs entirely from indoor volleyball.",
+      "B) It appeals to both schoolgirls and schoolboys.",
+      "C) It is less popular than indoor sports in the country.",
+      "D) It is completely different from other outdoor games."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) It usually requires years of preparations.",
+      "B) It does a lot of harm to the environment",
+      "C) It often burns over three hundred tonnes of refined fuel.",
+      "D) It proves to be the most complicated stage of space missions."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) They are burnt up in outer space.",
+      "B) They are guided back to Earth.",
+      "C) They are reused up to 100 times.",
+      "D) They are treated as expendable."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) New technologies for bringing back space vehicles for recycling.",
+      "B) The technology for meeting the needs of commercial space travel.",
+      "C) Many of the technologies to limit the impact of space travel on Earth.",
+      "D) The technology for effectively protecting ozone from being destroyed."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) It can help unskilled readers feel more secure.",
+      "B) It can encourage reluctant readers to read aloud.",
+      "C) It can strengthen children’s confidence in others.",
+      "D) It can boost children’s interest in communication."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) By motivating children to find out about their favourite pets.",
+      "B) By taking children to the library to borrow books on animals.",
+      "C) By allowing children to surf the internet about pets by themselves.",
+      "D) By showing children how to acquire knowledge about healthy pets."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) By learning that raising pets can do much good.",
+      "B) By watching how healthy pets are brought up.",
+      "C) By hearing about their peers’ passion for pets.",
+      "D) By visiting friends who have household pets."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) Send would-be students a packet of information.",
+      "B) Update regularly all information on their websites.",
+      "C) Inform prospective students of their yearly enrollment.",
+      "D) Answer questions raised by applicants and their parents."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) Oversee private institutions directly.",
+      "B) Follow other states’ example.",
+      "C) Supervise all schools consistently.",
+      "D) Regulate public institutions by law."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) They are resourceful.",
+      "B) They are competitive.",
+      "C) They provide the best opportunity to realize one’s dream.",
+      "D) They appeal most to students from other states in the U.S."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Some students waste much time surfing the net.",
+      "B) Students may need to visit too many websites.",
+      "C) Students have to search for the information.",
+      "D) Some students may lack adequate access."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "C",
+   "2": "A",
+   "3": "C",
+   "4": "D",
+   "5": "B",
+   "6": "B",
+   "7": "A",
+   "8": "B",
+   "9": "D",
+   "10": "A",
+   "11": "B",
+   "12": "C",
+   "13": "D",
+   "14": "C",
+   "15": "A",
+   "16": "B",
+   "17": "D",
+   "18": "C",
+   "19": "B",
+   "20": "A",
+   "21": "D",
+   "22": "A",
+   "23": "D",
+   "24": "B",
+   "25": "C"
+  }
+ },
+ {
+  "file": "cet4-2024-12-3.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming edition on how the students can contribute to a green campus. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._敦煌莫高窟(MogaoGrottoes)数字展示中心于2014年开放启用,是莫高窟保护利用工程的重要组成部分。展示中心采用数字技术和多媒体展示手段,使游客进入洞窟参观之前就能了解莫高窟的历史文化,鉴赏莫高窟的艺术经典。这将减少开放洞窟的数量,缩短游客在洞窟内的逗留时间,减轻参观对莫高窟造成的影响,以使这一世界文化遗产得到妥善保护、长久利用。",
+   "chars": 335,
+   "sentences": 3,
+   "avg_sentence_chars": 111.7
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2025-06-1.md",
+  "writing": {
+   "directions": "Suppose your university is seeking students’ opinions on the necessity of making College Chinese a compulsory course. You are now to write an essay to express your view. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "the necessity of making College Chinese a compulsory course",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._被誉为“杂交水稻(hybridrice)之父”的袁隆平和他的科研团队克服重重困难,研发出了一种超级杂交水稻。这项技术获得了举世公认的巨大成功。通过这项技术的应用,水稻抗旱抗病能力更强,能适应不同的气候和土壤条件,产量可提高20-30%。超级杂交水稻营养丰富,口感更佳。目前,这项技术已经在许多国家得到广泛应用,为全球粮食安全做出了重大贡献。",
+   "chars": 334,
+   "sentences": 5,
+   "avg_sentence_chars": 66.8
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) By slapping some butter on it.",
+      "B) By enhancing its nourishment.",
+      "C) By growing it in South Dakota.",
+      "D) By cooking it in vegetable oil."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) To introduce their corn to tourists.",
+      "B) To attend an honorary ceremony.",
+      "C) To share experience with other corn growers.",
+      "D) To exhibit their corn at the state’s Corn Palace."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) Stole mail several times.",
+      "B) Forged postal keys illegally.",
+      "C) Attacked postmen on multiple occasions.",
+      "D) Broke a number of postal collection boxes."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) A sentence for life.",
+      "B) Loss of all their possessions.",
+      "C) Twenty-three years’ hard labor.",
+      "D) Up to fifteen years in prison."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) It escapes regulation and misleads consumers.",
+      "B) It ignores economically feasible recycling options.",
+      "C) It creates waste and severely impacts the environment.",
+      "D) It produces clothes affordable only to a tiny minority."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) To cut consumers’ expenses in buying quality clothes.",
+      "B) To enable the whole fast-fashion industry to be sustainable.",
+      "C) To incentivize manufacturers to be more consumer-friendly.",
+      "D) To urge manufacturers and consumers to reduce waste."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Recognizing the impact on consumers.",
+      "B) Identifying the source of the problem.",
+      "C) Abandoning the current business model.",
+      "D) Establishing powerful regulatory bodies."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) The city’s rush-hour traffic is intolerable.",
+      "B) She cannot avoid rush-hour traffic.",
+      "C) The local government is inefficient.",
+      "D) The city is too big to move around easily."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) Upgrading subway carriages.",
+      "B) Increasing the number of bus routes.",
+      "C) Air conditioning the city’s subway.",
+      "D) Learning from other big cities."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) He suffers from rush-hour crowding too.",
+      "B) He is fortunate to live very near to work.",
+      "C) He takes a half-hour bus ride to work.",
+      "D) He is going to move closer to his office."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Recommend to her a good house near his office.",
+      "B) Send her his housing agent’s telephone number.",
+      "C) Tell her exactly what kind of property to look for.",
+      "D) Make sure the agent finds something good for her."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) He was remembered for the scar on his cheek.",
+      "B) He received a heart operation a few days ago.",
+      "C) He used to wear a sad face in school.",
+      "D) He had some plastic surgery done."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) The man’s deep sympathy for Johnny.",
+      "B) The man’s use of the expression ‘fixed’.",
+      "C) The man’s covering up of what happened.",
+      "D) The man’s good memory of his childhood."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) It gave him a noticeable smartness.",
+      "B) It made him appear even more manly.",
+      "C) It seemed to give him a certain uniqueness.",
+      "D) It seemed to make up for his physical defects."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Liberal.",
+      "B) Hostile.",
+      "C) Indifferent.",
+      "D) Critical."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) Through deliberation.",
+      "B) Through evolution.",
+      "C) Through invention.",
+      "D) Through collaboration."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) With people imitating sounds around them.",
+      "B) With people interacting with animals close by.",
+      "C) With people showing each other things nearby.",
+      "D) With people trying to string sounds together."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Making sounds can free one’s hands for doing other things.",
+      "B) Making sounds proves markedly easier than sign languages.",
+      "C) Making sounds enables one to express their ideas more explicitly.",
+      "D) Making sounds helps one communicate with people they can’t see."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) Well disciplined.",
+      "B) Quite confident.",
+      "C) Somewhat selfish.",
+      "D) Highly intelligent."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) When they wanted to have a competitive team member.",
+      "B) When they were looking for a cooperative workmate.",
+      "C) When they found collaboration essential to them.",
+      "D) When they were seeking someone to help them."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Avoid frightening competitors.",
+      "B) Make clear their social goal.",
+      "C) Adopt persuasive strategies.",
+      "D) Consider the consequences."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) Much evidence of humans capturing animals.",
+      "B) More images of animals than humans.",
+      "C) Fewer images of buildings than animals.",
+      "D) Little proof of human fascination with animals."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) They were open to the public.",
+      "B) They were primarily native.",
+      "C) They were kept by royalty.",
+      "D) They were hardly injured."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) To enable the public to watch animals close by.",
+      "B) To introduce to Egyptians animals from Punt.",
+      "C) To protect the endangered animals.",
+      "D) To show off her riches and power."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) It was part of the royal estate.",
+      "B) It was a shelter for wild animals.",
+      "C) It was the kingdom’s best-equipped zoo.",
+      "D) It was the first public exhibit of animals."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "A",
+   "2": "B",
+   "3": "A",
+   "4": "D",
+   "5": "C",
+   "6": "D",
+   "7": "B",
+   "8": "A",
+   "9": "C",
+   "10": "C",
+   "11": "B",
+   "12": "D",
+   "13": "B",
+   "14": "C",
+   "15": "D",
+   "16": "B",
+   "17": "A",
+   "18": "D",
+   "19": "C",
+   "20": "A",
+   "21": "D",
+   "22": "B",
+   "23": "C",
+   "24": "D",
+   "25": "A"
+  }
+ },
+ {
+  "file": "cet4-2025-06-2.md",
+  "writing": {
+   "directions": "Suppose your university is conducting a survey to collect students’ opinions on the appropriate use of AI technology in assisting learning. You are now to write an essay to express your view. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "the appropriate use of AI technology in assisting learning",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._近年来，中国东北地区正在大力开发冰雪资源。例如，哈尔滨利用丰富的冰雪资源打造了极具地方特色的“冰雪大世界”，让游客在欣赏冰雪之美的同时也能体验当地独特的民俗文化。如今，曾令人畏惧的冰天雪地正吸引着四面八方的游客，成为深受欢迎的旅游胜地。冰雪旅游业正为当地的经济发展做出越来越大的贡献。",
+   "chars": 306,
+   "sentences": 4,
+   "avg_sentence_chars": 76.5
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) They are young teenagers from Atlanta.",
+      "B) They won this year’s 7 Mile Bridge Run.",
+      "C) They completed the race in less than 40 minutes.",
+      "D) They are both students at Marathon High School."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) It drew competitors from more than 40 countries.",
+      "B) It is watched live online by fans all over the world.",
+      "C) It closed the city of Big Pine Key to traffic for three hours.",
+      "D) It is one of the most popular running events in the southeastern U.S."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) He was once a full-time ambassador.",
+      "B) He was soon to retire from the army.",
+      "C) He became an astronaut in 2015.",
+      "D) He used to be a helicopter pilot."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) It has been unbelievably exciting and rewarding.",
+      "B) It has been extraordinarily tough and demanding.",
+      "C) It has contributed a great deal to human flights to space.",
+      "D) It has given him exceptional privilege as an ambassador."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) They are known for their loyalty to their owners.",
+      "B) They are brought in by the store’s customers.",
+      "C) They are regular visitors to the store.",
+      "D) They are pets kept by the store staff."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) It might be a nuisance to the loyal shoppers.",
+      "B) It might have been abandoned by its owner.",
+      "C) It might be 12 months old.",
+      "D) It might have got lost."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Feed the cats.",
+      "B) Remove any store signs.",
+      "C) Sit in the shop aisles.",
+      "D) Bring in pets with them."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) Sharing her room with friends.",
+      "B) Cutting down her living expenses.",
+      "C) Living off campus.",
+      "D) Moving to the city center."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) The facilities available.",
+      "B) Various costs involved.",
+      "C) Changes in living conditions.",
+      "D) The distance to her home."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) Went through much trouble.",
+      "B) Commuted to save money.",
+      "C) Studied on the bus.",
+      "D) Lived on campus."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Discuss the matter with the woman’s mother.",
+      "B) Make a decision within a few days.",
+      "C) Try his best to persuade his wife.",
+      "D) Weigh the benefits against the disadvantages."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) Interviewing the man.",
+      "B) Looking for Lawrence.",
+      "C) Choosing a present for her nephew.",
+      "D) Helping the man with his shopping."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Quite educational.",
+      "B) Incredibly popular",
+      "C) Driven by batteries.",
+      "D) Obviously childish."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) One he loves for helping exercise his mind.",
+      "B) One he can play together with his sister",
+      "C) One he finds interesting and challenging.",
+      "D) One he can play either alone or in a group."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) It has been enjoyed by kids for decades.",
+      "B) It always reminds people of times of war",
+      "C) It has been played both indoors and outdoors.",
+      "D) It distinguishes itself as one of the oldest games."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) A display of a variety of products increases consumers’ interest.",
+      "B) Too many choices decrease one’s desire to buy.",
+      "C) Fewer choices lead to lower customer satisfaction.",
+      "D) Customers given more choices are more likely to get confused."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) What kind of display results in more sales.",
+      "B) What kind of display creates more interest.",
+      "C) What kind of display attracts a greater crowd of customers.",
+      "D) What kind of display leads to greater customer satisfaction."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) There are situations where customers buy nothing.",
+      "B) There are tricks to increase customer satisfaction.",
+      "C) There are ways to predict customer preferences:",
+      "D) There are rules that motivate customers to buy"
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) Stressful.",
+      "B) Burdensome.",
+      "C) Worthwhile.",
+      "D) Energy-boosting."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) By linking it with employees’ salary.",
+      "B) By taking it as the New Year resolution.",
+      "C) By improving work schedules.",
+      "D) By making it part of the job."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) It was very important to their well-being.",
+      "B) It had taken little of their spare time.",
+      "C) It was an outlet for their personal fulfillment.",
+      "D) It helped improve their working environment."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) It amounts to 2,000 tons daily.",
+      "B) It mostly comes from supermarkets.",
+      "C) It is estimated at 11% of the UK’s total food supply.",
+      "D) It has a lot to do with independent luxury food suppliers."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) It rents bicycles to deliver food.",
+      "B) It sells sought-after coffee beans.",
+      "C) It delivers luxury hand-made food.",
+      "D) It recycles waste food from the city."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) It pays special attention to the size and shape of its products.",
+      "B) It tries to escape the constraints of the current food system.",
+      "C) It cooperates closely with local producers.",
+      "D) It aims to provide high-quality products."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) To ensure a regular supply.",
+      "B) To maintain a unique menu.",
+      "C) To make up for the waste products.",
+      "D) To meet customers’ urgent demand."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "B",
+   "2": "D",
+   "3": "D",
+   "4": "A",
+   "5": "C",
+   "6": "D",
+   "7": "A",
+   "8": "C",
+   "9": "B",
+   "10": "C",
+   "11": "A",
+   "12": "C",
+   "13": "B",
+   "14": "B",
+   "15": "A",
+   "16": "B",
+   "17": "A",
+   "18": "D",
+   "19": "C",
+   "20": "D",
+   "21": "A",
+   "22": "B",
+   "23": "C",
+   "24": "D",
+   "25": "A"
+  }
+ },
+ {
+  "file": "cet4-2025-06-3.md",
+  "writing": {
+   "directions": "",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._近年来，中国越来越多的城市着力打造“15分钟便民生活圈(convenientlivingcircles)”。社区居民步行15分钟就能享受到日常所需的公共服务。生活圈内建有便利店、公园、健身场地、图书馆、学校、社区食堂、诊所等。生活圈的建立能够为居民提供更加便利、舒适、友好、愉悦的生活环境，更好地满足城市居民多元化的日常生活服务需求，提升居民的生活品质和幸福感。",
+   "chars": 345,
+   "sentences": 4,
+   "avg_sentence_chars": 86.2
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2025-12-1.md",
+  "writing": {
+   "directions": "Suppose the student union of your university is collecting opinions on improving its work for the coming year. You are now to write a response by suggesting how it can better enrich student life. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "improving its work for the coming year",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._近年来，中国政府高度重视民营经济(privateeconomy)的发展，出台了一系列政策支持民营企业。截至2025年3月底，全国民营企业数量超过5700万家，占企业总量的92.3%。民营企业不仅数量稳步增长，质量和结构也在不断提升。民营企业的研发投入不断增加，在新一代信息技术、人工智能等领域发展迅速。民营企业核心竞争力的增强为中国经济的高质量发展提供了有力支撑。",
+   "chars": 346,
+   "sentences": 5,
+   "avg_sentence_chars": 69.2
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) At the gate of a grade school in Kent.",
+      "B) Under the engine cover of a man’s car.",
+      "C) Inside the car of David King's neighbour.",
+      "D) Outside the office of a charity foundation."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) It got reunited with its owner.",
+      "B) It was injured during the rescue.",
+      "C) It was placed in the care of a UK charity.",
+      "D) It became a pet of Mr. King’s grandson."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) The reunion of this year’s Olympic gold medalists.",
+      "B) The opening of the Special Olympics Spring Games.",
+      "C) The first important political event in the next five years.",
+      "D) The 100th anniversary celebration of Methodist University."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) Volunteers visit the Games’ website to sign up.",
+      "B) Children play in a fun tent and enjoy themselves fully.",
+      "C) Organizers devote their time and energy to the Games.",
+      "D) Athletes with special needs triumph in the Game."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) Compensate for the Swiss manufacturer's loss.",
+      "B) Change the wrapping of its commodities.",
+      "C) Destroy its imitation chocolate rabbits.",
+      "D) Defend itself in the country's commercial court."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) It could be reused in other products.",
+      "B) It could be resold cheaper to avoid waste.",
+      "C) It could be reshaped into animals other than rabbits.",
+      "D) It could be rewrapped and sold by the budget supermarket."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) To be fair to the German supermarkets.",
+      "B) To protect chocolate retailers’ interests.",
+      "C) To prevent consumers’ possible confusion.",
+      "D) To boost the growth of the chocolate industry"
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) Pass a book to him.",
+      "B) Make a vegetable dish.",
+      "C) Return the handbook to him.",
+      "D) Meet his sister's boyfriend."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) It doesn't sound practical for her.",
+      "B) It would do harm to one's muscles.",
+      "C) It would reduce one's protein intake.",
+      "D) It doesn't seem to be a balanced diet."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) To improve his health.",
+      "B) To protect animal rights.",
+      "C) To stick to his religious belief.",
+      "D) To follow a trendy lifestyle."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) The torture and distress dolphins suffer in parks.",
+      "B) The urgency of joining an animal rights group.",
+      "C) The gloomy environments animals are kept in.",
+      "D) The necessity of having zoos and eating meat."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) The part about not eating on board the plane.",
+      "B) The part about air travel in the past.",
+      "C) The part about getting over jetlag.",
+      "D) The part about avoiding sleeping on the plane."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Try following the advice given by the expert on the show.",
+      "B) Concentrate on reading articles recommended by experts.",
+      "C) Have meals as usual to stay away from hunger.",
+      "D) Take a nap to adjust to a new time zone."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) She has been well treated when traveling.",
+      "B) She does not have to worry about jetlag.",
+      "C) She can spend a lot of time vacationing.",
+      "D) She does not have any problem flying."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) It affects twenty-five percent of people.",
+      "B) It has long been ignored by many experts.",
+      "C) It impacts female travelers more seriously.",
+      "D) It has caused heavy losses to many airlines."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) Learning from skilled designers.",
+      "B) Joining a 6-month training camp.",
+      "C) Obtaining real-world experience.",
+      "D) Anticipating actual challenges."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Core skills.",
+      "B) Higher education.",
+      "C) Capability.",
+      "D) Adaptability."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Face challenges.",
+      "B) Start anywhere.",
+      "C) Pursue roles in teams.",
+      "D) Follow their own path."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) To allow students more freedom in their academic work.",
+      "B) To enable teachers to interact more with their students.",
+      "C) To engage students more in their learning.",
+      "D) To respond actively to students' requests."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Rearranging most traditional chairs and desks.",
+      "B) Adopting a variety of different seating options.",
+      "C) Shifting from traditional teaching to task-based learning.",
+      "D) Using new furniture to create a comfortable environment."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) A change to teachers’ opinion of their students.",
+      "B) A harmonious relationship among its students.",
+      "C) A strengthened effect of its discipline.",
+      "D) A win for all people involved"
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) They arrived late for their first day of school.",
+      "B) They weren't informed of the school’s updated rules.",
+      "C) They answered their headteacher's email in an impolite way.",
+      "D) They didn't wear the shoes required by the school’s new policy."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) Panic.",
+      "B) Anger.",
+      "C) Disputes.",
+      "D) Riots."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) They rendered the school unique in the district.",
+      "B) They enhanced the positive image of the school.",
+      "C) They improved student behavior and performance.",
+      "D) They strengthened the school's discipline and order."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Tighten her monthly budget.",
+      "B) Turn to her parents for help.",
+      "C) Borrow £65 from her friend.",
+      "D) Postpone paying her other bills"
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "B",
+   "2": "A",
+   "3": "B",
+   "4": "D",
+   "5": "C",
+   "6": "A",
+   "7": "C",
+   "8": "A",
+   "9": "D",
+   "10": "B",
+   "11": "D",
+   "12": "C",
+   "13": "A",
+   "14": "B",
+   "15": "A",
+   "16": "C",
+   "17": "D",
+   "18": "B",
+   "19": "C",
+   "20": "B",
+   "21": "D",
+   "22": "D",
+   "23": "A",
+   "24": "C",
+   "25": "B"
+  }
+ },
+ {
+  "file": "cet4-2025-12-2.md",
+  "writing": {
+   "directions": "Suppose it is proposed that all university students should be required to learn academic writing. You are now to write a response by stating what you think of the proposal. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._近年来，“城市漫步(citywalk)”在中国的年轻人中悄然兴起，已成为一种旅游新潮流。与传统旅游不同，城市漫步不追求在短时间内游览尽可能多的景点，而是随意行走或按照主题路线漫步在城市的大街小巷。漫步者品尝地道小吃，欣赏特色建筑，了解当地生活方式。他们还用相机或手机记录城市的风景和人物。这种旅游方式能让城市漫步者更深入了解城市的历史与文化。",
+   "chars": 335,
+   "sentences": 5,
+   "avg_sentence_chars": 67.0
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) It has gone up sharply.",
+      "B) It has been fluctuating.",
+      "C) It has risen because of bird flu.",
+      "D) It has been consumers’ concern."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) They don’t want to abandon their eggs.",
+      "B) They don’t know they will be heavily fined.",
+      "C) They don’t know they are forbidden to bring eggs.",
+      "D) They don’t declare their eggs during the inspection."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) It is no longer critical of younger customers.",
+      "B) It has banned kids under 10 from dining there.",
+      "C) It is no longer as noisy and crowded as before.",
+      "D) It has implemented a decision to expand business."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) It is fully aware of frequent customers' feelings.",
+      "B) It caters to the tastes of different customers.",
+      "C) It is entitled to adopt any rules it wants.",
+      "D) It should announce its decisions online."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) A missing pet.",
+      "B) A grown-up snake.",
+      "C) A huge animal skin.",
+      "D) A snake specialist."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) In a government office.",
+      "B) In a deserted house.",
+      "C) At a local zoo.",
+      "D) At a construction site."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Figuring out where it came from.",
+      "B) Curing it of any possible diseases.",
+      "C) Protecting its babies against harm.",
+      "D) Determining how to catch it safely."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) The man doesn't agree Hannah is poor.",
+      "B) The man doesn't believe what she says.",
+      "C) The man doesn't think she can be a millionaire.",
+      "D) The man doesn't consider her to be trustworthy."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) She no longer has any money left.",
+      "B) She has been betrayed by her family.",
+      "C) She can no longer hold on to her job.",
+      "D) She has been robbed of 5 million Euros."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) Fortune.",
+      "B) Family.",
+      "C) Harmony.",
+      "D) Happiness."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Divorce her.",
+      "B) Leave home.",
+      "C) Buy her a more expensive model.",
+      "D) Let the best thing happen to them."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) He is not outstanding in Science and Math.",
+      "B) He does not have a strong academic record.",
+      "C) He is not yet mature enough to live on his own.",
+      "D) He does not like Westwood Elementary School."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) It is too far away.",
+      "B) It is newly opened.",
+      "C) It lacks outdoor sports facilities.",
+      "D) It has too few first-class teachers."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) It has a beautiful campus.",
+      "B) It is within walking distance.",
+      "C) It has a wonderful arts program.",
+      "D) It is helpful to Jake’s breathing problems."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Asking Jake which school he himself prefers to enroll in.",
+      "B) Thinking twice about what is best for Jake’s education next year.",
+      "C) Consulting her mother about which school Jake is to attend.",
+      "D) Sending Jake to the school near the biome of the man's mother."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) It is time consuming.",
+      "B) It is unfit for crucial issues.",
+      "C) It relies too much on solid data.",
+      "D) It dulls a leader's sense of urgency."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Depend on digital technology.",
+      "B) Make assumptions and guesses.",
+      "C) Ignore others’ thoughts and ideas.",
+      "D) Lay emphasis on thinking flexibly."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Maximizing the advantage of available resources.",
+      "B) Minimizing the possibility of a wrong decision.",
+      "C) Discovering new potential markets.",
+      "D) Perfecting promotional strategies."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) She is one of the world's best-known pianists.",
+      "B) She celebrated her 110th birthday this April.",
+      "C) She moved to the U.S. at a young age.",
+      "D) She is the world’s oldest individual."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Being always active on social media.",
+      "B) Doing regular and vigorous exercise.",
+      "C) Playing the piano from a young age.",
+      "D) Following a specific diet every day."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Eating as little as one can possibly manage.",
+      "B) Having the ability to forget things selectively.",
+      "C) Figuring out the positive properties of each food item.",
+      "D) Knowing how to remember major events in one's life."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) The ability to learn.",
+      "B) The first day of school.",
+      "C) How teachers perceive them.",
+      "D) Where they sit in the classroom."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) They often received close attention from the instructors.",
+      "B) They obtained the highest grade average in their class.",
+      "C) They actually wanted a clear vision of the blackboard.",
+      "D) They scored higher than students sitting behind them."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) A higher grade average among all students of a class.",
+      "B) A better connection between instructors and students.",
+      "C) A stronger support for a student-centered teaching approach.",
+      "D) A more favorable atmosphere for effective classroom learning."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) They may experience some unwanted stress.",
+      "B) They may try hard to show their preparedness.",
+      "C) They may receive extra attention from the instructor.",
+      "D) They may feel helpless when called on by the instructor."
+     ]
+    }
+   ]
+  },
+  "has_answers": true,
+  "answers_listening": {
+   "1": "A",
+   "2": "C",
+   "3": "B",
+   "4": "C",
+   "5": "B",
+   "6": "D",
+   "7": "A",
+   "8": "B",
+   "9": "A",
+   "10": "D",
+   "11": "A",
+   "12": "C",
+   "13": "B",
+   "14": "C",
+   "15": "D",
+   "16": "A",
+   "17": "C",
+   "18": "B",
+   "19": "D",
+   "20": "C",
+   "21": "B",
+   "22": "D",
+   "23": "D",
+   "24": "B",
+   "25": "A"
+  }
+ },
+ {
+  "file": "cet4-2025-12-3.md",
+  "writing": {
+   "directions": "Suppose your university is organizing a forum on how students can make the best use of on-campus resources for academic development. You are now to write an essay to express your view. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._中国政府十分重视绿色经济的发展。通过加强森林资源保护、加大污染治理力度等一系列措施，许多地区的生态环境得到了显著改善。绿水青山(lucidwatersandlushmountains)促进了当地的旅游、健康等产业的发展，创造了可观的经济效益。如今，生态环境与人类社会和谐共存的观念在中国已深入人心。绿色经济的推进不仅能为中国可持续发展做出贡献，也为全球环境保护提供了宝贵经验。",
+   "chars": 352,
+   "sentences": 5,
+   "avg_sentence_chars": 70.4
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2026-06-1.md",
+  "writing": {
+   "directions": "Suppose the university newspaper is inviting submissions from the students for its coming",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._中国有句老话：“一日为师，终身为父”。在中国人的观念里，老师不仅传授知识，更教给学生做人的道理。在古代，学生初次见老师时要举行隆重的仪式，足见老师地位之高。为弘扬尊师的优良传统，中国从1985年开始将每年的9月10日定为教师节。在这一天，学生以各种方式表达对老师的敬意。尊师是中华民族的传统美德，在当今社会得到了发扬光大。",
+   "chars": 325,
+   "sentences": 6,
+   "avg_sentence_chars": 54.2
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) He had bought meals with his online food ordering account.",
+      "B) His son had used his cell phone to pay for playing a game.",
+      "C) His son had ordered food from several restaurants.",
+      "D) He had dined out at a famous five-star restaurant."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) Teach his son a lesson.",
+      "B) Change his password.",
+      "C) Ask his neighbors for help.",
+      "D) Buy a bigger refrigerator."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) They examined how visitors affected animal behaviour in zoos.",
+      "B) They studied when the best time to feed animals in public was.",
+      "C) They studied how animals adapted themselves to life in zoos.",
+      "D) They examined what behaviours indicated animal boredom."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) They socialise with zookeepers as well as with each other.",
+      "B) They show good adaptability to living with humans.",
+      "C) They have been kept as pets by humans.",
+      "D) They have been born and raised in zoos."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) Adjusting it.",
+      "B) Suspending it.",
+      "C) Reevaluating it.",
+      "D) Expanding it."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) They could buy an electric bike for $400 in April.",
+      "B) They could buy their first electric bike at a discount.",
+      "C) They could enjoy free after-sale service for their purchase.",
+      "D) They could get $1,200 from government funds if they qualified."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) Put 400 more electric bikes on its streets.",
+      "B) Increase the program funding by 8 percent.",
+      "C) Resume its electric bike incentive program.",
+      "D) Invest millions of dollars into the local economy."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) The coin collection.",
+      "B) The primitive tools.",
+      "C) The ancient ornaments.",
+      "D) The 2,000-year-old clothes."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) It is charming with narrow but beautiful streets.",
+      "B) It attracts visitors from every corner of the world.",
+      "C) It has flowers displayed around the Trevi Fountain.",
+      "D) It is more attractive than the pictures in guidebooks."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) It is covered with wild grass.",
+      "B) It is very famous and pretty.",
+      "C) It is located away from an old church.",
+      "D) It is surrounded by Spanish-style houses."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Ask Kathy what her plan is.",
+      "B) Tell Kathy Mike will join them.",
+      "C) Ask Kathy if she’d like to see the square.",
+      "D) Tell Kathy Mike would like to have a change."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) How to fit into the bigger picture.",
+      "B) How to get on with colleagues.",
+      "C) How to create a solid first impression.",
+      "D) How to succeed in a new job."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) Get familiar with all the details of his job description.",
+      "B) Learn about the relations within the organization.",
+      "C) Recognize his own limitations and weaknesses.",
+      "D) Understand his role from various perspectives."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) Learning history.",
+      "B) Meeting his boss.",
+      "C) Creating reports for other departments to use.",
+      "D) Leaving his coworkers in the present company."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) Get to know the decision-makers.",
+      "B) Acquire decision-making authority.",
+      "C) Promote its products and services.",
+      "D) Observe its overall management."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) They do not tell marketers their feeling about a product.",
+      "B) They do not compare competing brands and prices.",
+      "C) They are not hesitant to contradict themselves.",
+      "D) They are not sure what they really like to buy."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) Consumers are often attracted by new products.",
+      "B) Consumers tend to make decisions on the spot.",
+      "C) Consumers find it hard to resist temptation.",
+      "D) Consumers are actually driven by emotion."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Draw consumers’ attention to the luxury goods symbolizing quality life.",
+      "B) Leave consumers the impression they are doing nothing manipulative.",
+      "C) Highlight the emotional response it will trigger in the consumer.",
+      "D) Remind consumers of the wide connections it can help to build."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) They are taking in a lot of plastic.",
+      "B) They are polluting the environment.",
+      "C) They consume much processed food.",
+      "D) They make everything with plastics."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) Beer, salts and added sugars.",
+      "B) Tap water and take-away food.",
+      "C) Food packages and plastic bags.",
+      "D) Air, bottled water and seafood."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) How much plastic there is in the remaining 85% of Americans’ typical diet.",
+      "B) What measures can be taken to prevent plastic objects from fragmenting.",
+      "C) What harm microplastics may actually do to the average Americans.",
+      "D) How many ways there are for microplastics to get into food and air."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) They planned to adopt a pet animal.",
+      "B) They kept not only a dog but a cat.",
+      "C) They had at least one pet.",
+      "D) They liked cats more than dogs."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) A sense of pride.",
+      "B) A sense of duty.",
+      "C) A sense of purpose.",
+      "D) A sense of security."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) A few problems with keeping big animals.",
+      "B) Some disadvantages related to pet ownership.",
+      "C) A few cases of getting attacked by pet animals.",
+      "D) Some conflicts with neighbors due to pet keeping."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) Reduce as many symptoms of depression as medical help.",
+      "B) Improve people’s health as much as physical activities.",
+      "C) Lower older people’s stress as effectively as exercising.",
+      "D) Bring many of the same benefits as human social support."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2026-06-2.md",
+  "writing": {
+   "directions": "Suppose you are invited to put forward a proposal to the university on how to make students’",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._餐桌礼仪(diningetiquette)是中华传统文化的重要组成部分，蕴含着热情有礼的待客之道。为了招待客人，主人会根据客人的口味和喜好准备丰富精致的菜肴。就餐座位的安排非常讲究，主人坐在正对大门的位置，在主人身边就座的是最重要的客人。进餐时，主人会不时地为客人添酒加菜。这种独特的餐桌礼仪已延续了数千年，对促进和谐的人际交往起到了重要作用。",
+   "chars": 336,
+   "sentences": 5,
+   "avg_sentence_chars": 67.2
+  },
+  "listening": {
+   "A": [
+    {
+     "no": 1,
+     "options": [
+      "A) She was born months after the end of World War I.",
+      "B) She has been living in her house throughout her life.",
+      "C) She suffered a great deal during the Second World War.",
+      "D) She is a 102-year-old woman living in Somerset Village."
+     ]
+    },
+    {
+     "no": 2,
+     "options": [
+      "A) She has been persuaded by the estate agent.",
+      "B) She needs the money badly for her health.",
+      "C) She is leaving Glastonbury Village.",
+      "D) She is moving to a nursing home."
+     ]
+    },
+    {
+     "no": 3,
+     "options": [
+      "A) The navy’s timely arrival.",
+      "B) His rich sailing experience.",
+      "C) The word HELP written on the boat.",
+      "D) His use of a mirror to send a signal."
+     ]
+    },
+    {
+     "no": 4,
+     "options": [
+      "A) He lost all consciousness.",
+      "B) He was in good condition.",
+      "C) He was too distressed to pick himself up.",
+      "D) He entirely abandoned himself to despair."
+     ]
+    },
+    {
+     "no": 5,
+     "options": [
+      "A) Their efforts to provide social services have been ignored.",
+      "B) They have been criticized by the Denver school board.",
+      "C) They have taken various steps to get more funding.",
+      "D) Their enrollment has been on a noticeable decline."
+     ]
+    },
+    {
+     "no": 6,
+     "options": [
+      "A) Approve criteria for closing schools with decreased funding.",
+      "B) Enroll 3,000 fewer elementary and middle school students.",
+      "C) Decide which elementary and middle schools to close.",
+      "D) Alter its per-pupil funding policy on a rational basis."
+     ]
+    },
+    {
+     "no": 7,
+     "options": [
+      "A) To enable the district to remain competitive.",
+      "B) To avoid a negative impact on its economy.",
+      "C) To keep the district free of debt.",
+      "D) To obtain the expected funding."
+     ]
+    }
+   ],
+   "B": [
+    {
+     "no": 8,
+     "options": [
+      "A) To book tickets for a musical.",
+      "B) To enquire about the price of cats.",
+      "C) To pay for her afternoon flight to London.",
+      "D) To have her personal computer repaired."
+     ]
+    },
+    {
+     "no": 9,
+     "options": [
+      "A) He frequents the Lion Theatre.",
+      "B) He knows how to sell things well.",
+      "C) He is a computer science expert.",
+      "D) He is away on a business trip."
+     ]
+    },
+    {
+     "no": 10,
+     "options": [
+      "A) They are sold at a discount.",
+      "B) They are in low demand.",
+      "C) They are no longer available.",
+      "D) They are not too expensive."
+     ]
+    },
+    {
+     "no": 11,
+     "options": [
+      "A) Heights.",
+      "B) Circus.",
+      "C) Wild animals.",
+      "D) Dark nights."
+     ]
+    },
+    {
+     "no": 12,
+     "options": [
+      "A) He finds it bothersome to reply.",
+      "B) He has switched off his phone.",
+      "C) He hasn’t got the time to text back.",
+      "D) He doesn’t know how to respond."
+     ]
+    },
+    {
+     "no": 13,
+     "options": [
+      "A) His lack of sufficient sleep at night.",
+      "B) His addiction to mobile phone games.",
+      "C) His excessive use of the mobile phone.",
+      "D) His high frequency of surfing the net."
+     ]
+    },
+    {
+     "no": 14,
+     "options": [
+      "A) Shopping online and paying for his purchases.",
+      "B) Communicating with friends on social media.",
+      "C) Exploring whatever content to his liking.",
+      "D) Sharing and posting pictures and videos."
+     ]
+    },
+    {
+     "no": 15,
+     "options": [
+      "A) She prefers chatting with others online to meeting them.",
+      "B) There are few physical stores near where she lives.",
+      "C) Ordering meals online is a great convenience to her.",
+      "D) She needs to talk with her friends and family far away."
+     ]
+    }
+   ],
+   "C": [
+    {
+     "no": 16,
+     "options": [
+      "A) It is now narrowing.",
+      "B) It keeps increasing.",
+      "C) It has remained huge.",
+      "D) It will soon disappear."
+     ]
+    },
+    {
+     "no": 17,
+     "options": [
+      "A) It is fluctuating between 5–7%.",
+      "B) It is slowing down for everyone.",
+      "C) It is faster for those who stay in their jobs.",
+      "D) It is inadequate for dealing with inflation."
+     ]
+    },
+    {
+     "no": 18,
+     "options": [
+      "A) Booming.",
+      "B) Stabilizing.",
+      "C) Struggling.",
+      "D) Cooling."
+     ]
+    },
+    {
+     "no": 19,
+     "options": [
+      "A) They have smaller amounts of nutrients than unprocessed diets.",
+      "B) Their contribution to calorie consumption is hard to determine.",
+      "C) They account for nearly half of the average American diet.",
+      "D) Their low price and convenience negatively impact health."
+     ]
+    },
+    {
+     "no": 20,
+     "options": [
+      "A) A strong desire to overeat.",
+      "B) A lack of nutrients like fiber.",
+      "C) A higher risk of cancer and obesity.",
+      "D) A greater intake of sugar and salt."
+     ]
+    },
+    {
+     "no": 21,
+     "options": [
+      "A) Eat more quickly.",
+      "B) Feel full sooner.",
+      "C) Chew thoroughly.",
+      "D) Swallow bit by bit."
+     ]
+    },
+    {
+     "no": 22,
+     "options": [
+      "A) By attributing them to current cultural influences.",
+      "B) By attributing them to conservative thinking.",
+      "C) In terms of new genetic findings.",
+      "D) In terms of personal preferences."
+     ]
+    },
+    {
+     "no": 23,
+     "options": [
+      "A) Sharing with women the chores they see necessary.",
+      "B) Dividing housework that is demanding for women.",
+      "C) Performing household tasks that they enjoy.",
+      "D) Doing tasks that are physically challenging."
+     ]
+    },
+    {
+     "no": 24,
+     "options": [
+      "A) The large within-group differences.",
+      "B) The great similarities across groups.",
+      "C) The researchers’ subjective biases.",
+      "D) The noticeable overgeneralizations."
+     ]
+    },
+    {
+     "no": 25,
+     "options": [
+      "A) They seem to be universal.",
+      "B) They impact people’s whole life.",
+      "C) They shape one’s role in society.",
+      "D) They appear at an early age."
+     ]
+    }
+   ]
+  },
+  "has_answers": false,
+  "answers_listening": {}
+ },
+ {
+  "file": "cet4-2026-06-3.md",
+  "writing": {
+   "directions": "Suppose it is proposed that university students should be required to participate in at least one",
+   "topic": "",
+   "min_words": 120,
+   "max_words": 180
+  },
+  "translation": {
+   "zh": "##PartIV/Translation/(30minutes)**Directions:**_Forthispart,youareallowed30minutestotranslateapassagefromChineseintoEnglish.YoushouldwriteyouransweronAnswerSheet2._在中国传统文化中，亲朋好友之间互赠礼物是人际交往的一种重要礼节(etiquette)。赠送礼物不仅是物质的馈赠，更是情感的表达，是维系人际关系的重要纽带。一份精心挑选、符合接受者喜好的礼物，往往能加深彼此的感情。中国人遵循“礼尚往来”(mutuallyexchangingcourtesies)的传统，接受礼物时会表达谢意，并适时回赠礼物，以增进彼此的融洽关系。",
+   "chars": 345,
+   "sentences": 4,
+   "avg_sentence_chars": 86.2
+  },
+  "listening": {},
+  "has_answers": false,
+  "answers_listening": {}
+ }
+]
