@@ -64,7 +64,7 @@ JSON 结构：
 5) evidence 必须逐字出现在 passage 里。
 6) paragraphs 的 en 按顺序拼接后必须与 passage 完全一致；每段都要有 cn/main/structure；每段的 sentences 必须覆盖该段的每一句（顺序一致），chunks 的 en 拼接要等于该句英文（标点空格可差）。
 7) 参考真题风格（不要照抄）：{anchors}
-8) 5 题答案必须覆盖至少 3 个不同字母（例如 B/A/C/D/B），禁止 5 题同答案。\n8b) 每题必须给 option_analysis：4 个选项逐个写 why，正确项标 correct=true，错误项写具体错因（引用原文或指出缺席/偷换/夸大）。\n8c) 句级解析的 why / modifier 必须针对本句具体内容，禁止套话。\n8d) 成分只标最小单位：主语只圈名词短语核心（the brain / a new study），谓语只圈动词（is / suggests），其余标 状/定/补/表；禁止把整句或从句标成 [主]；连词不标成分。\n8e) 每段给 vocab：[{"word":"生词","phonetic":"音标","cn":"文中释义"}]，只收超出四级基础的词，3-6 个。
+8) 5 题答案必须覆盖至少 3 个不同字母（例如 B/A/C/D/B），禁止 5 题同答案。\n8b) 每题必须给 option_analysis：4 个选项逐个写 why，正确项标 correct=true，错误项写具体错因（引用原文或指出缺席/偷换/夸大）。\n8c) 句级解析的 why / modifier 必须针对本句具体内容，禁止套话。\n8d) 成分只标最小单位：主语只圈名词短语核心（the brain / a new study），谓语只圈动词（is / suggests），其余标 状/定/补/表；禁止把整句或从句标成 [主]；连词不标成分。\n8e) 每段给 vocab：[{{"word":"生词","phonetic":"音标","cn":"文中释义"}}]，只收超出四级基础的词，3-6 个。
 9) 题材红线：毒品/自杀/自残/暴力/具体药物疗效一律改写或回避；保持四级通用社会、教育、健康、职场话题。
 
 文章标题：{title}
@@ -140,6 +140,9 @@ def adapt(cand: dict, idx: int, outdir: Path, logpath: Path, anchors: str):
         stem = f"{datetime.now().strftime('%Y-%m-%d')}-{idx:02d}"
         jp = outdir / f"{stem}.json"
         jp.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        # 先出音频+时间轴，再渲染 HTML（HTML 会嵌入 audio/timing）
+        subprocess.run([sys.executable, str(ROOT / "bin" / "cet4_tts.py"), str(jp)], check=False,
+                       capture_output=True, text=True, encoding="utf-8", timeout=600)
         subprocess.run([sys.executable, str(ROOT / "bin" / "cet4_build_html.py"), str(jp),
                         str(outdir / f"{stem}.html")], check=False)
         return jp

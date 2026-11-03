@@ -79,12 +79,35 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
 #tbPanel button{font-size:12px;margin:2px 2px 0 0;padding:4px 7px;border:1px solid #ccc;background:#fafafa;border-radius:6px;cursor:pointer}
 #tbPanel button.active{background:#111;color:#fff;border-color:#111}
 #tbPanel .span2{display:block;width:100%;text-align:left}
+#tbPanel select{font-size:12px;margin:2px 2px 0 0;padding:3px 4px;border:1px solid #ccc;border-radius:6px;background:#fafafa}
+.audioBar{width:595.32pt;margin:0 auto 6pt;display:flex;gap:10px;align-items:center;font:12px/1.5 -apple-system,"Microsoft YaHei"}
+.audioBar audio{width:320px;height:32px}
+.audioBar{flex-wrap:wrap}
+#subs{flex:1 1 100%;max-height:92px;overflow:auto;border:1px solid #ddd;border-radius:6px;padding:4px 6px;background:#fcfcf8}
+#subs div{padding:1px 2px;border-radius:3px;cursor:pointer;color:#444}
+#subs div.on{background:#fff3a8;color:#000;font-weight:600}
+#vocab{display:none;margin:10pt 0 4pt;padding:8pt 10pt;border:1px solid #ddd;border-radius:6pt;background:#fcfcf8}
+#vocab.show{display:block}
+#vocab table{border-collapse:collapse;width:100%;font-size:9.5pt}
+#vocab td,#vocab th{border-bottom:1px dashed #ddd;padding:2pt 4pt;text-align:left}
+#vocab th{color:#666;font-weight:600}
+#srsModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;align-items:center;justify-content:center}
+#srsModal.show{display:flex}
+#srsBox{background:#fff;border-radius:12px;padding:16px;width:360px;font:14px/1.6 -apple-system,"Microsoft YaHei"}
+#srsBox h3{margin:0 0 10px;font-size:15px}
+#srsBox .card{border:1px solid #ddd;border-radius:8px;padding:10px;margin-bottom:8px}
+#srsBox .word{font-weight:700;font-size:16px}
+#srsBox .btns{display:flex;gap:8px;margin-top:8px}
+#srsBox button{flex:1;padding:6px;border:1px solid #ccc;border-radius:8px;background:#fafafa;cursor:pointer}
+#srsBox .close{width:100%;margin-top:6px}
+@media print{.audioBar,#vocab,#srsModal{display:none !important}}
 mark.hl-yellow{background:#fff3a8}mark.hl-red{background:#ffd6d6}mark.hl-orange{background:#ffe0b2}
 mark.hl-green{background:#c8e6c9}mark.hl-purple{background:#e1bee7}
 span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
 span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 @media print{#floatTool,#ink{display:none !important}}
 </style></head><body>
+<div class="audioBar" id="audioBar" style="display:none"><audio id="pAudio" controls preload="none"></audio><span class="small">朗读：文章 + 题干 + 选项</span><div id="subs"></div></div>
 <div class="notice">CET-4 阅读模拟卷（非官方真题） · __META__ · 生成于 __DATE__ · 来源 __SOURCE__</div>
 <div class="sheet" id="sheet"></div>
 <div class="tools">
@@ -101,6 +124,7 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
   <div class="ptitle">Passage One</div>
   <div class="dir">Questions 46 to 50 are based on the following passage.</div>
   <div class="passage" id="passage"></div>
+  <div id="vocab"></div>
   <div id="qs"></div>
   <div class="footer"><span>CET-4 模拟阅读</span><span>1</span></div>
 </div>
@@ -217,6 +241,12 @@ renderPassage(); renderQuestions(); load(); tick=setInterval(tickTimer,1000);
       <button id="tbPen" onclick="toggleInk()">✒️ 画笔</button>
       <button id="tbErase" onclick="toggleErase()">🧽 橡皮</button>
       <button onclick="clearInk()">清除画画</button>
+      <select id="penColor"><option value="#e53935">红笔</option><option value="#111111">黑笔</option><option value="#1565c0">蓝笔</option></select>
+      <select id="penWidth"><option value="2">细</option><option value="3" selected>中</option><option value="6">粗</option></select>
+    </div>
+    <div class="grp"><div class="lbl">生词与复习</div>
+      <button class="span2" onclick="toggleVocab()">📖 生词表</button>
+      <button class="span2" onclick="openSrs()">⏰ 今日复习 <span id="srsDue"></span></button>
     </div>
     <div class="grp"><div class="lbl">保存与导出</div>
       <button onclick="saveAll()">💾 保存</button>
@@ -246,12 +276,27 @@ document.addEventListener('pointerup', ()=>{ if(!drag) return; const d=drag; dra
   else { tbToggle(); } });
 document.getElementById('tbBubble').addEventListener('pointerdown', startDrag);
 
-/* ---------- 画笔：按段落锚定 ---------- */
+/* ---------- 画笔：词级锚定 ---------- */
+function caretAt(x,y){ const d=cvs.style.display; cvs.style.display='none';
+  const cp=document.caretPositionFromPoint?document.caretPositionFromPoint(x,y):null;
+  cvs.style.display=d; return cp; }
 function anchorAt(x,y){ const els=document.elementsFromPoint(x,y); for(const el of els){ const a=el.closest&&el.closest('[data-ink]'); if(a) return a; } return document.querySelector('.passage'); }
-function originOf(el){ const r=el.getBoundingClientRect(); return {x:r.left+scrollX, y:r.top+scrollY}; }
-function redraw(){ ctx.clearRect(0,0,cvs.width,cvs.height); ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#e53935'; ctx.lineWidth=3;
-  strokes.forEach(st=>{ const el=document.querySelector(`[data-ink="${st.anchor}"]`); if(!el) return; const o=originOf(el);
-    ctx.beginPath(); st.pts.forEach((p,i)=>{ const x=o.x+p.x, y=o.y+p.y; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }); }
+function textOffset(el, node, off){ let total=0; const w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
+  while((n=w.nextNode())){ if(n===node) return total+off; total+=n.textContent.length; } return null; }
+function rangeAt(el, off){ let total=0; const w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
+  while((n=w.nextNode())){ const L=n.textContent.length;
+    if(off<=total+L){ const r=document.createRange(); r.setStart(n, Math.max(0,off-total)); r.setEnd(n, Math.min(L, Math.max(0,off-total)+1)); return r; }
+    total+=L; } return null; }
+function absPoint(st, pt){ const el=document.querySelector(`[data-ink="${st.anchor}"]`);
+  if(!el) return null;
+  if(pt.off!=null){ const r=rangeAt(el, pt.off);
+    if(r){ const b=r.getBoundingClientRect();
+      if(b.width||b.height) return {x:b.left+scrollX+pt.dx, y:b.top+scrollY+pt.dy}; } }
+  const b=el.getBoundingClientRect(); return {x:b.left+scrollX+pt.dx, y:b.top+scrollY+pt.dy}; }
+function redraw(){ ctx.clearRect(0,0,cvs.width,cvs.height); ctx.lineCap='round'; ctx.lineJoin='round';
+  strokes.forEach(st=>{ ctx.strokeStyle=st.color||'#e53935'; ctx.lineWidth=st.width||3; ctx.beginPath(); let started=false;
+    st.pts.forEach(pt=>{ const a=absPoint(st,pt); if(!a) return; started?ctx.lineTo(a.x,a.y):(ctx.moveTo(a.x,a.y),started=true); });
+    if(started) ctx.stroke(); }); }
 function sizeInk(){ cvs.width=Math.max(document.documentElement.scrollWidth,innerWidth);
   cvs.height=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,innerHeight); redraw(); }
 function toggleInk(){ inkOn=!inkOn; eraseOn=false; cvs.classList.toggle('on',inkOn);
@@ -261,12 +306,20 @@ function toggleErase(){ eraseOn=!eraseOn; inkOn=eraseOn; cvs.classList.toggle('o
 function clearInk(){ strokes=[]; redraw(); saveAll(); }
 cvs.addEventListener('pointerdown', e=>{ if(!inkOn) return;
   const px=e.clientX+scrollX, py=e.clientY+scrollY;
-  if(eraseOn){ strokes=strokes.filter(st=>{ const el=document.querySelector(`[data-ink="${st.anchor}"]`); if(!el) return false;
-      const o=originOf(el); return !st.pts.some(p=>Math.hypot(o.x+p.x-px,o.y+p.y-py)<14); }); redraw(); saveAll(); return; }
-  const el=anchorAt(e.clientX,e.clientY); const o=originOf(el);
-  cur={anchor:el.dataset.ink, pts:[{x:px-o.x, y:py-o.y}]}; strokes.push(cur); });
+  if(eraseOn){ strokes=strokes.filter(st=>!st.pts.some(pt=>{const a=absPoint(st,pt); return a && Math.hypot(a.x-px,a.y-py)<14;})); redraw(); saveAll(); return; }
+  const el=anchorAt(e.clientX,e.clientY);
+  const cp=caretAt(e.clientX,e.clientY);
+  let off=null; if(cp && el.contains(cp.offsetNode)) off=textOffset(el, cp.offsetNode, cp.offset);
+  const r = (cp && off!=null && rangeAt(el,off)) ? rangeAt(el,off).getBoundingClientRect() : el.getBoundingClientRect();
+  const color=document.getElementById('penColor')?.value||'#e53935';
+  const width=parseInt(document.getElementById('penWidth')?.value||'3',10);
+  cur={anchor:el.dataset.ink, color, width, pts:[{off, dx:px-(r.left+scrollX), dy:py-(r.top+scrollY)}]};
+  strokes.push(cur); });
 cvs.addEventListener('pointermove', e=>{ if(!cur) return; const el=document.querySelector(`[data-ink="${cur.anchor}"]`); if(!el) return;
-  const o=originOf(el); cur.pts.push({x:e.clientX+scrollX-o.x, y:e.clientY+scrollY-o.y}); redraw(); });
+  const cp=caretAt(e.clientX,e.clientY);
+  let off=null; if(cp && el.contains(cp.offsetNode)) off=textOffset(el, cp.offsetNode, cp.offset);
+  const r=(cp && off!=null && rangeAt(el,off))?rangeAt(el,off).getBoundingClientRect():el.getBoundingClientRect();
+  cur.pts.push({off, dx:e.clientX+scrollX-(r.left+scrollX), dy:e.clientY+scrollY-(r.top+scrollY)}); redraw(); });
 cvs.addEventListener('pointerup', ()=>{ if(cur){cur=null; saveAll();} });
 window.addEventListener('resize', sizeInk);
 if(window.ResizeObserver){ new ResizeObserver(()=>sizeInk()).observe(document.querySelector('.paper')); }
@@ -287,7 +340,7 @@ function exportNotes(){const notes=[...document.querySelectorAll('.paper span.no
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='阅读批注.txt';a.click();}
 
 /* ---------- 保存 / 载入 ---------- */
-function saveAll(){try{const paper=document.querySelector('.paper');localStorage.setItem('cet4-tool-'+(PAPER.date||''),JSON.stringify({html:paper.innerHTML,strokes:strokes.map(s=>({anchor:s.anchor,pts:s.pts}))}));}catch(e){}}
+function saveAll(){try{const paper=document.querySelector('.paper');localStorage.setItem('cet4-tool-'+(PAPER.date||''),JSON.stringify({html:paper.innerHTML,strokes:strokes.map(s=>({anchor:s.anchor,color:s.color,width:s.width,pts:s.pts}))}));}catch(e){}}
 function loadAll(){try{const raw=localStorage.getItem('cet4-tool-'+(PAPER.date||''));if(!raw)return;const d=JSON.parse(raw);
   if(d.html){document.querySelector('.paper').innerHTML=d.html;}
   if(d.strokes){strokes=d.strokes;redraw();}}catch(e){}}
@@ -297,8 +350,66 @@ document.addEventListener('change',e=>{const t=e.target;if(t&&t.name&&t.name.sta
   const c=document.getElementById('c'+n); c&&c.classList.add('done');
   const a=document.getElementById('answered'); if(a) a.textContent='已答 '+PAPER.questions.filter(q=>document.querySelector(`input[name=q${q.no}]:checked`)).length+'/5';
   saveAll();}});
-restorePos(); sizeInk(); loadAll();
+
+/* ---------- 生词表 ---------- */
+function allVocab(){ const out=[]; (PAPER.paragraphs||[]).forEach(p=>(p.vocab||[]).forEach(v=>out.push(v))); return out; }
+function toggleVocab(){ const v=document.getElementById('vocab'); v.classList.toggle('show'); }
+function speak(w){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(w); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+function renderVocab(){ const rows=allVocab(); const box=document.getElementById('vocab'); if(!rows.length){ box.innerHTML='<div class="small">本篇暂无生词表（需用新版契约重新生成）</div>'; return; }
+  box.innerHTML='<div class="small" style="margin-bottom:4pt">生词表（点单词朗读）</div><table><tr><th>单词</th><th>音标</th><th>释义</th></tr>'+
+    rows.map(v=>`<tr><td><a href="javascript:speak('${(v.word||'').replace(/'/g,"")}')">${v.word||''}</a></td><td>${v.phonetic||''}</td><td>${v.cn||''}</td></tr>`).join('')+'</table>'; }
+/* ---------- 遗忘曲线复习 ---------- */
+function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function srsLoad(){ try{ return JSON.parse(localStorage.getItem('cet4-srs')||'{}'); }catch(e){ return {}; } }
+function srsSave(o){ localStorage.setItem('cet4-srs', JSON.stringify(o)); }
+function initSrs(){ const st=srsLoad(); const t=todayKey();
+  allVocab().forEach(v=>{ const k=(v.word||'').toLowerCase(); if(!k) return;
+    if(!st[k]) st[k]={word:v.word, phonetic:v.phonetic||'', cn:v.cn||'', due:t, interval:1, reps:0};
+    else { st[k].cn=v.cn||st[k].cn; st[k].phonetic=v.phonetic||st[k].phonetic; } });
+  srsSave(st); const due=Object.values(st).filter(c=>c.due<=t).length;
+  const el=document.getElementById('srsDue'); if(el) el.textContent=due?`(${due})`:''; }
+function openSrs(){ document.getElementById('srsModal').classList.add('show'); renderSrs(); }
+function closeSrs(){ document.getElementById('srsModal').classList.remove('show'); }
+function rate(k, how){ const st=srsLoad(); const c=st[k]; if(!c) return;
+  c.reps=(c.reps||0)+1;
+  if(how==='forget'){ c.interval=1; }
+  else if(how==='fuzzy'){ c.interval=Math.max(2, Math.round((c.interval||1)*1.6)); }
+  else { c.interval=Math.max(4, Math.round((c.interval||1)*2.3)); }
+  c.interval=Math.min(60,c.interval); c.due=addDays(c.interval);
+  srsSave(st); renderSrs(); initSrs(); }
+function renderSrs(){ const st=srsLoad(); const t=todayKey(); const due=Object.values(st).filter(c=>c.due<=t);
+  const box=document.getElementById('srsToday');
+  if(!due.length){ box.innerHTML='<div class="small">今天没有到期生词。</div>'; return; }
+  box.innerHTML=due.slice(0,3).map(c=>`<div class="card"><div class="word">${c.word}</div><div class="small">${c.phonetic||''} ${c.cn||''}</div>
+    <div class="btns"><button onclick="rate('${c.word.toLowerCase()}','forget')">忘记</button>
+    <button onclick="rate('${c.word.toLowerCase()}','fuzzy')">模糊</button>
+    <button onclick="rate('${c.word.toLowerCase()}','know')">记得</button></div></div>`).join('')+
+    `<div class="small">剩余 ${due.length} 个 · 下次到期自动按 1/2/4/7/15/30 天递进</div>`; }
+
+/* ---------- 音频字幕 ---------- */
+function renderSubs(){ if(!PAPER.timing || !PAPER.timing.length) return; const box=document.getElementById('subs');
+  box.innerHTML=PAPER.timing.map(x=>`<div data-t="${x.start}" onclick="seekTo(${x.start})">${x.text}</div>`).join(''); }
+function seekTo(t){ const a=document.getElementById('pAudio'); if(!a) return; a.currentTime=t; a.play&&a.play(); }
+function syncSubs(){ const a=document.getElementById('pAudio'); if(!a||!PAPER.timing) return; const t=a.currentTime;
+  const lines=document.querySelectorAll('#subs div'); let cur=null;
+  for(const el of lines){ const st=parseFloat(el.dataset.t); if(st<=t+0.05) cur=el; else break; }
+  lines.forEach(el=>el.classList.toggle('on', el===cur));
+  if(cur && !cur.dataset.scrolled){ cur.scrollIntoView({block:'nearest'}); }
+}
+
+/* ---------- 音频 ---------- */
+function initAudio(){ if(!PAPER.audio) return; const bar=document.getElementById('audioBar'); const a=document.getElementById('pAudio');
+  a.src=PAPER.audio; bar.style.display='flex'; renderSubs(); a.addEventListener('timeupdate', syncSubs); }
+
+restorePos(); sizeInk(); loadAll(); renderVocab(); initSrs(); initAudio();
+if(PAPER.audio){ const b=document.getElementById('pAudio'); if(b) b.load(); }
 </script>
+<div id="srsModal"><div id="srsBox">
+  <h3>生词复习（遗忘曲线）</h3>
+  <div id="srsToday"></div>
+  <button class="close" onclick="closeSrs()">关闭</button>
+</div></div>
 </body></html>"""
 
 
@@ -312,7 +423,9 @@ def main():
             .replace("__META__", meta)
             .replace("__DATE__", paper.get("date", ""))
             .replace("__SOURCE__", paper.get("source", ""))
-            .replace("__PAPER__", json.dumps(paper, ensure_ascii=False)))
+            .replace("__PAPER__", json.dumps({**paper,
+                "audio": (out.with_suffix(".mp3").name if out.with_suffix(".mp3").exists() else ""),
+                "timing": (json.loads(out.with_suffix(".timing.json").read_text(encoding="utf-8")) if out.with_suffix(".timing.json").exists() else [])}, ensure_ascii=False)))
     out.write_text(html, encoding="utf-8")
     print(f"wrote {out} ({len(html)} bytes)")
 
