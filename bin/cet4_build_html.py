@@ -119,7 +119,7 @@ function roleSpan(chunk){
   return `<span class="role r-${role}">${chunk.en} <span class="small">[${role}：${chunk.cn||''}]</span></span>`;
 }
 
-function paraBlock(para){
+function paraBlock(para, idx){
   const sents = (para.sentences||[]).map(s => `
     <div class="sent">
       <div class="en">${(s.chunks&&s.chunks.length) ? s.chunks.map(roleSpan).join(' ') : (s.en||'')}</div>
@@ -128,7 +128,7 @@ function paraBlock(para){
       ${s.why?`<div class="small">为啥：${s.why}</div>`:''}
       ${s.collocation?`<div class="small">搭配/固定短语：${s.collocation}</div>`:''}
     </div>`).join('');
-  return `<div class="para">
+  return `<div class="para" data-ink="p${idx}">
     <p>${(para.en||'').trim()}</p>
     <div class="para-ans">
       <div class="cn">${(para.cn||'').trim()}</div>
@@ -142,7 +142,7 @@ function paraBlock(para){
 function renderPassage(){
   const el = document.getElementById('passage');
   el.innerHTML = (PAPER.paragraphs && PAPER.paragraphs.length)
-    ? PAPER.paragraphs.map(paraBlock).join('')
+    ? PAPER.paragraphs.map((p,i)=>paraBlock(p,i)).join('')
     : `<p>${PAPER.passage}</p>`;
 }
 
@@ -153,7 +153,7 @@ function renderQuestions(){
       const letter = o[0];
       return `<label class="opt" data-q="${q.no}" data-l="${letter}"><input type="radio" name="q${q.no}" value="${letter}" onchange="pick(${q.no})">${o}</label>`;
     }).join('');
-    return `<div class="q" id="q${q.no}"><div class="stem">${q.no+OFF}. ${q.stem}</div><div class="opts">${opts}</div>
+    return `<div class="q" id="q${q.no}" data-ink="q${q.no}"><div class="stem">${q.no+OFF}. ${q.stem}</div><div class="opts">${opts}</div>
       <div class="qans" id="qa${q.no}"></div></div>`;
   }).join('');
   document.getElementById('sheet').innerHTML = PAPER.questions.map(q => `<div class="cell" id="c${q.no}" onclick="jump(${q.no})">${q.no+OFF}</div>`).join('');
@@ -198,7 +198,7 @@ function load(){ try{ const raw=localStorage.getItem(KEY); if(!raw) return; cons
 renderPassage(); renderQuestions(); load(); tick=setInterval(tickTimer,1000);
 </script>
 <canvas id="ink"></canvas>
-<div id="floatTool">
+<div id="floatTool" style="left:auto;right:18px;bottom:18px">
   <div id="tbPanel">
     <div class="head"><span>✏️ 工具</span><button onclick="tbToggle()">收起 ✕</button></div>
     <div class="grp"><div class="lbl">选文字</div>
@@ -223,26 +223,55 @@ renderPassage(); renderQuestions(); load(); tick=setInterval(tickTimer,1000);
       <button onclick="exportNotes()">⬇️ 导出笔记</button>
     </div>
   </div>
-  <div class="bubble" onclick="tbToggle()">✏️ 工具</div>
+  <div class="bubble" id="tbBubble">✏️ 工具</div>
 </div>
-
 <script>
-let tbOpen=false, inkOn=false, eraseOn=false, strokes=[], cur=null;
-const cvs=document.getElementById('ink'), ctx=cvs.getContext('2d');
-function tbToggle(){tbOpen=!tbOpen;document.getElementById('tbPanel').classList.toggle('show',tbOpen);}
-function sizeInk(){cvs.width=document.documentElement.scrollWidth;cvs.height=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);redraw();}
-function redraw(){ctx.clearRect(0,0,cvs.width,cvs.height);ctx.lineCap='round';ctx.lineJoin='round';
-  strokes.forEach(st=>{ctx.beginPath();ctx.strokeStyle='#e53935';ctx.lineWidth=3;st.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();});}
-function pos(e){const r=cvs.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
-function toggleInk(){inkOn=!inkOn;eraseOn=false;cvs.classList.toggle('on',inkOn);document.getElementById('tbPen').classList.toggle('active',inkOn);document.getElementById('tbErase').classList.remove('active');}
-function toggleErase(){eraseOn=!eraseOn;inkOn=eraseOn;cvs.classList.toggle('on',inkOn);document.getElementById('tbErase').classList.toggle('active',eraseOn);document.getElementById('tbPen').classList.remove('active');}
-function clearInk(){strokes=[];redraw();saveAll();}
-cvs.addEventListener('pointerdown',e=>{if(!inkOn)return;const p=pos(e);
-  if(eraseOn){strokes=strokes.filter(st=>!st.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<12));redraw();saveAll();return;}
-  cur=[p];strokes.push(cur);});
-cvs.addEventListener('pointermove',e=>{if(!cur)return;cur.push(pos(e));redraw();});
-cvs.addEventListener('pointerup',()=>{cur=null;saveAll();});
-window.addEventListener('resize',sizeInk);
+let tbOpen=false, inkOn=false, eraseOn=false, strokes=[], cur=null, drag=null;
+const float=document.getElementById('floatTool'), cvs=document.getElementById('ink'), ctx=cvs.getContext('2d');
+
+/* ---------- 工具栏拖动 ---------- */
+function restorePos(){try{const p=JSON.parse(localStorage.getItem('cet4-tool-pos')||'null');if(!p)return;float.style.left=p.left+'px';float.style.top=p.top+'px';float.style.right='auto';float.style.bottom='auto';}catch(e){}}
+function startDrag(e){ if(e.target.closest('#tbPanel')) return; const r=float.getBoundingClientRect();
+  drag={x:e.clientX,y:e.clientY,left:r.left,top:r.top,moved:false};
+  float.setPointerCapture&&e.target.setPointerCapture&&e.target.setPointerCapture(e.pointerId);
+  e.preventDefault(); }
+document.addEventListener('pointermove', e=>{ if(!drag) return;
+  const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  if(Math.abs(dx)>4||Math.abs(dy)>4) drag.moved=true;
+  const w=float.offsetWidth,h=float.offsetHeight;
+  let L=Math.min(Math.max(0,drag.left+dx), innerWidth-w), T=Math.min(Math.max(0,drag.top+dy), innerHeight-40);
+  float.style.left=L+'px'; float.style.top=T+'px'; float.style.right='auto'; float.style.bottom='auto'; });
+document.addEventListener('pointerup', ()=>{ if(!drag) return; const d=drag; drag=null;
+  if(d.moved){ try{localStorage.setItem('cet4-tool-pos',JSON.stringify({left:parseInt(float.style.left),top:parseInt(float.style.top)}));}catch(e){} }
+  else { tbToggle(); } });
+document.getElementById('tbBubble').addEventListener('pointerdown', startDrag);
+
+/* ---------- 画笔：按段落锚定 ---------- */
+function anchorAt(x,y){ const els=document.elementsFromPoint(x,y); for(const el of els){ const a=el.closest&&el.closest('[data-ink]'); if(a) return a; } return document.querySelector('.passage'); }
+function originOf(el){ const r=el.getBoundingClientRect(); return {x:r.left+scrollX, y:r.top+scrollY}; }
+function redraw(){ ctx.clearRect(0,0,cvs.width,cvs.height); ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#e53935'; ctx.lineWidth=3;
+  strokes.forEach(st=>{ const el=document.querySelector(`[data-ink="${st.anchor}"]`); if(!el) return; const o=originOf(el);
+    ctx.beginPath(); st.pts.forEach((p,i)=>{ const x=o.x+p.x, y=o.y+p.y; i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }); }
+function sizeInk(){ cvs.width=Math.max(document.documentElement.scrollWidth,innerWidth);
+  cvs.height=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,innerHeight); redraw(); }
+function toggleInk(){ inkOn=!inkOn; eraseOn=false; cvs.classList.toggle('on',inkOn);
+  document.getElementById('tbPen').classList.toggle('active',inkOn); document.getElementById('tbErase').classList.remove('active'); }
+function toggleErase(){ eraseOn=!eraseOn; inkOn=eraseOn; cvs.classList.toggle('on',inkOn);
+  document.getElementById('tbErase').classList.toggle('active',eraseOn); document.getElementById('tbPen').classList.remove('active'); }
+function clearInk(){ strokes=[]; redraw(); saveAll(); }
+cvs.addEventListener('pointerdown', e=>{ if(!inkOn) return;
+  const px=e.clientX+scrollX, py=e.clientY+scrollY;
+  if(eraseOn){ strokes=strokes.filter(st=>{ const el=document.querySelector(`[data-ink="${st.anchor}"]`); if(!el) return false;
+      const o=originOf(el); return !st.pts.some(p=>Math.hypot(o.x+p.x-px,o.y+p.y-py)<14); }); redraw(); saveAll(); return; }
+  const el=anchorAt(e.clientX,e.clientY); const o=originOf(el);
+  cur={anchor:el.dataset.ink, pts:[{x:px-o.x, y:py-o.y}]}; strokes.push(cur); });
+cvs.addEventListener('pointermove', e=>{ if(!cur) return; const el=document.querySelector(`[data-ink="${cur.anchor}"]`); if(!el) return;
+  const o=originOf(el); cur.pts.push({x:e.clientX+scrollX-o.x, y:e.clientY+scrollY-o.y}); redraw(); });
+cvs.addEventListener('pointerup', ()=>{ if(cur){cur=null; saveAll();} });
+window.addEventListener('resize', sizeInk);
+if(window.ResizeObserver){ new ResizeObserver(()=>sizeInk()).observe(document.querySelector('.paper')); }
+
+/* ---------- 标记 / 批注 ---------- */
 function wrapSel(tag,cls){const sel=getSelection();if(!sel.rangeCount||sel.isCollapsed){alert('先选中文字');return;}
   const r=sel.getRangeAt(0);const el=document.createElement(tag);el.className=cls;
   try{r.surroundContents(el);}catch(e){el.appendChild(r.extractContents());r.insertNode(el);}
@@ -256,14 +285,19 @@ function clearMarks(){document.querySelectorAll('.paper mark,.paper span.redline
 function exportNotes(){const notes=[...document.querySelectorAll('.paper span.noted')].map(el=>({text:el.textContent,note:el.dataset.note||''}));
   let txt='批注导出\n\n'+notes.map((n,i)=>`#${i+1} 原文：${n.text}\n批注：${n.note}\n`).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='阅读批注.txt';a.click();}
-function saveAll(){try{const paper=document.querySelector('.paper');localStorage.setItem('cet4-tool-'+(PAPER.date||''),JSON.stringify({html:paper.innerHTML,strokes}));}catch(e){}}
+
+/* ---------- 保存 / 载入 ---------- */
+function saveAll(){try{const paper=document.querySelector('.paper');localStorage.setItem('cet4-tool-'+(PAPER.date||''),JSON.stringify({html:paper.innerHTML,strokes:strokes.map(s=>({anchor:s.anchor,pts:s.pts}))}));}catch(e){}}
 function loadAll(){try{const raw=localStorage.getItem('cet4-tool-'+(PAPER.date||''));if(!raw)return;const d=JSON.parse(raw);
-  if(d.html){document.querySelector('.paper').innerHTML=d.html;snapshotHooks();}
+  if(d.html){document.querySelector('.paper').innerHTML=d.html;}
   if(d.strokes){strokes=d.strokes;redraw();}}catch(e){}}
-function snapshotHooks(){/* innerHTML 恢复后重新绑定口径：选项输入由事件委托处理，无需重绑 */}
-document.addEventListener('change',e=>{const t=e.target;if(t&&t.name&&t.name.startsWith('q')){const n=+t.name.slice(1);document.getElementById('c'+n)&&document.getElementById('c'+n).classList.add('done');
-  document.getElementById('answered')&&(document.getElementById('answered').textContent='已答 '+PAPER.questions.filter(q=>document.querySelector(`input[name=q${q.no}]:checked`)).length+'/5');saveAll();}});
-sizeInk();loadAll();
+function tbToggle(){tbOpen=!tbOpen;document.getElementById('tbPanel').classList.toggle('show',tbOpen);}
+function snapshotHooks(){}
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.name&&t.name.startsWith('q')){const n=+t.name.slice(1);
+  const c=document.getElementById('c'+n); c&&c.classList.add('done');
+  const a=document.getElementById('answered'); if(a) a.textContent='已答 '+PAPER.questions.filter(q=>document.querySelector(`input[name=q${q.no}]:checked`)).length+'/5';
+  saveAll();}});
+restorePos(); sizeInk(); loadAll();
 </script>
 </body></html>"""
 
