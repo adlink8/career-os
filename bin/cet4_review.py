@@ -42,16 +42,37 @@ PROMPT = """你是大学英语四级命题组的审查老师，熟悉 2020-2026 
 
 
 def parse_json(text: str):
-    t = re.sub(r"^```(?:json)?\s*", "", text.strip())
+    t = re.sub(r"^```(?:json)?\s*", "", (text or "").strip())
     t = re.sub(r"\s*```$", "", t)
-    i, j = t.find("{"), t.rfind("}")
-    if i < 0 or j <= i:
+    i = t.find("{")
+    if i < 0:
         return None
-    try:
-        return json.loads(t[i:j + 1])
-    except json.JSONDecodeError:
-        return None
-
+    depth = 0
+    in_str = False
+    esc = False
+    for j in range(i, len(t)):
+        ch = t[j]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                frag = t[i:j+1]
+                try:
+                    return json.loads(frag)
+                except json.JSONDecodeError:
+                    return None
+    return None
 
 def real_excerpts(dir_path: Path, limit=2) -> str:
     out = []

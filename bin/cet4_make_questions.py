@@ -33,8 +33,12 @@ PROMPT = """你是大学英语四级阅读命题老师。下面是真题范例�
  "paraphrase":{{"original":"原文词句","option":"选项换皮词"}},
  "trap":"无中生有|偷换概念|因果倒置|范围扩大|原词拼接",
  "option_analysis":[{{"letter":"A","correct":false,"why":"具体错因"}} ×4]}}
-硬约束：
-1) 5 题：细节 2、推断 1、态度/观点 1、词义/指代 1；至少 1 题落在转折处。
+硬约束（来自 120 道真题统计）：
+1) 5 题：细节 2-3、态度 1、推断 1、原因/词义 1；至少 1 题落在转折处；按原文出现顺序排 46-50。
+1b) 题干 <=15 词，以 What 开头为主；Why 只用于因果考点。
+1c) 正确项连续实词与原文重合 <=4，谓语必须换说法；禁止整句照搬。
+1d) 三个干扰项分别用：无中生有、偷换概念、范围扩大/绝对化；禁止双答案。
+1e) 同题四项长度差 <=3 词，正确项不得总是最长；答案至少覆盖 3 个字母。
 2) 答案覆盖至少 3 个不同字母，禁止 5 题同答案。
 3) 正确项必须同义替换，不得照抄原文；错误项写具体错因，引用原文或指出缺席/偷换/夸大。
 4) 题干不得引入原文没有的概念；不得出现双答案。
@@ -43,6 +47,9 @@ PROMPT = """你是大学英语四级阅读命题老师。下面是真题范例�
 7) 题号直接写 46、47、48、49、50（Section C Passage One 固定编号），不要写 1-5。
 8) 同题四个选项长度差 <=3 词；正确答案不能总是最长项。
 9) 先定考点再写题：优先从转折句、研究结论句、因果句、比较句里选考点。
+考点候选句（必须各题对应其中一句，按顺序）：
+{candidates}
+
 文章：
 {passage}
 """
@@ -80,7 +87,15 @@ def main():
                 picked.append(by.get(t).pop(0))
         examples = "\n\n".join(
             f"[{x['type']}] {x['stem']}\n" + "\n".join(x["options"]) + f"\n答案：{x['answer']}" for x in picked)
-    prompt = PROMPT.format(passage=paper.get("passage", ""), examples=examples)
+        cand = []
+    for sent in re.split(r"(?<=[.!?])\s+", paper.get("passage", "")):
+        low = sent.lower()
+        if re.search(r"\b(but|however|yet|instead|rather)\b", low) or re.search(r"\b(found|suggest|show|reveal|conclude)\b", low) \
+           or re.search(r"\b(because|so|therefore|lead to|result in)\b", low) or re.search(r"\b(more than|only|first|most)\b", low):
+            cand.append(sent.strip())
+    cand = cand[:8]
+    prompt = PROMPT.format(passage=paper.get("passage", ""), examples=examples,
+                           candidates="\n".join(f"{i+1}. {c}" for i, c in enumerate(cand)))
     proc = subprocess.run([str(CB), "-p", "--output-format", "text"], input=prompt,
                           capture_output=True, text=True, encoding="utf-8", timeout=900, cwd=str(ROOT))
     data = parse_json(proc.stdout or "")
