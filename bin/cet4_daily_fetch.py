@@ -68,7 +68,7 @@ def log_line(path: Path, **kw):
         f.write(json.dumps(kw, ensure_ascii=False) + "\n")
 
 
-def fetch(url: str, timeout=25, retries=2) -> bytes | None:
+def fetch(url: str, timeout=12, retries=1) -> bytes | None:
     for i in range(retries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "en-US,en;q=0.9"})
@@ -145,7 +145,7 @@ def main():
         if not raw:
             log_line(log_path, source=src["name"], status="feed_fail", url=src["url"])
             continue
-        items = parse_feed(raw)
+        items = parse_feed(raw)[:10]
         log_line(log_path, source=src["name"], status="feed_ok", items=len(items))
         for it in items:
             url = it.get("link", "").split("?")[0]
