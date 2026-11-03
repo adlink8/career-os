@@ -155,8 +155,15 @@ def main():
         prompt = SOLVER["reading"].format(article=(paper.get("passage") or "")[:8000],
                                           questions=json.dumps(paper.get("questions") or [], ensure_ascii=False)[:6000])
     else:
+        keys = {"reading": ("title", "passage", "questions"),
+                "cloze": ("passage", "bank", "answers"),
+                "match": ("title", "paragraphs", "statements", "answers"),
+                "listening": ("sections",),
+                "translation": ("translation",),
+                "writing": ("writing",)}[args.type]
+        payload = {k: paper.get(k) for k in keys if k in paper}
         prompt = REVIEWER[args.type].format(examples=examples_for(args.type),
-                                            paper=json.dumps(paper, ensure_ascii=False)[:12000])
+                                            paper=json.dumps(payload, ensure_ascii=False)[:24000])
     data = parse_json(run(prompt))
     if not data:
         print("parse failed")
