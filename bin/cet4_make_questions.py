@@ -67,6 +67,15 @@ def parse_json(text: str):
         return None
 
 
+
+def refresh_difficulty(paper):
+    ws = re.findall(r"[A-Za-z][A-Za-z'-]*", paper.get("passage", ""))
+    n = len(ws)
+    sents = [x for x in re.split(r"(?<=[.!?])\s+", paper.get("passage", "")) if len(re.findall(r"[A-Za-z][A-Za-z'-]*", x)) >= 4]
+    avg = round(n / max(1, len(sents)), 1)
+    long10 = round(100 * sum(1 for w in ws if len(w) >= 10) / max(1, n), 1)
+    paper["difficulty"] = {**(paper.get("difficulty") or {}), "words": n, "avg_sentence": avg, "long10_pct": long10}
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("paper")
@@ -106,6 +115,7 @@ def main():
         for oa in q.get("option_analysis") or []:
             oa["correct"] = (oa.get("letter") == q.get("answer"))
     merged = {**paper, "questions": data["questions"]}
+    refresh_difficulty(merged)
     result = check(merged)
     print(f"questions={len(data['questions'])} validate={result['ok']} errors={result['errors'][:5]}")
     out = Path(args.out) if args.out else src.with_name(src.stem + ".q.json")
