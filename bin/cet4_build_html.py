@@ -85,7 +85,9 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
 .audioBar{flex-wrap:wrap}
 #subs{flex:1 1 100%;max-height:58px;overflow:auto;border:1px solid #ddd;border-radius:6px;padding:4px 6px;background:#fcfcf8}
 #subs div{padding:1px 2px;border-radius:3px;cursor:pointer;color:#444}
-#subs div.on{background:#fff3a8;color:#000;font-weight:600}
+#subs div.on{background:#fff3a8;color:#000}
+#subs .s-en{font-weight:600}
+#subs .s-cn{color:#666;font-size:8.5pt}
 #vocab{display:none;margin:10pt 0 4pt;padding:8pt 10pt;border:1px solid #ddd;border-radius:6pt;background:#fcfcf8}
 #vocab.show{display:block}
 #vocab table{border-collapse:collapse;width:100%;font-size:9.5pt}
@@ -389,7 +391,7 @@ function renderSrs(){ const st=srsLoad(); const t=todayKey(); const due=Object.v
 
 /* ---------- 音频字幕 ---------- */
 function renderSubs(){ if(!PAPER.timing || !PAPER.timing.length) return; const box=document.getElementById('subs');
-  box.innerHTML=PAPER.timing.map(x=>`<div data-t="${x.start}" onclick="seekTo(${x.start})">${x.text}</div>`).join(''); }
+  box.innerHTML=PAPER.timing.map(x=>`<div data-t="${x.start}" onclick="seekTo(${x.start})"><div class="s-en">${x.en||x.text||''}</div><div class="s-cn">${x.cn||''}</div></div>`).join(''); }
 function seekTo(t){ const a=document.getElementById('pAudio'); if(!a) return; a.currentTime=t; a.play&&a.play(); }
 function syncSubs(){ const a=document.getElementById('pAudio'); if(!a||!PAPER.timing) return; const t=a.currentTime;
   const lines=document.querySelectorAll('#subs div'); let cur=null;
