@@ -52,13 +52,14 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
 .sent{margin:6pt 0;padding-top:4pt;border-top:1px dashed #ddd}
 .sent .en{font-weight:600}
 .role{font-weight:600}
-.r-主{color:#1565c0}.r-谓{color:#c62828}.r-宾{color:#2e7d32}.r-状{color:#ef6c00}.r-定{color:#6a1b9a}.r-补{color:#00838f}.r-表{color:#5d4037}
+.r-主{color:#1565c0}.r-谓{color:#c62828}.r-宾{color:#2e7d32}.r-状{color:#ef6c00}.r-定{color:#6a1b9a}.r-补{color:#00838f}.r-表{color:#5d4037}.r-连{color:#777;font-style:italic;font-weight:400}
 .small{color:#555;font-size:8.5pt}
 .chip{display:inline-block;border:1px solid #ddd;border-radius:8px;padding:0 5px;margin:1px 3px 1px 0;font-size:8.5pt;color:#444}
 .qans{display:none;margin:4pt 0 0;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font:9pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 .qans.show{display:block}
 .footer{margin-top:14pt;padding-top:4pt;border-top:1px solid #ddd;font-size:9pt;color:#555;display:flex;justify-content:space-between}
 .notice{width:595.32pt;margin:0 auto 4pt;font:12px/1.5 -apple-system,"Microsoft YaHei";color:#555}
+@media (max-width:640px){.paper{width:auto;min-height:auto;margin:8px;padding:16px}.small{font-size:11pt}body{font-size:12pt}.sheet{display:none}.tools{top:6px;right:6px}}
 @media print{
   html,body{background:#fff}
   .tools,.sheet,.notice,.para-ans{display:none !important}
@@ -69,7 +70,7 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
 <div class="notice">CET-4 阅读模拟卷（非官方真题） · __META__ · 生成于 __DATE__ · 来源 __SOURCE__</div>
 <div class="sheet" id="sheet"></div>
 <div class="tools">
-  <span class="score" id="score">0/5</span>
+  <span class="score" id="answered">已答 0/5</span><span class="score" id="score">得分 —</span>
   <span class="score" id="timer">40:00</span>
   <button onclick="toggleAnalysis()">段落解析</button>
   <button onclick="check()">对答案</button>
@@ -93,7 +94,7 @@ const KEY = 'cet4-sim-' + PAPER.date;
 let left = 40*60, tick = null, analysisOn = false;
 
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
-function tickTimer(){ if(left<=0){clearInterval(tick);return;} left--; document.getElementById('timer').textContent=fmt(left); }
+function tickTimer(){ if(left<=0){clearInterval(tick); const t=document.getElementById('timer'); t.textContent='时间到'; t.style.color='#c62828'; return;} left--; document.getElementById('timer').textContent=fmt(left); }
 
 function roleSpan(chunk){
   const role = chunk.role || '成';
@@ -142,7 +143,7 @@ function renderQuestions(){
 
 function pick(n){
   document.getElementById('c'+n).classList.toggle('done', !!document.querySelector(`input[name=q${n}]:checked`));
-  document.getElementById('score').textContent = answered()+'/5';
+  document.getElementById('answered').textContent = '已答 '+answered()+'/5';
   save();
 }
 function answered(){ return PAPER.questions.filter(q=>document.querySelector(`input[name=q${q.no}]:checked`)).length; }

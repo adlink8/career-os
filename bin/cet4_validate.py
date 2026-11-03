@@ -19,6 +19,10 @@ def check(payload):
     ws = words(p)
     n = len(ws)
     if not (MIN_WORDS <= n <= MAX_WORDS):
+        errs.append(f"words={n} not in [{MIN_WORDS},{MAX_WORDS}]")  # noqa
+    dif = (payload.get("difficulty") or {}).get("words")
+    if isinstance(dif, int) and dif and abs(dif - n) / n > 0.05:
+        errs.append(f"difficulty.words={dif} mismatch actual {n}")
         errs.append(f"words={n} not in [{MIN_WORDS},{MAX_WORDS}]")
     sents = [s for s in re.split(r"(?<=[.!?])\s+", p) if len(words(s)) >= 4]
     avg = n / max(1, len(sents))
@@ -101,6 +105,8 @@ def check(payload):
                 for c in chunks:
                     if not (c.get("cn") or "").strip():
                         errs.append(f"p{i}s{j}: chunk missing cn")
+                    if (c.get("role") or "").strip() == "连":
+                        errs.append(f"p{i}s{j}: 连 is not a component role")
                     if not (c.get("role") or "").strip():
                         errs.append(f"p{i}s{j}: chunk missing role")
         if len(paras) < 3:
