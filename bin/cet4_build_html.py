@@ -66,6 +66,24 @@ body{font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;li
   .paper{box-shadow:none;margin:0;width:auto;min-height:auto;padding:0}
   @page{size:A4;margin:38pt 36pt 30pt}
 }
+
+#ink{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:5}
+#ink.on{pointer-events:auto;cursor:crosshair}
+#floatTool{position:fixed;right:18px;bottom:18px;z-index:20;font:13px/1.5 -apple-system,"Microsoft YaHei",sans-serif}
+#floatTool .bubble{background:#111;color:#fff;border-radius:22px;padding:10px 14px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#tbPanel{display:none;width:240px;background:#fff;border:1px solid #bbb;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:10px;margin-bottom:8px}
+#tbPanel.show{display:block}
+#tbPanel .head{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px}
+#tbPanel .grp{border-top:1px dashed #ddd;padding-top:6px;margin-top:6px}
+#tbPanel .lbl{color:#666;font-size:11px;margin-bottom:4px}
+#tbPanel button{font-size:12px;margin:2px 2px 0 0;padding:4px 7px;border:1px solid #ccc;background:#fafafa;border-radius:6px;cursor:pointer}
+#tbPanel button.active{background:#111;color:#fff;border-color:#111}
+#tbPanel .span2{display:block;width:100%;text-align:left}
+mark.hl-yellow{background:#fff3a8}mark.hl-red{background:#ffd6d6}mark.hl-orange{background:#ffe0b2}
+mark.hl-green{background:#c8e6c9}mark.hl-purple{background:#e1bee7}
+span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
+span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
+@media print{#floatTool,#ink{display:none !important}}
 </style></head><body>
 <div class="notice">CET-4 阅读模拟卷（非官方真题） · __META__ · 生成于 __DATE__ · 来源 __SOURCE__</div>
 <div class="sheet" id="sheet"></div>
@@ -178,7 +196,76 @@ function save(){ try{ const ans={}; PAPER.questions.forEach(q=>{const v=document
 function load(){ try{ const raw=localStorage.getItem(KEY); if(!raw) return; const d=JSON.parse(raw); if(d.left){left=d.left;document.getElementById('timer').textContent=fmt(left);} Object.entries(d.ans||{}).forEach(([n,v])=>{const el=document.querySelector(`input[name=q${n}][value="${v}"]`); if(el){el.checked=true;document.getElementById('c'+n).classList.add('done');}}); document.getElementById('score').textContent=answered()+'/5'; }catch(e){} }
 
 renderPassage(); renderQuestions(); load(); tick=setInterval(tickTimer,1000);
-</script></body></html>"""
+</script>
+<canvas id="ink"></canvas>
+<div id="floatTool">
+  <div id="tbPanel">
+    <div class="head"><span>✏️ 工具</span><button onclick="tbToggle()">收起 ✕</button></div>
+    <div class="grp"><div class="lbl">选文字</div>
+      <button onclick="wrapSel('span','redline')">🔴 红线</button>
+      <button onclick="wrapSel('mark','hl-yellow')">🟡 荧光笔</button>
+      <button onclick="wrapSel('mark','hl-green')">🟢 答案句</button>
+    </div>
+    <div class="grp"><div class="lbl">标记</div>
+      <button onclick="wrapSel('mark','hl-red')">🔴 不会翻译</button>
+      <button onclick="wrapSel('mark','hl-orange')">🟠 不认识单词</button>
+      <button onclick="wrapSel('mark','hl-purple')">🟣 重点</button>
+      <button onclick="clearMarks()">清除标记</button>
+    </div>
+    <div class="grp"><div class="lbl">批注与画笔</div>
+      <button class="span2" onclick="addNote()">💬 给选中文字加批注</button>
+      <button id="tbPen" onclick="toggleInk()">✒️ 画笔</button>
+      <button id="tbErase" onclick="toggleErase()">🧽 橡皮</button>
+      <button onclick="clearInk()">清除画画</button>
+    </div>
+    <div class="grp"><div class="lbl">保存与导出</div>
+      <button onclick="saveAll()">💾 保存</button>
+      <button onclick="exportNotes()">⬇️ 导出笔记</button>
+    </div>
+  </div>
+  <div class="bubble" onclick="tbToggle()">✏️ 工具</div>
+</div>
+
+<script>
+let tbOpen=false, inkOn=false, eraseOn=false, strokes=[], cur=null;
+const cvs=document.getElementById('ink'), ctx=cvs.getContext('2d');
+function tbToggle(){tbOpen=!tbOpen;document.getElementById('tbPanel').classList.toggle('show',tbOpen);}
+function sizeInk(){cvs.width=document.documentElement.scrollWidth;cvs.height=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);redraw();}
+function redraw(){ctx.clearRect(0,0,cvs.width,cvs.height);ctx.lineCap='round';ctx.lineJoin='round';
+  strokes.forEach(st=>{ctx.beginPath();ctx.strokeStyle='#e53935';ctx.lineWidth=3;st.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();});}
+function pos(e){const r=cvs.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+function toggleInk(){inkOn=!inkOn;eraseOn=false;cvs.classList.toggle('on',inkOn);document.getElementById('tbPen').classList.toggle('active',inkOn);document.getElementById('tbErase').classList.remove('active');}
+function toggleErase(){eraseOn=!eraseOn;inkOn=eraseOn;cvs.classList.toggle('on',inkOn);document.getElementById('tbErase').classList.toggle('active',eraseOn);document.getElementById('tbPen').classList.remove('active');}
+function clearInk(){strokes=[];redraw();saveAll();}
+cvs.addEventListener('pointerdown',e=>{if(!inkOn)return;const p=pos(e);
+  if(eraseOn){strokes=strokes.filter(st=>!st.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<12));redraw();saveAll();return;}
+  cur=[p];strokes.push(cur);});
+cvs.addEventListener('pointermove',e=>{if(!cur)return;cur.push(pos(e));redraw();});
+cvs.addEventListener('pointerup',()=>{cur=null;saveAll();});
+window.addEventListener('resize',sizeInk);
+function wrapSel(tag,cls){const sel=getSelection();if(!sel.rangeCount||sel.isCollapsed){alert('先选中文字');return;}
+  const r=sel.getRangeAt(0);const el=document.createElement(tag);el.className=cls;
+  try{r.surroundContents(el);}catch(e){el.appendChild(r.extractContents());r.insertNode(el);}
+  sel.removeAllRanges();saveAll();}
+function addNote(){const sel=getSelection();if(!sel.rangeCount||sel.isCollapsed){alert('先选中文字');return;}
+  const note=prompt('批注内容：');if(!note)return;
+  const r=sel.getRangeAt(0);const el=document.createElement('span');el.className='noted';el.title=note;el.dataset.note=note;
+  try{r.surroundContents(el);}catch(e){el.appendChild(r.extractContents());r.insertNode(el);}
+  sel.removeAllRanges();saveAll();}
+function clearMarks(){document.querySelectorAll('.paper mark,.paper span.redline').forEach(el=>{const p=el.parentNode;while(el.firstChild)p.insertBefore(el.firstChild,el);p.removeChild(el);});saveAll();}
+function exportNotes(){const notes=[...document.querySelectorAll('.paper span.noted')].map(el=>({text:el.textContent,note:el.dataset.note||''}));
+  let txt='批注导出\n\n'+notes.map((n,i)=>`#${i+1} 原文：${n.text}\n批注：${n.note}\n`).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='阅读批注.txt';a.click();}
+function saveAll(){try{const paper=document.querySelector('.paper');localStorage.setItem('cet4-tool-'+(PAPER.date||''),JSON.stringify({html:paper.innerHTML,strokes}));}catch(e){}}
+function loadAll(){try{const raw=localStorage.getItem('cet4-tool-'+(PAPER.date||''));if(!raw)return;const d=JSON.parse(raw);
+  if(d.html){document.querySelector('.paper').innerHTML=d.html;snapshotHooks();}
+  if(d.strokes){strokes=d.strokes;redraw();}}catch(e){}}
+function snapshotHooks(){/* innerHTML 恢复后重新绑定口径：选项输入由事件委托处理，无需重绑 */}
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.name&&t.name.startsWith('q')){const n=+t.name.slice(1);document.getElementById('c'+n)&&document.getElementById('c'+n).classList.add('done');
+  document.getElementById('answered')&&(document.getElementById('answered').textContent='已答 '+PAPER.questions.filter(q=>document.querySelector(`input[name=q${q.no}]:checked`)).length+'/5');saveAll();}});
+sizeInk();loadAll();
+</script>
+</body></html>"""
 
 
 def main():
