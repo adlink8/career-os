@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 import re
 import subprocess
 import sys
@@ -18,7 +19,11 @@ CB = Path(r"C:\Users\li\AppData\Roaming\npm\codebuddy.cmd")
 sys.path.insert(0, str(ROOT / "bin"))
 from cet4_validate import check  # noqa: E402
 
-PROMPT = """你是大学英语四级阅读命题老师。给你一篇已改写好的文章，只出 5 道题，不要改文章。
+PROMPT = """你是大学英语四级阅读命题老师。下面是真题范例，先模仿它们的设问方式与干扰项设计，再动笔。
+【真题范例】
+{examples}
+
+给你一篇已改写好的文章，只出 5 道题，不要改文章。
 只输出 JSON：{{"questions":[...]}}
 每道题：
 {{"no":1,"stem":"题干（英文 <=20 词，具体不空泛）","stem_cn":"题干中文（顺流直译）",
@@ -34,6 +39,10 @@ PROMPT = """你是大学英语四级阅读命题老师。给你一篇已改写�
 3) 正确项必须同义替换，不得照抄原文；错误项写具体错因，引用原文或指出缺席/偷换/夸大。
 4) 题干不得引入原文没有的概念；不得出现双答案。
 5) 每题 evidence 必须逐字出现在 passage。
+6) 正确项不得与原文连续 4 词重合；不得直接照抄原文谓语动词短语，必须同义替换。
+7) 题号直接写 46、47、48、49、50（Section C Passage One 固定编号），不要写 1-5。
+8) 同题四个选项长度差 <=3 词；正确答案不能总是最长项。
+9) 先定考点再写题：优先从转折句、研究结论句、因果句、比较句里选考点。
 文章：
 {passage}
 """
@@ -58,7 +67,20 @@ def main():
     args = ap.parse_args()
     src = Path(args.paper)
     paper = json.loads(src.read_text(encoding="utf-8"))
-    prompt = PROMPT.format(passage=paper.get("passage", ""))
+    ex_path = ROOT / "var" / "cet4-daily" / "exemplars.json"
+    examples = ""
+    if ex_path.exists():
+        pool = json.loads(ex_path.read_text(encoding="utf-8"))
+        by = defaultdict(list)
+        for x in pool:
+            by[x.get("type")].append(x)
+        picked = []
+        for t in ("细节", "推断", "态度", "原因", "细节"):
+            if by.get(t):
+                picked.append(by.get(t).pop(0))
+        examples = "\n\n".join(
+            f"[{x['type']}] {x['stem']}\n" + "\n".join(x["options"]) + f"\n答案：{x['answer']}" for x in picked)
+    prompt = PROMPT.format(passage=paper.get("passage", ""), examples=examples)
     proc = subprocess.run([str(CB), "-p", "--output-format", "text"], input=prompt,
                           capture_output=True, text=True, encoding="utf-8", timeout=900, cwd=str(ROOT))
     data = parse_json(proc.stdout or "")
