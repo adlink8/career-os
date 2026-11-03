@@ -1,0 +1,972 @@
+[
+ {
+  "start": 0.0,
+  "end": 7.0,
+  "text": "College English Test, Band 4 Part 2, Listening Comprehension"
+ },
+ {
+  "start": 7.0,
+  "end": 10.0,
+  "text": "Section A, Directions"
+ },
+ {
+  "start": 10.0,
+  "end": 13.5,
+  "text": "In this section, you will hear three news reports."
+ },
+ {
+  "start": 13.5,
+  "end": 18.0,
+  "text": "At the end of each news report, you will hear two or three questions."
+ },
+ {
+  "start": 18.0,
+  "end": 23.0,
+  "text": "Both the news report and the questions will be spoken only once."
+ },
+ {
+  "start": 23.0,
+  "end": 26.5,
+  "text": "After you hear a question, you must choose the best answer"
+ },
+ {
+  "start": 26.5,
+  "end": 31.0,
+  "text": "from the four choices marked A, B, C and D."
+ },
+ {
+  "start": 31.0,
+  "end": 37.0,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 37.0,
+  "end": 39.0,
+  "text": "News Report 1"
+ },
+ {
+  "start": 39.0,
+  "end": 47.0,
+  "text": "A waiter has returned a cheque worth nearly $424,000 to retired social worker who lost it."
+ },
+ {
+  "start": 47.0,
+  "end": 53.0,
+  "text": "The waiter found a bank envelope while cleaning off a table last Saturday at a restaurant."
+ },
+ {
+  "start": 53.5,
+  "end": 56.5,
+  "text": "He ran outside but the customer was gone."
+ },
+ {
+  "start": 56.5,
+  "end": 59.5,
+  "text": "He opened the envelope and got a shock."
+ },
+ {
+  "start": 59.5,
+  "end": 64.5,
+  "text": "After an unsuccessful search, the restaurant's owner called the daily news for help."
+ },
+ {
+  "start": 64.5,
+  "end": 68.5,
+  "text": "The relieved customer was reunited with her cheque on Wednesday."
+ },
+ {
+  "start": 68.5,
+  "end": 74.5,
+  "text": "It contained money from her apartment sale, already planned for a down payment on a new home."
+ },
+ {
+  "start": 74.5,
+  "end": 78.5,
+  "text": "The customer did not tip the waiter after her meal."
+ },
+ {
+  "start": 78.5,
+  "end": 83.0,
+  "text": "She tried to give him money later on but he graciously declined."
+ },
+ {
+  "start": 83.0,
+  "end": 89.0,
+  "text": "The waiter, who's working his way through school, did accept the customer's apology and gratitude"
+ },
+ {
+  "start": 89.0,
+  "end": 92.0,
+  "text": "and said he was happy to have helped her."
+ },
+ {
+  "start": 92.0,
+  "end": 97.0,
+  "text": "Questions 1 and 2 are based on the news report you have just heard."
+ },
+ {
+  "start": 97.0,
+  "end": 99.0,
+  "text": "Question 1"
+ },
+ {
+  "start": 99.0,
+  "end": 117.32,
+  "text": "What does the news report say about the waiter?"
+ },
+ {
+  "start": 117.32,
+  "end": 118.82,
+  "text": "Question 2"
+ },
+ {
+  "start": 118.82,
+  "end": 122.82,
+  "text": "What did the customer try to do when she got her cheque back?"
+ },
+ {
+  "start": 138.39,
+  "end": 140.39,
+  "text": "News report 2"
+ },
+ {
+  "start": 140.39,
+  "end": 146.39,
+  "text": "The village of Mariff in Alaska voted on Tuesday to move to the state's mainland."
+ },
+ {
+  "start": 146.39,
+  "end": 150.39,
+  "text": "The move is due to global warming and rising sea levels."
+ },
+ {
+  "start": 150.39,
+  "end": 157.39,
+  "text": "Most of the village's 169 registered voters took part in the town hall meeting."
+ },
+ {
+  "start": 157.39,
+  "end": 165.39,
+  "text": "They decided in a vote of 89 to 78 to move from their land on Sarajev Island near the Arctic Circle."
+ },
+ {
+  "start": 165.39,
+  "end": 170.89,
+  "text": "Mariff Council Secretary Donna Barr said the vote was largely symbolic."
+ },
+ {
+  "start": 170.89,
+  "end": 173.89,
+  "text": "It will be costly financially to the community."
+ },
+ {
+  "start": 173.89,
+  "end": 179.89,
+  "text": "About 15 years ago they estimated the cost at $180 million."
+ },
+ {
+  "start": 179.89,
+  "end": 182.89,
+  "text": "I would figure it's much higher now, Barr said."
+ },
+ {
+  "start": 182.89,
+  "end": 187.89,
+  "text": "We don't see the move happening in our lifetime because of the funding."
+ },
+ {
+  "start": 187.89,
+  "end": 195.89,
+  "text": "The village's roughly 650 residents have seen warming temperatures melt sea ice and permanently frozen land."
+ },
+ {
+  "start": 195.89,
+  "end": 199.89,
+  "text": "This has resulted in houses falling into the water."
+ },
+ {
+  "start": 199.89,
+  "end": 205.39,
+  "text": "At least 31 villages in Alaska face immediate threats due to climate change."
+ },
+ {
+  "start": 205.39,
+  "end": 210.39,
+  "text": "The Government Accountability Office reported in 2009."
+ },
+ {
+  "start": 210.39,
+  "end": 216.39,
+  "text": "Questions 3 and 4 are based on the news report you have just heard."
+ },
+ {
+  "start": 216.39,
+  "end": 236.17,
+  "text": "Question 3. What is Mariff's vote on Tuesday about?"
+ },
+ {
+  "start": 236.17,
+  "end": 257.96,
+  "text": "Question 4. Why did Donna Barr say they wouldn't see the plan carried out anytime soon?"
+ },
+ {
+  "start": 257.96,
+  "end": 260.46,
+  "text": "News report 3."
+ },
+ {
+  "start": 260.46,
+  "end": 267.96,
+  "text": "A man in Halifax, Canada wanted to find out if people were thankful for someone holding the door open for them."
+ },
+ {
+  "start": 267.96,
+  "end": 274.96,
+  "text": "The social experiment showed that 99 out of 100 people expressed gratitude."
+ },
+ {
+  "start": 274.96,
+  "end": 277.96,
+  "text": "I didn't think we were going to get 99."
+ },
+ {
+  "start": 277.96,
+  "end": 283.96,
+  "text": "I don't know why, but I was pleasantly surprised because it went beyond just thank you."
+ },
+ {
+  "start": 283.96,
+  "end": 291.96,
+  "text": "People got into conversations with us, said Steve Foran, CEO of Gratitude at Work."
+ },
+ {
+  "start": 291.96,
+  "end": 297.96,
+  "text": "What we know from research is that from grateful people come good things, he said."
+ },
+ {
+  "start": 297.96,
+  "end": 301.96,
+  "text": "A simple way to induce gratitude in people is opening doors"
+ },
+ {
+  "start": 301.96,
+  "end": 305.96,
+  "text": "and so we went to six places and opened the doors for people."
+ },
+ {
+  "start": 305.96,
+  "end": 314.96,
+  "text": "For the experiment Foran's team went to a shopping centre, a mall, two office buildings and a coffee shop."
+ },
+ {
+  "start": 314.96,
+  "end": 320.96,
+  "text": "The door was held for 15 to 20 people at a time at each location."
+ },
+ {
+  "start": 320.96,
+  "end": 323.96,
+  "text": "We did have one that didn't say thank you."
+ },
+ {
+  "start": 323.96,
+  "end": 329.96,
+  "text": "We're not here to judge them because on any given day that could be me or you."
+ },
+ {
+  "start": 329.96,
+  "end": 335.96,
+  "text": "I suspect out of the 100 people there were probably a bunch of them having a bad day."
+ },
+ {
+  "start": 335.96,
+  "end": 340.96,
+  "text": "But grateful people make people grateful, said Foran."
+ },
+ {
+  "start": 340.96,
+  "end": 345.96,
+  "text": "Questions 5 to 7 are based on the news report you have just heard."
+ },
+ {
+  "start": 345.96,
+  "end": 350.96,
+  "text": "Question 5. What is the purpose of the social experiment?"
+ },
+ {
+  "start": 350.96,
+  "end": 387.88,
+  "text": "Question 6. What did Steve Foran and his team do in the experiment?"
+ },
+ {
+  "start": 387.88,
+  "end": 391.88,
+  "text": "Question 7. What do we learn from the news report?"
+ },
+ {
+  "start": 391.88,
+  "end": 410.85,
+  "text": "Section B. Directions."
+ },
+ {
+  "start": 410.85,
+  "end": 414.85,
+  "text": "In this section you'll hear two long conversations."
+ },
+ {
+  "start": 414.85,
+  "end": 418.85,
+  "text": "At the end of each conversation you will hear four questions."
+ },
+ {
+  "start": 418.85,
+  "end": 423.85,
+  "text": "Both the conversation and the questions will be spoken only once."
+ },
+ {
+  "start": 423.85,
+  "end": 431.85,
+  "text": "After you hear a question you must choose the best answer from the four choices marked A, B, C and D."
+ },
+ {
+  "start": 431.85,
+  "end": 438.85,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 438.85,
+  "end": 440.85,
+  "text": "Conversation 1."
+ },
+ {
+  "start": 440.85,
+  "end": 444.85,
+  "text": "Raise solar. Lisa speaking. How can I help?"
+ },
+ {
+  "start": 444.85,
+  "end": 450.85,
+  "text": "Hi. My name is Winston. I wish to inquire about solar panel installations."
+ },
+ {
+  "start": 450.85,
+  "end": 453.85,
+  "text": "Yes. What would you like to know?"
+ },
+ {
+  "start": 453.85,
+  "end": 460.85,
+  "text": "Well, my neighbour installed panels on his roof about a year ago in order to power his hot water."
+ },
+ {
+  "start": 460.85,
+  "end": 466.85,
+  "text": "He tells me it has saved him over $500 thus far. Does that sound about right to you?"
+ },
+ {
+  "start": 466.85,
+  "end": 474.85,
+  "text": "Well, I'm not familiar with your neighbour or his particular setup, but that amount is definitely possible."
+ },
+ {
+  "start": 474.85,
+  "end": 482.85,
+  "text": "I can tell you that the average four bedroom house may typically have a roof with 50 square metres of surface area."
+ },
+ {
+  "start": 482.85,
+  "end": 489.85,
+  "text": "Four panels on one side of that roof could save a family of four around $300 a year."
+ },
+ {
+  "start": 489.85,
+  "end": 497.85,
+  "text": "OK. That sounds about right then. My house is about the size you described, but my neighbour's is bigger."
+ },
+ {
+  "start": 497.85,
+  "end": 503.85,
+  "text": "I'm not sure how many panels he has up there, but he does have a large family of six."
+ },
+ {
+  "start": 503.85,
+  "end": 508.85,
+  "text": "Are you interested in installing some solar panels on your roof, sir?"
+ },
+ {
+  "start": 508.85,
+  "end": 510.85,
+  "text": "Yes. I'm considering it."
+ },
+ {
+  "start": 510.85,
+  "end": 515.85,
+  "text": "If you wish to come into our office we could show you the different solutions we offer."
+ },
+ {
+  "start": 515.85,
+  "end": 526.85,
+  "text": "OK. I might do that, but just quickly, if you don't mind, could you tell me approximately how much a typical installation costs, like, say, four panels?"
+ },
+ {
+  "start": 526.85,
+  "end": 533.85,
+  "text": "Prices do vary depending on different factors, but as a rough estimate it's around $2,000."
+ },
+ {
+  "start": 533.85,
+  "end": 539.85,
+  "text": "But you know a typical household will make back that initial investment in about five years."
+ },
+ {
+  "start": 539.85,
+  "end": 542.85,
+  "text": "OK. I see. Thank you."
+ },
+ {
+  "start": 542.85,
+  "end": 547.85,
+  "text": "Questions 8 to 11 are based on the conversation you have just heard."
+ },
+ {
+  "start": 547.85,
+  "end": 567.64,
+  "text": "Question 8. What is the man's purpose for calling the woman?"
+ },
+ {
+  "start": 567.64,
+  "end": 588.48,
+  "text": "Question 9. What do we learn about the man's neighbour from the conversation?"
+ },
+ {
+  "start": 588.48,
+  "end": 608.2,
+  "text": "Question 10. What is one of the man's chief concerns?"
+ },
+ {
+  "start": 608.2,
+  "end": 629.99,
+  "text": "Question 11. How long will it take a typical household to make back the initial investment?"
+ },
+ {
+  "start": 629.99,
+  "end": 632.99,
+  "text": "Conversation 2."
+ },
+ {
+  "start": 632.99,
+  "end": 636.99,
+  "text": "Good afternoon. Sorry to have kept you waiting. How can I help you?"
+ },
+ {
+  "start": 636.99,
+  "end": 644.99,
+  "text": "Oh, no problem. I'm interested in booking a holiday to Australia and wonder if you could tell me what deals you have."
+ },
+ {
+  "start": 644.99,
+  "end": 651.99,
+  "text": "Sure. Are you only looking for flights or a package holiday with everything included?"
+ },
+ {
+  "start": 651.99,
+  "end": 654.99,
+  "text": "When you say everything, what do you mean?"
+ },
+ {
+  "start": 654.99,
+  "end": 666.99,
+  "text": "Well, a package holiday would include your flights, hotels, meals, day trips to different places of interest, and transport to and from the airport."
+ },
+ {
+  "start": 666.99,
+  "end": 673.99,
+  "text": "Yeah, that sounds pretty good. I'm going with my family, so it would be nice to have everything taken care of."
+ },
+ {
+  "start": 673.99,
+  "end": 677.99,
+  "text": "So what sort of deals do you have for package holidays then?"
+ },
+ {
+  "start": 677.99,
+  "end": 682.99,
+  "text": "All sorts, really. How long do you want to go for and on what dates?"
+ },
+ {
+  "start": 682.99,
+  "end": 685.99,
+  "text": "Two weeks around Christmas time would be great."
+ },
+ {
+  "start": 685.99,
+  "end": 689.99,
+  "text": "OK, let me check that for you."
+ },
+ {
+  "start": 689.99,
+  "end": 697.99,
+  "text": "Here's one. Fourteen nights in southeastern Australia. Five nights in Sydney and five nights in Melbourne."
+ },
+ {
+  "start": 697.99,
+  "end": 702.99,
+  "text": "And then for the other four nights you can choose from a list of trips to other places nearby."
+ },
+ {
+  "start": 702.99,
+  "end": 709.99,
+  "text": "You could visit Canberra, for example, or the Blue Mountains, or you could go for a drive down the Great Ocean Road."
+ },
+ {
+  "start": 709.99,
+  "end": 716.99,
+  "text": "Also, if you're interested in wine, you could go on a tour of the places where they grow grapes and make wine."
+ },
+ {
+  "start": 716.99,
+  "end": 721.99,
+  "text": "That sounds great. It's good we can choose some activities ourselves."
+ },
+ {
+  "start": 721.99,
+  "end": 726.99,
+  "text": "Questions 12 to 15 are based on the conversation you have just heard."
+ },
+ {
+  "start": 726.99,
+  "end": 746.64,
+  "text": "Question 12. Where is the conversation taking place?"
+ },
+ {
+  "start": 746.64,
+  "end": 766.2,
+  "text": "Question 13. Why is the woman interested in package holidays?"
+ },
+ {
+  "start": 766.2,
+  "end": 771.2,
+  "text": "Question 14. How long does the woman want to go for the holiday?"
+ },
+ {
+  "start": 771.2,
+  "end": 791.89,
+  "text": "Question 15. What does the woman say she likes about the holiday package?"
+ },
+ {
+  "start": 791.89,
+  "end": 812.39,
+  "text": "Section C. Directions. In this section you'll hear three passages."
+ },
+ {
+  "start": 812.39,
+  "end": 817.39,
+  "text": "At the end of each passage you'll hear three or four questions."
+ },
+ {
+  "start": 817.39,
+  "end": 822.39,
+  "text": "Both the passage and the questions will be spoken only once."
+ },
+ {
+  "start": 822.39,
+  "end": 830.39,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D."
+ },
+ {
+  "start": 830.39,
+  "end": 837.39,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 837.39,
+  "end": 846.39,
+  "text": "Passage 1. Tourists taking a holiday in the Indonesian island of Bali are facing a new $14 per person tax"
+ },
+ {
+  "start": 846.39,
+  "end": 850.39,
+  "text": "when they arrive on the holiday island from next year."
+ },
+ {
+  "start": 850.39,
+  "end": 857.39,
+  "text": "But this is a green tax which Bali Governor, Wayan Koster has been working on for months"
+ },
+ {
+  "start": 857.39,
+  "end": 861.39,
+  "text": "and which is designed to help clean up the island's natural environment."
+ },
+ {
+  "start": 861.39,
+  "end": 867.39,
+  "text": "And with good reason too, Indonesia is drowning in plastics."
+ },
+ {
+  "start": 867.39,
+  "end": 871.39,
+  "text": "Recycling is not one of the country's strong points."
+ },
+ {
+  "start": 871.39,
+  "end": 876.39,
+  "text": "It's not uncommon to be offered many more plastic bags than one could ever need"
+ },
+ {
+  "start": 876.39,
+  "end": 879.39,
+  "text": "when visiting supermarkets and shopping malls."
+ },
+ {
+  "start": 879.39,
+  "end": 883.39,
+  "text": "But slowly things are starting to change for the better."
+ },
+ {
+  "start": 883.39,
+  "end": 892.39,
+  "text": "Back in 2016 the medium-sized city of Banjar Mason banned single-use plastic bags."
+ },
+ {
+  "start": 892.39,
+  "end": 896.39,
+  "text": "The city of Bogor followed suit in 2018."
+ },
+ {
+  "start": 896.39,
+  "end": 906.39,
+  "text": "A few months ago Koster announced a plan that would not only ban single-use plastic bags from supermarkets and convenience stores"
+ },
+ {
+  "start": 906.39,
+  "end": 910.39,
+  "text": "but plastic bags and straws across the island."
+ },
+ {
+  "start": 910.39,
+  "end": 914.39,
+  "text": "The regulation will come into full effect next month."
+ },
+ {
+  "start": 914.39,
+  "end": 918.39,
+  "text": "We received a fast and quick response from the Balinese people."
+ },
+ {
+  "start": 918.39,
+  "end": 925.39,
+  "text": "Not only positive responses from the Balinese, we received good responses from the central government,"
+ },
+ {
+  "start": 925.39,
+  "end": 929.39,
+  "text": "other local governments, and even from overseas."
+ },
+ {
+  "start": 929.39,
+  "end": 934.39,
+  "text": "Koster told the Sydney Morning Herald this week during an interview."
+ },
+ {
+  "start": 934.39,
+  "end": 941.39,
+  "text": "The governor is a determined environmentalist and he has more laws planned to protect the island's waterways in particular"
+ },
+ {
+  "start": 941.39,
+  "end": 947.64,
+  "text": "and to support the introduction of electric vehicles too."
+ },
+ {
+  "start": 947.64,
+  "end": 952.64,
+  "text": "Questions 16 to 18 are based on the passage you have just heard."
+ },
+ {
+  "start": 952.64,
+  "end": 958.64,
+  "text": "Question 16. What will tourists have to do when they visit Indonesia's Bali island?"
+ },
+ {
+  "start": 958.64,
+  "end": 993.95,
+  "text": "Question 17. What does the passage say about Indonesia?"
+ },
+ {
+  "start": 993.95,
+  "end": 999.95,
+  "text": "Question 18. What is the new plan Governor Koster recently announced?"
+ },
+ {
+  "start": 999.95,
+  "end": 1023.8,
+  "text": "Passage 2. An endangered species of whale is experiencing a small baby boom off the coast of America."
+ },
+ {
+  "start": 1023.8,
+  "end": 1029.8,
+  "text": "The North Atlantic right whale is one of the rarest species of whale on the planet,"
+ },
+ {
+  "start": 1029.8,
+  "end": 1035.8,
+  "text": "numbering only about 411. But the Centre for Coastal Studies said Friday"
+ },
+ {
+  "start": 1035.8,
+  "end": 1043.8,
+  "text": "that its aerial survey team spotted a mum with two babies in Cape Cod Bay a day earlier."
+ },
+ {
+  "start": 1043.8,
+  "end": 1048.8,
+  "text": "That brings the number seen in nearby waters alone this year to three."
+ },
+ {
+  "start": 1048.8,
+  "end": 1056.8,
+  "text": "That's big news because the whale population has been falling and no baby whales were seen last year."
+ },
+ {
+  "start": 1056.8,
+  "end": 1061.8,
+  "text": "In all, seven baby whales have been spotted so far this year."
+ },
+ {
+  "start": 1061.8,
+  "end": 1067.8,
+  "text": "The whale population has become endangered due to commercial whaling activities in recent years."
+ },
+ {
+  "start": 1067.8,
+  "end": 1072.8,
+  "text": "This is because they are sometimes hunted for their meat or their skin."
+ },
+ {
+  "start": 1072.8,
+  "end": 1076.8,
+  "text": "Overhunting could lead to the disappearance of the whale population,"
+ },
+ {
+  "start": 1076.8,
+  "end": 1081.8,
+  "text": "possibly causing major problems to the global food chain."
+ },
+ {
+  "start": 1081.8,
+  "end": 1086.8,
+  "text": "The whales give birth off the southeast coast of America in the winter"
+ },
+ {
+  "start": 1086.8,
+  "end": 1091.8,
+  "text": "and travel to feeding grounds off the northeast coast in the early spring."
+ },
+ {
+  "start": 1091.8,
+  "end": 1095.8,
+  "text": "The northeast coast is a critically important source of food."
+ },
+ {
+  "start": 1095.8,
+  "end": 1098.8,
+  "text": "The animals often feed close to shore."
+ },
+ {
+  "start": 1098.8,
+  "end": 1104.8,
+  "text": "This provides watches on land with unbeatable views of one of the rarest of marine mammals."
+ },
+ {
+  "start": 1104.8,
+  "end": 1111.8,
+  "text": "It's illegal to get within 1,500 feet of the animals without a federal research permit,"
+ },
+ {
+  "start": 1111.8,
+  "end": 1116.8,
+  "text": "so whale watches are discouraged from attempting to get close to the whales."
+ },
+ {
+  "start": 1117.8,
+  "end": 1122.8,
+  "text": "Questions 19 to 21 are based on the passage you have just heard."
+ },
+ {
+  "start": 1122.8,
+  "end": 1124.8,
+  "text": "Question 19."
+ },
+ {
+  "start": 1124.8,
+  "end": 1144.42,
+  "text": "What do we learn from the passage about the North Atlantic right whale?"
+ },
+ {
+  "start": 1144.42,
+  "end": 1146.42,
+  "text": "Question 20."
+ },
+ {
+  "start": 1146.42,
+  "end": 1150.42,
+  "text": "What has caused the decline of the whale population in recent years?"
+ },
+ {
+  "start": 1150.42,
+  "end": 1166.92,
+  "text": "Question 21."
+ },
+ {
+  "start": 1166.92,
+  "end": 1187.64,
+  "text": "Why do the whales travel to the northeast coast of America in the early spring?"
+ },
+ {
+  "start": 1187.64,
+  "end": 1189.64,
+  "text": "Passage 3."
+ },
+ {
+  "start": 1189.64,
+  "end": 1195.64,
+  "text": "An average person consumes 144 pints of milk a year,"
+ },
+ {
+  "start": 1195.64,
+  "end": 1198.64,
+  "text": "but 40% of that is poured onto cereal,"
+ },
+ {
+  "start": 1198.64,
+  "end": 1202.64,
+  "text": "and 60% of those people are children."
+ },
+ {
+  "start": 1202.64,
+  "end": 1207.64,
+  "text": "But what was once advertised as nutritious is becoming unpopular."
+ },
+ {
+  "start": 1207.64,
+  "end": 1213.64,
+  "text": "Americans drink 37% less milk than they did in the 1970s,"
+ },
+ {
+  "start": 1213.64,
+  "end": 1220.64,
+  "text": "and in the UK dairy consumption overall has fallen by a third in the past 20 years."
+ },
+ {
+  "start": 1220.64,
+  "end": 1224.64,
+  "text": "Milk is increasingly being described in a negative light."
+ },
+ {
+  "start": 1224.64,
+  "end": 1228.64,
+  "text": "A recent blog suggested maybe people are drinking less milk"
+ },
+ {
+  "start": 1228.64,
+  "end": 1231.64,
+  "text": "because it is poisonous to many of us."
+ },
+ {
+  "start": 1231.64,
+  "end": 1235.64,
+  "text": "Lactose is the sugar found in milk and dairy products."
+ },
+ {
+  "start": 1235.64,
+  "end": 1239.64,
+  "text": "It needs a series of complex proteins to break it down."
+ },
+ {
+  "start": 1239.64,
+  "end": 1245.64,
+  "text": "Without enough of these proteins, the lactose is broken down by bacteria in the human body."
+ },
+ {
+  "start": 1245.64,
+  "end": 1250.64,
+  "text": "This can cause physical pain and produce gas in the stomach."
+ },
+ {
+  "start": 1250.64,
+  "end": 1254.64,
+  "text": "However, after we have finished breast or formula feeding,"
+ },
+ {
+  "start": 1254.64,
+  "end": 1258.64,
+  "text": "most of us don't continue producing the complex proteins in our body,"
+ },
+ {
+  "start": 1258.64,
+  "end": 1262.64,
+  "text": "which are necessary to break down the lactose."
+ },
+ {
+  "start": 1262.64,
+  "end": 1267.64,
+  "text": "Despite the problems in digesting milk, it does provide many benefits."
+ },
+ {
+  "start": 1267.64,
+  "end": 1271.64,
+  "text": "Milk is nutritious. It contains vitamins A and D,"
+ },
+ {
+  "start": 1271.64,
+  "end": 1275.64,
+  "text": "as well as protein, and isn't full of calories."
+ },
+ {
+  "start": 1275.64,
+  "end": 1279.64,
+  "text": "You can test yourself by drinking a large glass of milk."
+ },
+ {
+  "start": 1279.64,
+  "end": 1282.64,
+  "text": "If you get sick in your stomach within the next 24 hours,"
+ },
+ {
+  "start": 1282.64,
+  "end": 1287.64,
+  "text": "you are lacking the proteins to digest milk."
+ },
+ {
+  "start": 1287.64,
+  "end": 1292.64,
+  "text": "Questions 22 to 25 are based on the passage you have just heard."
+ },
+ {
+  "start": 1292.64,
+  "end": 1297.64,
+  "text": "Question 22. What does the passage say about Americans?"
+ },
+ {
+  "start": 1297.64,
+  "end": 1319.29,
+  "text": "Question 23. How do Americans and British people think of milk nowadays?"
+ },
+ {
+  "start": 1319.29,
+  "end": 1340.01,
+  "text": "Question 24. Why does drinking milk cause pain in some people?"
+ },
+ {
+  "start": 1340.01,
+  "end": 1360.6,
+  "text": "Question 25. What does the passage say is a benefit of milk?"
+ },
+ {
+  "start": 1360.6,
+  "end": 1379.23,
+  "text": "That's the end of listening comprehension."
+ }
+]

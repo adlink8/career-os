@@ -1,0 +1,957 @@
+[
+ {
+  "start": 0.21,
+  "end": 6.21,
+  "text": "College English Test, Band 4, Part 2, Listening Comprehension"
+ },
+ {
+  "start": 6.21,
+  "end": 8.21,
+  "text": "Section A, Directions"
+ },
+ {
+  "start": 8.21,
+  "end": 12.21,
+  "text": "In this section, you'll hear three news reports."
+ },
+ {
+  "start": 12.21,
+  "end": 16.21,
+  "text": "At the end of each news report, you'll hear two or three questions."
+ },
+ {
+  "start": 16.21,
+  "end": 21.21,
+  "text": "Both the news report and the questions will be spoken only once."
+ },
+ {
+  "start": 21.21,
+  "end": 29.21,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D."
+ },
+ {
+  "start": 29.21,
+  "end": 36.21,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 36.21,
+  "end": 38.21,
+  "text": "New Report 1"
+ },
+ {
+  "start": 38.21,
+  "end": 46.21,
+  "text": "A NASA satellite orbiting over Portugal took photographs that reveal the effects of pollution from ships."
+ },
+ {
+  "start": 46.21,
+  "end": 52.21,
+  "text": "One of the photos shows a thin film of clouds above the brilliant blue of the North Atlantic,"
+ },
+ {
+  "start": 52.21,
+  "end": 57.21,
+  "text": "cut by white lines of thicker clouds that look like scars."
+ },
+ {
+  "start": 57.21,
+  "end": 64.21,
+  "text": "NASA officials explained those thicker clouds are signs of ship traffic below."
+ },
+ {
+  "start": 64.21,
+  "end": 72.21,
+  "text": "When ships power their way through the ocean, they pump exhaust into the atmosphere, just as cars do."
+ },
+ {
+  "start": 72.21,
+  "end": 77.21,
+  "text": "And those massive amounts of particles can cause clouds to form."
+ },
+ {
+  "start": 77.21,
+  "end": 81.21,
+  "text": "Get enough of those particles in one place, as from the exhaust of a ship,"
+ },
+ {
+  "start": 81.21,
+  "end": 87.21,
+  "text": "and they can lead to the creation of new clouds easily visible from space."
+ },
+ {
+  "start": 87.21,
+  "end": 90.21,
+  "text": "These clouds can be huge."
+ },
+ {
+  "start": 90.21,
+  "end": 96.21,
+  "text": "Some of them stretch hundreds of kilometres from end to end, NASA officials said."
+ },
+ {
+  "start": 96.21,
+  "end": 103.21,
+  "text": "It's likely that these sorts of clouds are having some effect on the global climate, according to NASA officials."
+ },
+ {
+  "start": 103.21,
+  "end": 108.21,
+  "text": "But scientists aren't yet sure what effect it has."
+ },
+ {
+  "start": 108.21,
+  "end": 113.21,
+  "text": "Questions 1 and 2 are based on the news report you have just heard."
+ },
+ {
+  "start": 113.21,
+  "end": 115.21,
+  "text": "Question 1"
+ },
+ {
+  "start": 115.21,
+  "end": 120.21,
+  "text": "What has caused the thick clouds in the photos taken by a NASA satellite?"
+ },
+ {
+  "start": 120.21,
+  "end": 136.9,
+  "text": "Question 2"
+ },
+ {
+  "start": 136.9,
+  "end": 155.49,
+  "text": "What do NASA officials think about the thick clouds?"
+ },
+ {
+  "start": 155.49,
+  "end": 157.49,
+  "text": "News Report 2"
+ },
+ {
+  "start": 157.49,
+  "end": 165.49,
+  "text": "Staff at a suburban supermarket in Melbourne say they feel unsafe when work after security guards were removed."
+ },
+ {
+  "start": 165.49,
+  "end": 171.49,
+  "text": "This came after a series of physical attacks and verbal abuse by customers."
+ },
+ {
+  "start": 171.49,
+  "end": 178.49,
+  "text": "More than 50 workers at the store have signed a letter calling for a permanent security guard"
+ },
+ {
+  "start": 178.49,
+  "end": 185.49,
+  "text": "following a series of incidents, including a customer threatening to attack a supervisor with a knife."
+ },
+ {
+  "start": 185.49,
+  "end": 192.49,
+  "text": "A security worker had guarded the store each night from 7 p.m. until 12 a.m."
+ },
+ {
+  "start": 192.49,
+  "end": 196.49,
+  "text": "But that had stopped suddenly on Monday, employees said."
+ },
+ {
+  "start": 196.49,
+  "end": 205.49,
+  "text": "One worker, an angry customer, had thrown a chicken at his head after complaining about how long she had waited to be served."
+ },
+ {
+  "start": 205.49,
+  "end": 211.49,
+  "text": "Another worker said the lack of protection at the store made her feel uncomfortable at work."
+ },
+ {
+  "start": 211.49,
+  "end": 219.49,
+  "text": "However, a spokesman of the supermarket said the store had taken strong action in response to incidents."
+ },
+ {
+  "start": 219.49,
+  "end": 225.49,
+  "text": "We have found very few instances of bad customer behaviour at our store in the past year."
+ },
+ {
+  "start": 225.49,
+  "end": 235.49,
+  "text": "In the rare cases we have seen bad behaviour, we have taken strong action in response, including banning a customer from the store."
+ },
+ {
+  "start": 235.49,
+  "end": 240.49,
+  "text": "Questions 3 and 4 are based on the news report you have just heard."
+ },
+ {
+  "start": 241.49,
+  "end": 262.86,
+  "text": "Question 3. For what purpose did the staff at a supermarket in Melbourne sign a letter?"
+ },
+ {
+  "start": 262.86,
+  "end": 284.45,
+  "text": "Question 4. What did the spokesman of the supermarket say regarding the employees' demand?"
+ },
+ {
+  "start": 284.45,
+  "end": 286.45,
+  "text": "News report 3."
+ },
+ {
+  "start": 286.45,
+  "end": 296.45,
+  "text": "Drivers on their way to the Polish capital of Warsaw on Wednesday morning found the road blocked by an unusual obstacle."
+ },
+ {
+  "start": 296.45,
+  "end": 300.45,
+  "text": "Tons of liquid chocolate that spilled onto the motorway."
+ },
+ {
+  "start": 300.45,
+  "end": 308.45,
+  "text": "A truck carrying a sweet load hit a road barrier and overturned, blocking two lanes."
+ },
+ {
+  "start": 308.45,
+  "end": 316.45,
+  "text": "The cracked tank spilled a pool of rapidly hardening chocolate, which quickly covered the width of the road."
+ },
+ {
+  "start": 316.45,
+  "end": 326.45,
+  "text": "While the driver was taken to hospital with a broken arm, firefighters struggled to remove a reported 12 tons of solid chocolate from the road."
+ },
+ {
+  "start": 326.45,
+  "end": 334.45,
+  "text": "A representative for the firefighters told the local TV that removing the chocolate was worse than dealing with snow."
+ },
+ {
+  "start": 334.45,
+  "end": 344.45,
+  "text": "After contacting the chocolate manufacturer, the firefighters resorted to spraying hot, pressurized water to get rid of the sticky substance."
+ },
+ {
+  "start": 344.45,
+  "end": 356.45,
+  "text": "The local TV also noted that the cleanup spanned more than a mile because drivers simply drove through the chocolate after the crash, leaving a long chocolate trail."
+ },
+ {
+  "start": 356.45,
+  "end": 365.45,
+  "text": "But despite the sticky situation, firefighters and police attending to the cleanup were reportedly cheerful about the long task ahead."
+ },
+ {
+  "start": 365.45,
+  "end": 370.45,
+  "text": "After all, who could be mad about 12 tons of chocolate?"
+ },
+ {
+  "start": 370.45,
+  "end": 375.45,
+  "text": "Questions 5 to 7 are based on the new support you have just heard."
+ },
+ {
+  "start": 375.45,
+  "end": 380.45,
+  "text": "Question 5. What did drivers on the motorway to Warsaw find?"
+ },
+ {
+  "start": 380.45,
+  "end": 400.1,
+  "text": "Question 6. What does the report say about the accident?"
+ },
+ {
+  "start": 400.1,
+  "end": 420.6,
+  "text": "Question 7. What did firefighters representative tell the local TV?"
+ },
+ {
+  "start": 420.6,
+  "end": 438.67,
+  "text": "Section B. Directions"
+ },
+ {
+  "start": 438.67,
+  "end": 447.67,
+  "text": "In this section, you will hear two long conversations. At the end of each conversation, you will hear four questions."
+ },
+ {
+  "start": 447.67,
+  "end": 452.67,
+  "text": "Both the conversation and the questions will be spoken only once."
+ },
+ {
+  "start": 452.67,
+  "end": 461.67,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D."
+ },
+ {
+  "start": 461.67,
+  "end": 468.67,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 468.67,
+  "end": 470.67,
+  "text": "Conversation 1"
+ },
+ {
+  "start": 470.67,
+  "end": 476.67,
+  "text": "Lisa, why did you pay for your meal with cash instead of the payment apps on your phone?"
+ },
+ {
+  "start": 476.67,
+  "end": 483.67,
+  "text": "Well, I've gone back to cash. I'm only using payment apps if that's the only option."
+ },
+ {
+  "start": 483.67,
+  "end": 490.67,
+  "text": "I'm trying to save money for a new phone, and I think that using cash rather than payment apps helps me to save."
+ },
+ {
+  "start": 490.67,
+  "end": 498.67,
+  "text": "But how? Money is money, isn't it? I don't think it matters whether you take it out of the bank and put it in your wallet,"
+ },
+ {
+  "start": 498.67,
+  "end": 503.67,
+  "text": "or simply transfer it from your bank account to the seller's bank account using an app."
+ },
+ {
+  "start": 503.67,
+  "end": 508.67,
+  "text": "No, I believe it does matter. It's a psychological phenomenon."
+ },
+ {
+  "start": 508.67,
+  "end": 515.67,
+  "text": "I believe we have less connection with the value of our money when we just tap the approve buttons on our phones."
+ },
+ {
+  "start": 515.67,
+  "end": 522.67,
+  "text": "You might have a point. Since I stopped carrying cash around and started using my phone apps to pay,"
+ },
+ {
+  "start": 522.67,
+  "end": 527.67,
+  "text": "I may have developed a tendency to buy more small or non-essential items."
+ },
+ {
+  "start": 527.67,
+  "end": 535.67,
+  "text": "That's highly possible. Think about the amount of time we spend with our phones in our hands and all the things we do with our phones."
+ },
+ {
+  "start": 535.67,
+  "end": 541.67,
+  "text": "It sometimes seems that our phone is buying a product for us, not ourselves."
+ },
+ {
+  "start": 541.67,
+  "end": 544.67,
+  "text": "So cash's payment affects our ability to budget?"
+ },
+ {
+  "start": 544.67,
+  "end": 553.67,
+  "text": "I believe so. If we spend a hundred yuan in cash, we realize that we don't have that hundred yuan to spend on something else."
+ },
+ {
+  "start": 553.67,
+  "end": 558.67,
+  "text": "But if we're spending electronically, we are less likely to make that mental calculation."
+ },
+ {
+  "start": 558.67,
+  "end": 563.67,
+  "text": "I stopped using my credit card because I found I was spending excessively."
+ },
+ {
+  "start": 563.67,
+  "end": 567.67,
+  "text": "Perhaps I should take the same approach of paying using my phone."
+ },
+ {
+  "start": 567.67,
+  "end": 569.67,
+  "text": "It's worth considering."
+ },
+ {
+  "start": 569.67,
+  "end": 573.67,
+  "text": "Questions 8 to 11 are based on the conversation you have just heard."
+ },
+ {
+  "start": 574.67,
+  "end": 579.67,
+  "text": "Question 8. Why did the woman decide to go back to cash for payment?"
+ },
+ {
+  "start": 579.67,
+  "end": 600.14,
+  "text": "Question 9. What happens when people use apps for payment according to the woman?"
+ },
+ {
+  "start": 600.14,
+  "end": 620.54,
+  "text": "Question 10. What might the man tend to buy with payment apps?"
+ },
+ {
+  "start": 620.54,
+  "end": 639.87,
+  "text": "Question 11. What does the man think of electronic payment?"
+ },
+ {
+  "start": 639.87,
+  "end": 656.24,
+  "text": "Conversation 2"
+ },
+ {
+  "start": 656.24,
+  "end": 660.24,
+  "text": "Hello, Mr. Brown. I was expecting your call."
+ },
+ {
+  "start": 660.24,
+  "end": 665.24,
+  "text": "My secretary told me you were having some problems with the wooden table. Is that right?"
+ },
+ {
+  "start": 665.24,
+  "end": 670.24,
+  "text": "No, no. The table is fine. The problem is the chairs."
+ },
+ {
+  "start": 670.24,
+  "end": 675.24,
+  "text": "Oh, the chairs. What exactly is the issue?"
+ },
+ {
+  "start": 675.24,
+  "end": 682.24,
+  "text": "Well, but simply, these are not the chairs my wife and I selected in your store last week."
+ },
+ {
+  "start": 682.24,
+  "end": 685.24,
+  "text": "There must have been some confusion with our order."
+ },
+ {
+  "start": 685.24,
+  "end": 693.24,
+  "text": "Oh, I see. I'm looking through my files now and I see that the delivery was this morning. Is that correct?"
+ },
+ {
+  "start": 693.24,
+  "end": 694.24,
+  "text": "Yes."
+ },
+ {
+  "start": 694.24,
+  "end": 699.24,
+  "text": "Do you mind describing the chairs that were delivered to your apartment, Mr. Brown?"
+ },
+ {
+  "start": 699.24,
+  "end": 708.24,
+  "text": "Sure. These have a flat back with a rounded top and are very heavy. They're light brown and look kind of cheap."
+ },
+ {
+  "start": 708.24,
+  "end": 713.24,
+  "text": "The ones we ordered were dark brown to match the table."
+ },
+ {
+  "start": 713.24,
+  "end": 720.24,
+  "text": "Right. Of course. It says here you purchased Arlington Table and four Milano chairs."
+ },
+ {
+  "start": 720.24,
+  "end": 725.24,
+  "text": "As you said, there must have been some confusion with the order. I'm terribly sorry."
+ },
+ {
+  "start": 725.24,
+  "end": 731.24,
+  "text": "We will send a van to collect those four and replace them with the Milano you purchased."
+ },
+ {
+  "start": 731.24,
+  "end": 734.24,
+  "text": "Will tomorrow 9am be okay, Mr. Brown?"
+ },
+ {
+  "start": 734.24,
+  "end": 737.24,
+  "text": "Yes. That would be great. Thank you."
+ },
+ {
+  "start": 737.24,
+  "end": 741.24,
+  "text": "Good. Did everything else you ordered from us arrive okay?"
+ },
+ {
+  "start": 741.24,
+  "end": 744.24,
+  "text": "Yes. I think so. Let me check."
+ },
+ {
+  "start": 744.24,
+  "end": 751.24,
+  "text": "The mirror and two paintings are here. The two coffee tables are also here and the sofa."
+ },
+ {
+  "start": 751.24,
+  "end": 757.24,
+  "text": "Yes. We haven't noticed anything else wrong or missing. But if we do, we will certainly let you know."
+ },
+ {
+  "start": 757.24,
+  "end": 762.24,
+  "text": "Okay. Great. Once again, I'm sorry for the confusion and trouble caused."
+ },
+ {
+  "start": 762.24,
+  "end": 767.24,
+  "text": "Questions 12 to 15 are based on the conversation you have just heard."
+ },
+ {
+  "start": 767.24,
+  "end": 772.24,
+  "text": "Question 12. Why did the man call the woman?"
+ },
+ {
+  "start": 772.24,
+  "end": 791.64,
+  "text": "Question 13. What did the woman ask the man to do?"
+ },
+ {
+  "start": 791.64,
+  "end": 812.3,
+  "text": "Question 14. What did the woman promise to do for the man?"
+ },
+ {
+  "start": 812.3,
+  "end": 832.79,
+  "text": "Question 15. What did the woman do at the end of the conversation?"
+ },
+ {
+  "start": 832.79,
+  "end": 850.38,
+  "text": "Section C. Directions."
+ },
+ {
+  "start": 850.38,
+  "end": 854.38,
+  "text": "In this section, you will hear three passages."
+ },
+ {
+  "start": 854.38,
+  "end": 859.38,
+  "text": "At the end of each passage, you will hear three or four questions."
+ },
+ {
+  "start": 859.38,
+  "end": 864.38,
+  "text": "Both the passage and the questions be spoken only once."
+ },
+ {
+  "start": 864.38,
+  "end": 873.38,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C, and D."
+ },
+ {
+  "start": 874.38,
+  "end": 880.38,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+ },
+ {
+  "start": 880.38,
+  "end": 888.38,
+  "text": "Passage 1. Do you have too much stuff? Are you dare we say it untidy?"
+ },
+ {
+  "start": 888.38,
+  "end": 894.38,
+  "text": "Say hello to a TV show called Tidying Up with Mary Condo."
+ },
+ {
+  "start": 894.38,
+  "end": 902.38,
+  "text": "A home improvement show based on her wildly popular book, The Life-Changing Magic of Tidying Up."
+ },
+ {
+  "start": 902.38,
+  "end": 908.38,
+  "text": "In the show, Marie Condo acts as a tiny gauge fairy for messy people,"
+ },
+ {
+  "start": 908.38,
+  "end": 914.38,
+  "text": "visiting houses to share the wisdom of the Konmari method."
+ },
+ {
+  "start": 914.38,
+  "end": 920.38,
+  "text": "This method is simple in theory, but can be endlessly complex in practice."
+ },
+ {
+  "start": 920.38,
+  "end": 925.38,
+  "text": "You divide all the stuff in your house, all of it, into several categories,"
+ },
+ {
+  "start": 925.38,
+  "end": 931.38,
+  "text": "and then examine each item, all of them, to see if it sparks joy."
+ },
+ {
+  "start": 931.38,
+  "end": 934.38,
+  "text": "If it does, you keep it."
+ },
+ {
+  "start": 934.38,
+  "end": 939.38,
+  "text": "If it doesn't, you thank it and neatly discard it."
+ },
+ {
+  "start": 939.38,
+  "end": 943.38,
+  "text": "So, is the TV show inspiring people to tidy up?"
+ },
+ {
+  "start": 943.38,
+  "end": 952.38,
+  "text": "First-hand accounts seem to indicate a small wave of people bringing piles of donation bags to used goods stores."
+ },
+ {
+  "start": 952.38,
+  "end": 957.38,
+  "text": "One store receives thousands of bags of used possessions in one day."
+ },
+ {
+  "start": 957.38,
+  "end": 967.38,
+  "text": "January is usually the store's slow season for donations because it's cold and people don't want to bother, but not this January."
+ },
+ {
+  "start": 967.38,
+  "end": 971.38,
+  "text": "People seem determined to clean up their homes."
+ },
+ {
+  "start": 971.38,
+  "end": 976.38,
+  "text": "One used bookstore received a month's worth of books and donations in a week"
+ },
+ {
+  "start": 976.38,
+  "end": 980.38,
+  "text": "when a man gave over 50 boxes of books from his home."
+ },
+ {
+  "start": 980.38,
+  "end": 986.38,
+  "text": "It seems Marie's TV show is having a big impact after all."
+ },
+ {
+  "start": 986.38,
+  "end": 992.38,
+  "text": "Question 16 to 18 are based on the passage you have just heard."
+ },
+ {
+  "start": 992.38,
+  "end": 997.38,
+  "text": "Question 16. What is Marie Kondo's TV show about?"
+ },
+ {
+  "start": 997.38,
+  "end": 1033.57,
+  "text": "Question 17. What things can be kept in one's home, according to Marie Kondo?"
+ },
+ {
+  "start": 1033.57,
+  "end": 1039.57,
+  "text": "Question 18. What do we learn about one used bookstore this January?"
+ },
+ {
+  "start": 1039.57,
+  "end": 1056.35,
+  "text": "Passage two."
+ },
+ {
+  "start": 1056.35,
+  "end": 1062.35,
+  "text": "At just 12 years old, Mike Hannon is making a difference in his community."
+ },
+ {
+  "start": 1062.35,
+  "end": 1065.35,
+  "text": "One lunch at a time."
+ },
+ {
+  "start": 1065.35,
+  "end": 1072.35,
+  "text": "Mike's Lunches of Love has fed more than 2,000 of the town's most vulnerable residents."
+ },
+ {
+  "start": 1072.35,
+  "end": 1075.35,
+  "text": "Mike delivers meals to the homeless."
+ },
+ {
+  "start": 1075.35,
+  "end": 1084.35,
+  "text": "It's like a way to give people joy, maybe spark something in them that can change them, Mike told WBZ TV."
+ },
+ {
+  "start": 1084.35,
+  "end": 1093.35,
+  "text": "The mayor of Mike's town feels that Mike is a great community leader, especially in such times of so much negative news,"
+ },
+ {
+  "start": 1093.35,
+  "end": 1098.35,
+  "text": "while his father commented on how proud he was of his son."
+ },
+ {
+  "start": 1098.35,
+  "end": 1104.35,
+  "text": "Yet Mike isn't looking for praise, but kindness in return."
+ },
+ {
+  "start": 1104.35,
+  "end": 1112.35,
+  "text": "He hopes his acts of charity will influence others to spread positive actions in their own towns."
+ },
+ {
+  "start": 1112.35,
+  "end": 1116.35,
+  "text": "Mike includes a handwritten message of joy on each bag."
+ },
+ {
+  "start": 1116.35,
+  "end": 1121.35,
+  "text": "His message and star power has spread all over the country."
+ },
+ {
+  "start": 1121.35,
+  "end": 1129.35,
+  "text": "To date, his online page to raise funds has brought in more than $44,000 and counting,"
+ },
+ {
+  "start": 1129.35,
+  "end": 1133.35,
+  "text": "raising more than $17,000 in just one day."
+ },
+ {
+  "start": 1133.35,
+  "end": 1137.35,
+  "text": "With the help of many famous actors and others,"
+ },
+ {
+  "start": 1137.35,
+  "end": 1147.35,
+  "text": "people from all over the country are sending special handcrafted bags to help the young man with his mission to help those in need."
+ },
+ {
+  "start": 1147.35,
+  "end": 1151.35,
+  "text": "Many are hoping the simple act of kindness spreads."
+ },
+ {
+  "start": 1151.35,
+  "end": 1158.35,
+  "text": "Mike is seen as hope for the future of the town, the country, and the world."
+ },
+ {
+  "start": 1158.35,
+  "end": 1162.35,
+  "text": "Questions 19 to 21 are based on the passage you have just heard."
+ },
+ {
+  "start": 1162.35,
+  "end": 1164.35,
+  "text": "Question 19."
+ },
+ {
+  "start": 1164.35,
+  "end": 1168.35,
+  "text": "What does Mike Hannon do to help people in his town?"
+ },
+ {
+  "start": 1168.35,
+  "end": 1185.01,
+  "text": "Question 20."
+ },
+ {
+  "start": 1185.01,
+  "end": 1187.01,
+  "text": "What does Mike Hope Others do?"
+ },
+ {
+  "start": 1187.01,
+  "end": 1203.73,
+  "text": "Question 21."
+ },
+ {
+  "start": 1203.73,
+  "end": 1207.73,
+  "text": "How are people all over the country responding to what Mike is doing?"
+ },
+ {
+  "start": 1207.73,
+  "end": 1224.35,
+  "text": "Passage 3."
+ },
+ {
+  "start": 1224.35,
+  "end": 1231.35,
+  "text": "In a recent study carried out by psychologists on the disruptive effects of smartphones,"
+ },
+ {
+  "start": 1231.35,
+  "end": 1236.35,
+  "text": "two groups of college students were given word search puzzles."
+ },
+ {
+  "start": 1236.35,
+  "end": 1243.35,
+  "text": "The first group was told to complete the puzzles with its participants' smartphones in their line of sight."
+ },
+ {
+  "start": 1243.35,
+  "end": 1249.35,
+  "text": "The second group, however, was told that the phones would interfere with the equipment in the experiment"
+ },
+ {
+  "start": 1249.35,
+  "end": 1253.35,
+  "text": "and would need to be moved away from the testing area."
+ },
+ {
+  "start": 1253.35,
+  "end": 1257.35,
+  "text": "Midway through the second group's solving of the puzzles,"
+ },
+ {
+  "start": 1257.35,
+  "end": 1263.35,
+  "text": "the experimenter called one of the phones and let it ring for a while before hanging up."
+ },
+ {
+  "start": 1263.35,
+  "end": 1267.35,
+  "text": "Many of the students in that group were unable to focus from then on,"
+ },
+ {
+  "start": 1267.35,
+  "end": 1273.35,
+  "text": "becoming anxious and performing more poorly than the first group."
+ },
+ {
+  "start": 1273.35,
+  "end": 1279.35,
+  "text": "Use of electronics has also been known to lead to a decline in human interactions."
+ },
+ {
+  "start": 1279.35,
+  "end": 1283.35,
+  "text": "Rather than having real-life conversations,"
+ },
+ {
+  "start": 1283.35,
+  "end": 1290.35,
+  "text": "many express emotions and engage in deep conversations through social media sites."
+ },
+ {
+  "start": 1290.35,
+  "end": 1296.35,
+  "text": "Many students use their phones and computers to turn class for non-academic activities,"
+ },
+ {
+  "start": 1296.35,
+  "end": 1299.35,
+  "text": "which leads to poor grades."
+ },
+ {
+  "start": 1299.35,
+  "end": 1304.35,
+  "text": "Perhaps the most dramatic impact is the reduction in the amount of sleep,"
+ },
+ {
+  "start": 1304.35,
+  "end": 1307.35,
+  "text": "which leads to poor health and weight gain."
+ },
+ {
+  "start": 1307.35,
+  "end": 1310.35,
+  "text": "Technology is a great tool."
+ },
+ {
+  "start": 1310.35,
+  "end": 1315.35,
+  "text": "However, it's important to recognize its downsides."
+ },
+ {
+  "start": 1315.35,
+  "end": 1321.35,
+  "text": "Lack of sleep, reduction of productivity and weight gain are only a few."
+ },
+ {
+  "start": 1321.35,
+  "end": 1325.35,
+  "text": "If we are not careful about all these minor problems right now,"
+ },
+ {
+  "start": 1325.35,
+  "end": 1330.35,
+  "text": "the effect on the future generation is going to be much bigger."
+ },
+ {
+  "start": 1330.35,
+  "end": 1336.35,
+  "text": "Questions 22 to 25 are based on the passage you have just heard."
+ },
+ {
+  "start": 1336.35,
+  "end": 1358.75,
+  "text": "Questions 22. What were the college students in both groups required to do in the study?"
+ },
+ {
+  "start": 1358.75,
+  "end": 1365.75,
+  "text": "Questions 23. What do we learn about many of the students in the second test group after the phone rang?"
+ },
+ {
+  "start": 1365.75,
+  "end": 1388.34,
+  "text": "Questions 24. According to the passage, what is the most dramatic impact of smartphone use?"
+ },
+ {
+  "start": 1388.34,
+  "end": 1408.1,
+  "text": "Questions 25. What does the speaker suggest people do?"
+ },
+ {
+  "start": 1408.1,
+  "end": 1426.75,
+  "text": "This is the end of listening comprehension."
+ }
+]
