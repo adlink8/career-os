@@ -40,13 +40,18 @@ JSON 结构：
     "cn":"第 1 段整段中文翻译",
     "main":"本段主旨（一句话中文）",
     "structure":"本段作用（提出反常识/给证据/转折/结论 之一）",
-    "sentences":[{{"en":"本段 1-2 个关键句（必须是本段子集，不得等于整段）","chunks":[{{"en":"5-8 词意群","cn":"对应中文"}}]}}]}}
+    "sentences":[{{"en":"本段一句原文","chunks":[{{"en":"片段（5-10 词）","role":"主|谓|宾|状|定|补|表|连|插入语","cn":"该片段中文"}}],"meaning":"整句中文","modifier":"谁修饰谁（如 for 短语说明范围）","why":"为什么这样切（先抓主谓宾）","collocation":"固定搭配"}}]}}
  ],
  "questions": [
   {{"no":1,"stem":"题干英文 <=20 词","options":["A) ...","B) ...","C) ...","D) ..."],
     "answer":"A","evidence":"passage 中逐字出现的定位句",
     "paraphrase":{{"original":"原文词句","option":"选项换皮词"}},
-    "trap":"无中生有|偷换概念|因果倒置|范围扩大|原词拼接"}}
+    "trap":"无中生有|偷换概念|因果倒置|范围扩大|原词拼接",
+    "option_analysis":[
+      {{"letter":"A","correct":false,"why":"具体错因，必须引用原文或指出缺席信息"}},
+      {{"letter":"B","correct":true,"why":"正确项为什么对（同义替换关系）"}},
+      {{"letter":"C","correct":false,"why":"具体错因"}},
+      {{"letter":"D","correct":false,"why":"具体错因"}}]}}
  ],
  "difficulty": {{"words":350,"avg_sentence":19,"long10_pct":7,"cefr":"B2"}}
 }}
@@ -57,9 +62,9 @@ JSON 结构：
 3) 5 题：细节 2、推断 1、态度/观点 1、词义/指代 1；至少 1 题落在转折处。
 4) 每题 4 选项，长度接近；正确项必须同义替换，不得照抄原文。
 5) evidence 必须逐字出现在 passage 里。
-6) paragraphs 的 en 按顺序拼接后必须与 passage 完全一致（含标点与空格）；每段都要有 cn/main/structure。
+6) paragraphs 的 en 按顺序拼接后必须与 passage 完全一致；每段都要有 cn/main/structure；每段的 sentences 必须覆盖该段的每一句（顺序一致），chunks 的 en 拼接要等于该句英文（标点空格可差）。
 7) 参考真题风格（不要照抄）：{anchors}
-8) 5 题答案必须覆盖至少 3 个不同字母（例如 B/A/C/D/B），禁止 5 题同答案。
+8) 5 题答案必须覆盖至少 3 个不同字母（例如 B/A/C/D/B），禁止 5 题同答案。\n8b) 每题必须给 option_analysis：4 个选项逐个写 why，正确项标 correct=true，错误项写具体错因（引用原文或指出缺席/偷换/夸大）。\n8c) 句级解析的 why / modifier 必须针对本句具体内容，禁止套话（如“先抓主谓宾”“按成分切分”）。
 9) 题材红线：毒品/自杀/自残/暴力/具体药物疗效一律改写或回避；保持四级通用社会、教育、健康、职场话题。
 
 文章标题：{title}

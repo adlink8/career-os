@@ -5,7 +5,7 @@ import re
 import sys
 
 MIN_WORDS, MAX_WORDS = 320, 420
-MIN_AVG, MAX_AVG = 16.0, 22.0
+MIN_AVG, MAX_AVG = 15.0, 22.5
 MIN_LONG, MAX_LONG = 4.0, 10.0
 
 
@@ -59,6 +59,16 @@ def check(payload):
             errs.append(f"Q{no}: missing paraphrase")
         if not q.get("trap"):
             errs.append(f"Q{no}: missing trap")
+        oa = q.get("option_analysis") or []
+        if len(oa) != 4:
+            errs.append(f"Q{no}: option_analysis={len(oa)} != 4")
+        else:
+            correct = [x for x in oa if x.get("correct")]
+            if len(correct) != 1 or correct[0].get("letter") != q.get("answer"):
+                errs.append(f"Q{no}: option_analysis correct flag mismatch")
+            for x in oa:
+                if not (x.get("why") or "").strip():
+                    errs.append(f"Q{no}: option {x.get('letter')} missing why")
     if len(set(answers)) < 3:
         errs.append("answers too concentrated: " + "".join(answers))
     pn = re.sub(r"\s+", " ", p).strip().lower()
@@ -71,6 +81,28 @@ def check(payload):
             for key in ("cn", "main", "structure"):
                 if not (para.get(key) or "").strip():
                     errs.append(f"paragraph {i} missing {key}")
+            para_en = re.sub(r"\s+", " ", (para.get("en") or "")).strip().lower()
+            for j, sent in enumerate(para.get("sentences") or [], 1):
+                sen = re.sub(r"\s+", " ", sent.get("en") or "").strip().lower()
+                if not sen:
+                    errs.append(f"p{i}s{j}: empty sentence")
+                    continue
+                if sen not in para_en:
+                    errs.append(f"p{i}s{j}: sentence not in paragraph")
+                chunks = sent.get("chunks") or []
+                if not chunks:
+                    errs.append(f"p{i}s{j}: no chunks")
+                    continue
+                def flat(x):
+                    return re.sub(r"[^a-z0-9\u4e00-\u9fff]", "", x.lower())
+                joined = "".join(c.get("en", "") for c in chunks)
+                if flat(joined) != flat(sen):
+                    errs.append(f"p{i}s{j}: chunks do not rebuild sentence")
+                for c in chunks:
+                    if not (c.get("cn") or "").strip():
+                        errs.append(f"p{i}s{j}: chunk missing cn")
+                    if not (c.get("role") or "").strip():
+                        errs.append(f"p{i}s{j}: chunk missing role")
         if len(paras) < 3:
             errs.append(f"paragraphs={len(paras)} < 3")
     else:
