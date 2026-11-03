@@ -59,8 +59,8 @@ def check(payload):
             errs.append(f"Q{no}: missing paraphrase")
         if not q.get("trap"):
             errs.append(f"Q{no}: missing trap")
-    if len(set(answers)) == 1:
-        errs.append("all answers identical")
+    if len(set(answers)) < 3:
+        errs.append("answers too concentrated: " + "".join(answers))
     ss = payload.get("sentences") or []
     joined = re.sub(r"\s+", " ", " ".join(s.get("en", "") for s in ss)).strip().lower()
     if re.sub(r"\s+", " ", p).strip().lower() != joined:

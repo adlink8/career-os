@@ -35,6 +35,11 @@ SOURCES = [
     {"name": "The Conversation", "url": "https://theconversation.com/articles.atom", "cat": "学术/观点"},
     {"name": "WIRED", "url": "https://www.wired.com/feed/rss", "cat": "科技"},
     {"name": "NPR Science", "url": "https://www.npr.org/rss/rss.php?id=1001", "cat": "主流"},
+    {"name": "Guardian Tech", "url": "https://www.theguardian.com/technology/rss", "cat": "科技"},
+    {"name": "Guardian Business", "url": "https://www.theguardian.com/business/rss", "cat": "商业"},
+    {"name": "BBC Business", "url": "https://feeds.bbci.co.uk/news/business/rss.xml", "cat": "商业"},
+    {"name": "ScienceDaily Mind", "url": "https://www.sciencedaily.com/rss/mind_brain.xml", "cat": "科普"},
+    {"name": "NYT Well", "url": "https://rss.nytimes.com/services/xml/rss/nyt/Well.xml", "cat": "主流"},
     {"name": "The Atlantic", "url": "https://www.theatlantic.com/feed/all/", "cat": "主流"},
 ]
 
@@ -183,6 +188,8 @@ def main():
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         for r in ex.map(work, queue):
             if r:
+                if r["title"].strip().lower() in {c["title"].strip().lower() for c in candidates}:
+                    continue
                 candidates.append(r)
                 seen_urls.add(r["url"])
                 seen_titles.add(hashlib.sha1(r["title"].lower().encode()).hexdigest()[:12])

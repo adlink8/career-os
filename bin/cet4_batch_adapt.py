@@ -53,7 +53,8 @@ JSON 结构：
 5) evidence 必须逐字出现在 passage 里。
 6) sentences 的 en 拼接后必须与 passage 完全一致（含标点与空格）。
 7) 参考真题风格（不要照抄）：{anchors}
-8) 题材红线：毒品/自杀/自残/暴力/具体药物疗效一律改写或回避；保持四级通用社会、教育、健康、职场话题。
+8) 5 题答案必须覆盖至少 3 个不同字母（例如 B/A/C/D/B），禁止 5 题同答案。
+9) 题材红线：毒品/自杀/自残/暴力/具体药物疗效一律改写或回避；保持四级通用社会、教育、健康、职场话题。
 
 文章标题：{title}
 文章正文：
@@ -97,7 +98,7 @@ def usable(cand: dict) -> bool:
     human = ["people", "study", "researchers", "participants", "students", "workers",
              "employees", "adults", "children", "health", "brain", "sleep", "work",
              "school", "consumers", "families"]
-    return sum(1 for w in human if w in low) >= 3
+    return sum(1 for w in human if w in low) >= 2
 
 
 def adapt(cand: dict, idx: int, outdir: Path, logpath: Path, anchors: str):
