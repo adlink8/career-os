@@ -1,0 +1,129 @@
+{
+ "count": 12,
+ "passage_words": {
+  "min": 188,
+  "max": 267,
+  "avg": 236.3
+ },
+ "bank_sizes": {
+  "15": 12
+ },
+ "answer_distribution": {
+  "D": 9,
+  "M": 7,
+  "L": 8,
+  "F": 6,
+  "G": 7,
+  "I": 10,
+  "O": 9,
+  "B": 7,
+  "E": 10,
+  "J": 6,
+  "C": 9,
+  "A": 10,
+  "N": 8,
+  "K": 8,
+  "H": 6
+ },
+ "examples": [
+  {
+   "file": "cet4-2024-06-1.md",
+   "passage": "It's well known that physical exercise is beneficial not just to physical health but also to mental health. Yet whereas most countries have __26__ evidence-backed guidelines on the type and intensity of exercise __27__ for various physical health benefits, such guidelines do not yet exist for exercise and mood. This is __28__ due to a lack of necessary evidence. However, a new systematic review brings us usefully up-to-date on the current findings in this area. Before __29__ into some of the key take-aways, an important __30__ made in the review is between aerobic exercise and anaerobic. The former __31__ such things as walking, jogging and cycling and means exercising in such a way that your body is able to use oxygen to burn fat for energy. In contrast, anaerobic exercise—such as lifting heavy weights—is of such __32__ intensity that your body does not have time to use oxygen to create energy and so instead it breaks down glucose (葡萄糖) in your blood or muscles. Beginning first with the influence of exercise intensity on the mood benefits of aerobic exercise, the researchers, led by John Chan at Shenzhen University, found __33__ results from 19 relevant studies. Some favoured higher intensity, others low, while seven studies found that intensity made no __34__ to mood benefits. In relation to the intensity of anaerobic exercise, however, the results were far clearer—the optimum (最佳选择) for improving mood is __35__ intensity, perhaps because low intensity is too dull while high intensity is too unpleasant.\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "constitutes",
+    "I": "involves",
+    "B": "contradictory",
+    "J": "moderate",
+    "C": "decision",
+    "K": "notified",
+    "D": "detailed",
+    "L": "partly",
+    "E": "difference",
+    "M": "required",
+    "F": "dipping",
+    "N": "traditionally",
+    "G": "distinction",
+    "O": "vigorous",
+    "H": "falling"
+   },
+   "answers": {
+    "26": "D",
+    "27": "M",
+    "28": "L",
+    "29": "F",
+    "30": "G",
+    "31": "I",
+    "32": "O",
+    "33": "B",
+    "34": "E",
+    "35": "J"
+   }
+  },
+  {
+   "file": "cet4-2024-06-2.md",
+   "passage": "A team of researchers led by Priyanka Joshi examined the degree to which men and women relied on “communicative abstraction” to verbally convey their ideas and emotions. Communicative abstraction, according to the researchers, reflects the tendency of people to use “abstract speech that focuses on the broader picture and __26__ purpose of action rather than concrete speech focusing on details and the means of __27__ action.” Interestingly, they found that men were far more likely to speak in the abstract than were women. To arrive at this __28__, the researchers examined the linguistic (语言的) patterns of men and women in over 600,000 blog posts written on websites. To do this, the researchers computed abstractness ratings for __29__ 40,000 commonly used words in the English language. Words considered to be concrete could be easily visualized such as “table” or “chair”. Words that were more __30__ to visualize, for example, “justice” or “morality” were considered to be more abstract. They found that men used __31__ more abstract language in their blog posts. What is the __32__ of this effect? The researchers suggest that power differences between the genders — that is, men having more power in society — might be a key determinant (决定因素) .For instance, in a follow-up study conducted with a sample of 300 students, the researchers __33__ power dynamics in an interpersonal setting to see if this would influence communicative abstraction. They found that participants in a high-power interviewer role were more likely to give abstract descriptions of behaviors than were participants in a low-power interviewee role. This suggests that communicating more abstractly does not reflect a __34__ tendency of men or women but rather __35__ within specific contexts.\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "approximately",
+    "I": "manipulated",
+    "B": "attaining",
+    "J": "recommended",
+    "C": "conclusion",
+    "K": "refraining",
+    "D": "difficult",
+    "L": "signals",
+    "E": "emerges",
+    "M": "significantly",
+    "F": "fixed",
+    "N": "source",
+    "G": "ignored",
+    "O": "ultimate",
+    "H": "legally"
+   },
+   "answers": {
+    "26": "O",
+    "27": "B",
+    "28": "C",
+    "29": "A",
+    "30": "D",
+    "31": "M",
+    "32": "N",
+    "33": "I",
+    "34": "F",
+    "35": "E"
+   }
+  },
+  {
+   "file": "cet4-2024-06-3.md",
+   "passage": "Over the coming decades, millions of jobs will be threatened by robotics and artificial intelligence. Despite intensive academic __26__ on these developments, there has been little study on how workers __27__ to being replaced through technology. To find out, business researchers at TUM and Erasmus University Rotterdam conducted 11 studies and surveys with over 2,000 persons from several countries. The findings show: in principle, most people view it more __28__ when workers are replaced by other people than by robots or intelligent software. This preference __29__, however, when it refers to people’s own jobs. When that is the case, the majority of workers find it less upsetting to see their own jobs go to robots than to other employees. In the long term, however, the same people see machines as more threatening to their future role in the workforce. These effects can also be observed among people who have recently become unemployed. The researchers were able to identify the causes behind these __30__ paradoxica results, too: People tend to __31__ themselves less with machines than with other people. Consequently, being replaced by a robot or software __32__ less of a threat to their feeling of self-worth. This reduced self-threat could even be observed when participants assumed that they were being replaced by other employees who relied on technological abilities such as artificial intelligence in their work. “Even when unemployment results from the __33__ of new technologies, people still judge it in a social context,” says Christoph Fuchs, one of the authors of the study. “It is important to understand these __34__ effects when trying to manage the massive changes in the working world to minimize __35__ in society.”\n\n|  |  |\n| --- | --- |",
+   "bank": {
+    "A": "compare",
+    "I": "introduction",
+    "B": "contradicts",
+    "J": "modifications",
+    "C": "conventional",
+    "K": "poses",
+    "D": "debate",
+    "L": "psychological",
+    "E": "disruptions",
+    "M": "react",
+    "F": "drastically",
+    "N": "reverses",
+    "G": "favorably",
+    "O": "seemingly",
+    "H": "guarantee"
+   },
+   "answers": {
+    "26": "D",
+    "27": "M",
+    "28": "G",
+    "29": "N",
+    "30": "O",
+    "31": "A",
+    "32": "K",
+    "33": "I",
+    "34": "L",
+    "35": "E"
+   }
+  }
+ ]
+}

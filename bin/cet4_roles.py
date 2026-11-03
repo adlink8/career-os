@@ -1,0 +1,144 @@
+# -*- coding: utf-8 -*-
+"""按题型分派的出题老师 / 审查老师。
+
+用法:
+  python bin/cet4_roles.py --type cloze|match|reading --role writer|reviewer --input <json> [--out <json>]
+
+约定：脚本只负责拼 prompt、调 CB、解析 JSON；**不设任何分数/字数硬门**，
+通过与否一律以 reviewer 的 verdict 为准。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+CB = Path(r"C:\Users\li\AppData\Roaming\npm\codebuddy.cmd")
+KB = ROOT / "knowledge" / "cet4-bank" / "10-出题知识库"
+DIRS = {"cloze": "01-选词填空", "match": "02-长篇匹配", "reading": "03-仔细阅读"}
+
+WRITER = {
+    "cloze": """你是四级选词填空命题老师。给你一篇文章，改成 Section A：
+输出 JSON：{{"passage":"用 __26__..__35__ 标 10 个空（每空前后保留原句语境）","bank":{{"A":"词","B":"词",...,"O":"词"}},"answers":{{"26":"字母",...}},"translate":[{{"blank":26,"cn":"该空中文"}}]}}
+规则：文章 188-267 词；15 词同词性同语义场；10 正确 + 5 干扰；每空唯一答案；答案字母分散。
+文章：
+{article}
+""",
+    "match": """你是四级长篇匹配命题老师。给你一篇文章，改成 Section B：
+输出 JSON：{{"title":"英文标题","paragraphs":{{"A":"段落原文",...}},"statements":[{{"no":36,"text":"陈述（改写，禁止照抄）"}}],"answers":{{"36":"段落字母",...}}}}
+规则：10-11 段、每段 60-120 词；10 条陈述各一个信息点；至少 1 条转折、1 条数据；答案分散；允许 1-2 段不设题。
+文章：
+{article}
+""",
+    "reading": """你是四级仔细阅读命题老师。给你一篇文章，出 5 题（46-50）：
+输出 JSON：{{"questions":[{{"no":46,"stem":"","options":["A) ...","B) ...","C) ...","D) ..."],"answer":"A","evidence":"原文句","paraphrase":{{"original":"","option":""}},"trap":"","option_analysis":[{{"letter":"A","correct":false,"why":""}}],"stem_cn":"","options_cn":[]}}]}}
+规则：细节 2-3、态度 1、推断 1、原因 1；题文同序；正确项换谓语、连续实词<=4；三个干扰项三种手法；选项等长；答案>=3 字母。
+文章：
+{article}
+""",
+}
+
+REVIEWER = {
+    "cloze": """你是四级选词填空审查老师。对照下面 2 套真题范例，逐空审查候选卷。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[{{"id":"F1","severity":"blocker|high|medium","problem":"","fix":""}}]}}
+审查点：空白是否可解、干扰项是否同质、答案是否唯一、词库是否 15 词同场、文章是否 188-267 词。
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+    "match": """你是四级长篇匹配审查老师。对照下面 2 套真题范例，审查候选卷。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
+审查点：每段是否可辨、陈述是否改写（非照抄）、每条是否单一信息点、答案是否分散、是否有 1-2 段纯干扰。
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+    "reading": """你是四级仔细阅读审查老师。对照下面 2 套真题范例，逐题审查候选卷。
+只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[]}}
+审查点：题型配比、题文同序、正确项是否照抄、干扰项手法、双答案、选项长度、答案分布、题干是否加码。
+【真题范例】{examples}
+【候选卷】{paper}
+""",
+}
+
+
+def examples_for(t: str) -> str:
+    p = KB / DIRS[t] / "exemplars.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text(encoding="utf-8"))
+    exs = data.get("examples", [])[:2]
+    return json.dumps(exs, ensure_ascii=False)[:6000]
+
+
+def run(prompt: str) -> str:
+    p = subprocess.run([str(CB), "-p", "--output-format", "text"], input=prompt,
+                       capture_output=True, text=True, encoding="utf-8", timeout=900, cwd=str(ROOT))
+    return p.stdout or ""
+
+
+def parse_json(text: str):
+    t = re.sub(r"^```(?:json)?\s*", "", (text or "").strip())
+    t = re.sub(r"\s*```$", "", t)
+    i = t.find("{")
+    if i < 0:
+        return None
+    depth = 0
+    in_str = esc = False
+    for j in range(i, len(t)):
+        ch = t[j]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(t[i:j + 1])
+                except json.JSONDecodeError:
+                    return None
+    return None
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--type", required=True, choices=list(DIRS))
+    ap.add_argument("--role", required=True, choices=["writer", "reviewer"])
+    ap.add_argument("--input", required=True)
+    ap.add_argument("--out", default="")
+    args = ap.parse_args()
+    src = Path(args.input)
+    paper = json.loads(src.read_text(encoding="utf-8"))
+    if args.role == "writer":
+        article = paper.get("article") or paper.get("passage") or ""
+        prompt = WRITER[args.type].format(article=article[:8000])
+    else:
+        prompt = REVIEWER[args.type].format(examples=examples_for(args.type),
+                                            paper=json.dumps(paper, ensure_ascii=False)[:12000])
+    data = parse_json(run(prompt))
+    if not data:
+        print("parse failed")
+        return 1
+    out = Path(args.out) if args.out else src.with_name(f"{src.stem}.{args.type}.{args.role}.json")
+    out.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+    if args.role == "reviewer":
+        print(f"verdict={data.get('verdict')} score={data.get('score')} fixes={len(data.get('must_fix') or [])}")
+    else:
+        print("keys:", list(data)[:6])
+    print("saved", out)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
