@@ -35,7 +35,7 @@ def main():
             {"file": r["file"], "passage": r["A"]["passage"][:1800], "bank": r["A"]["bank"],
              "answers": r["answers_A"]}
             for r in rows if r["A"]
-        ][:3],
+        ][:6],
     }
     (KB / "01-选词填空").mkdir(parents=True, exist_ok=True)
     (KB / "01-选词填空" / "exemplars.json").write_text(json.dumps(cloze, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -56,7 +56,7 @@ def main():
             {"file": r["file"], "title": r["B"]["title"], "paragraphs": r["B"]["paragraphs"],
              "statements": r["B"]["statements"], "answers": r["answers_B"]}
             for r in rows if r["B"]
-        ][:2],
+        ][:4],
     }
     (KB / "02-长篇匹配").mkdir(parents=True, exist_ok=True)
     (KB / "02-长篇匹配" / "exemplars.json").write_text(json.dumps(match, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -70,7 +70,7 @@ def main():
         "examples": [
             {"file": r["file"], "questions": r["C"]["questions"], "answers": r["answers_C"]}
             for r in rows if r["C"] and r["C"]["questions"]
-        ][:2],
+        ][:4],
     }
     (KB / "03-仔细阅读").mkdir(parents=True, exist_ok=True)
     (KB / "03-仔细阅读" / "exemplars.json").write_text(json.dumps(reading, ensure_ascii=False, indent=1), encoding="utf-8")

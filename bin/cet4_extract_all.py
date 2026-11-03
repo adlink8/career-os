@@ -121,13 +121,13 @@ def main():
     (KB / "05-翻译").mkdir(exist_ok=True)
     (KB / "06-写作").mkdir(exist_ok=True)
     (KB / "04-听力" / "exemplars.json").write_text(json.dumps(
-        [{"file": r["file"], "sections": r["listening"], "answers": r["answers_listening"]} for r in rows[:5]],
+        [{"file": r["file"], "sections": r["listening"], "answers": r["answers_listening"]} for r in rows[:10]],
         ensure_ascii=False, indent=1), encoding="utf-8")
     (KB / "05-翻译" / "exemplars.json").write_text(json.dumps(
-        [{"file": r["file"], "zh": r["translation"]["zh"], "chars": r["translation"]["chars"]} for r in rows[:5]],
+        [{"file": r["file"], "zh": r["translation"]["zh"], "chars": r["translation"]["chars"]} for r in rows[:10]],
         ensure_ascii=False, indent=1), encoding="utf-8")
     (KB / "06-写作" / "exemplars.json").write_text(json.dumps(
-        [{"file": r["file"], "directions": r["writing"]["directions"], "topic": r["writing"]["topic"]} for r in rows[:5]],
+        [{"file": r["file"], "directions": r["writing"]["directions"], "topic": r["writing"]["topic"]} for r in rows[:10]],
         ensure_ascii=False, indent=1), encoding="utf-8")
 
     (KB / "04-听力" / "rules.md").write_text(f"""# 听力（Part II，25 题）知识库
