@@ -207,7 +207,7 @@ function check(){
     const qa = document.getElementById('qa'+q.no);
     if (qa) {
       const oa = (q.option_analysis||[]).map(x => `<div class="small">${x.letter}) ${x.correct?'✓':'✗'} ${x.why||''}</div>`).join('');
-      qa.innerHTML = `<div><b>答案 ${q.answer}</b></div>` +
+      qa.innerHTML = `<div><b>答案 ${q.answer}</b></div>` + (q.stem_cn?`<div class="small">题干：${q.stem_cn}</div>`:'') + ((q.options_cn||[]).length?`<div class="small">选项：${(q.options_cn||[]).join('；')}</div>`:'') +
         (q.evidence?`<div class="small">定位：${q.evidence}</div>`:'') +
         (q.paraphrase?`<div class="small">同义替换：${q.paraphrase.original} → ${q.paraphrase.option}</div>`:'') +
         (q.trap?`<div class="small">陷阱：${q.trap}</div>`:'') + oa;

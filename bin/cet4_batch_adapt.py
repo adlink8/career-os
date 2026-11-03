@@ -43,7 +43,7 @@ JSON 结构：
     "sentences":[{{"en":"本段一句原文","chunks":[{{"en":"片段（5-10 词）","role":"主|谓|宾|状|定|补|表","cn":"该片段中文"}}],"meaning":"整句中文","modifier":"谁修饰谁（如 for 短语说明范围）","why":"为什么这样切（先抓主谓宾）","collocation":"固定搭配"}}]}}
  ],
  "questions": [
-  {{"no":1,"stem":"题干英文 <=20 词","options":["A) ...","B) ...","C) ...","D) ..."],
+  {{"no":1,"stem":"题干英文 <=20 词","stem_cn":"题干中文（顺流直译）","options":["A) ...","B) ...","C) ...","D) ..."],"options_cn":["A 项中文","B 项中文","C 项中文","D 项中文"],
     "answer":"A","evidence":"passage 中逐字出现的定位句",
     "paraphrase":{{"original":"原文词句","option":"选项换皮词"}},
     "trap":"无中生有|偷换概念|因果倒置|范围扩大|原词拼接",

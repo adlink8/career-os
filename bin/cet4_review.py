@@ -57,8 +57,12 @@ def real_excerpts(dir_path: Path, limit=2) -> str:
     out = []
     for p in sorted(dir_path.glob("*/*.md"))[:limit]:
         text = p.read_text(encoding="utf-8", errors="ignore")
-        m = re.search(r"Section C(.*?)(?:\n#|\Z)", text, flags=re.S)
-        body = (m.group(1) if m else text)[:2600]
+        part = text.find("Part III")
+        sub = text.find("Section C", part if part >= 0 else 0)
+        start = text.find("#### Passage One", sub if sub >= 0 else 0)
+        if start < 0:
+            start = sub if sub >= 0 else 0
+        body = text[start:start + 3000]
         out.append(f"--- {p.name} ---\n{body}")
     return "\n\n".join(out)
 

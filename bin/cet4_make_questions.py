@@ -21,8 +21,8 @@ from cet4_validate import check  # noqa: E402
 PROMPT = """你是大学英语四级阅读命题老师。给你一篇已改写好的文章，只出 5 道题，不要改文章。
 只输出 JSON：{{"questions":[...]}}
 每道题：
-{{"no":1,"stem":"题干（英文 <=20 词，具体不空泛）",
- "options":["A) ...","B) ...","C) ...","D) ..."],
+{{"no":1,"stem":"题干（英文 <=20 词，具体不空泛）","stem_cn":"题干中文（顺流直译）",
+ "options":["A) ...","B) ...","C) ...","D) ..."],"options_cn":["A 项中文","B 项中文","C 项中文","D 项中文"],
  "answer":"A|B|C|D",
  "evidence":"原文定位句（必须逐字出现在 passage 中）",
  "paraphrase":{{"original":"原文词句","option":"选项换皮词"}},
