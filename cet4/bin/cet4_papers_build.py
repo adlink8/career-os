@@ -33,7 +33,7 @@ PDIR = ROOT / "var" / "cet4-daily" / "papers"
 CB = Path(r"C:\Users\li\AppData\Roaming\npm\codebuddy.cmd")
 
 SETS = ["set-81.s2.json", "set-82.s2.json", "set-83.s2.json", "set-84.s2.json", "set-85.s2.json",
-        "set-86.s2.json", "set-87.s2.json", "set-91.s2.json", "set-92.s2.json", "set-93.s2.json"]
+        "set-86.s2.json", "set-87.s2.json", "set-97.json", "set-98.json", "set-99.json"]
 
 COMPOSE = """你在组一份大学英语四级模拟卷，已经有一篇阅读正文（Section C Passage One）。请补齐其余部分。
 
