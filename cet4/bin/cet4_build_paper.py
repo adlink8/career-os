@@ -20,28 +20,46 @@ import shutil
 from pathlib import Path
 
 CSS = """
-:root{--fs:10.5pt;--fsan:9pt}
+:root{--fs:10.5pt;--fsan:9pt;
+--pg:#e9e9e9;--pp:#fff;--fg:#000;--fg2:#333;--fg3:#555;--dim:#7a7a7a;--ink:#111;
+--line:#e2e2e2;--line2:#ddd;--card:#f6f6f6;--card2:#fafafa;--pan:#fbf9f1;--panb:#c9a227;
+--hover:#eef4ff;--btnbg:#e8e8e8;--selbg:#e3f0ff;--okbg:#d9f2df;--badbg:#fde0e0;--hlbg:#fff3cd;
+--okfg:#1a6b3c;--okbg2:#e8f6ec;--badfg:#a01a26;--badbg2:#fdeaea;--link:#1a5fb4;--goldtext:#7a5c00;--tipfg:#8a5200;
+--skfg:#1a4f8a;--skbg:#f2f7ff;--stabbg:#111;--sttfg:#fff;
+--r-subj:#1a5fb4;--r-pred:#c01c28;--r-obj:#26a269;--r-adv:#813d9c;--r-attr:#0f6674;--r-comp:#8f5d00;--r-other:#444;
+--hl-yellow:#fff3a8;--hl-green:#c8e6c9;--hl-red:#ffd6d6;--hl-orange:#ffe0b2;--hl-purple:#e1bee7;--note-bg:#fff8e1}
+body.dark{--pg:#15181d;--pp:#1c2026;--fg:#e6e8ea;--fg2:#c7ccd3;--fg3:#a7aeb7;--dim:#8b939d;--ink:#e6e8ea;
+--line:#343a42;--line2:#2b3037;--card:#22272e;--card2:#20242a;--pan:#1e232a;--panb:#8a6f1f;
+--hover:#2a3442;--btnbg:#333a43;--selbg:#1e3a5c;--okbg:#17361f;--badbg:#3a1c1e;--hlbg:#3a3418;
+--okfg:#6fdc8c;--okbg2:#16281c;--badfg:#ff8f88;--badbg2:#3a1e1f;--link:#7cb0ff;--goldtext:#e0c070;--tipfg:#e0b060;
+--skfg:#a9c9ff;--skbg:#1b2836;--stabbg:#4a5462;--sttfg:#fff;
+--r-subj:#75aaff;--r-pred:#ff8078;--r-obj:#5fd47a;--r-adv:#d3a8ff;--r-attr:#5ed7e0;--r-comp:#e5b95c;--r-other:#c2c8cf;
+--hl-yellow:rgba(255,214,0,.32);--hl-green:rgba(72,200,110,.30);--hl-red:rgba(255,90,90,.30);--hl-orange:rgba(255,165,0,.30);--hl-purple:rgba(190,120,255,.30);--note-bg:rgba(255,220,120,.16)}
 *{box-sizing:border-box}
-body{margin:0;overflow-x:hidden;background:#e9e9e9;font-family:"Times New Roman","SimSun",serif;color:#000;font-size:var(--fs);line-height:1.5}
-.paper{width:595.32pt;margin:16pt auto;background:#fff;padding:38pt 36pt 30pt;box-shadow:0 2px 16px rgba(0,0,0,.18)}
+body{margin:0;overflow-x:hidden;background:var(--pg);font-family:"Times New Roman","SimSun",serif;color:var(--fg);font-size:var(--fs);line-height:1.5;transition:background .18s,color .18s}
+.paper{width:595.32pt;margin:16pt auto;background:var(--pp);padding:38pt 36pt 30pt;box-shadow:0 2px 16px rgba(0,0,0,.18)}
 .part{font-weight:bold;margin:14pt 0 6pt;font-size:1.05em}
 .sec{font-weight:bold;margin:8pt 0 4pt}
-.dir{font-style:italic;color:#333;margin:4pt 0 8pt}
+.dir{font-style:italic;color:var(--fg2);margin:4pt 0 8pt}
 p.body{text-indent:2em;margin:0 0 5pt;text-align:justify}
 .q{margin:7pt 0}
 .opts{display:grid;grid-template-columns:1fr 1fr;column-gap:14pt;padding-left:12pt}
 .opt{display:block;cursor:pointer;padding:1pt 2px;border-radius:2px}
 .opt input{display:none}
-.opt.sel{background:#e3f0ff}
-.opt.correct{background:#d9f2df;outline:1px solid #2e7d32}
-.opt.wrong{background:#fde0e0;outline:1px solid #c62828}
-input.blank{width:110pt;border:none;border-bottom:1px solid #666;font-family:inherit;font-size:1em;text-align:center}
+.opt.sel{background:var(--selbg)}
+.opt.correct{background:var(--okbg);outline:1px solid #2e7d32}
+.opt.wrong{background:var(--badbg);outline:1px solid #c62828}
+input.blank{width:110pt;border:none;border-bottom:1px solid var(--fg3);background:transparent;color:var(--fg);font-family:inherit;font-size:1em;text-align:center}
 select.stmt{font-family:inherit;font-size:.95em}
 .bank{display:grid;grid-template-columns:repeat(4,1fr);gap:2pt 10pt;margin:6pt 0 10pt;font-size:.95em}
-.bank div{border-bottom:1px dotted #ddd}
-textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid #ccc;border-radius:4pt;padding:6pt}
-.qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
-.qa.show{display:block}
+.bank div{border-bottom:1px dotted var(--line2)}
+textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid var(--line2);border-radius:4pt;padding:6pt;background:transparent;color:var(--fg)}
+.qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid var(--panb);background:var(--pan);font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.ansline{display:none}
+.qans{display:none;margin:3pt 0 2pt;padding:2pt 8pt;border-left:2pt solid var(--okfg);background:var(--okbg2);font-size:.86em;line-height:1.6;color:var(--okfg);font-family:-apple-system,"Microsoft YaHei",sans-serif}
+body.showans .qans{display:block}
+body.showans .qa{display:block}
+body.showans .ansline{display:inline}
 .bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:5px 10px;font:13px/1.35 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:9px;row-gap:5px;align-items:center;flex-wrap:wrap;z-index:20;white-space:nowrap}
 .bar .ttl{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar input[type=range]{width:96px;vertical-align:middle}
@@ -54,13 +72,13 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .bar select{background:#222;color:#fff;border:1px solid #666;border-radius:4px;font:12px/1.2 inherit;padding:2px 0;margin:0}
 #ink{position:fixed;top:0;left:0;z-index:15;pointer-events:none;touch-action:none}
 #ink.on{pointer-events:auto;cursor:crosshair}
-mark.hl-yellow{background:#fff3a8}
-mark.hl-green{background:#c8e6c9}
-mark.hl-red{background:#ffd6d6}
-mark.hl-orange{background:#ffe0b2}
-mark.hl-purple{background:#e1bee7}
+mark.hl-yellow{background:var(--hl-yellow)}
+mark.hl-green{background:var(--hl-green)}
+mark.hl-red{background:var(--hl-red)}
+mark.hl-orange{background:var(--hl-orange)}
+mark.hl-purple{background:var(--hl-purple)}
 span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
-span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
+span.noted{background:var(--note-bg);border-bottom:1px dotted #c9a227;cursor:help}
 @media (max-width:1620px){.bar .ttl{display:none}}
 @media (max-width:1180px){.bar{padding:4px 6px;gap:7px;font-size:12.5px}}
 #radial{position:fixed;z-index:60;width:208px;height:208px;display:none;pointer-events:none;user-select:none;-webkit-user-select:none}
@@ -73,116 +91,117 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 #radial .ri.t-r{background:#ffd6d6;color:#a01b1b;border-color:#e59a9a}
 #radial .ri.t-n{background:#fff8e1;color:#6b5410;border-color:#dcc98d}
 #radial .ri.hot{background:#2f6fb0;border-color:#a9cfef;color:#fff;transform:scale(1.14);box-shadow:0 6px 18px rgba(0,0,0,.45)}
+body.dark .paper{box-shadow:0 2px 20px rgba(0,0,0,.55)}
 .spacer{height:var(--barh,56px)}
 audio.audio{display:none}
-.ap{display:flex;align-items:center;gap:8px;margin:5pt 0 7pt;padding:3pt 9pt;border:1px solid #ddd;border-radius:14pt;background:#fafafa;font:11.5px/1.2 -apple-system,"Microsoft YaHei",sans-serif;user-select:none;-webkit-user-select:none}
-.ap button{border:none;background:#e8e8e8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;color:#222;flex:none;padding:0;display:flex;align-items:center;justify-content:center}
-.ap button:hover{background:#dcdcdc}
-.ap .ap-t{color:#555;font-variant-numeric:tabular-nums;flex:none;min-width:78px;text-align:right}
+.ap{display:flex;align-items:center;gap:8px;margin:5pt 0 7pt;padding:3pt 9pt;border:1px solid var(--line2);border-radius:14pt;background:var(--card2);font:11.5px/1.2 -apple-system,"Microsoft YaHei",sans-serif;user-select:none;-webkit-user-select:none}
+.ap button{border:none;background:var(--btnbg);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;color:var(--fg2);flex:none;padding:0;display:flex;align-items:center;justify-content:center}
+.ap button:hover{filter:brightness(1.15)}
+.ap .ap-t{color:var(--fg3);font-variant-numeric:tabular-nums;flex:none;min-width:78px;text-align:right}
 .ap .ap-track{position:relative;flex:1;height:16px;cursor:pointer;touch-action:none}
-.ap .ap-track:before{content:"";position:absolute;left:0;right:0;top:7px;height:3px;border-radius:2px;background:#ddd}
+.ap .ap-track:before{content:"";position:absolute;left:0;right:0;top:7px;height:3px;border-radius:2px;background:var(--line2)}
 .ap .ap-fill{position:absolute;left:0;top:7px;height:3px;border-radius:2px;background:#2f6fb0;width:0}
 .ap .ap-knob{position:absolute;top:3px;left:0;width:10px;height:10px;border-radius:50%;background:#2f6fb0;margin-left:-5px}
-.ap select{border:1px solid #ddd;border-radius:4px;background:#fff;font-size:11px;padding:1px 2px;color:#444;flex:none}
+.ap select{border:1px solid var(--line2);border-radius:4px;background:var(--card);font-size:11px;padding:1px 2px;color:var(--fg2);flex:none}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
 #report.show{display:flex}
-#reportBox{background:#fff;padding:calc(16pt*var(--pz,1));border-radius:10pt;width:calc(340pt*var(--pz,1));font:calc(12pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+#reportBox{background:var(--pp);color:var(--fg);padding:calc(16pt*var(--pz,1));border-radius:10pt;width:calc(340pt*var(--pz,1));font:calc(12pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 .w{cursor:context-menu}
-.w:hover{background:#eef4ff}
-#wdict{display:none;position:fixed;z-index:50;width:calc(216px*var(--pz,1));background:#fff;border:1px solid #999;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.22);padding:calc(6px*var(--pz,1)) calc(8px*var(--pz,1));font:calc(12px*var(--pz,1))/1.5 -apple-system,"Microsoft YaHei",sans-serif;color:#111}
+.w:hover{background:var(--hover)}
+#wdict{display:none;position:fixed;z-index:50;width:calc(216px*var(--pz,1));background:var(--pp);border:1px solid var(--line2);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.22);padding:calc(6px*var(--pz,1)) calc(8px*var(--pz,1));font:calc(12px*var(--pz,1))/1.5 -apple-system,"Microsoft YaHei",sans-serif;color:var(--fg)}
 #wdict.show{display:block}
 #wdict .hd{font-weight:700;font-size:calc(14px*var(--pz,1));line-height:1.3}
-#wdict .ipa{color:#555;margin-left:4px;font-size:calc(11.5px*var(--pz,1));font-weight:400}
-#wdict .pos{color:#7a5c00;margin-right:3px}
+#wdict .ipa{color:var(--fg3);margin-left:4px;font-size:calc(11.5px*var(--pz,1));font-weight:400}
+#wdict .pos{color:var(--goldtext);margin-right:3px}
 #wdict .btn{margin-top:5px;display:flex;gap:4px}
-#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:4px;padding:1px 6px;cursor:pointer;margin:0;font-size:calc(11.5px*var(--pz,1));line-height:1.5}
+#wdict button{border:1px solid var(--line2);background:var(--card2);color:var(--fg);border-radius:4px;padding:1px 6px;cursor:pointer;margin:0;font-size:calc(11.5px*var(--pz,1));line-height:1.5}
 #wdict .cn{font-size:calc(13px*var(--pz,1));margin:1px 0 2px}
 #wdict .dr{margin-top:1px;line-height:1.45;font-size:calc(11.5px*var(--pz,1))}
-#wdict .dk{display:inline-block;min-width:2.6em;color:#7a5c00;font-weight:600;font-size:calc(11px*var(--pz,1))}
-#wdict .dcn{color:#666}
-#wdict .ex{color:#333}
+#wdict .dk{display:inline-block;min-width:2.6em;color:var(--goldtext);font-weight:600;font-size:calc(11px*var(--pz,1))}
+#wdict .dcn{color:var(--dim)}
+#wdict .ex{color:var(--fg2)}
 #wdict .ex{-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
 #vocab{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:45;align-items:center;justify-content:center}
 #vocab.show{display:flex}
-#vocab .vbox{background:#fff;width:min(calc(760pt*var(--pz,1)),94vw);max-height:84vh;overflow:auto;border-radius:10pt;padding:calc(14pt*var(--pz,1)) calc(16pt*var(--pz,1));font:calc(11pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+#vocab .vbox{background:var(--pp);color:var(--fg);width:min(calc(760pt*var(--pz,1)),94vw);max-height:84vh;overflow:auto;border-radius:10pt;padding:calc(14pt*var(--pz,1)) calc(16pt*var(--pz,1));font:calc(11pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 #vocab h3{margin:0 0 8pt}
 #vocab table{width:100%;border-collapse:collapse}
-#vocab td,#vocab th{border-bottom:1px solid #eee;padding:3px 6px;text-align:left;vertical-align:top}
+#vocab td,#vocab th{border-bottom:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top}
 #vocab .del{color:#c01c28;cursor:pointer;border:none;background:none;font-size:1em}
 #vocab .vbar{display:flex;gap:8px;flex-wrap:wrap;margin:8pt 0}
-#vocab .vbar button{border:1px solid #ccc;background:#fafafa;border-radius:6pt;padding:3pt 10pt;cursor:pointer}
-.pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:calc(var(--fsan) * 1.0);line-height:1.7;font-family:-apple-system,"Microsoft YaHei","SimSun",sans-serif}
+#vocab .vbar button{border:1px solid var(--line2);background:var(--card2);color:var(--fg);border-radius:6pt;padding:3pt 10pt;cursor:pointer}
+.pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid var(--panb);background:var(--pan);font-size:calc(var(--fsan) * 1.0);line-height:1.7;font-family:-apple-system,"Microsoft YaHei","SimSun",sans-serif}
 .pan.show,.qax.show{display:block}
 .pan .cn{margin-bottom:3pt}
-.tr{margin:4pt 0 8pt;border-left:2pt solid #e0e0e0;padding-left:8pt;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.tr{margin:4pt 0 8pt;border-left:2pt solid var(--line2);padding-left:8pt;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .tr .line{cursor:pointer;padding:1pt 3px;border-radius:2px}
-.tr .line:hover{background:#eef4ff}
-.tr .line.on{background:#fff3cd}
-.tr .line .en{color:#111}
-.tr .line .cn{color:#5a5a5a}
-.sum{margin:4pt 0;padding:5pt 8pt;background:#f6f6f6;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.tr .line:hover{background:var(--hover)}
+.tr .line.on{background:var(--hlbg)}
+.tr .line .en{color:var(--ink)}
+.tr .line .cn{color:var(--fg3)}
+.sum{margin:4pt 0;padding:5pt 8pt;background:var(--card);font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .vt{width:100%;border-collapse:collapse;margin:4pt 0 8pt;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
-.vt td{border-bottom:1px dotted #ddd;padding:1pt 4px;vertical-align:top}
+.vt td{border-bottom:1px dotted var(--line2);padding:1pt 4px;vertical-align:top}
 .vt td:first-child{font-weight:600;width:24%}
-.vt td:nth-child(2){color:#555;width:24%}
+.vt td:nth-child(2){color:var(--fg3);width:24%}
 .trs{border-collapse:collapse;width:100%;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif;margin:4pt 0}
-.trs td,.trs th{border:1px solid #e2e2e2;padding:2pt 5px;vertical-align:top;text-align:left}
+.trs td,.trs th{border:1px solid var(--line);padding:2pt 5px;vertical-align:top;text-align:left}
 .bands{margin:4pt 0 8pt;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
-.bands div{border-bottom:1px dotted #ddd;padding:1pt 0}
+.bands div{border-bottom:1px dotted var(--line2);padding:1pt 0}
 /* —— 解析配色：标签chip + 成分色 —— */
 .lb{display:inline-block;min-width:4.2em;margin-right:4px;padding:0 4px;border-radius:3px;font-weight:600;font-size:.86em;line-height:1.5;color:#fff;background:#8a8a8a;text-align:center;vertical-align:1px}
 .lb-main{background:#1a5fb4}.lb-role{background:#813d9c}.lb-map{background:#0f6674}
 .lb-loc{background:#b8860b}.lb-para{background:#26a269}.lb-trap{background:#c01c28}
 .lb-why{background:#26a269}.lb-opt{background:#c01c28}.lb-chunk{background:#1a5fb4}
 .lb-mean{background:#5a5a5a}.lb-tip{background:#b35c00}.lb-band{background:#3d6b35}
-.r-subj{color:#1a5fb4;font-weight:600}
-.r-pred{color:#c01c28;font-weight:600}
-.r-obj{color:#26a269;font-weight:600}
-.r-adv{color:#813d9c;font-weight:600}
-.r-attr{color:#0f6674;font-weight:600}
-.r-comp{color:#8f5d00;font-weight:600}
-.r-other{color:#444}
-.loc{background:#fff3cd;padding:0 2px;border-radius:2px}
-.an{border-top:1px dotted #e2dcc8;margin-top:4px;padding-top:3px}
+.r-subj{color:var(--r-subj);font-weight:600}
+.r-pred{color:var(--r-pred);font-weight:600}
+.r-obj{color:var(--r-obj);font-weight:600}
+.r-adv{color:var(--r-adv);font-weight:600}
+.r-attr{color:var(--r-attr);font-weight:600}
+.r-comp{color:var(--r-comp);font-weight:600}
+.r-other{color:var(--r-other)}
+.loc{background:var(--hlbg);padding:0 2px;border-radius:2px}
+.an{border-top:1px dotted var(--line);margin-top:4px;padding-top:3px}
 .an .row{display:flex;gap:5px;align-items:flex-start;padding:1px 0}
 .an .lt{flex:0 0 auto;display:inline-block;min-width:2.4em;text-align:center;border-radius:3px;font-weight:700;font-size:.9em;color:#fff;background:#8a8a8a}
 .an .lt.ok{background:#26a269}
 .an .lt.bad{background:#c01c28}
 .an .tx{flex:1 1 auto}
-.an .tx b{color:#a01a26;font-weight:600}
-.sent{margin-top:6px;padding-left:4px;border-left:2px solid #f0f0f0}
+.an .tx b{color:var(--badfg);font-weight:600}
+.sent{margin-top:6px;padding-left:4px;border-left:2px solid var(--line2)}
 .sent .chk{line-height:2.1}
-.sent .scn{color:#3f3f3f;margin-top:1px}
+.sent .scn{color:var(--fg2);margin-top:1px}
 .sent.clickable{cursor:pointer;border-radius:3px}
-.sent.clickable:hover{background:#fbfbf4}
+.sent.clickable:hover{background:var(--card2)}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:calc(12px*var(--pz,1))/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
 #toast.show{opacity:.94}
-.side{float:right;width:380px;margin:2pt -440px 12pt 0;position:static;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
+.side{float:right;width:380px;margin:2pt -440px 12pt 0;position:static;background:var(--pp);border:1px solid var(--line2);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
 .side table{width:100%!important;table-layout:fixed}
 .side .trs td,.side .trs th{overflow-wrap:anywhere;padding:2px 5px;font-size:11.5px}
 .side .sk{overflow-wrap:anywhere}
-.shd{font-weight:700;color:#111}
-.band{margin:4px 0;padding:4px 6px;background:#fafafa;border-left:2px solid #e3e3e3;border-radius:3px}
-.band .musts{color:#444;margin:2px 0}
-.band .sk{font-family:"Times New Roman",serif;color:#1a4f8a;background:#f2f7ff;padding:1px 4px;border-radius:3px;margin:2px 0}
+.shd{font-weight:700;color:var(--ink)}
+.band{margin:4px 0;padding:4px 6px;background:var(--card2);border-left:2px solid var(--line2);border-radius:3px}
+.band .musts{color:var(--fg2);margin:2px 0}
+.band .sk{font-family:"Times New Roman",serif;color:var(--skfg);background:var(--skbg);padding:1px 4px;border-radius:3px;margin:2px 0}
 .side.off{display:none}
-.stabs{display:flex;gap:6px;margin-bottom:6px;align-items:center;position:sticky;top:-10px;background:#fff;padding:2px 0 6px}
-.stab{border:1px solid #ddd;background:#f7f7f7;border-radius:6px;padding:2px 10px;cursor:pointer;font:12.5px/1.7 -apple-system,"Microsoft YaHei",sans-serif}
-.stab.on{background:#111;color:#fff;border-color:#111}
+.stabs{display:flex;gap:6px;margin-bottom:6px;align-items:center;position:sticky;top:-10px;background:var(--pp);padding:2px 0 6px}
+.stab{border:1px solid var(--line2);background:var(--card);color:var(--fg);border-radius:6px;padding:2px 10px;cursor:pointer;font:12.5px/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.stab.on{background:var(--stabbg);color:var(--sttfg);border-color:var(--stabbg)}
 .stab.close{margin-left:auto;background:transparent;border:none;font-size:15px;line-height:1}
 .spane{display:none}
 .spane.on{display:block}
-.fold{margin:6pt 0;font-size:.95em;border-left:2px solid #e6e6e6;padding-left:8pt}
-.fold summary{cursor:pointer;color:#1a5fb4}
+.fold{margin:6pt 0;font-size:.95em;border-left:2px solid var(--line2);padding-left:8pt}
+.fold summary{cursor:pointer;color:var(--link)}
 body.nofloat .side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}
 @media (max-width:1240px){.side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}}
-.par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
-.trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
-.anno-en{font-weight:600;color:#111}
-.anno-cn{color:#3f3f3f}
-.anno-tip{color:#8a5200}
-.dim{color:#7a7a7a}
-@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial,.ap{display:none!important}.paper{box-shadow:none;margin:0;zoom:1!important;width:595.32pt!important}.side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}@page{size:A4;margin:38pt 36pt 30pt}}
+.par{color:var(--okfg);background:var(--okbg2);padding:0 2px;border-radius:2px}
+.trap{color:var(--badfg);background:var(--badbg2);padding:0 2px;border-radius:2px}
+.anno-en{font-weight:600;color:var(--ink)}
+.anno-cn{color:var(--fg2)}
+.anno-tip{color:var(--tipfg)}
+.dim{color:var(--dim)}
+@media print{body,body.dark{--pg:#e9e9e9;--pp:#fff;--fg:#000;--fg2:#333;--fg3:#555;--dim:#7a7a7a;--ink:#111;--line:#e2e2e2;--line2:#ddd;--card:#f6f6f6;--card2:#fafafa;--pan:#fbf9f1;--panb:#c9a227;--hover:#eef4ff;--btnbg:#e8e8e8;--selbg:#e3f0ff;--okbg:#d9f2df;--badbg:#fde0e0;--hlbg:#fff3cd;--okfg:#1a6b3c;--okbg2:#e8f6ec;--badfg:#a01a26;--badbg2:#fdeaea;--link:#1a5fb4;--goldtext:#7a5c00;--tipfg:#8a5200;--skfg:#1a4f8a;--skbg:#f2f7ff;--r-subj:#1a5fb4;--r-pred:#c01c28;--r-obj:#26a269;--r-adv:#813d9c;--r-attr:#0f6674;--r-comp:#8f5d00;--r-other:#444;--hl-yellow:#fff3a8;--hl-green:#c8e6c9;--hl-red:#ffd6d6;--hl-orange:#ffe0b2;--hl-purple:#e1bee7;--note-bg:#fff8e1}.bar,.qa,.pan,.qax,#wdict,#ink,#radial,.ap{display:none!important}.paper{box-shadow:none;margin:0;zoom:1!important;width:595.32pt!important}.side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
@@ -196,7 +215,7 @@ function wrapWords(root){
     const host = n.parentElement;
     if(!host) continue;
     // 只有字典弹窗/生词表面板/输入框内部不包词，其余全部可查（含解析区、字幕、作文、翻译）
-    if(host.closest('#wdict,#vocab,#toast,textarea,script,style,option')) continue;
+    if(host.closest('#wdict,#vocab,#toast,textarea,script,style,option,.ipa,.pos')) continue;
     if(/[A-Za-z]{2}/.test(n.textContent)) nodes.push(n);
   }
   nodes.forEach(node=>{
@@ -361,7 +380,13 @@ function check(){
 }
 function closeReport(){document.getElementById('report').classList.remove('show')}
 function speak(t){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-function showQA(){document.querySelectorAll('.qa').forEach(e=>e.classList.toggle('show'))}
+function showQA(){
+  const on = !document.body.classList.contains('showans');
+  document.body.classList.toggle('showans', on);
+  const b = document.getElementById('btnQA');
+  if(b){ b.textContent = on ? '收起答案' : '显示答案'; b.classList.toggle('on', on); }
+  if(typeof inkRedrawSoon === 'function') inkRedrawSoon();
+}
 function seek(aid, t, end, el){
   const a=document.getElementById(aid); if(!a) return;
   document.querySelectorAll('audio').forEach(b=>{ if(b!==a && !b.paused) b.pause(); });
@@ -477,6 +502,19 @@ function setPaperPct(p){
   fitPaper();
 }
 function resetPaper(){ setPaperPct(68); }
+function applyTheme(dark, save){
+  document.body.classList.toggle('dark', !!dark);
+  const b = document.getElementById('btnTheme');
+  if(b) b.textContent = dark ? '☀️ 浅色' : '🌙 深色';
+  if(save){ try{ localStorage.setItem('cet4_theme', dark ? 'dark' : 'light'); }catch(e){} }
+  if(typeof inkRedrawSoon === 'function') inkRedrawSoon();
+}
+function toggleTheme(){
+  applyTheme(!document.body.classList.contains('dark'), true);
+}
+(function(){ let t = 'light'; try{ t = localStorage.getItem('cet4_theme') || 'light'; }catch(e){}
+  if(t === 'dark') document.body.classList.add('dark');
+})();
 function syncBarHeight(){
   const b = document.querySelector('.bar');
   if(!b) return;
@@ -1310,9 +1348,10 @@ def main():
                 parts.append(f'<audio class="audio" id="{aid}" preload="metadata" '
                              f'data-src="{audio.name}" src="{audio.name}"></audio>')
             lx = lexp.get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or {}
+            detail = []
             if MODE == "explain":
                 if piece.get("summary"):
-                    parts.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
+                    detail.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
                 cn_map = {x.get("i"): x.get("cn") for x in (lx.get("sentences") or [])}
                 timing = piece.get("timing") or []
                 starts = [(float(s.get("start") or 0),
@@ -1330,7 +1369,7 @@ def main():
                     for i, s in enumerate(lsent):
                         t = tmap.get(norm_txt(s.get("en", ""))) or (starts[i] if i < len(starts) else None)
                         blocks.append(sentence_html(s, aid, t[0], t[1]) if t else sentence_html(s))
-                    parts.append('<div class="tr">' + "".join(blocks) + "</div>")
+                    detail.append('<div class="tr">' + "".join(blocks) + "</div>")
                 else:
                     lines = []
                     for i, s in enumerate(timing, 1):
@@ -1340,13 +1379,13 @@ def main():
                                      f'<div class="en">{i}. {esc(en)}</div>'
                                      f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
                     if lines:
-                        parts.append('<div class="tr">' + "".join(lines) + "</div>")
+                        detail.append('<div class="tr">' + "".join(lines) + "</div>")
                 if lx.get("words"):
                     rows = "".join(
-                        f'<tr><td class="w" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
-                        f'<td>{esc(x.get("ipa",""))}</td><td>{esc(x.get("pos",""))}</td>'
+                        f'<tr><td class="w" data-w="{esc((x.get("w","")) .lower())}" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
+                        f'<td class="ipa">{esc(x.get("ipa",""))}</td><td class="pos">{esc(x.get("pos",""))}</td>'
                         f'<td>{esc(x.get("cn",""))}</td></tr>' for x in lx["words"])
-                    parts.append('<table class="vt"><tr><th>本段难词（AI 预选·参考）</th><th>音标</th><th>词性</th><th>释义</th></tr>'
+                    detail.append('<table class="vt"><tr><th>本段难词（AI 预选·参考）</th><th>音标</th><th>词性</th><th>释义</th></tr>'
                                  + rows + "</table>")
             qan = {x.get("no"): x for x in (lx.get("qanalysis") or []) if x.get("no")}
             for q in piece["questions"]:
@@ -1355,9 +1394,12 @@ def main():
                     f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
                 parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
                              f'<span class="opts">{opts}</span></div>')
+                parts.append(f'<div class="qans">答案：{esc(q["answer"])}</div>')
                 an = qan.get(q["no"])
                 if MODE == "explain" and an:
                     parts.append('<div class="qax">' + option_rows(q, an) + '</div>')
+            if detail:
+                parts.extend(detail)
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
@@ -1435,6 +1477,7 @@ def main():
                 f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
             parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
                          f'{esc(q["stem"])}<div class="opts">{opts}</div></div>')
+            parts.append(f'<div class="qans">答案：{esc(str(q["answer"]).strip().upper())}</div>')
             if MODE == "explain":
                 ans = (q.get("answer") or "").strip().upper()
                 rows = []
@@ -1537,9 +1580,9 @@ def main():
 <span class="grp"><label style="cursor:pointer;user-select:none"><input type="checkbox" id="cont"> 连播</label>
 <button onclick="openVocab()" id="vcount">生词表 0</button>
 <span id="score">客观题 --</span>
-<button onclick="check()">对答案</button><button onclick="showQA()">显示答案</button>
+<button onclick="check()">对答案</button><button id="btnQA" onclick="showQA()">显示答案</button>
 {mode_btns}
-<button onclick="window.print()">打印</button></span></div>
+<button id="btnTheme" onclick="toggleTheme()">🌙 深色</button><button onclick="window.print()">打印</button></span></div>
 <div class="spacer"></div>
 <div class="paper">{''.join(parts)}</div>
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
@@ -1554,6 +1597,7 @@ def main():
 <canvas id="ink"></canvas>
 <script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}{INK}
 wrapWords(document.querySelector(".paper"));
+applyTheme(document.body.classList.contains('dark'), false);
 fitPaper();
 applyFont(false);
 apBuild();
