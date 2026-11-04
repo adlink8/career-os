@@ -98,15 +98,22 @@ def collect(kind: str) -> list[dict]:
         jobs.append({"tag": "writing", "where": "作文范文", "text": paper["writing"].get("model_essay", "")})
     elif kind == "translation":
         jobs.append({"tag": "translation", "where": "翻译参考译文", "text": paper["translation"].get("reference", "")})
+    elif kind == "listening":
+        for sec in paper["listening"]["sections"]:
+            for p in sec["pieces"]:
+                tag = f"{sec['name']}-{Path(str(p.get('audio') or 'x')).stem}"
+                jobs.append({"tag": tag, "where": f"听力 {p.get('title','')} 的逐句转写",
+                             "text": p.get("script", ""), "max_words": 140})
     return jobs
 
 
 def job(item):
     text = item["text"]
-    if len(text.split()) > 260:  # 长文本按句子切块，避免输出被截断
+    limit = item.get("max_words", 260)
+    if len(text.split()) > limit:  # 长文本按句子切块，避免输出被截断
         sents = split_sents(text)
-        half = len(sents) // 2
-        blocks = [" ".join(sents[:half]), " ".join(sents[half:])]
+        step = max(1, len(sents) // 2)
+        blocks = [" ".join(sents[i:i + step]) for i in range(0, len(sents), step)]
     else:
         blocks = [text]
     out = []
@@ -122,7 +129,7 @@ def job(item):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kind", required=True, choices=["cloze", "match", "writing", "translation"])
+    ap.add_argument("--kind", required=True, choices=["cloze", "match", "writing", "translation", "listening"])
     ap.add_argument("--workers", type=int, default=3)
     args = ap.parse_args()
 

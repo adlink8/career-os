@@ -14,7 +14,7 @@ from pathlib import Path
 CSS = """
 :root{--fs:10.5pt;--fsan:9pt}
 *{box-sizing:border-box}
-body{margin:0;background:#e9e9e9;font-family:"Times New Roman","SimSun",serif;color:#000;font-size:var(--fs);line-height:1.5}
+body{margin:0;overflow-x:hidden;background:#e9e9e9;font-family:"Times New Roman","SimSun",serif;color:#000;font-size:var(--fs);line-height:1.5}
 .paper{width:595.32pt;margin:16pt auto;background:#fff;padding:38pt 36pt 30pt;box-shadow:0 2px 16px rgba(0,0,0,.18)}
 .part{font-weight:bold;margin:14pt 0 6pt;font-size:1.05em}
 .sec{font-weight:bold;margin:8pt 0 4pt}
@@ -114,7 +114,7 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .sent.clickable:hover{background:#fbfbf4}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:12px/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
 #toast.show{opacity:.94}
-#side{position:fixed;top:52px;right:10px;width:min(340px,30vw);max-height:calc(100vh - 70px);overflow:auto;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 8px 26px rgba(0,0,0,.16);padding:8px 10px;z-index:16;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere}
+#side{float:right;width:300px;margin:2pt -360px 10pt 0;position:static;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
 #side table{width:100%!important;table-layout:fixed}
 #side .trs td,#side .trs th{overflow-wrap:anywhere;padding:2px 4px;font-size:11.5px}
 #side .sk{overflow-wrap:anywhere}
@@ -130,7 +130,7 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .spane.on{display:block}
 .fold{margin:6pt 0;font-size:.95em;border-left:2px solid #e6e6e6;padding-left:8pt}
 .fold summary{cursor:pointer;color:#1a5fb4}
-@media (max-width:1200px){#side{width:min(320px,46vw)}}
+@media (max-width:1580px){#side{float:none;width:auto;margin:8pt 0}}
 .par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
 .trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
 .anno-en{font-weight:600;color:#111}
@@ -601,7 +601,7 @@ def main():
         p = sdir / f"sent-explain-{kind}.json"
         return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
-    sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation")}
+    sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation", "listening")}
     chain_path = sdir / "thinkchain.json"
     chain = json.loads(chain_path.read_text(encoding="utf-8")) if chain_path.exists() else {}
     sectiming = {}
@@ -616,8 +616,14 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
 
     parts = []
-    side = []  # 侧边栏：写作/翻译思维链
     parts.append(f'<div class="part">Part I &nbsp; Writing &nbsp;(30 minutes)</div>')
+    if MODE == "explain":
+        panels = ('<button class="stab on" data-tab="t0" onclick="sideTab(0)">写作思维链</button>'
+                  '<button class="stab" data-tab="t1" onclick="sideTab(1)">翻译思维链</button>'
+                  '<button class="stab close" title="收起" onclick="toggleSide()">×</button>')
+        parts.append('<aside id="side"><div class="stabs">' + panels + '</div>'
+                     f'<div class="spane on" id="t0">{think_writing(chain.get("writing") or {})}</div>'
+                     f'<div class="spane" id="t1">{think_translation(chain.get("translation") or {})}</div></aside>')
     parts.append(f'<div class="dir">Directions: {esc(data["writing"]["directions"].replace("Directions:","").strip())}</div>')
     parts.append('<textarea placeholder="Write your essay here (120-180 words)"></textarea>')
     if MODE == "explain":
@@ -657,7 +663,6 @@ def main():
             wblk.append(lb("扣分点", "lb-trap") + "".join(
                 f'<div class="bands"><div>· {esc(x)}</div></div>' for x in w["deductions"]))
         parts.append('<div class="pan show">' + "".join(wblk) + "</div>")
-        side.append(("写作思维链", think_writing(chain.get("writing") or {})))
 
     parts.append('<div class="part">Part II &nbsp; Listening Comprehension &nbsp;(25 minutes)</div>')
     lq = data["listening"]["questions"]
@@ -681,17 +686,33 @@ def main():
                 if piece.get("summary"):
                     parts.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
                 cn_map = {x.get("i"): x.get("cn") for x in (lx.get("sentences") or [])}
-                lines = []
                 timing = piece.get("timing") or []
-                for i, s in enumerate(timing, 1):
-                    en = s.get("en") or s.get("text") or ""
-                    st = float(s.get("start") or 0)
-                    nxt = float(timing[i].get("start") or 0) if i < len(timing) else 0
-                    lines.append(f'<div class="line" onclick="seek(\'{aid}\',{st:.3f},{nxt:.3f},this)">'
-                                 f'<div class="en">{i}. {esc(en)}</div>'
-                                 f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
-                if lines:
-                    parts.append('<div class="tr">' + "".join(lines) + "</div>")
+                starts = [(float(s.get("start") or 0),
+                           float(timing[i + 1].get("start") or 0) if i + 1 < len(timing) else 0)
+                          for i, s in enumerate(timing)]
+                lsent = sen["listening"].get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or []
+                norm_txt = lambda x: re.sub(r"[^a-z0-9]", "", (x or "").lower())
+                tmap = {}
+                for i, s in enumerate(timing):
+                    k2 = norm_txt(s.get("en") or s.get("text") or "")
+                    if k2:
+                        tmap[k2] = starts[i]
+                if lsent:
+                    blocks = []
+                    for i, s in enumerate(lsent):
+                        t = tmap.get(norm_txt(s.get("en", ""))) or (starts[i] if i < len(starts) else None)
+                        blocks.append(sentence_html(s, aid, t[0], t[1]) if t else sentence_html(s))
+                    parts.append('<div class="tr">' + "".join(blocks) + "</div>")
+                else:
+                    lines = []
+                    for i, s in enumerate(timing, 1):
+                        en = s.get("en") or s.get("text") or ""
+                        st, nxt = starts[i - 1]
+                        lines.append(f'<div class="line" onclick="seek(\'{aid}\',{st:.3f},{nxt:.3f},this)">'
+                                     f'<div class="en">{i}. {esc(en)}</div>'
+                                     f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
+                    if lines:
+                        parts.append('<div class="tr">' + "".join(lines) + "</div>")
                 if lx.get("words"):
                     rows = "".join(
                         f'<tr><td class="w" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
@@ -831,19 +852,7 @@ def main():
             t = ttim.get(norm(s.get("en", "")))
             tblk.append(sentence_html(s, "au-translation", t[0], t[1]) if t else sentence_html(s))
         parts.append('<div class="pan show">' + "".join(tblk) + "</div>")
-        side.append(("翻译思维链", think_translation(chain.get("translation") or {})))
-
-    # —— 侧边栏：写作/翻译思维链 ——
-    side_html = ""
-    if MODE == "explain" and side:
-        tabs = "".join(
-            f'<button class="stab{" on" if i == 0 else ""}" data-tab="t{i}" onclick="sideTab({i})">{esc(name)}</button>'
-            for i, (name, _) in enumerate(side))
-        panes = "".join(
-            f'<div class="spane{" on" if i == 0 else ""}" id="t{i}">{html}</div>'
-            for i, (_, html) in enumerate(side))
-        side_html = (f'<aside id="side"><div class="stabs">{tabs}'
-                     f'<button class="stab close" title="收起" onclick="toggleSide()">×</button></div>{panes}</aside>')
+        pass
 
     # 纯题目版只嵌判分必需字段，避免学生查看源码就能读到解析与答案理由
     if MODE == "plain":
@@ -886,7 +895,6 @@ def main():
 <button onclick="window.print()">打印</button></span></div>
 <div class="spacer"></div>
 <div class="paper">{''.join(parts)}</div>
-{side_html}
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
 <button onclick="closeReport()" style="width:100%;margin-top:10pt;padding:6pt">关闭</button></div></div>
 <div id="wdict"></div>
