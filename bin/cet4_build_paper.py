@@ -63,7 +63,16 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 #radial .ri.t-n{background:#fff8e1;color:#6b5410;border-color:#dcc98d}
 #radial .ri.hot{background:#2f6fb0;border-color:#a9cfef;color:#fff;transform:scale(1.14);box-shadow:0 6px 18px rgba(0,0,0,.45)}
 .spacer{height:52px}
-.audio{width:100%;margin:4pt 0 6pt}
+audio.audio{display:none}
+.ap{display:flex;align-items:center;gap:8px;margin:5pt 0 7pt;padding:3pt 9pt;border:1px solid #ddd;border-radius:14pt;background:#fafafa;font:11.5px/1.2 -apple-system,"Microsoft YaHei",sans-serif;user-select:none;-webkit-user-select:none}
+.ap button{border:none;background:#e8e8e8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;color:#222;flex:none;padding:0;display:flex;align-items:center;justify-content:center}
+.ap button:hover{background:#dcdcdc}
+.ap .ap-t{color:#555;font-variant-numeric:tabular-nums;flex:none;min-width:78px;text-align:right}
+.ap .ap-track{position:relative;flex:1;height:16px;cursor:pointer;touch-action:none}
+.ap .ap-track:before{content:"";position:absolute;left:0;right:0;top:7px;height:3px;border-radius:2px;background:#ddd}
+.ap .ap-fill{position:absolute;left:0;top:7px;height:3px;border-radius:2px;background:#2f6fb0;width:0}
+.ap .ap-knob{position:absolute;top:3px;left:0;width:10px;height:10px;border-radius:50%;background:#2f6fb0;margin-left:-5px}
+.ap select{border:1px solid #ddd;border-radius:4px;background:#fff;font-size:11px;padding:1px 2px;color:#444;flex:none}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
 #report.show{display:flex}
 #reportBox{background:#fff;padding:16pt;border-radius:10pt;width:340pt;font:12pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
@@ -161,7 +170,7 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 .anno-cn{color:#3f3f3f}
 .anno-tip{color:#8a5200}
 .dim{color:#7a7a7a}
-@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
+@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial,.ap{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
@@ -381,6 +390,8 @@ function bindSentenceStop(){
 }
 /* 音频先抓成 Blob：Blob 支持随机访问，HTTP 不支持 Range 时也能精确跳句 */
 async function upgradeAudio(){
+  // 本地文件打开时 fetch 被 CORS 拦，原生 src 本身支持跳转，直接跳过避免控制台刷错
+  if(location.protocol === 'file:') return;
   const list = [...document.querySelectorAll('audio[data-src]')];
   for(const a of list){
     if(a.dataset.blobbed) continue;
@@ -422,6 +433,72 @@ function resetFont(){ setFont(10.5); }
   try{ v = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
   setFont(v);
 })();
+
+/* ==================== 自绘音频条（不用原生 controls：中键不再被吃，也没有大黑条） ==================== */
+function apFmt(t){
+  if(!isFinite(t) || t < 0) t = 0;
+  const m = Math.floor(t / 60), s = Math.floor(t % 60);
+  return m + ':' + String(s).padStart(2, '0');
+}
+function apSync(ap){
+  const a = ap._audio;
+  if(!a) return;
+  const d = isFinite(a.duration) ? a.duration : 0;
+  const c = a.currentTime || 0;
+  const p = d > 0 ? Math.max(0, Math.min(1, c / d)) : 0;
+  const fill = ap.querySelector('.ap-fill'), knob = ap.querySelector('.ap-knob');
+  if(fill) fill.style.width = (p * 100) + '%';
+  if(knob) knob.style.left = (p * 100) + '%';
+  const ti = ap.querySelector('.ap-t');
+  if(ti) ti.textContent = apFmt(c) + ' / ' + apFmt(d);
+  const b = ap.querySelector('.ap-play');
+  if(b){ b.textContent = a.paused ? '▶' : '❚❚'; b.title = a.paused ? '播放' : '暂停'; }
+}
+function apBuild(){
+  document.querySelectorAll('audio.audio').forEach(function(a){
+    if(a.dataset.ap) return;
+    a.dataset.ap = '1';
+    try{ a.removeAttribute('controls'); }catch(e){}
+    const ap = document.createElement('div');
+    ap.className = 'ap';
+    ap.innerHTML = '<button class="ap-play" title="播放">▶</button>'
+      + '<span class="ap-t">0:00 / 0:00</span>'
+      + '<div class="ap-track"><div class="ap-fill"></div><div class="ap-knob"></div></div>'
+      + '<select class="ap-rate" title="语速"><option value="0.75">0.75x</option>'
+      + '<option value="1" selected>1x</option><option value="1.25">1.25x</option>'
+      + '<option value="1.5">1.5x</option></select>';
+    ap._audio = a;
+    a.parentNode.insertBefore(ap, a);
+    ap.querySelector('.ap-play').addEventListener('click', function(e){
+      e.stopPropagation();
+      if(a.paused) a.play().catch(function(){}); else a.pause();
+    });
+    const track = ap.querySelector('.ap-track');
+    function scrub(e){
+      const r = track.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (e.clientX - r.left) / Math.max(1, r.width)));
+      const d = a.duration;
+      if(isFinite(d) && d > 0){
+        a.dataset.stop = '';
+        try{ a.currentTime = p * d; }catch(err){}
+        apSync(ap);
+      }
+    }
+    track.addEventListener('pointerdown', function(e){
+      e.stopPropagation(); e.preventDefault();
+      try{ track.setPointerCapture(e.pointerId); }catch(err){}
+      scrub(e);
+    });
+    track.addEventListener('pointermove', function(e){ if(e.buttons & 1) scrub(e); });
+    ap.querySelector('.ap-rate').addEventListener('change', function(){
+      a.playbackRate = parseFloat(this.value) || 1;
+    });
+    ['timeupdate','loadedmetadata','durationchange','play','pause','ended','ratechange'].forEach(function(ev){
+      a.addEventListener(ev, function(){ apSync(ap); });
+    });
+    apSync(ap);
+  });
+}
 """
 
 
@@ -1119,7 +1196,7 @@ def main():
         src_mp3 = sdir / "audio" / "writing.mp3"
         if src_mp3.exists():
             shutil.copy(src_mp3, outdir / "writing.mp3")
-            parts.append('<audio class="audio" id="au-writing" controls preload="metadata" '
+            parts.append('<audio class="audio" id="au-writing" preload="metadata" '
                          'data-src="writing.mp3" src="writing.mp3"></audio>')
         # 范文（可折叠，避免大段占用正文）
         essay = "".join(f'<p class="body">{esc(p.strip())}</p>'
@@ -1166,7 +1243,7 @@ def main():
             aid = f"au-{Path(piece.get('audio') or 'x').stem}"
             if audio and audio.exists():
                 shutil.copy(audio, outdir / audio.name)
-                parts.append(f'<audio class="audio" id="{aid}" controls preload="metadata" '
+                parts.append(f'<audio class="audio" id="{aid}" preload="metadata" '
                              f'data-src="{audio.name}" src="{audio.name}"></audio>')
             lx = lexp.get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or {}
             if MODE == "explain":
@@ -1325,7 +1402,7 @@ def main():
         src_mp3 = sdir / "audio" / "translation.mp3"
         if src_mp3.exists():
             shutil.copy(src_mp3, outdir / "translation.mp3")
-            parts.append('<audio class="audio" id="au-translation" controls preload="metadata" '
+            parts.append('<audio class="audio" id="au-translation" preload="metadata" '
                          'data-src="translation.mp3" src="translation.mp3"></audio>')
         if tr.get("reference"):
             parts.append(f'<details class="fold"><summary>参考译文（{len(tr["reference"].split())} 词）</summary>'
@@ -1409,6 +1486,7 @@ def main():
 <canvas id="ink"></canvas>
 <script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}{INK}
 wrapWords(document.querySelector(".paper"));
+apBuild();
 inkInit2();
 upgradeAudio();
 setTimeout(bindSentenceStop, 0);
