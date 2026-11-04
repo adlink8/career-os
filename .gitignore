@@ -65,7 +65,7 @@ tc_params.json
 *.png
 
 # 例外：四级真题解析 PDF（第三方案例解析，随题库入库）
-!knowledge/cet4-bank/08-真题配套资源/**/*.pdf
+!cet4/knowledge/cet4-bank/08-真题配套资源/**/*.pdf
 
 # 独立子 Git 仓库与子项目
 adlink8-profile/
@@ -116,5 +116,5 @@ scripts/generate_ops_resumes.py
 /.mimosa/
 
 # 四级每日选材运行产物（日志/候选，不入库）
-var/cet4-daily/
+cet4/var/
 

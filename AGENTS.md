@@ -48,7 +48,7 @@ In these cases, respond directly and keep overhead low.
 - Data authority (2026-09-05): `data/career_jobs.sqlite` 是求职全流程唯一权威事实源；md/TSV 文档只是库的规范描述或派生视图，冲突以库为准。新功能先定库表契约（`bin/career_os_store.py` 迁移），再写 Skill 与文档。详见 `docs/data-model.md`。
 - TSV retirement (2026-09-17): `data/tracker.tsv` 已删除。投递数据（岗位/状态/时间线）一律以库 `jobs` / `applications` / `application_timeline` 为准，唯一读写入口 `bin/career_jobs_cli.py`，**不再保留任何 TSV 或 markdown 形式的平行投递账本**。skill 层引用已全部改指库。
 - Resume writing authority (2026-09-12): `resume_generation_rules` + `docs/resume-authority.md`；现用母版仅 `data/cv/cv-ops.md` / `cv-iot.md` / `cv-semi.md`。
-- v1 status: 14 skills passed static verification, 11 knowledge domains populated, runtime-smoke passed, 真实投递 43 条申请 / 11 月投递高峰批次进行中（库 `applications` 表，2026-10-16 网申批次 +15、2026-10-18 半导体批次 +4）
+- v1 status: 14 skills passed static verification, 11 knowledge domains populated, runtime-smoke passed, 真实投递 46 条申请 / 11 月投递高峰批次进行中（库 `applications` 表，2026-10-16 网申批次 +15、2026-10-18 半导体批次 +4、2026-10-19 汇川内推批次 +3）
 - Last audited: 2026-09-02
 
 ## Personal data warehouse (LLM-mediated)
@@ -61,6 +61,8 @@ In these cases, respond directly and keep overhead low.
 - **Docs:** `docs/personal-data-warehouse.md`
 
 ## CET-4 试卷解析与英语教学规范 (Pedagogical & Exam Rules)
+
+- **目录约定（2026-11-04）**：四级相关的一切都在 `cet4/` 里 —— 脚本 `cet4/bin/*.py`、文档 `cet4/docs/*.md`、运行数据与产物 `cet4/var/cet4-daily/`（不入库）。不要再往仓库根的 `bin/`、`docs/`、`var/` 新增四级文件；脚本内部相对路径统一按 `cet4/` 解析（在仓库根直接 `python cet4/bin/xxx.py ...` 即可）。
 
 - **零教条与顺流镜头推进法 (Forward-Flow Visual Reading)**：
   - 严禁教条主义语法黑话（禁止使用“先行词、后置定语回拉、从句倒装、比较级倒装”等逼迫眼球和大脑往回跳读的说教）。
