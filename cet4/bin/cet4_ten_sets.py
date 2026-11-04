@@ -219,9 +219,47 @@ def stage_audit(workers: int, n_real: int = 10) -> None:
             print(f'  {r["id"]} band={r["band"]} verdict={r["verdict"]} defects={len(r["defects"])}')
 
 
+SOLVER = """你是四级考生，正在限时做阅读。只给正文和题目，不给答案。
+逐题选出唯一最佳答案，并给一句话理由（<=20 字）。只输出 JSON：
+[{"no":46,"answer":"A","why":"..."}]
+
+<<<ITEMS>>>"""
+
+
+def stage_solve(workers: int) -> None:
+    files = [f for f in sorted(OUT.glob("set-*.json")) if ".review." not in f.name and ".audit." not in f.name]
+
+    def one(path: Path):
+        d = json.loads(path.read_text(encoding="utf-8"))
+        qs = d.get("questions") or []
+        block = "正文：\n" + (d.get("passage") or "") + "\n\n题目：\n"
+        for q in qs:
+            block += f'{q.get("no")}. {q.get("stem")}\n' + "\n".join(q.get("options") or []) + "\n"
+        raw = cb(SOLVER.replace("<<<ITEMS>>>", block))
+        got = jparse(raw, "[") or []
+        mine = {int(g.get("no")): (str(g.get("answer") or "").strip().upper()[:1], g.get("why", "")) for g in got if g.get("no")}
+        rows, wrong = [], 0
+        for q in qs:
+            no = int(q["no"])
+            key = str(q.get("answer") or "").strip().upper()[:1]
+            a, why = mine.get(no, ("?", ""))
+            ok = (a == key)
+            if not ok:
+                wrong += 1
+            rows.append({"no": no, "key": key, "model": a, "ok": ok, "why": why})
+        res = {"set": d.get("set"), "topic": d.get("topic"), "wrong": wrong, "rows": rows}
+        (OUT / f'set-{d.get("set"):02d}.solve.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        bad = [f'{r["no"]}:key={r["key"]}/model={r["model"]}' for r in rows if not r["ok"]]
+        return f'set-{d.get("set"):02d} 答对 {len(qs)-wrong}/{len(qs)} ' + (" ".join(bad) if bad else "")
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for msg in ex.map(one, files):
+            print(" ", msg, flush=True)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["write", "review", "audit"])
+    ap.add_argument("--stage", required=True, choices=["write", "review", "audit", "solve"])
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--real", type=int, default=10)
     args = ap.parse_args()
@@ -229,6 +267,8 @@ def main() -> int:
         stage_write(args.workers)
     elif args.stage == "review":
         stage_review(args.workers)
+    elif args.stage == "solve":
+        stage_solve(args.workers)
     else:
         stage_audit(args.workers, args.real)
     return 0
