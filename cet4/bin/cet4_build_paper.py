@@ -1344,9 +1344,11 @@ def main():
             bits.append(f'<div>{lb("对应题", "lb-map")}{esc(answers)}</div>')
         if sent_html:
             bits.append(f'<div style="margin-top:4pt">{lb("逐句拆解", "lb-chunk")}</div>' + sent_html)
-        missing = [n for n, v in (("段落中文", cn), ("主旨", main), ("作用", role), ("逐句", sent_html)) if not v]
-        if missing:
-            pan_issues.append(f"缺少{'/'.join(missing)}")
+        # 不变量：只要有任一分析字段，就必须四要素齐全（四篇阅读长相一致）
+        if cn or main or role or sent_html:
+            missing = [n for n, v in (("段落中文", cn), ("主旨", main), ("作用", role)) if not v]
+            if missing:
+                pan_issues.append(f"缺少{'/'.join(missing)}")
         if extras:
             bits.append(extras)
         return '<div class="pan">' + "".join(bits) + '</div>' if bits else ""
@@ -1373,8 +1375,11 @@ def main():
         return arr, m
 
     def reading_audio(key, label):
-        """四篇阅读的朗读音频条（没有音频就返回空串）。"""
-        src_mp3 = sdir / "reading-audio" / f"reading-{key}.mp3"
+        """四篇阅读的朗读音频条：只有卷子显式声明了 audio 映射才挂，避免挂错别套的音频。"""
+        name = (data.get("audio") or {}).get(key)
+        if not name:
+            return ""
+        src_mp3 = sdir / "reading-audio" / name
         if not src_mp3.exists():
             return ""
         shutil.copy(src_mp3, outdir / src_mp3.name)
@@ -1418,8 +1423,9 @@ def main():
     if MODE == "explain":
         w = data["writing"]
         # 音频
-        src_mp3 = sdir / "audio" / "writing.mp3"
-        if src_mp3.exists():
+        _amap = data.get("audio") or {}
+        src_mp3 = sdir / "audio" / _amap["writing"] if _amap.get("writing") else None
+        if src_mp3 and src_mp3.exists():
             shutil.copy(src_mp3, outdir / "writing.mp3")
             parts.append('<audio class="audio" id="au-writing" preload="metadata" '
                          'data-src="writing.mp3" src="writing.mp3"></audio>')
@@ -1673,8 +1679,9 @@ def main():
     parts.append('<textarea placeholder="Write your translation here"></textarea>')
     if MODE == "explain":
         tr = data["translation"]
-        src_mp3 = sdir / "audio" / "translation.mp3"
-        if src_mp3.exists():
+        _amap2 = data.get("audio") or {}
+        src_mp3 = sdir / "audio" / _amap2["translation"] if _amap2.get("translation") else None
+        if src_mp3 and src_mp3.exists():
             shutil.copy(src_mp3, outdir / "translation.mp3")
             parts.append('<audio class="audio" id="au-translation" preload="metadata" '
                          'data-src="translation.mp3" src="translation.mp3"></audio>')
