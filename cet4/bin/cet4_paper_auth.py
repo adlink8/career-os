@@ -49,18 +49,20 @@ def cb(prompt: str, timeout: int = 2400) -> str:
 
 
 def jp(t: str):
-    t = re.sub(r"^```(?:json)?\s*", "", (t or "").strip())
-    t = re.sub(r"```$", "", t).strip()
-    i, j = t.find("["), t.rfind("]")
-    if i < 0 or j <= i:
-        return []
-    frag = t[i:j + 1]
-    for a in (frag, re.sub(r",\s*([}\]])", r"\1", frag)):
+    """从模型输出里抠 JSON：支持 ``` 围栏、前后夹带解释、以及被转义的中文引号。"""
+    if not t:
+        return {}
+    t = t.strip()
+    t = re.sub(r"^```(?:json)?\s*", "", t)
+    t = re.sub(r"```\s*$", "", t).strip()
+    dec = json.JSONDecoder()
+    for m in re.finditer(r"[\[{]", t):
         try:
-            return json.loads(a)
+            obj, _ = dec.raw_decode(t[m.start():])
+            return obj
         except json.JSONDecodeError:
             continue
-    return []
+    return {}
 
 
 def mock_profile(pid: str) -> str:
@@ -83,35 +85,47 @@ def mock_profile(pid: str) -> str:
 
 
 def real_profiles(n=3, seed=17) -> list:
-    """从真题 markdown 抽档案：Part III Section A/B/C + Part IV + Part I。"""
+    """从真题 markdown 抽档案，**字段与截断口径与 mock_profile 完全一致**，
+    否则「真题被截断、模拟完整」会让评委靠完整性而不是真题感判断。"""
     out = []
     for md in sorted(BANK.rglob("*.md")):
         t = md.read_text(encoding="utf-8", errors="ignore")
         parts = re.split(r"^##\s*Part\s+(I{1,3}V?|IV)\b", t, flags=re.M)
         seg = {}
         for i in range(1, len(parts), 2):
-            seg[parts[i].strip()] = parts[i + 1]
+            seg[parts[i].strip()] = parts[i + 1] if i + 1 < len(parts) else ""
         read = seg.get("III", "")
         secs = re.split(r"^###\s*Section\s*([ABC])\b", read, flags=re.M)
         sec = {secs[i].strip(): secs[i + 1] for i in range(1, len(secs), 2)}
-        cloze_raw = sec.get("A", "")
-        match_raw = sec.get("B", "")
-        passage = sec.get("C", "")
-        cloze_txt = re.sub(r"\|.*", "", cloze_raw)
-        cloze_txt = re.sub(r"\*\*Questions?[^\n]*\n", "", cloze_txt)
-        cloze_txt = re.sub(r"\s+", " ", cloze_txt)[:300]
-        sts = re.findall(r"^\s*(\d{2})\.\s*(.+)$", match_raw, flags=re.M)
-        sts = [x for x in sts if 36 <= int(x[0]) <= 45][:10]
-        stems = re.findall(r"^\s*(\d{2})\.\s*(.+)$", passage, flags=re.M)
-        stems = [x for x in stems if 46 <= int(x[0]) <= 55][:10]
-        trans = re.sub(r"\s+", " ", seg.get("IV", ""))[:300]
-        write = re.sub(r"\s+", " ", seg.get("I", ""))[:420]
+        a_raw = sec.get("A", "")
+        # 去掉 Directions 说明块与词库表格，只留正文；词库单独解析
+        a_body = re.sub(r"(?is)^.*?\bDirections?\b.*?\n\s*\n", "", a_raw, count=1)
+        bank_rows = re.findall(r"\|\s*([A-O])\)?[.、]?\s*([A-Za-z][A-Za-z'-]*)", a_raw)
+        if len(bank_rows) < 10:
+            a_body = a_raw
+        a_body = re.sub(r"\|.*", "", a_body)
+        a_body = re.sub(r"(?i)\*\*Questions?.*?\*\*", "", a_body)
+        cloze_txt = re.sub(r"\s+", " ", a_body).strip()[:320]
+        bank_rows = sorted(dict(bank_rows).items())[:15]
+        bank_str = " / ".join(f"{k}.{v}" for k, v in bank_rows) if len(bank_rows) >= 10 else ""
+        sts = [x for x in re.findall(r"^\s*(\d{2})\.\s*(.+)$", sec.get("B", ""), flags=re.M)
+               if 36 <= int(x[0]) <= 45][:10]
+        stems = [x for x in re.findall(r"^\s*(\d{2})\.\s*(.+?[?？])\s*$", sec.get("C", ""), flags=re.M)
+                 if 46 <= int(x[0]) <= 55][:10]
+        def _clean(x: str) -> str:
+            x = re.sub(r"(?is)^\s*/[^/]{0,30}/\s*\(\d+\s*minutes\)", "", x)
+            x = re.sub(r"(?is)\*\*Directions?:?\*\*", "", x)
+            x = re.sub(r"(?is)_+", "", x)
+            return re.sub(r"\s+", " ", x).strip()
+
+        trans = _clean(seg.get("IV", ""))
+        write = _clean(seg.get("I", ""))
         if len(sts) < 8 or len(stems) < 8 or not cloze_txt:
             continue
         out.append("\n".join([
-            f"【选词填空】{cloze_txt}…",
-            "【信息匹配陈述】" + "；".join(f"{a}. {b[:90]}" for a, b in sts),
-            "【阅读题干】" + "；".join(f"{a}. {b[:90]}" for a, b in stems),
+            f"【选词填空】{cloze_txt}…" + (f"\n词库：{bank_str}" if bank_str else ""),
+            "【信息匹配陈述】" + "；".join(f"{a}. {b.strip()}" for a, b in sts),
+            "【阅读题干】" + "；".join(f"{a}. {b.strip()}" for a, b in stems),
             f"【翻译】{trans}",
             f"【写作要求】{write}",
         ]))
