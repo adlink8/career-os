@@ -34,12 +34,13 @@ select.stmt{font-family:inherit;font-size:.95em}
 textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid #ccc;border-radius:4pt;padding:6pt}
 .qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .qa.show{display:block}
-.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:5px 10px;font:13px/1.35 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:9px;align-items:center;flex-wrap:nowrap;overflow-x:auto;z-index:20;white-space:nowrap}
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:5px 10px;font:13px/1.35 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:9px;row-gap:5px;align-items:center;flex-wrap:wrap;z-index:20;white-space:nowrap}
 .bar .ttl{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar input[type=range]{width:96px;vertical-align:middle}
 .bar button{border:1px solid #666;background:#222;color:#fff;border-radius:4px;padding:3px 7px;cursor:pointer;white-space:nowrap;font:12px/1.35 -apple-system,"Microsoft YaHei",sans-serif}
 .bar .grp{display:flex;gap:5px;align-items:center;border-left:1px solid #444;padding-left:9px;flex:none}
 .bar .fsv{min-width:44px;text-align:center;color:#ffd479;font-variant-numeric:tabular-nums}
+.bar .pwv{min-width:42px;text-align:center;color:#7fd3a6;font-variant-numeric:tabular-nums}
 .bar .lbl{color:#9a9a9a;font-size:12px;margin-right:-2px}
 .bar button.on{background:#2f6fb0;border-color:#8dbdea}
 .bar select{background:#222;color:#fff;border:1px solid #666;border-radius:4px;font:12px/1.2 inherit;padding:2px 0;margin:0}
@@ -52,6 +53,8 @@ mark.hl-orange{background:#ffe0b2}
 mark.hl-purple{background:#e1bee7}
 span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
 span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
+@media (max-width:1620px){.bar .ttl{display:none}}
+@media (max-width:1180px){.bar{padding:4px 6px;gap:7px;font-size:12.5px}}
 #radial{position:fixed;z-index:60;width:208px;height:208px;display:none;pointer-events:none;user-select:none;-webkit-user-select:none}
 #radial.on{display:block}
 #radial .bg{position:absolute;inset:0;border-radius:50%;background:rgba(17,17,17,.78);border:1px solid #4b4b4b;box-shadow:0 12px 34px rgba(0,0,0,.42)}
@@ -62,7 +65,7 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 #radial .ri.t-r{background:#ffd6d6;color:#a01b1b;border-color:#e59a9a}
 #radial .ri.t-n{background:#fff8e1;color:#6b5410;border-color:#dcc98d}
 #radial .ri.hot{background:#2f6fb0;border-color:#a9cfef;color:#fff;transform:scale(1.14);box-shadow:0 6px 18px rgba(0,0,0,.45)}
-.spacer{height:52px}
+.spacer{height:var(--barh,56px)}
 audio.audio{display:none}
 .ap{display:flex;align-items:center;gap:8px;margin:5pt 0 7pt;padding:3pt 9pt;border:1px solid #ddd;border-radius:14pt;background:#fafafa;font:11.5px/1.2 -apple-system,"Microsoft YaHei",sans-serif;user-select:none;-webkit-user-select:none}
 .ap button{border:none;background:#e8e8e8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;color:#222;flex:none;padding:0;display:flex;align-items:center;justify-content:center}
@@ -75,25 +78,25 @@ audio.audio{display:none}
 .ap select{border:1px solid #ddd;border-radius:4px;background:#fff;font-size:11px;padding:1px 2px;color:#444;flex:none}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
 #report.show{display:flex}
-#reportBox{background:#fff;padding:16pt;border-radius:10pt;width:340pt;font:12pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+#reportBox{background:#fff;padding:calc(16pt*var(--pz,1));border-radius:10pt;width:calc(340pt*var(--pz,1));font:calc(12pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 .w{cursor:context-menu}
 .w:hover{background:#eef4ff}
-#wdict{display:none;position:fixed;z-index:50;width:216px;background:#fff;border:1px solid #999;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.22);padding:6px 8px;font:12px/1.5 -apple-system,"Microsoft YaHei",sans-serif;color:#111}
+#wdict{display:none;position:fixed;z-index:50;width:calc(216px*var(--pz,1));background:#fff;border:1px solid #999;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.22);padding:calc(6px*var(--pz,1)) calc(8px*var(--pz,1));font:calc(12px*var(--pz,1))/1.5 -apple-system,"Microsoft YaHei",sans-serif;color:#111}
 #wdict.show{display:block}
-#wdict .hd{font-weight:700;font-size:14px;line-height:1.3}
-#wdict .ipa{color:#555;margin-left:4px;font-size:11.5px;font-weight:400}
+#wdict .hd{font-weight:700;font-size:calc(14px*var(--pz,1));line-height:1.3}
+#wdict .ipa{color:#555;margin-left:4px;font-size:calc(11.5px*var(--pz,1));font-weight:400}
 #wdict .pos{color:#7a5c00;margin-right:3px}
 #wdict .btn{margin-top:5px;display:flex;gap:4px}
-#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:4px;padding:1px 6px;cursor:pointer;margin:0;font-size:11.5px;line-height:1.5}
-#wdict .cn{font-size:13px;margin:1px 0 2px}
-#wdict .dr{margin-top:1px;line-height:1.45;font-size:11.5px}
-#wdict .dk{display:inline-block;min-width:2.6em;color:#7a5c00;font-weight:600;font-size:11px}
+#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:4px;padding:1px 6px;cursor:pointer;margin:0;font-size:calc(11.5px*var(--pz,1));line-height:1.5}
+#wdict .cn{font-size:calc(13px*var(--pz,1));margin:1px 0 2px}
+#wdict .dr{margin-top:1px;line-height:1.45;font-size:calc(11.5px*var(--pz,1))}
+#wdict .dk{display:inline-block;min-width:2.6em;color:#7a5c00;font-weight:600;font-size:calc(11px*var(--pz,1))}
 #wdict .dcn{color:#666}
 #wdict .ex{color:#333}
 #wdict .ex{-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
 #vocab{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:45;align-items:center;justify-content:center}
 #vocab.show{display:flex}
-#vocab .vbox{background:#fff;width:min(760pt,94vw);max-height:84vh;overflow:auto;border-radius:10pt;padding:14pt 16pt;font:11pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+#vocab .vbox{background:#fff;width:min(calc(760pt*var(--pz,1)),94vw);max-height:84vh;overflow:auto;border-radius:10pt;padding:calc(14pt*var(--pz,1)) calc(16pt*var(--pz,1));font:calc(11pt*var(--pz,1))/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 #vocab h3{margin:0 0 8pt}
 #vocab table{width:100%;border-collapse:collapse}
 #vocab td,#vocab th{border-bottom:1px solid #eee;padding:3px 6px;text-align:left;vertical-align:top}
@@ -144,7 +147,7 @@ audio.audio{display:none}
 .sent .scn{color:#3f3f3f;margin-top:1px}
 .sent.clickable{cursor:pointer;border-radius:3px}
 .sent.clickable:hover{background:#fbfbf4}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:12px/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:calc(12px*var(--pz,1))/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
 #toast.show{opacity:.94}
 .side{float:right;width:380px;margin:2pt -440px 12pt 0;position:static;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
 .side table{width:100%!important;table-layout:fixed}
@@ -217,8 +220,9 @@ function showDict(el, x, y){
     + row('搭配', info.collocation) + ex + row('记忆', info.tip)
     + `<div class="btn"><button onclick="speakWord('${w}')">🔊 朗读</button>`
     + `<button onclick="toggleVocab('${w}',this)">${vocabHas(w) ? '✓ 已在生词表' : '＋ 加入生词表'}</button></div>`;
-  box.style.left = Math.min(x + 12, innerWidth - 240) + 'px';
-  box.style.top = Math.min(y + 12, innerHeight - 200) + 'px';
+  const _z = pageZoom || 1;
+  box.style.left = Math.max(4, Math.min(x + 12, innerWidth - 240 * _z)) + 'px';
+  box.style.top = Math.max(4, Math.min(y + 12, innerHeight - 220 * _z)) + 'px';
   box.classList.add('show');
 }
 function speakWord(w){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(w); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
@@ -418,7 +422,7 @@ function speakW(w){ speak(w); }
    A4 原宽 595.32pt = 793.76px；缩放后正文、行距、缩进、留白全部等比放大，
    只改变大小不改版式，所以「和真题一致」的格式不动。 */
 const PAPER_BASE_W = 793.76;
-let pageZoom = 1, basePt = 10.5;
+let pageZoom = 1, basePt = 10.5, paperPct = 68;
 function effPt(){ return basePt * pageZoom; }
 function setFont(ptEff){
   ptEff = Math.max(7, Math.min(30, Math.round(ptEff * 2) / 2));
@@ -438,20 +442,37 @@ function applyFont(save){
 function fitPaper(){
   const paper = document.querySelector('.paper');
   if(!paper) return;
-  const avail = Math.max(320, innerWidth - 70);
-  // 目标版心宽度：占屏 68%，最小 820，最大 1600
-  const target = Math.min(1600, Math.max(820, innerWidth * 0.68), avail);
+  const avail = Math.max(320, innerWidth - 40);
+  // 目标版心宽度 = 屏宽 × 你设的比例（最小 820，最大 2600）
+  const target = Math.min(2600, Math.max(820, innerWidth * paperPct / 100), avail);
   let z = target / PAPER_BASE_W;
-  z = Math.max(0.72, Math.min(1.70, Math.round(z * 100) / 100));
+  z = Math.max(0.72, Math.min(2.00, Math.round(z * 100) / 100));
   pageZoom = z;
   // 放大到上限后不再放大字号，改为把版心继续加宽（超宽屏也不留大白边）
   const cssW = Math.max(PAPER_BASE_W, target / z);
   paper.style.zoom = z;
   paper.style.width = cssW.toFixed(1) + 'px';
+  document.documentElement.style.setProperty('--pz', z.toFixed(3));
   // 侧栏要放得下才浮在正文右边，否则落进正文（够宽时仍可并排）
   const room = (innerWidth - cssW * z) / 2;
   document.body.classList.toggle('nofloat', room < Math.max(470, 380 * z + 24));
+  const lb = document.getElementById('pwv');
+  if(lb) lb.textContent = Math.round(paperPct) + '%';
+  const pr = document.getElementById('pwr');
+  if(pr && Math.abs(parseFloat(pr.value) - paperPct) > 0.4) pr.value = paperPct;
   applyFont(false);
+  syncBarHeight();
+}
+function setPaperPct(p){
+  paperPct = Math.max(45, Math.min(95, Math.round(p)));
+  try{ localStorage.setItem('cet4_pw', paperPct); }catch(e){}
+  fitPaper();
+}
+function resetPaper(){ setPaperPct(68); }
+function syncBarHeight(){
+  const b = document.querySelector('.bar');
+  if(!b) return;
+  document.documentElement.style.setProperty('--barh', (b.offsetHeight + 8) + 'px');
 }
 function stepFont(d){ setFont(effPt() + d); }
 function resetFont(){ basePt = 10.5; applyFont(true); }
@@ -459,11 +480,14 @@ function resetFont(){ basePt = 10.5; applyFont(true); }
   let v = 10.5;
   try{ v = parseFloat(localStorage.getItem('cet4_fs')); }catch(e){}
   if(isFinite(v) && v >= 6 && v <= 22) basePt = v;
+  let w = 68;
+  try{ w = parseFloat(localStorage.getItem('cet4_pw')); }catch(e){}
+  if(isFinite(w) && w >= 45 && w <= 95) paperPct = w;
 })();
 let _fitTimer = null;
 window.addEventListener('resize', function(){
   clearTimeout(_fitTimer);
-  _fitTimer = setTimeout(fitPaper, 120);
+  _fitTimer = setTimeout(function(){ fitPaper(); }, 120);
 });
 
 /* ==================== 自绘音频条（不用原生 controls：中键不再被吃，也没有大黑条） ==================== */
@@ -727,7 +751,7 @@ function inkErase(x, y){
       let r = null;
       if(p.off != null){ const rg = inkRangeAt(el, p.off); if(rg){ const q = rg.getBoundingClientRect(); if(q.width || q.height) r = q; } }
       if(!r) r = el.getBoundingClientRect();
-      return Math.hypot(r.left + p.dx - x, r.top + p.dy - y) < 15;
+      return Math.hypot(r.left + p.dx - x, r.top + p.dy - y) < 15 * (pageZoom || 1);
     });
   });
   if(strokes.length !== before){ inkRedraw(); inkSave(); }
@@ -840,7 +864,7 @@ if(inkCvs){
     const p = inkPoint(e.clientX, e.clientY);
     if(!p) return;
     const c = document.getElementById('penColor'), wd = document.getElementById('penWidth');
-    curStroke = { color: c ? c.value : '#e53935', width: wd ? parseFloat(wd.value) : 2.8, pts: [p] };
+    curStroke = { color: c ? c.value : '#e53935', width: (wd ? parseFloat(wd.value) : 2.8) * (pageZoom || 1), pts: [p] };
     strokes.push(curStroke);
     inkRedraw();
     e.preventDefault();
@@ -1486,6 +1510,10 @@ def main():
 <button onclick="stepFont(1)" title="放大">A+</button>
 <span class="fsv" id="fsv">10.5</span>
 <button onclick="resetFont()">默认</button></span>
+<span class="grp"><span class="lbl">版心</span>
+<input id="pwr" type="range" min="45" max="95" step="1" value="68" oninput="setPaperPct(parseFloat(this.value))" title="试卷占屏宽度比例">
+<span class="pwv" id="pwv">68%</span>
+<button onclick="resetPaper()" title="回到自动（占屏 68%）">自动</button></span>
 <span class="grp">
 <button id="tbPen" onclick="toggleInk()" title="开/关自由画笔：可在卷面任意书写圈画，笔迹跟着文字走">✒️ 画笔</button>
 <select id="penColor" title="笔色"><option value="#e53935">红</option><option value="#111111">黑</option><option value="#1565c0">蓝</option><option value="#2e7d32">绿</option></select>
