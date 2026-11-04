@@ -114,14 +114,15 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .sent.clickable:hover{background:#fbfbf4}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:12px/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
 #toast.show{opacity:.94}
-#side{float:right;width:300px;margin:2pt -360px 10pt 0;position:static;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
-#side table{width:100%!important;table-layout:fixed}
-#side .trs td,#side .trs th{overflow-wrap:anywhere;padding:2px 4px;font-size:11.5px}
-#side .sk{overflow-wrap:anywhere}
+.side{float:right;width:380px;margin:2pt -440px 12pt 0;position:static;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.10);padding:9px 11px;z-index:1;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere;max-height:calc(100vh - 76px);overflow:auto}
+.side table{width:100%!important;table-layout:fixed}
+.side .trs td,.side .trs th{overflow-wrap:anywhere;padding:2px 5px;font-size:11.5px}
+.side .sk{overflow-wrap:anywhere}
+.shd{font-weight:700;color:#111}
 .band{margin:4px 0;padding:4px 6px;background:#fafafa;border-left:2px solid #e3e3e3;border-radius:3px}
 .band .musts{color:#444;margin:2px 0}
 .band .sk{font-family:"Times New Roman",serif;color:#1a4f8a;background:#f2f7ff;padding:1px 4px;border-radius:3px;margin:2px 0}
-#side.off{display:none}
+.side.off{display:none}
 .stabs{display:flex;gap:6px;margin-bottom:6px;align-items:center;position:sticky;top:-10px;background:#fff;padding:2px 0 6px}
 .stab{border:1px solid #ddd;background:#f7f7f7;border-radius:6px;padding:2px 10px;cursor:pointer;font:12.5px/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 .stab.on{background:#111;color:#fff;border-color:#111}
@@ -130,7 +131,7 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .spane.on{display:block}
 .fold{margin:6pt 0;font-size:.95em;border-left:2px solid #e6e6e6;padding-left:8pt}
 .fold summary{cursor:pointer;color:#1a5fb4}
-@media (max-width:1580px){#side{float:none;width:auto;margin:8pt 0}}
+@media (max-width:1660px){.side{float:none;width:auto;margin:8pt 0}}
 .par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
 .trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
 .anno-en{font-weight:600;color:#111}
@@ -255,24 +256,25 @@ document.addEventListener('contextmenu', e=>{
   else { const b=document.getElementById('wdict'); if(b) b.classList.remove('show'); }
 });
 document.addEventListener('click', ()=>{ const b=document.getElementById('wdict'); if(b) b.classList.remove('show'); });
-function toggleAnalysis(){ document.querySelectorAll('.pan').forEach(e=>e.classList.toggle('show')); }
-function toggleAnswers(){ document.querySelectorAll('.qax').forEach(e=>e.classList.toggle('show')); }
-function toggleSide(){
-  const s = document.getElementById('side'); if(!s) return;
-  s.classList.toggle('off');
-  document.body.classList.toggle('has-side', !s.classList.contains('off'));
-  try{ localStorage.setItem('cet4_side', s.classList.contains('off') ? '0' : '1'); }catch(e){}
+function toggleAll(){
+  const els = [...document.querySelectorAll('.pan, .qax')];
+  if(!els.length) return;
+  const anyOpen = els.some(e=>e.classList.contains('show'));
+  els.forEach(e=>e.classList.toggle('show', !anyOpen));
+  const b = document.getElementById('btnAll');
+  if(b) b.textContent = anyOpen ? '展开解析' : '收起解析';
+}
+function toggleSide(el){
+  const list = el ? [el.closest('.side')] : [...document.querySelectorAll('.side')];
+  list.forEach(s=>{ if(s) s.classList.toggle('off'); });
 }
 function sideTab(i){
   document.querySelectorAll('.stab[data-tab]').forEach(b=>b.classList.toggle('on', b.dataset.tab === ('t'+i)));
   document.querySelectorAll('.spane').forEach(p=>p.classList.toggle('on', p.id === ('t'+i)));
 }
 (function(){
-  const s = document.getElementById('side'); if(!s) return;
-  let v = '1';
-  try{ v = localStorage.getItem('cet4_side') || '1'; }catch(e){}
-  if(v === '0') s.classList.add('off');
-  document.body.classList.toggle('has-side', !s.classList.contains('off'));
+  const list = [...document.querySelectorAll('.side')];
+  list.forEach(s=>s.classList.remove('off'));
 })();
 
 let answers = {};
@@ -618,14 +620,16 @@ def main():
     parts = []
     parts.append(f'<div class="part">Part I &nbsp; Writing &nbsp;(30 minutes)</div>')
     if MODE == "explain":
-        panels = ('<button class="stab on" data-tab="t0" onclick="sideTab(0)">写作思维链</button>'
-                  '<button class="stab" data-tab="t1" onclick="sideTab(1)">翻译思维链</button>'
-                  '<button class="stab close" title="收起" onclick="toggleSide()">×</button>')
-        parts.append('<aside id="side"><div class="stabs">' + panels + '</div>'
-                     f'<div class="spane on" id="t0">{think_writing(chain.get("writing") or {})}</div>'
-                     f'<div class="spane" id="t1">{think_translation(chain.get("translation") or {})}</div></aside>')
+        parts.append('<aside class="side"><div class="stabs"><b class="shd">写作思维链</b>'
+                     '<button class="stab close" title="收起" onclick="toggleSide(this)">×</button></div>'
+                     '<div class="spane on">' + think_writing(chain.get("writing") or {}) + '</div></aside>')
     parts.append(f'<div class="dir">Directions: {esc(data["writing"]["directions"].replace("Directions:","").strip())}</div>')
     parts.append('<textarea placeholder="Write your essay here (120-180 words)"></textarea>')
+    if MODE == "explain":
+        wdir = sen["writing"].get("writing-directions") or []
+        if wdir:
+            parts.append('<div class="pan"><div>' + lb("题目逐句", "lb-chunk") + '</div>'
+                         + "".join(sentence_html(s) for s in wdir) + '</div>')
     if MODE == "explain":
         w = data["writing"]
         # 音频
@@ -662,7 +666,7 @@ def main():
         if w.get("deductions"):
             wblk.append(lb("扣分点", "lb-trap") + "".join(
                 f'<div class="bands"><div>· {esc(x)}</div></div>' for x in w["deductions"]))
-        parts.append('<div class="pan show">' + "".join(wblk) + "</div>")
+        parts.append('<div class="pan">' + "".join(wblk) + "</div>")
 
     parts.append('<div class="part">Part II &nbsp; Listening Comprehension &nbsp;(25 minutes)</div>')
     lq = data["listening"]["questions"]
@@ -760,7 +764,7 @@ def main():
                 f'<div class="bands"><div><span class="dim">{i}.</span> {esc(x)}</div></div>'
                 for i, x in enumerate(cexp["passage_cn"], 1)))
         if blk:
-            parts.append('<div class="pan show">' + "".join(blk) + "</div>")
+            parts.append('<div class="pan">' + "".join(blk) + "</div>")
 
     parts.append('<div class="sec">Section B</div>')
     parts.append('<div class="dir">Directions: Match each statement with the paragraph it is derived from.</div>')
@@ -826,6 +830,10 @@ def main():
                              + oa + '</div>')
 
     parts.append('<div class="part">Part IV &nbsp; Translation &nbsp;(30 minutes)</div>')
+    if MODE == "explain":
+        parts.append('<aside class="side"><div class="stabs"><b class="shd">翻译思维链</b>'
+                     '<button class="stab close" title="收起" onclick="toggleSide(this)">×</button></div>'
+                     '<div class="spane on">' + think_translation(chain.get("translation") or {}) + '</div></aside>')
     parts.append(f'<div class="dir">Directions: Translate the following passage into English.</div>')
     parts.append(f'<p class="body">{esc(data["translation"]["zh"])}</p>')
     parts.append('<textarea placeholder="Write your translation here"></textarea>')
@@ -851,7 +859,7 @@ def main():
         for s in tsent:
             t = ttim.get(norm(s.get("en", "")))
             tblk.append(sentence_html(s, "au-translation", t[0], t[1]) if t else sentence_html(s))
-        parts.append('<div class="pan show">' + "".join(tblk) + "</div>")
+        parts.append('<div class="pan">' + "".join(tblk) + "</div>")
         pass
 
     # 纯题目版只嵌判分必需字段，避免学生查看源码就能读到解析与答案理由
@@ -873,8 +881,7 @@ def main():
     else:
         embed = data
 
-    mode_btns = ('<button onclick="toggleAnalysis()">段落解析</button>'
-                 '<button onclick="toggleAnswers()">题目解析</button>'
+    mode_btns = ('<button id="btnAll" onclick="toggleAll()">展开解析</button>'
                  '<button onclick="toggleSide()">思维链</button>') if MODE == "explain" else ""
 
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">

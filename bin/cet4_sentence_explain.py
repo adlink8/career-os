@@ -95,6 +95,8 @@ def collect(kind: str) -> list[dict]:
         for k, v in r["match"]["paragraphs"].items():
             jobs.append({"tag": f"match-{k}", "where": f"长篇匹配第 {k} 段", "text": v})
     elif kind == "writing":
+        jobs.append({"tag": "writing-directions", "where": "作文题干 Directions",
+                     "text": paper["writing"].get("directions", "")})
         jobs.append({"tag": "writing", "where": "作文范文", "text": paper["writing"].get("model_essay", "")})
     elif kind == "translation":
         jobs.append({"tag": "translation", "where": "翻译参考译文", "text": paper["translation"].get("reference", "")})
