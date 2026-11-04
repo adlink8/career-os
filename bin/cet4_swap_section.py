@@ -39,6 +39,13 @@ def main():
         if src.get(k):
             moved.append(k)
             target[k] = src[k]
+    # Section C 第二篇题号必须是 51-55
+    if args.section == "passage2" and target.get("questions"):
+        qs = sorted(target["questions"], key=lambda q: q.get("no") or 0)
+        for i, q in enumerate(qs):
+            q["no"] = 51 + i
+        target["questions"] = qs
+        moved.append("questions(renumbered 51-55)")
     # 段落/题目换了，标题也要跟着换，避免题文不符
     if src.get("title") and "title" not in KEEP[args.section]:
         target["title"] = src["title"]

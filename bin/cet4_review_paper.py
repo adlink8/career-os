@@ -193,8 +193,8 @@ def build_dossier(paper: dict) -> str:
                      f'正文开头：{s["opening"]}')
 
     m = r.get("match") or {}
-    parts.append("## 匹配陈述（36-45）\n" + json.dumps(
-        [{"no": x.get("no"), "text": (x.get("text") or "")[:150]} for x in (m.get("statements") or [])],
+    parts.append("## 匹配陈述（36-45，全文不截断）\n" + json.dumps(
+        [{"no": x.get("no"), "text": x.get("text") or ""} for x in (m.get("statements") or [])],
         ensure_ascii=False))
 
     for k in ("passage1", "passage2"):
@@ -211,14 +211,25 @@ def build_dossier(paper: dict) -> str:
           "answer": q.get("answer")} for q in lq], ensure_ascii=False))
 
     lsec = []
+    lexp = {}
+    lp = ROOT / "var" / "cet4-daily" / "listening-explain.json"
+    if lp.exists():
+        lexp = json.loads(lp.read_text(encoding="utf-8"))
     for s in L.get("sections") or []:
         for p in s.get("pieces") or []:
+            stem = Path(str(p.get("audio") or "x")).stem
+            lx = lexp.get(f"{s.get('name')}-{stem}") or {}
+            n_cn = len(lx.get("sentences") or [])
+            n_en = len(p.get("timing") or [])
             lsec.append({"sec": s.get("name"), "title": p.get("title"),
-                         "audio": bool(p.get("audio")), "timing": len(p.get("timing") or []),
-                         "subtitle_cn": bool(p.get("subtitle_cn") or p.get("cn")),
+                         "audio": bool(p.get("audio")), "timing": n_en,
+                         "bilingual_subtitle": f"{n_cn}/{n_en}",
+                         "vocab": len(lx.get("words") or []),
+                         "qanalysis": len(lx.get("qanalysis") or []),
                          "script_words": len((p.get("script") or "").split()),
                          "questions": len(p.get("questions") or [])})
-    parts.append("## 听力配套\n" + json.dumps(lsec, ensure_ascii=False))
+    parts.append("## 听力配套（双语字幕=有中文的句数/总句数）\n"
+                 + json.dumps(lsec, ensure_ascii=False))
 
     tr = paper.get("translation") or {}
     parts.append("## 翻译\n" + json.dumps(
@@ -229,7 +240,9 @@ def build_dossier(paper: dict) -> str:
         {"prompt": (wr.get("prompt") or wr.get("directions") or "")[:500],
          "sample": (wr.get("sample") or wr.get("model_essay") or "")[:500]}, ensure_ascii=False))
 
-    parts.append("## 讲解版实际覆盖（页面实测）\n" + json.dumps(explain_coverage(), ensure_ascii=False))
+    parts.append("## 讲解版实际覆盖（页面实测）\n" + json.dumps(explain_coverage(), ensure_ascii=False)
+                 + "\n注：qax 解析块 = 听力 25 题 + 仔细阅读 10 题；选词 10 空见「逐空表」、匹配 10 题见「段落对应题号」，"
+                   "均不计入 qax。")
     return "\n\n".join(parts)
 
 

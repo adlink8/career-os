@@ -15,26 +15,30 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-KEYS = {"reading": ("questions",), "cloze": ("passage", "bank", "answers", "translate"),
+KEYS = {"reading": ("title", "passage", "paragraphs", "questions"),
+        "cloze": ("passage", "bank", "answers", "translate"),
         "match": ("title", "paragraphs", "statements", "answers")}
 
 
 def run(role: str, typ: str, inp: Path, out: Path, prev: Path | None = None,
-        mustfix: Path | None = None) -> dict:
+        mustfix: Path | None = None, qonly: bool = False) -> dict:
     cmd = [sys.executable, str(ROOT / "bin" / "cet4_roles.py"),
            "--type", typ, "--role", role, "--input", str(inp), "--out", str(out)]
     if prev:
         cmd += ["--prev", str(prev)]
     if mustfix:
         cmd += ["--mustfix", str(mustfix)]
+    if qonly:
+        cmd += ["--qonly"]
     subprocess.run(cmd, check=False, capture_output=True, text=True,
                    encoding="utf-8", timeout=1500)
     return json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
 
 
-def merge(paper: dict, typ: str, art: dict) -> dict:
+def merge(paper: dict, typ: str, art: dict, qonly: bool = False) -> dict:
     """把 writer/repair 产物并回候选卷，空字段不覆盖旧值。"""
-    for k in KEYS[typ]:
+    keys = ("questions",) if (qonly and typ == "reading") else KEYS[typ]
+    for k in keys:
         if art.get(k):
             paper[k] = art[k]
     return paper
@@ -46,6 +50,7 @@ def main():
     ap.add_argument("--input", required=True)
     ap.add_argument("--rounds", type=int, default=3)
     ap.add_argument("--start-round", type=int, default=1)
+    ap.add_argument("--qonly", action="store_true", help="reading：正文定稿，只迭代题目")
     ap.add_argument("--resume", action="store_true",
                     help="从目录里已有的最大轮次接着跑 repair（不重掷）")
     args = ap.parse_args()
@@ -86,7 +91,8 @@ def main():
         else:
             # 只有拿到上一轮 must_fix 才能定向修复
             w_out = Path(f"{stem}.{typ}.repair.r{r}.json")
-            art = run("repair", typ, cur, w_out, prev=prev_art, mustfix=prev_rev)
+            art = run("repair", typ, cur, w_out, prev=prev_art, mustfix=prev_rev,
+                      qonly=args.qonly)
         if not art:
             print(f"round {r}: {'repair' if prev_art else 'writer'} parse failed, stop")
             break
@@ -94,7 +100,7 @@ def main():
             for q in art.get("questions") or []:
                 for oa in q.get("option_analysis") or []:
                     oa["correct"] = (oa.get("letter") == q.get("answer"))
-        paper = merge(paper, typ, art)
+        paper = merge(paper, typ, art, args.qonly)
         cur.write_text(json.dumps(paper, ensure_ascii=False, indent=1), encoding="utf-8")
 
         rv_out = Path(f"{stem}.{typ}.reviewer.r{r}.json")

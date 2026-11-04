@@ -52,7 +52,7 @@ def parse_section_b(block: str):
     text_end = first_q.start() if first_q else len(body)
     passage = body[:text_end]
     passage = re.sub(r"^\*\*Directions:\*\*.*?\n\n", "", passage.strip(), flags=re.S)
-    paragraphs = re.findall(r"^([A-K])\)\s*(.+?)(?=\n[A-K]\)|\Z)", passage, flags=re.S | re.M)
+    paragraphs = re.findall(r"^([A-O])\)\s*(.+?)(?=\n[A-O]\)|\Z)", passage, flags=re.S | re.M)
     statements = []
     for mm in re.finditer(r"^(\d{2})\.\s*(.+?)(?=\n\d{2}\.\s|\Z)", body[text_end:], flags=re.S | re.M):
         statements.append({"no": int(mm.group(1)), "text": re.sub(r"\s+", " ", mm.group(2)).strip()})
