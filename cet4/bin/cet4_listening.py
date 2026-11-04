@@ -192,6 +192,46 @@ def stage_tts(pids: list) -> None:
         f.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+DIRECTIONS = {'A': 'Section A. Directions: In this section, you will hear three news reports. At the end of each news report, you will hear two or three questions. Both the news report and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'B': 'Section B. Directions: In this section, you will hear two long conversations. At the end of each conversation, you will hear four questions. Both the conversation and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'C': 'Section C. Directions: In this section, you will hear three passages. At the end of each passage, you will hear three or four questions. Both the passage and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.'}
+
+
+def stage_directions(pids: list) -> None:
+    """把 Section A/B/C 的标准指令音拼到每节第一段音轨前（真题录音顺序：指令 → 正文 → 题目）。"""
+    sys.path.insert(0, str(ROOT / "bin"))
+    from cet4_audio_assemble import decode, trim_silence, silence, encode, SR  # type: ignore
+    import numpy as np
+
+    for pid in pids:
+        f = PAPERS / f"paper-{pid}.json"
+        d = json.loads(f.read_text(encoding="utf-8"))
+        for sec in (d.get("listening") or {}).get("sections") or []:
+            pieces = sec.get("pieces") or []
+            if not pieces or pieces[0].get("directions"):
+                continue
+            first = pieces[0]
+            if not first.get("audio"):
+                continue
+            text = DIRECTIONS.get(sec.get("name")) or ""
+            if not text:
+                continue
+            target = PAPERS / first["audio"]
+            with tempfile.TemporaryDirectory() as td:
+                f_mp3 = Path(td) / "dir.mp3"
+                asyncio.run(tts_one(text, VOICE_N, f_mp3))
+                dir_pcm = trim_silence(decode(f_mp3))
+            body = decode(target)
+            gap = silence(1.2)
+            pcm = np.concatenate([dir_pcm, gap, body])
+            encode(pcm, target)
+            shift = (len(dir_pcm) + len(gap)) / SR
+            for t in first.get("timing") or []:
+                t["start"] = round(float(t.get("start") or 0) + shift, 3)
+                t["end"] = round(float(t.get("end") or 0) + shift, 3)
+            first["directions"] = True
+            print(f"  paper-{pid} Section {sec.get('name')}: 指令音 {len(dir_pcm)/SR:.1f}s 已拼到首段前")
+        f.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def stage_qaudio(pids: list, gap: float = 12.0) -> None:
     """把每段的题目逐题念出来追加到音轨末尾，每题后留答题停顿（贴合真题节奏）。"""
     sys.path.insert(0, str(ROOT / "bin"))
@@ -258,7 +298,7 @@ def stage_insert(pids: list) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["script", "tts", "qaudio", "insert", "all"])
+    ap.add_argument("--stage", required=True, choices=["script", "tts", "directions", "qaudio", "insert", "all"])
     ap.add_argument("--gap", type=float, default=12.0, help="每题后答题停顿秒数")
     ap.add_argument("--papers", default="81")
     args = ap.parse_args()
@@ -269,6 +309,9 @@ def main() -> int:
     if args.stage in ("tts", "all"):
         print("[tts]")
         stage_tts(pids)
+    if args.stage in ("directions", "all"):
+        print("[directions]")
+        stage_directions(pids)
     if args.stage in ("qaudio", "all"):
         print("[qaudio]")
         stage_qaudio(pids, args.gap)
