@@ -43,7 +43,10 @@ def meta_of(paper: dict) -> dict:
             "match_stmts": len(match.get("statements") or []),
             "questions": len(p1.get("questions") or []) + len(p2.get("questions") or []),
             "zh": len(str(tr.get("zh") or "")),
-            "essay": len(str(wr.get("model_essay") or "").split())}
+            "essay": len(str(wr.get("model_essay") or "").split()),
+            "listen_tracks": sum(1 for sec in ((paper.get("listening") or {}).get("sections") or [])
+                                 for pc in (sec.get("pieces") or []) if pc.get("audio")),
+            "listen_qs": len((paper.get("listening") or {}).get("questions") or [])}
 
 
 def main() -> int:
@@ -80,7 +83,7 @@ def main() -> int:
             f'<td class="n">{m["p1_words"]} / {m["p2_words"]}</td>'
             f'<td class="n">{m["questions"]}</td><td class="n">{m["sentences"]}</td>'
             f'<td class="n">{m["cloze"]} / {m["match_paras"]}段 {m["match_stmts"]}题</td>'
-            f'<td class="n">{m["zh"]} 字</td>'
+            f'<td class="n">{m["zh"]} 字</td><td class="n">{m["listen_tracks"]} 段 / {m["listen_qs"]} 题</td>'
             f'<td>{exp} · {pln}</td></tr>')
 
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
@@ -111,7 +114,7 @@ b.k{{color:var(--fg)}}
   <div class="sub">每套含：写作（含范文）、选词填空 10 空、信息匹配 12 段 / 10 题、双篇仔细阅读 10 题、翻译；讲解版含逐句成分拆解与路标。</div>
   <div class="toolbar"><button onclick="t()">深色 / 浅色</button><span class="sub" style="margin:0">点击右侧链接直接做题</span></div>
   <table>
-    <tr><th>卷</th><th>正文词数<br>P1 / P2</th><th>题数</th><th>解析句数</th><th>选词 / 匹配</th><th>翻译</th><th>打开</th></tr>
+    <tr><th>卷</th><th>正文词数<br>P1 / P2</th><th>题数</th><th>解析句数</th><th>选词 / 匹配</th><th>翻译</th><th>听力</th><th>打开</th></tr>
     {''.join(tr)}
   </table>
   <div class="box">
