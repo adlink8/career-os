@@ -153,3 +153,28 @@
 | 99 | 26 的 fell（fell asleep） | fell → dropped off |
 
 修后 10 套泄漏 0，盲做 550/550。
+
+### 8.6 词库同根词对（2026-11-05，第 22 轮）
+真题词库不会出现同根词，否则等于提示答案。审计 10 套发现 **15 组同根对**：
+
+| 卷 | 同根对（修前） |
+|---|---|
+| 81 | typically/typical、rational/rationally、reliable/reliably、alertness/alerts |
+| 82 | burden/burdensome |
+| 86 | adapted/adaptively、pleasant/pleasure、pleasant/pleasantly、pleasure/pleasantly |
+| 87 | most/mostly |
+| 97 | uncertainly/uncertain |
+| 98 | loosely/loosen、dismissed/dismissively |
+| 99 | damages/damage、reviewers/reviews |
+
+处理：只替换**非答案词**（字母位置不变，与答案无关），要求不同词根、同词性、不构成第二正确答案；
+87 的 most/mostly 两个都是答案，把 32 的 mostly 换成 mainly。
+修后 10 套同根对 **0**，字母序全 True，盲做仍 550/550。
+
+### 8.7 配对评测目前仍然被「档案抽取」污染（诚实记录）
+- 第 21 轮：真题侧漏抓 Directions、题干缺题号 → 模拟占优
+- 第 22 轮：把两侧排版痕迹统一抹掉后，真题侧反而显得「缺指令、缺空号」→ 模拟再次占优
+- F2 正确率在 68.8%–79.2% 之间跳动，**这个区间里既有真实文风差，也有抽取不对称**，所以本轮不引用具体数字。
+
+结论：配对评测要可信，必须**两侧都过同一个渲染器**（同样的指令行、同样的空号写法、同样的题号），
+否则测的是「谁的档案更完整」。这项列为下一轮的前置工作。

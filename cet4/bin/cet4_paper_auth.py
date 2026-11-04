@@ -73,6 +73,11 @@ def normalize(text: str) -> str:
     """
     t = text or ""
     t = re.sub(r"\*\*|__|`", "", t)
+    t = re.sub(r"(?i)answer\s*sheet\s*\d*", "", t)
+    t = re.sub(r"(?i)\bpart\s+(i{1,3}v?|iv)\b[^\n]{0,60}", "", t)
+    t = re.sub(r"(?i)\bdirections?\s*:?", "", t)
+    t = re.sub(r"(?i)\(\s*\d+\s*minutes\s*\)", "", t)
+    t = re.sub(r"(?i)^\s*/?\s*(writing|translation|reading comprehension|listening comprehension)\s*/?\s*$", "", t, flags=re.M)
     t = re.sub(r"(?<=[A-Za-z])\s?[_\u005f]{2,}\s?\d{2}\s?[_\u005f]{2,}", lambda m: " [空] ", t)
     t = re.sub(r"_{2,}\s*\d{2}\s*_{2,}", " [空] ", t)
     t = re.sub(r"\b(\d{2})\s*[_\u005f]{3,}", r"\1. ", t)
