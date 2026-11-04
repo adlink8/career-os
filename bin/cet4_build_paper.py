@@ -163,14 +163,15 @@ audio.audio{display:none}
 .spane.on{display:block}
 .fold{margin:6pt 0;font-size:.95em;border-left:2px solid #e6e6e6;padding-left:8pt}
 .fold summary{cursor:pointer;color:#1a5fb4}
-@media (max-width:1660px){.side{float:none;width:auto;margin:8pt 0}}
+body.nofloat .side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}
+@media (max-width:1240px){.side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}}
 .par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
 .trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
 .anno-en{font-weight:600;color:#111}
 .anno-cn{color:#3f3f3f}
 .anno-tip{color:#8a5200}
 .dim{color:#7a7a7a}
-@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial,.ap{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
+@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial,.ap{display:none!important}.paper{box-shadow:none;margin:0;zoom:1!important;width:595.32pt!important}.side{float:none;width:auto;margin:8pt 0;max-height:none;overflow:visible}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
@@ -413,26 +414,57 @@ async function upgradeAudio(){
   }
 }
 function speakW(w){ speak(w); }
-function setFont(pt){
-  pt = Math.max(7, Math.min(22, Math.round(pt*2)/2));
-  const an = Math.max(6, Math.round(pt*0.86*2)/2);
-  document.documentElement.style.setProperty('--fs', pt+'pt');
-  document.documentElement.style.setProperty('--fsan', an+'pt');
-  const v=document.getElementById('fsv'); if(v) v.textContent = pt.toFixed(1);
-  const r=document.getElementById('fsr'); if(r && Math.abs(parseFloat(r.value)-pt)>0.01) r.value = pt;
-  try{ localStorage.setItem('cet4_fs', pt); }catch(e){}
+/* ==================== 自适应版心：按窗口宽度算缩放，像 PDF 的「适合宽度」 ====================
+   A4 原宽 595.32pt = 793.76px；缩放后正文、行距、缩进、留白全部等比放大，
+   只改变大小不改版式，所以「和真题一致」的格式不动。 */
+const PAPER_BASE_W = 793.76;
+let pageZoom = 1, basePt = 10.5;
+function effPt(){ return basePt * pageZoom; }
+function setFont(ptEff){
+  ptEff = Math.max(7, Math.min(30, Math.round(ptEff * 2) / 2));
+  basePt = Math.max(4, ptEff / (pageZoom || 1));
+  applyFont(true);
 }
-function stepFont(d){
-  let cur = 10.5;
-  try{ cur = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
-  setFont(cur + d);
+function applyFont(save){
+  const an = Math.max(6, Math.round(basePt * 0.86 * 2) / 2);
+  document.documentElement.style.setProperty('--fs', basePt.toFixed(2) + 'pt');
+  document.documentElement.style.setProperty('--fsan', an.toFixed(2) + 'pt');
+  const eff = Math.round(effPt() * 10) / 10;
+  const v = document.getElementById('fsv'); if(v) v.textContent = eff.toFixed(1);
+  const r = document.getElementById('fsr'); if(r && Math.abs(parseFloat(r.value) - eff) > 0.05) r.value = eff;
+  if(save){ try{ localStorage.setItem('cet4_fs', basePt.toFixed(2)); }catch(e){} }
+  if(typeof inkRedrawSoon === 'function') inkRedrawSoon();
 }
-function resetFont(){ setFont(10.5); }
+function fitPaper(){
+  const paper = document.querySelector('.paper');
+  if(!paper) return;
+  const avail = Math.max(320, innerWidth - 70);
+  // 目标版心宽度：占屏 68%，最小 820，最大 1600
+  const target = Math.min(1600, Math.max(820, innerWidth * 0.68), avail);
+  let z = target / PAPER_BASE_W;
+  z = Math.max(0.72, Math.min(1.70, Math.round(z * 100) / 100));
+  pageZoom = z;
+  // 放大到上限后不再放大字号，改为把版心继续加宽（超宽屏也不留大白边）
+  const cssW = Math.max(PAPER_BASE_W, target / z);
+  paper.style.zoom = z;
+  paper.style.width = cssW.toFixed(1) + 'px';
+  // 侧栏要放得下才浮在正文右边，否则落进正文（够宽时仍可并排）
+  const room = (innerWidth - cssW * z) / 2;
+  document.body.classList.toggle('nofloat', room < Math.max(470, 380 * z + 24));
+  applyFont(false);
+}
+function stepFont(d){ setFont(effPt() + d); }
+function resetFont(){ basePt = 10.5; applyFont(true); }
 (function(){
   let v = 10.5;
-  try{ v = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
-  setFont(v);
+  try{ v = parseFloat(localStorage.getItem('cet4_fs')); }catch(e){}
+  if(isFinite(v) && v >= 6 && v <= 22) basePt = v;
 })();
+let _fitTimer = null;
+window.addEventListener('resize', function(){
+  clearTimeout(_fitTimer);
+  _fitTimer = setTimeout(fitPaper, 120);
+});
 
 /* ==================== 自绘音频条（不用原生 controls：中键不再被吃，也没有大黑条） ==================== */
 function apFmt(t){
@@ -1450,7 +1482,7 @@ def main():
 <div class="bar"><b class="ttl">{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</b>
 <span class="grp">字号
 <button onclick="stepFont(-1)" title="缩小">A−</button>
-<input id="fsr" type="range" min="7" max="22" step="0.5" value="10.5" oninput="setFont(parseFloat(this.value))">
+<input id="fsr" type="range" min="7" max="30" step="0.5" value="10.5" oninput="setFont(parseFloat(this.value))">
 <button onclick="stepFont(1)" title="放大">A+</button>
 <span class="fsv" id="fsv">10.5</span>
 <button onclick="resetFont()">默认</button></span>
@@ -1486,6 +1518,8 @@ def main():
 <canvas id="ink"></canvas>
 <script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}{INK}
 wrapWords(document.querySelector(".paper"));
+fitPaper();
+applyFont(false);
 apBuild();
 inkInit2();
 upgradeAudio();
