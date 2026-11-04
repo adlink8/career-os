@@ -39,9 +39,17 @@ CB = Path(r"C:\Users\li\AppData\Roaming\npm\codebuddy.cmd")
 sys.path.insert(0, str(ROOT / "bin"))
 import cet4_paper_auth as A  # type: ignore
 
-PROMPT = """两段材料，一段是**官方四级真题**的试卷摘录，另一段是**模拟卷**的摘录（都是选词填空开头与词库、匹配陈述、阅读题干、翻译、写作要求）。
+FRAMINGS = {
+    "f1": """两段材料，一段是**官方四级真题**的试卷摘录，另一段是**模拟卷**的摘录。
 请判断哪一段是官方真题。只能二选一，不要含糊。
-只输出 JSON：{"real":"A 或 B","confidence":1-3,"reason":"<=20字"}
+只输出 JSON：{"real":"A 或 B","confidence":1-3,"reason":"<=20字"}""",
+    "f2": """两段材料都是大学英语四级试卷的摘录（选词填空开头与词库、匹配陈述、阅读题干、翻译、写作要求）。
+请判断**哪一段的写法更像一份真实的四级试卷**——只看命题写法与语言质量，
+不要因为某段读起来眼熟（像是见过的旧真题）就选它。
+只输出 JSON：{"real":"A 或 B","confidence":1-3,"reason":"<=20字"}""",
+}
+
+PROMPT = """{framing}
 
 === A ===
 {a}
@@ -73,6 +81,7 @@ def main() -> int:
     ap.add_argument("--real", type=int, default=3)
     ap.add_argument("--trials", type=int, default=10)
     ap.add_argument("--judges", type=int, default=2)
+    ap.add_argument("--framing", default="f1", choices=["f1", "f2"], help="f1=哪份是官方真题；f2=哪份更像真题")
     args = ap.parse_args()
 
     pids = [x for x in re.split(r"[,\s]+", args.mock) if x]
@@ -93,7 +102,8 @@ def main() -> int:
     def judge(k: int):
         out = []
         for tr in trials:
-            text = cb(PROMPT.replace("{a}", tr["a"]).replace("{b}", tr["b"]))
+            text = cb(PROMPT.replace("{framing}", FRAMINGS[args.framing])
+                              .replace("{a}", tr["a"]).replace("{b}", tr["b"]))
             res = A.jp(text)
             if isinstance(res, list):
                 res = res[0] if res and isinstance(res[0], dict) else {}
@@ -123,7 +133,7 @@ def main() -> int:
     for r in rows[:6]:
         print(f"  第{r['trial']}组 判{r['guess']} 真值{r['truth']} {'✓' if r['ok'] else '✗'} {r.get('reason')}")
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "paired-choice.json").write_text(json.dumps({"rows": rows, "accuracy": round(k / max(1, n), 3),
+    (OUT / f"paired-choice-{args.framing}.json").write_text(json.dumps({"rows": rows, "accuracy": round(k / max(1, n), 3),
                                                         "ci": [lo, hi]}, ensure_ascii=False, indent=1), encoding="utf-8")
     return 0
 

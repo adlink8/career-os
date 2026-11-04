@@ -65,6 +65,22 @@ def jp(t: str):
     return {}
 
 
+def normalize(text: str) -> str:
+    """把两侧档案压成同一种排版：去掉 markdown 强调符、把各种空号写法统一、压空白。
+
+    这一步是为了让评委没法靠“原卷排版痕迹”（加粗、全角标点、26-35 空号样式）做判断，
+    只能看题目写法本身。mock_profile / real_profiles 的输出都要过一遍。
+    """
+    t = text or ""
+    t = re.sub(r"\*\*|__|`", "", t)
+    t = re.sub(r"(?<=[A-Za-z])\s?[_\u005f]{2,}\s?\d{2}\s?[_\u005f]{2,}", lambda m: " [空] ", t)
+    t = re.sub(r"_{2,}\s*\d{2}\s*_{2,}", " [空] ", t)
+    t = re.sub(r"\b(\d{2})\s*[_\u005f]{3,}", r"\1. ", t)
+    t = re.sub(r"[ \t]+", " ", t)
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
+
+
 def mock_profile(pid: str) -> str:
     d = json.loads((PAPERS / f"paper-{pid}.json").read_text(encoding="utf-8"))
     r = d["reading"]
@@ -81,7 +97,7 @@ def mock_profile(pid: str) -> str:
     out.append("【阅读题干】" + "；".join(stems))
     out.append("【翻译】" + str((d.get("translation") or {}).get("zh") or ""))
     out.append("【写作要求】" + str((d.get("writing") or {}).get("directions") or ""))
-    return "\n".join(out)
+    return normalize("\n".join(out))
 
 
 def real_profiles(n=3, seed=17) -> list:
@@ -110,8 +126,9 @@ def real_profiles(n=3, seed=17) -> list:
         bank_str = " / ".join(f"{k}.{v}" for k, v in bank_rows) if len(bank_rows) >= 10 else ""
         sts = [x for x in re.findall(r"^\s*(\d{2})\.\s*(.+)$", sec.get("B", ""), flags=re.M)
                if 36 <= int(x[0]) <= 45][:10]
-        stems = [x for x in re.findall(r"^\s*(\d{2})\.\s*(.+?[?？])\s*$", sec.get("C", ""), flags=re.M)
-                 if 46 <= int(x[0]) <= 55][:10]
+        # 题干不要求以问号结尾（有的真题题干是 "The author suggests that …" 这种陈述式）
+        stems = [x for x in re.findall(r"^\s*(\d{2})\.\s*(.+?)\s*$", sec.get("C", ""), flags=re.M)
+                 if 46 <= int(x[0]) <= 55 and len(x[1].split()) >= 4][:10]
         def _clean(x: str) -> str:
             x = re.sub(r"(?is)^\s*/[^/]{0,30}/\s*\(\d+\s*minutes\)", "", x)
             x = re.sub(r"(?is)\*\*Directions?:?\*\*", "", x)
@@ -129,6 +146,7 @@ def real_profiles(n=3, seed=17) -> list:
             f"【翻译】{trans}",
             f"【写作要求】{write}",
         ]))
+    out = [normalize(x) for x in out]
     random.Random(seed).shuffle(out)
     return out[:n]
 
