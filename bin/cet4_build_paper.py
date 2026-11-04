@@ -52,6 +52,21 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:10.5pt;border:
 .pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font:9pt/1.7 -apple-system,"Microsoft YaHei","SimSun",sans-serif}
 .pan.show,.qax.show{display:block}
 .pan .cn{margin-bottom:3pt}
+.tr{margin:4pt 0 8pt;border-left:2pt solid #e0e0e0;padding-left:8pt;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.tr .line{cursor:pointer;padding:1pt 3pt;border-radius:2pt}
+.tr .line:hover{background:#eef4ff}
+.tr .line.on{background:#fff3cd}
+.tr .line .en{color:#111}
+.tr .line .cn{color:#5a5a5a}
+.sum{margin:4pt 0;padding:5pt 8pt;background:#f6f6f6;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.vt{width:100%;border-collapse:collapse;margin:4pt 0 8pt;font:9pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
+.vt td{border-bottom:1px dotted #ddd;padding:1pt 4pt;vertical-align:top}
+.vt td:first-child{font-weight:600;width:24%}
+.vt td:nth-child(2){color:#555;width:24%}
+.trs{border-collapse:collapse;width:100%;font:9pt/1.6 -apple-system,"Microsoft YaHei",sans-serif;margin:4pt 0}
+.trs td,.trs th{border:1px solid #e2e2e2;padding:2pt 5pt;vertical-align:top;text-align:left}
+.bands{margin:4pt 0 8pt;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.bands div{border-bottom:1px dotted #ddd;padding:1pt 0}
 @media print{.bar,.qa,.pan,.qax,#wdict{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
@@ -140,6 +155,13 @@ function check(){
 function closeReport(){document.getElementById('report').classList.remove('show')}
 function speak(t){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
 function showQA(){document.querySelectorAll('.qa').forEach(e=>e.classList.toggle('show'))}
+function seek(aid, t, el){
+  const a=document.getElementById(aid); if(!a) return;
+  a.currentTime=t; a.play().catch(()=>{});
+  document.querySelectorAll('.tr .line.on').forEach(e=>e.classList.remove('on'));
+  if(el) el.classList.add('on');
+}
+function speakW(w){ speak(w); }
 """
 
 
@@ -160,11 +182,23 @@ def main():
     ap.add_argument("--outdir", default="var/cet4-daily/paper-demo")
     ap.add_argument("--mode", default="explain", choices=["plain", "explain"])
     ap.add_argument("--words", default="var/cet4-daily/words.json")
+    ap.add_argument("--lexplain", default="var/cet4-daily/listening-explain.json")
+    ap.add_argument("--wexplain", default="var/cet4-daily/writing-explain.json")
+    ap.add_argument("--cexplain", default="var/cet4-daily/cloze-explain.json")
+    ap.add_argument("--mexplain", default="var/cet4-daily/match-explain.json")
     args = ap.parse_args()
     global MODE
     MODE = args.mode
     src = Path(args.paper)
     data = json.loads(src.read_text(encoding="utf-8"))
+    lexp_path = Path(args.lexplain)
+    lexp = json.loads(lexp_path.read_text(encoding="utf-8")) if lexp_path.exists() else {}
+    wexp_path = Path(args.wexplain)
+    wexp = json.loads(wexp_path.read_text(encoding="utf-8")) if wexp_path.exists() else {}
+    cexp_path = Path(args.cexplain)
+    cexp = json.loads(cexp_path.read_text(encoding="utf-8")) if cexp_path.exists() else {}
+    mexp_path = Path(args.mexplain)
+    mexp = json.loads(mexp_path.read_text(encoding="utf-8")) if mexp_path.exists() else {}
     words_path = Path(args.words)
     words = json.loads(words_path.read_text(encoding="utf-8")) if words_path.exists() else []
     wdict = {x["word"].lower(): x for x in words if x.get("word")}
@@ -176,6 +210,36 @@ def main():
     parts.append(f'<div class="part">Part I &nbsp; Writing &nbsp;(30 minutes)</div>')
     parts.append(f'<div class="dir">Directions: {esc(data["writing"]["directions"].replace("Directions:","").strip())}</div>')
     parts.append('<textarea placeholder="Write your essay here (120-180 words)"></textarea>')
+    if MODE == "explain":
+        w = data["writing"]
+        blk = ['<div class="sum"><b>范文（165 词，4 段）</b>']
+        for para in [x for x in (w.get("model_essay") or "").split("\n\n") if x.strip()]:
+            blk.append(f'<p class="body">{esc(para.strip())}</p>')
+        blk.append("</div>")
+        if wexp.get("structure"):
+            rows = "".join(f'<tr><td>第 {x.get("para")} 段</td><td>{esc(x.get("role",""))}</td>'
+                           f'<td>{esc(x.get("cn",""))}</td></tr>' for x in wexp["structure"])
+            blk.append(f'<div class="vt" style="display:block"><table class="trs">'
+                       f'<tr><th>段落</th><th>作用</th><th>内容</th></tr>{rows}</table></div>')
+        for i, s in enumerate(wexp.get("sentences") or [], 1):
+            blk.append(f'<div class="tr"><div class="line"><div class="en">{i}. {esc(s.get("en",""))}</div>'
+                       f'<div class="cn">意群：{esc(s.get("chunks",""))}</div>'
+                       f'<div class="cn">顺流直译：{esc(s.get("cn",""))}</div>'
+                       + (f'<div class="cn">点拨：{esc(s.get("note",""))}</div>' if s.get("note") else "")
+                       + "</div></div>")
+        if wexp.get("expressions"):
+            blk.append("<b>可复用表达</b>" + "".join(
+                f'<div class="bands"><div>{esc(x.get("phrase",""))}　{esc(x.get("cn",""))}'
+                f'　<span style="color:#888">{esc(x.get("use",""))}</span></div></div>'
+                for x in wexp["expressions"]))
+        if wexp.get("bands"):
+            blk.append("<b>评分档</b>" + "".join(
+                f'<div class="bands"><div><b>{esc(x.get("score",""))}</b>　{esc(x.get("desc",""))}</div></div>'
+                for x in wexp["bands"]))
+        if w.get("deductions"):
+            blk.append("<b>判卷扣分点</b>" + "".join(
+                f'<div class="bands"><div>· {esc(x)}</div></div>' for x in w["deductions"]))
+        parts.append('<div class="sum">' + "".join(blk) + "</div>")
 
     parts.append('<div class="part">Part II &nbsp; Listening Comprehension &nbsp;(25 minutes)</div>')
     lq = data["listening"]["questions"]
@@ -189,15 +253,43 @@ def main():
                     if cand.exists():
                         audio = cand
                         break
+            aid = f"au-{Path(piece.get('audio') or 'x').stem}"
             if audio and audio.exists():
                 shutil.copy(audio, outdir / audio.name)
-                parts.append(f'<audio class="audio" controls src="{audio.name}"></audio>')
+                parts.append(f'<audio class="audio" id="{aid}" controls src="{audio.name}"></audio>')
+            lx = lexp.get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or {}
+            if MODE == "explain":
+                if piece.get("summary"):
+                    parts.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
+                cn_map = {x.get("i"): x.get("cn") for x in (lx.get("sentences") or [])}
+                lines = []
+                for i, s in enumerate(piece.get("timing") or [], 1):
+                    en = s.get("en") or s.get("text") or ""
+                    st = float(s.get("start") or 0)
+                    lines.append(f'<div class="line" onclick="seek(\'{aid}\',{st:.3f},this)">'
+                                 f'<div class="en">{i}. {esc(en)}</div>'
+                                 f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
+                if lines:
+                    parts.append('<div class="tr">' + "".join(lines) + "</div>")
+                if lx.get("words"):
+                    rows = "".join(
+                        f'<tr><td class="w" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
+                        f'<td>{esc(x.get("ipa",""))}</td><td>{esc(x.get("pos",""))}</td>'
+                        f'<td>{esc(x.get("cn",""))}</td></tr>' for x in lx["words"])
+                    parts.append('<table class="vt"><tr><th>生词</th><th>音标</th><th>词性</th><th>释义</th></tr>'
+                                 + rows + "</table>")
+            qan = {x.get("no"): x for x in (lx.get("qanalysis") or []) if x.get("no")}
             for q in piece["questions"]:
                 opts = "".join(
                     f'<label class="opt" data-q="{q["no"]}" data-l="{o[0]}" onclick="pick({q["no"]},\'{o[0]}\',this)">'
                     f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
                 parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
                              f'<span class="opts">{opts}</span></div>')
+                an = qan.get(q["no"])
+                if MODE == "explain" and an:
+                    parts.append(f'<div class="qax"><div><b>答案 {esc(q["answer"])}</b></div>'
+                                 f'<div>为什么对：{esc(an.get("why",""))}</div>'
+                                 f'<div>干扰项：{esc(an.get("trap",""))}</div></div>')
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
@@ -208,11 +300,40 @@ def main():
     parts.append(f'<div class="bank">{bank}</div>')
     ans_a = " ".join(f'{k}:{v}' for k, v in r["cloze"]["answers"].items())
     parts.append(f'<div class="qa">答案：{ans_a}</div>')
+    if MODE == "explain":
+        blk = []
+        if cexp.get("blanks"):
+            rows = "".join(
+                f'<tr><td><b>{esc(str(b.get("no")))}</b></td><td>{esc(b.get("answer",""))}) '
+                f'{esc(b.get("word",""))}</td><td>{esc(b.get("slot",""))}</td>'
+                f'<td>{esc(b.get("why",""))}</td><td>{esc(b.get("reject",""))}</td>'
+                f'<td>{esc(b.get("cn",""))}</td></tr>' for b in cexp["blanks"])
+            blk.append('<table class="trs"><tr><th>题</th><th>答案</th><th>空位语法槽</th>'
+                       '<th>为什么是它</th><th>其它候选为什么不行</th><th>顺流中文</th></tr>'
+                       + rows + "</table>")
+        if cexp.get("passage_cn"):
+            blk.append("<b>全文顺流直译</b>" + "".join(
+                f'<div class="bands"><div>{i}. {esc(x)}</div></div>'
+                for i, x in enumerate(cexp["passage_cn"], 1)))
+        if blk:
+            parts.append('<div class="pan show">' + "".join(blk) + "</div>")
 
     parts.append('<div class="sec">Section B</div>')
     parts.append('<div class="dir">Directions: Match each statement with the paragraph it is derived from.</div>')
     for k, v in r["match"]["paragraphs"].items():
         parts.append(f'<p class="body"><b>{k})</b> {esc(v)}</p>')
+        mx = mexp.get(k) or {}
+        if MODE == "explain" and mx:
+            sent = "".join(
+                f'<div style="margin-top:3pt"><b>{esc(s.get("en",""))}</b><br>'
+                f'<span style="color:#555">{esc(s.get("chunks",""))}</span><br>'
+                f'<span style="color:#666">{esc(s.get("cn",""))}</span>'
+                + (f'<div style="color:#7a5c00">↳ {esc(s.get("note",""))}</div>' if s.get("note") else "")
+                + "</div>" for s in (mx.get("sentences") or []))
+            parts.append(f'<div class="pan"><div class="cn">{esc(mx.get("main",""))}</div>'
+                         f'<div style="color:#555">作用：{esc(mx.get("role",""))}</div>'
+                         f'<div style="color:#555">对应题号：{esc("、".join(mx.get("answers") or []) or "无")}</div>'
+                         f'{sent}</div>')
     letters = "".join(f'<option>{c}</option>' for c in r["match"]["paragraphs"].keys())
     for st in r["match"]["statements"]:
         parts.append(f'<div class="q"><b>{st["no"]}.</b> {esc(st["text"])} '
@@ -266,6 +387,16 @@ def main():
     parts.append(f'<div class="dir">Directions: Translate the following passage into English.</div>')
     parts.append(f'<p class="body">{esc(data["translation"]["zh"])}</p>')
     parts.append('<textarea placeholder="Write your translation here"></textarea>')
+    if MODE == "explain":
+        tr = data["translation"]
+        blk = []
+        if tr.get("reference"):
+            blk.append(f'<div class="sum"><b>参考译文</b><p class="body">{esc(tr["reference"])}</p></div>')
+        if tr.get("points"):
+            blk.append("<b>踩分点与译法</b>" + "".join(
+                f'<div class="bands"><div>· {esc(x)}</div></div>' for x in tr["points"]))
+        if blk:
+            parts.append('<div class="sum">' + "".join(blk) + "</div>")
 
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">

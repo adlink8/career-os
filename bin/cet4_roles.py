@@ -53,6 +53,48 @@ WRITER = {
 """,
 }
 
+REPAIR = {
+    "cloze": """你是四级选词填空命题老师，现在按审查报告**定点修改**这套题。没被点名的空和句子原样保留，禁止整体重写。
+【审查报告】
+{review}
+【当前成品】
+{prev}
+【文章原文（改写空时以此为准）】
+{article}
+要求：
+1) 逐条解决 must_fix，每一条都要真的落到成品里，不许只换措辞糊弄。
+2) 文章 188-267 词；词库 15 词同词性、同语义场；10 正确 + 5 干扰；每空唯一答案。
+3) 答案字母 A-O 分散，不许连续同字母扎堆。
+4) 空前后保留足够语境，保证能从上下文唯一推出。
+只输出 JSON：{{"passage":"","bank":{{"A":""}},"answers":{{"26":"A"}},"translate":[{{"blank":26,"cn":""}}]}}
+""",
+    "match": """你是四级长篇匹配命题老师，现在按审查报告**定点修改**这套题。没被点名的段落和陈述原样保留。
+【审查报告】
+{review}
+【当前成品】
+{prev}
+【文章原文】
+{article}
+要求：
+1) 逐条解决 must_fix。
+2) 10-11 段，每段 60-120 词；陈述 36-45 共 10 条，每条只含一个信息点，必须改写（禁止照抄原句）。
+3) 答案字母分散，允许 1-2 段不设题。
+只输出 JSON：{{"title":"","paragraphs":{{"A":""}},"statements":[{{"no":36,"text":""}}],"answers":{{"36":"A"}}}}
+""",
+    "reading": """你是四级仔细阅读命题老师，现在按审查报告**定点修改**这 5 道题。只改 questions，passage 一个字都不许动。
+【审查报告】
+{review}
+【当前题目】
+{prev}
+要求：
+1) 逐条解决 must_fix，每一条都要在最终题目里看得见。
+2) 题干必须指向原文的具体对象；正确项必须是同义替换（连续实词重合 <=4 词）；三个干扰项三种不同手法。
+3) 每题 evidence 必须逐字出现在原文；同题选项长度差 <=3 词；答案覆盖 >=3 个字母。
+4) 题号 46-50；每题给 stem_cn、options_cn、option_analysis（四个选项各自的为什么）。
+只输出 JSON：{{"questions":[...]}}，结构与原题完全一致。
+""",
+}
+
 REVIEWER = {
     "cloze": """你是四级选词填空审查老师。对照下面 2 套真题范例，逐空审查候选卷。
 只输出 JSON：{{"verdict":"pass|needs_revision","score":0,"must_fix":[{{"id":"F1","severity":"blocker|high|medium","problem":"","fix":""}}]}}
@@ -142,13 +184,31 @@ def parse_json(text: str):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--type", required=True, choices=list(DIRS))
-    ap.add_argument("--role", required=True, choices=["writer", "reviewer", "solver"])
+    ap.add_argument("--role", required=True, choices=["writer", "reviewer", "solver", "repair"])
     ap.add_argument("--input", required=True)
     ap.add_argument("--out", default="")
+    ap.add_argument("--prev", default="", help="repair 用：上一轮成品 JSON")
+    ap.add_argument("--mustfix", default="", help="repair 用：reviewer 审查报告 JSON")
     args = ap.parse_args()
     src = Path(args.input)
     paper = json.loads(src.read_text(encoding="utf-8"))
-    if args.role == "writer":
+    if args.role == "repair":
+        if args.type not in REPAIR:
+            print("no repair template for", args.type)
+            return 1
+        if not args.prev or not args.mustfix:
+            print("repair needs --prev and --mustfix")
+            return 1
+        prev = json.loads(Path(args.prev).read_text(encoding="utf-8"))
+        rev = json.loads(Path(args.mustfix).read_text(encoding="utf-8"))
+        keys = {"reading": ("questions",), "cloze": ("passage", "bank", "answers", "translate"),
+                "match": ("title", "paragraphs", "statements", "answers")}[args.type]
+        prev_payload = {k: prev.get(k) for k in keys if k in prev}
+        prompt = REPAIR[args.type].format(
+            review=json.dumps(rev, ensure_ascii=False)[:6000],
+            prev=json.dumps(prev_payload, ensure_ascii=False)[:20000],
+            article=(paper.get("article") or paper.get("passage") or "")[:8000])
+    elif args.role == "writer":
         article = paper.get("article") or paper.get("passage") or ""
         prompt = WRITER[args.type].format(article=article[:8000])
     elif args.role == "solver":

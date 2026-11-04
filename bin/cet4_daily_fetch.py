@@ -16,6 +16,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36"
@@ -104,15 +105,67 @@ def parse_feed(raw: bytes) -> list[dict]:
     return items
 
 
+SKIP_TAGS = {"script", "style", "nav", "header", "footer", "aside", "form",
+             "noscript", "svg", "iframe", "figure", "figcaption", "button"}
+BLOCK_TAGS = {"p", "div", "br", "li", "h1", "h2", "h3", "h4", "blockquote", "section", "article"}
+NOISE = re.compile(r"ssrcss|ichef\.bbc|Image source|Getty Images|Read more|Sign up|"
+                   r"Subscribe|Advertisement|Cookie|Share this|Published|Last updated|"
+                   r"https?://|www\.|©|Related topics|Most read|All rights reserved", re.I)
+
+
+class _BlockText(HTMLParser):
+    """收集正文块级文本；只保留段落级文本，丢掉标签与图片说明。"""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.skip = 0
+        self.buf: list[str] = []
+        self.lines: list[str] = []
+
+    def _flush(self):
+        line = " ".join("".join(self.buf).split())
+        self.buf = []
+        if line:
+            self.lines.append(line)
+
+    def handle_starttag(self, tag, attrs):
+        if tag in SKIP_TAGS:
+            self.skip += 1
+        elif tag in BLOCK_TAGS:
+            self._flush()
+
+    def handle_endtag(self, tag):
+        if tag in SKIP_TAGS and self.skip:
+            self.skip -= 1
+        elif tag in BLOCK_TAGS:
+            self._flush()
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.buf.append(data)
+
+
 def html_to_text(raw: bytes) -> str:
+    for enc in ("utf-8", "gb18030", "latin-1"):
+        try:
+            html = raw.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        return ""
+    p = _BlockText()
     try:
-        html = raw.decode("utf-8", "ignore")
+        p.feed(html)
+        p.close()
     except Exception:  # noqa: BLE001
         return ""
-    html = re.sub(r"<(script|style|nav|header|footer|aside|form)[^>]*>.*?</\1>", " ", html, flags=re.S | re.I)
-    paras = re.findall(r"<p[^>]*>(.*?)</p>", html, flags=re.S | re.I)
-    text = " ".join(paras) if len(paras) >= 5 else re.sub(r"<[^>]+>", " ", html)
-    text = re.sub(r"&[a-z#0-9]+;", " ", text)
+    p._flush()
+    # 段落优先：够 4 段就用段落，否则退回全文
+    good = [ln for ln in p.lines if len(ln.split()) >= 6 and not NOISE.search(ln)]
+    text = " ".join(good)
+    if len(good) < 4:
+        text = " ".join(ln for ln in p.lines if not NOISE.search(ln))
     return re.sub(r"\s+", " ", text).strip()
 
 
