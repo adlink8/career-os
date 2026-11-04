@@ -34,7 +34,7 @@ select.stmt{font-family:inherit;font-size:.95em}
 textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid #ccc;border-radius:4pt;padding:6pt}
 .qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .qa.show{display:block}
-.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 12px;font:13px/1.4 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap;z-index:20}
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 12px;font:13px/1.4 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:nowrap;overflow-x:auto;z-index:20}
 .bar input[type=range]{width:110px;vertical-align:middle}
 .bar button{border:1px solid #666;background:#222;color:#fff;border-radius:4px;padding:3px 8px;cursor:pointer}
 .bar .grp{display:flex;gap:6px;align-items:center;border-left:1px solid #444;padding-left:12px}
@@ -46,13 +46,28 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 #reportBox{background:#fff;padding:16pt;border-radius:10pt;width:340pt;font:12pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
 .w{cursor:context-menu}
 .w:hover{background:#eef4ff}
-#wdict{display:none;position:fixed;z-index:50;max-width:260pt;background:#fff;border:1px solid #999;border-radius:8pt;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:8pt 10pt;font:11pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
+#wdict{display:none;position:fixed;z-index:50;width:216px;background:#fff;border:1px solid #999;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.22);padding:6px 8px;font:12px/1.5 -apple-system,"Microsoft YaHei",sans-serif;color:#111}
 #wdict.show{display:block}
-#wdict .hd{font-weight:700;font-size:1.18em}
-#wdict .ipa{color:#555;margin-left:6pt}
-#wdict .pos{color:#7a5c00;margin-right:6pt}
-#wdict .btn{margin-top:6pt}
-#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:6pt;padding:2pt 8pt;cursor:pointer}
+#wdict .hd{font-weight:700;font-size:14px;line-height:1.3}
+#wdict .ipa{color:#555;margin-left:4px;font-size:11.5px;font-weight:400}
+#wdict .pos{color:#7a5c00;margin-right:3px}
+#wdict .btn{margin-top:5px;display:flex;gap:4px}
+#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:4px;padding:1px 6px;cursor:pointer;margin:0;font-size:11.5px;line-height:1.5}
+#wdict .cn{font-size:13px;margin:1px 0 2px}
+#wdict .dr{margin-top:1px;line-height:1.45;font-size:11.5px}
+#wdict .dk{display:inline-block;min-width:2.6em;color:#7a5c00;font-weight:600;font-size:11px}
+#wdict .dcn{color:#666}
+#wdict .ex{color:#333}
+#wdict .ex{-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+#vocab{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:45;align-items:center;justify-content:center}
+#vocab.show{display:flex}
+#vocab .vbox{background:#fff;width:min(760pt,94vw);max-height:84vh;overflow:auto;border-radius:10pt;padding:14pt 16pt;font:11pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+#vocab h3{margin:0 0 8pt}
+#vocab table{width:100%;border-collapse:collapse}
+#vocab td,#vocab th{border-bottom:1px solid #eee;padding:3px 6px;text-align:left;vertical-align:top}
+#vocab .del{color:#c01c28;cursor:pointer;border:none;background:none;font-size:1em}
+#vocab .vbar{display:flex;gap:8px;flex-wrap:wrap;margin:8pt 0}
+#vocab .vbar button{border:1px solid #ccc;background:#fafafa;border-radius:6pt;padding:3pt 10pt;cursor:pointer}
 .pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:calc(var(--fsan) * 1.0);line-height:1.7;font-family:-apple-system,"Microsoft YaHei","SimSun",sans-serif}
 .pan.show,.qax.show{display:block}
 .pan .cn{margin-bottom:3pt}
@@ -92,8 +107,30 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .an .lt.bad{background:#c01c28}
 .an .tx{flex:1 1 auto}
 .an .tx b{color:#a01a26;font-weight:600}
+.sent{margin-top:6px;padding-left:4px;border-left:2px solid #f0f0f0}
+.sent .chk{line-height:2.1}
+.sent .scn{color:#3f3f3f;margin-top:1px}
+.sent.clickable{cursor:pointer;border-radius:3px}
+.sent.clickable:hover{background:#fbfbf4}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:12px/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
 #toast.show{opacity:.94}
+#side{position:fixed;top:52px;right:10px;width:min(340px,30vw);max-height:calc(100vh - 70px);overflow:auto;background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 8px 26px rgba(0,0,0,.16);padding:8px 10px;z-index:16;font:12.5px/1.65 -apple-system,"Microsoft YaHei",sans-serif;word-break:break-word;overflow-wrap:anywhere}
+#side table{width:100%!important;table-layout:fixed}
+#side .trs td,#side .trs th{overflow-wrap:anywhere;padding:2px 4px;font-size:11.5px}
+#side .sk{overflow-wrap:anywhere}
+.band{margin:4px 0;padding:4px 6px;background:#fafafa;border-left:2px solid #e3e3e3;border-radius:3px}
+.band .musts{color:#444;margin:2px 0}
+.band .sk{font-family:"Times New Roman",serif;color:#1a4f8a;background:#f2f7ff;padding:1px 4px;border-radius:3px;margin:2px 0}
+#side.off{display:none}
+.stabs{display:flex;gap:6px;margin-bottom:6px;align-items:center;position:sticky;top:-10px;background:#fff;padding:2px 0 6px}
+.stab{border:1px solid #ddd;background:#f7f7f7;border-radius:6px;padding:2px 10px;cursor:pointer;font:12.5px/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.stab.on{background:#111;color:#fff;border-color:#111}
+.stab.close{margin-left:auto;background:transparent;border:none;font-size:15px;line-height:1}
+.spane{display:none}
+.spane.on{display:block}
+.fold{margin:6pt 0;font-size:.95em;border-left:2px solid #e6e6e6;padding-left:8pt}
+.fold summary{cursor:pointer;color:#1a5fb4}
+@media (max-width:1200px){#side{width:min(320px,46vw)}}
 .par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
 .trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
 .anno-en{font-weight:600;color:#111}
@@ -112,7 +149,9 @@ function wrapWords(root){
   let n;
   while((n = w.nextNode())){
     const host = n.parentElement;
-    if(!host || host.closest('.pan,.qax,.qa,#wdict')) continue;
+    if(!host) continue;
+    // 只有字典弹窗/生词表面板/输入框内部不包词，其余全部可查（含解析区、字幕、作文、翻译）
+    if(host.closest('#wdict,#vocab,#toast,textarea,script,style,option')) continue;
     if(/[A-Za-z]{2}/.test(n.textContent)) nodes.push(n);
   }
   nodes.forEach(node=>{
@@ -131,14 +170,85 @@ function showDict(el, x, y){
   const w = el.dataset.w;
   const info = WORDS[w] || {};
   const box = document.getElementById('wdict');
-  box.innerHTML = `<div class="hd">${w}<span class="ipa">${info.phonetic||''}</span></div>`+
-    `<div><span class="pos">${info.pos||''}</span>${info.cn||'暂无释义'}</div>`+
-    `<div class="btn"><button onclick="speakWord('${w}')">🔊 朗读</button></div>`;
-  box.style.left = Math.min(x + 12, innerWidth - 280) + 'px';
-  box.style.top = Math.min(y + 12, innerHeight - 160) + 'px';
+  const row = (k, v) => (v && v !== '—') ? `<div class="dr"><span class="dk">${k}</span>${v}</div>` : '';
+  const ex = info.example
+    ? `<div class="dr"><span class="dk">例句</span><span class="ex">${info.example}</span>`
+      + (info.example_cn ? `<br><span class="dcn">${info.example_cn}</span>` : '') + `</div>`
+    : '';
+  box.innerHTML =
+    `<div class="hd">${info.word || w}<span class="ipa">${info.phonetic || ''}</span></div>`
+    + `<div><span class="pos">${info.pos || ''}</span></div>`
+    + `<div class="cn">${info.cn || '暂无释义'}</div>`
+    + row('词根', info.root) + row('拆解', info.affix) + row('同族', info.family)
+    + row('搭配', info.collocation) + ex + row('记忆', info.tip)
+    + `<div class="btn"><button onclick="speakWord('${w}')">🔊 朗读</button>`
+    + `<button onclick="toggleVocab('${w}',this)">${vocabHas(w) ? '✓ 已在生词表' : '＋ 加入生词表'}</button></div>`;
+  box.style.left = Math.min(x + 12, innerWidth - 240) + 'px';
+  box.style.top = Math.min(y + 12, innerHeight - 200) + 'px';
   box.classList.add('show');
 }
 function speakWord(w){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(w); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+/* —— 我的生词表（用户自己挑，不用 AI 预选） —— */
+function vocabLoad(){ try{ return JSON.parse(localStorage.getItem('cet4_vocab') || '[]'); }catch(e){ return []; } }
+function vocabHas(w){ return vocabLoad().indexOf(w) >= 0; }
+function vocabSave(a){ try{ localStorage.setItem('cet4_vocab', JSON.stringify(a)); }catch(e){} updateVocabCount(); }
+function updateVocabCount(){
+  const b = document.getElementById('vcount');
+  if(b) b.textContent = '生词表 ' + vocabLoad().length;
+  const n = document.getElementById('vn');
+  if(n) n.textContent = vocabLoad().length;
+}
+function toggleVocab(w, btn){
+  const a = vocabLoad();
+  const i = a.indexOf(w);
+  if(i >= 0) a.splice(i, 1); else a.push(w);
+  vocabSave(a);
+  if(btn) btn.textContent = vocabHas(w) ? '✓ 已在生词表' : '＋ 加入生词表';
+  renderVocab();
+}
+function renderVocab(){
+  const box = document.getElementById('vbox');
+  if(!box) return;
+  const a = vocabLoad();
+  updateVocabCount();
+  if(!a.length){
+    box.innerHTML = '<p style="color:#666">还没有生词。右键正文里任意单词 → 点「＋ 加入生词表」。</p>';
+    return;
+  }
+  const rows = a.map(w=>{
+    const i = WORDS[w] || {};
+    return `<tr><td><b>${i.word || w}</b><br><span style="color:#666">${i.phonetic || ''}</span></td>`
+      + `<td>${i.pos || ''} ${i.cn || '<span style="color:#c01c28">缺释义</span>'}</td>`
+      + `<td>${i.root && i.root !== '—' ? '词根 ' + i.root : ''}${i.affix && i.affix !== '—' ? '<br>拆解 ' + i.affix : ''}</td>`
+      + `<td>${i.collocation || ''}${i.tip ? '<br><span style="color:#8a5200">' + i.tip + '</span>' : ''}</td>`
+      + `<td><button class="del" title="移出" onclick="toggleVocab('${w}')">✕</button></td></tr>`;
+  }).join('');
+  box.innerHTML = `<table><tr><th style="width:18%">词</th><th style="width:26%">释义</th>`
+    + `<th style="width:24%">词根/拆解</th><th style="width:26%">搭配/记忆</th><th></th></tr>${rows}</table>`;
+}
+function openVocab(){ renderVocab(); document.getElementById('vocab').classList.add('show'); }
+function closeVocab(){ document.getElementById('vocab').classList.remove('show'); }
+function exportVocab(){
+  const a = vocabLoad();
+  if(!a.length){ hint('生词表还是空的：右键正文里的单词即可加入'); return; }
+  const lines = a.map(w=>{
+    const i = WORDS[w] || {};
+    return `- **${i.word || w}** ${i.phonetic || ''} ${i.pos || ''} ${i.cn || ''}\\n`
+      + `  - 词根：${i.root || '—'}｜拆解：${i.affix || '—'}｜同族：${i.family || '—'}\\n`
+      + `  - 搭配：${i.collocation || '—'}\\n`
+      + `  - 例句：${i.example || '—'} ${i.example_cn || ''}\\n`
+      + `  - 记忆：${i.tip || '—'}`;
+  });
+  const blob = new Blob([`# 我的生词表（${a.length} 词）\\n\\n` + lines.join('\\n')], {type:'text/markdown'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url; link.download = 'cet4-我的生词表.md'; link.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function clearVocab(){
+  if(!vocabLoad().length) return;
+  if(confirm('清空生词表？此操作不可撤销。')){ vocabSave([]); renderVocab(); }
+}
 document.addEventListener('contextmenu', e=>{
   const t = e.target;
   if(t && t.classList && t.classList.contains('w')){ e.preventDefault(); showDict(t, e.clientX, e.clientY); }
@@ -147,6 +257,23 @@ document.addEventListener('contextmenu', e=>{
 document.addEventListener('click', ()=>{ const b=document.getElementById('wdict'); if(b) b.classList.remove('show'); });
 function toggleAnalysis(){ document.querySelectorAll('.pan').forEach(e=>e.classList.toggle('show')); }
 function toggleAnswers(){ document.querySelectorAll('.qax').forEach(e=>e.classList.toggle('show')); }
+function toggleSide(){
+  const s = document.getElementById('side'); if(!s) return;
+  s.classList.toggle('off');
+  document.body.classList.toggle('has-side', !s.classList.contains('off'));
+  try{ localStorage.setItem('cet4_side', s.classList.contains('off') ? '0' : '1'); }catch(e){}
+}
+function sideTab(i){
+  document.querySelectorAll('.stab[data-tab]').forEach(b=>b.classList.toggle('on', b.dataset.tab === ('t'+i)));
+  document.querySelectorAll('.spane').forEach(p=>p.classList.toggle('on', p.id === ('t'+i)));
+}
+(function(){
+  const s = document.getElementById('side'); if(!s) return;
+  let v = '1';
+  try{ v = localStorage.getItem('cet4_side') || '1'; }catch(e){}
+  if(v === '0') s.classList.add('off');
+  document.body.classList.toggle('has-side', !s.classList.contains('off'));
+})();
 
 let answers = {};
 function pick(no, letter, el){
@@ -340,6 +467,103 @@ def option_rows(q: dict, an: dict) -> str:
     return '<div class="an">' + "".join(rows) + "</div>" if rows else ""
 
 
+def sentence_html(s: dict, aid: str = "", start: float = 0.0, end: float = 0.0) -> str:
+    """统一逐句块：意群（带成分配色）+ 整句中文；有音频时可点句播放。"""
+    parts = []
+    for c in (s.get("chunks") or []):
+        if not isinstance(c, dict):
+            continue
+        inspan = f'<span class="{role_cls(c.get("role"))}">{esc(c.get("en",""))}</span>'
+        if c.get("role"):
+            inspan += f'<span class="dim">〔{esc(c.get("role"))}·{esc(c.get("cn",""))}〕</span>'
+        elif c.get("cn"):
+            inspan += f'<span class="dim">（{esc(c.get("cn",""))}）</span>'
+        parts.append(inspan)
+    body = f'<div class="chk">{" ".join(parts) or esc(s.get("en",""))}</div>'
+    if s.get("cn"):
+        body += f'<div class="scn">{esc(s.get("cn"))}</div>'
+    if s.get("note"):
+        body += f'<div>{lb("路标","lb-tip")}<span class="anno-tip">{esc(s.get("note"))}</span></div>'
+    if aid:
+        return (f'<div class="sent clickable" onclick="seek(\'{aid}\',{start:.3f},{end:.3f},this)">'
+                f'{body}</div>')
+    return f'<div class="sent">{body}</div>'
+
+
+def think_writing(tc: dict) -> str:
+    """写作思维链：拆题 → 立场 → 框架 → 填充 → 避坑。"""
+    if not tc:
+        return '<p class="dim">思维链未生成，运行 bin/cet4_thinkchain.py</p>'
+    out = []
+    if tc.get("breakdown"):
+        out.append(lb("① 拆题", "lb-map"))
+        out.append('<table class="trs"><tr><th>要素</th><th>这道题要什么</th></tr>' + "".join(
+            f'<tr><td>{esc(x.get("item",""))}</td><td>{esc(x.get("value",""))}</td></tr>'
+            for x in tc["breakdown"]) + '</table>')
+    if tc.get("stance"):
+        out.append(lb("② 立场", "lb-main") + f'<div class="anno-en">{esc(tc["stance"])}</div>')
+    if tc.get("framework"):
+        out.append(lb("③ 框架", "lb-role"))
+        for f in tc["framework"]:
+            must = "".join(f'<div>· {esc(x)}</div>' for x in (f.get("must") or []))
+            out.append(f'<div class="band"><b>第 {esc(str(f.get("para")))} 段</b>　{esc(f.get("goal",""))}'
+                       + (f'<div class="musts">{must}</div>' if must else "")
+                       + (f'<div class="sk">{esc(f.get("skeleton",""))}</div>' if f.get("skeleton") else "")
+                       + "</div>")
+    if tc.get("fill"):
+        out.append(lb("④ 填充", "lb-chunk"))
+        for f in tc["fill"]:
+            rows = ""
+            for k, lbl in (("openers", "开头"), ("supports", "展开"), ("closers", "收尾"), ("connectors", "衔接")):
+                if f.get(k):
+                    rows += f'<div class="dim">{lbl}</div>' + "".join(
+                        f'<div class="sk">{esc(x)}</div>' for x in f[k])
+            out.append(f'<div class="band"><b>第 {esc(str(f.get("para")))} 段</b>{rows}</div>')
+    if tc.get("pitfalls"):
+        out.append(lb("⑤ 避坑", "lb-trap") + "".join(
+            f'<div class="bands"><div>· {esc(x)}</div></div>' for x in tc["pitfalls"]))
+    return "".join(out)
+
+
+def think_translation(tc: dict) -> str:
+    """翻译思维链：步骤 → 逐句拆解（小句/主干/难点/成句）→ 文化词。"""
+    if not tc:
+        return '<p class="dim">思维链未生成，运行 bin/cet4_thinkchain.py</p>'
+    out = []
+    if tc.get("steps"):
+        out.append(lb("① 步骤", "lb-map") + "".join(
+            f'<div class="bands"><div>{i}. {esc(x)}</div></div>'
+            for i, x in enumerate(tc["steps"], 1)))
+    for s in tc.get("sentences") or []:
+        clauses = "｜".join(esc(x) for x in (s.get("clauses") or []))
+        out.append('<div class="sent">'
+                   + f'<div class="dim">中文：{esc(s.get("cn",""))}</div>'
+                   + (f'<div>拆句：{clauses}</div>' if clauses else "")
+                   + (f'<div>{lb("主干", "lb-main")}{esc(s.get("spine",""))}</div>' if s.get("spine") else "")
+                   + (f'<div>{lb("难点", "lb-trap")}{esc(s.get("trap",""))}</div>' if s.get("trap") else "")
+                   + (f'<div class="anno-en">{esc(s.get("en",""))}</div>' if s.get("en") else "")
+                   + "</div>")
+    if tc.get("phrases"):
+        out.append(lb("③ 文化词", "lb-band") + "".join(
+            f'<div class="bands"><div>{esc(x.get("cn",""))} → <b>{esc(x.get("en",""))}</b>'
+            f'　<span class="dim">{esc(x.get("why",""))}</span></div></div>'
+            for x in tc["phrases"]))
+    return "".join(out)
+
+
+def build_timing_index(timing: list) -> dict:
+    """句子文本 → (start, 下一句 start)。"""
+    norm = lambda x: re.sub(r"[^a-z0-9]", "", (x or "").lower())
+    idx = {}
+    for i, t in enumerate(timing or []):
+        key = norm(t.get("en", ""))
+        if not key:
+            continue
+        nxt = timing[i + 1].get("start") if i + 1 < len(timing) else 0
+        idx[key] = (float(t.get("start") or 0), float(nxt or 0))
+    return idx
+
+
 def cloze_html(passage: str) -> str:
     import re
     t = esc(passage)
@@ -357,6 +581,7 @@ def main():
     ap.add_argument("--wexplain", default="var/cet4-daily/writing-explain.json")
     ap.add_argument("--cexplain", default="var/cet4-daily/cloze-explain.json")
     ap.add_argument("--mexplain", default="var/cet4-daily/match-explain.json")
+    ap.add_argument("--sentence-dir", default="var/cet4-daily")
     args = ap.parse_args()
     global MODE
     MODE = args.mode
@@ -370,6 +595,19 @@ def main():
     cexp = json.loads(cexp_path.read_text(encoding="utf-8")) if cexp_path.exists() else {}
     mexp_path = Path(args.mexplain)
     mexp = json.loads(mexp_path.read_text(encoding="utf-8")) if mexp_path.exists() else {}
+    sdir = Path(args.sentence_dir)
+
+    def load_sent(kind: str) -> dict:
+        p = sdir / f"sent-explain-{kind}.json"
+        return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+    sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation")}
+    chain_path = sdir / "thinkchain.json"
+    chain = json.loads(chain_path.read_text(encoding="utf-8")) if chain_path.exists() else {}
+    sectiming = {}
+    for k in ("writing", "translation"):
+        p = sdir / "audio" / f"{k}.timing.json"
+        sectiming[k] = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
     words_path = Path(args.words)
     words = json.loads(words_path.read_text(encoding="utf-8")) if words_path.exists() else []
     wdict = {x["word"].lower(): x for x in words if x.get("word")}
@@ -378,39 +616,48 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
 
     parts = []
+    side = []  # 侧边栏：写作/翻译思维链
     parts.append(f'<div class="part">Part I &nbsp; Writing &nbsp;(30 minutes)</div>')
     parts.append(f'<div class="dir">Directions: {esc(data["writing"]["directions"].replace("Directions:","").strip())}</div>')
     parts.append('<textarea placeholder="Write your essay here (120-180 words)"></textarea>')
     if MODE == "explain":
         w = data["writing"]
-        blk = ['<div class="sum"><b>范文（165 词，4 段）</b>']
-        for para in [x for x in (w.get("model_essay") or "").split("\n\n") if x.strip()]:
-            blk.append(f'<p class="body">{esc(para.strip())}</p>')
-        blk.append("</div>")
+        # 音频
+        src_mp3 = sdir / "audio" / "writing.mp3"
+        if src_mp3.exists():
+            shutil.copy(src_mp3, outdir / "writing.mp3")
+            parts.append('<audio class="audio" id="au-writing" controls preload="metadata" '
+                         'data-src="writing.mp3" src="writing.mp3"></audio>')
+        # 范文（可折叠，避免大段占用正文）
+        essay = "".join(f'<p class="body">{esc(p.strip())}</p>'
+                        for p in (w.get("model_essay") or "").split("\n\n") if p.strip())
+        parts.append(f'<details class="fold"><summary>范文（{len((w.get("model_essay") or "").split())} 词）</summary>{essay}</details>')
+
+        wblk = [lb("范文解构", "lb-main")]
         if wexp.get("structure"):
             rows = "".join(f'<tr><td>第 {x.get("para")} 段</td><td>{esc(x.get("role",""))}</td>'
                            f'<td>{esc(x.get("cn",""))}</td></tr>' for x in wexp["structure"])
-            blk.append(f'<div class="vt" style="display:block"><table class="trs">'
-                       f'<tr><th>段落</th><th>作用</th><th>内容</th></tr>{rows}</table></div>')
-        for i, s in enumerate(wexp.get("sentences") or [], 1):
-            blk.append(f'<div class="tr"><div class="line"><div class="en">{i}. {esc(s.get("en",""))}</div>'
-                       f'<div class="cn">意群：{esc(s.get("chunks",""))}</div>'
-                       f'<div class="cn">顺流直译：{esc(s.get("cn",""))}</div>'
-                       + (f'<div class="cn">点拨：{esc(s.get("note",""))}</div>' if s.get("note") else "")
-                       + "</div></div>")
+            wblk.append(f'<table class="trs"><tr><th>段</th><th>作用</th><th>内容</th></tr>{rows}</table>')
+        wsent = sen["writing"].get("writing") or []
+        wtim = build_timing_index(sectiming["writing"])
+        norm = lambda x: re.sub(r"[^a-z0-9]", "", (x or "").lower())
+        for s in wsent:
+            t = wtim.get(norm(s.get("en", "")))
+            wblk.append(sentence_html(s, "au-writing", t[0], t[1]) if t else sentence_html(s))
         if wexp.get("expressions"):
-            blk.append("<b>可复用表达</b>" + "".join(
+            wblk.append(lb("可复用表达", "lb-map") + "".join(
                 f'<div class="bands"><div>{esc(x.get("phrase",""))}　{esc(x.get("cn",""))}'
-                f'　<span style="color:#888">{esc(x.get("use",""))}</span></div></div>'
+                f'　<span class="dim">{esc(x.get("use",""))}</span></div></div>'
                 for x in wexp["expressions"]))
         if wexp.get("bands"):
-            blk.append("<b>评分档</b>" + "".join(
+            wblk.append(lb("评分档", "lb-band") + "".join(
                 f'<div class="bands"><div><b>{esc(x.get("score",""))}</b>　{esc(x.get("desc",""))}</div></div>'
                 for x in wexp["bands"]))
         if w.get("deductions"):
-            blk.append("<b>判卷扣分点</b>" + "".join(
+            wblk.append(lb("扣分点", "lb-trap") + "".join(
                 f'<div class="bands"><div>· {esc(x)}</div></div>' for x in w["deductions"]))
-        parts.append('<div class="sum">' + "".join(blk) + "</div>")
+        parts.append('<div class="pan show">' + "".join(wblk) + "</div>")
+        side.append(("写作思维链", think_writing(chain.get("writing") or {})))
 
     parts.append('<div class="part">Part II &nbsp; Listening Comprehension &nbsp;(25 minutes)</div>')
     lq = data["listening"]["questions"]
@@ -450,7 +697,7 @@ def main():
                         f'<tr><td class="w" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
                         f'<td>{esc(x.get("ipa",""))}</td><td>{esc(x.get("pos",""))}</td>'
                         f'<td>{esc(x.get("cn",""))}</td></tr>' for x in lx["words"])
-                    parts.append('<table class="vt"><tr><th>生词</th><th>音标</th><th>词性</th><th>释义</th></tr>'
+                    parts.append('<table class="vt"><tr><th>本段难词（AI 预选·参考）</th><th>音标</th><th>词性</th><th>释义</th></tr>'
                                  + rows + "</table>")
             qan = {x.get("no"): x for x in (lx.get("qanalysis") or []) if x.get("no")}
             for q in piece["questions"]:
@@ -483,7 +730,11 @@ def main():
             blk.append('<table class="trs"><tr><th>题</th><th>答案</th><th>空位语法槽</th>'
                        '<th>为什么是它</th><th>其它候选为什么不行</th><th>顺流中文</th></tr>'
                        + rows + "</table>")
-        if cexp.get("passage_cn"):
+        cl_sents = sen["cloze"].get("cloze") or []
+        if cl_sents:
+            blk.append(f'<div style="margin-top:6pt">{lb("逐句拆解", "lb-chunk")}</div>'
+                       + "".join(sentence_html(s) for s in cl_sents))
+        elif cexp.get("passage_cn"):
             blk.append(lb("全文顺流直译", "lb-mean") + "".join(
                 f'<div class="bands"><div><span class="dim">{i}.</span> {esc(x)}</div></div>'
                 for i, x in enumerate(cexp["passage_cn"], 1)))
@@ -495,13 +746,9 @@ def main():
     for k, v in r["match"]["paragraphs"].items():
         parts.append(f'<p class="body"><b>{k})</b> {esc(v)}</p>')
         mx = mexp.get(k) or {}
-        if MODE == "explain" and mx:
-            sent = "".join(
-                f'<div style="margin-top:4pt"><span class="anno-en">{esc(s.get("en",""))}</span><br>'
-                f'<span class="r-adv">{esc(s.get("chunks",""))}</span><br>'
-                f'<span class="anno-cn">{esc(s.get("cn",""))}</span>'
-                + (f'<div class="anno-tip">{lb("路标", "lb-tip")}{esc(s.get("note",""))}</div>' if s.get("note") else "")
-                + "</div>" for s in (mx.get("sentences") or []))
+        msent = sen["match"].get(f"match-{k}") or []
+        if MODE == "explain" and (mx or msent):
+            sent = "".join(sentence_html(s) for s in msent)
             parts.append(f'<div class="pan"><div class="anno-cn">{lb("主旨", "lb-main")}{esc(mx.get("main",""))}</div>'
                          f'<div>{lb("作用", "lb-role")}{esc(mx.get("role",""))}</div>'
                          f'<div>{lb("对应题", "lb-map")}{esc("、".join(mx.get("answers") or []) or "无")}</div>'
@@ -522,23 +769,15 @@ def main():
             for para in pg["paragraphs"]:
                 parts.append(f'<p class="body">{esc(para.get("en", ""))}</p>')
                 if MODE == "explain":
-                    sent = "".join(
-                        f'<div style="margin-top:5pt"><span class="anno-en">{esc(s.get("en",""))}</span><br>' +
-                        " ".join(
-                            f'<span class="{role_cls(c.get("role"))}">{esc(c.get("en",""))}</span>'
-                            + (f'<span class="dim">〔{esc(c.get("role"))}·{esc(c.get("cn",""))}〕</span>'
-                               if c.get("role") else
-                               f'<span class="dim">（{esc(c.get("cn",""))}）</span>'
-                               if c.get("cn") else "")
-                            for c in (s.get("chunks") or [])) +
-                        (f'<div>{lb("意思", "lb-mean")}<span class="anno-cn">{esc(s.get("meaning",""))}</span></div>' if s.get("meaning") else "") +
-                        (f'<div>{lb("谁修饰谁", "lb-chunk")}<span class="anno-cn">{esc(s.get("modifier",""))}</span></div>' if s.get("modifier") else "") +
-                        (f'<div>{lb("为啥", "lb-tip")}<span class="anno-tip">{esc(s.get("why",""))}</span></div>' if s.get("why") else "") +
-                        (f'<div>{lb("搭配", "lb-role")}<span class="anno-cn">{esc(s.get("collocation",""))}</span></div>' if s.get("collocation") else "") +
-                        "</div>" for s in (para.get("sentences") or []))
+                    sent = "".join(sentence_html(s) for s in (para.get("sentences") or []))
+                    extra = ""
+                    for key, label in (("meaning", "意思"), ("modifier", "谁修饰谁"),
+                                       ("why", "为啥"), ("collocation", "搭配")):
+                        if para.get(key):
+                            extra += f'<div>{lb(label, "lb-mean")}<span class="anno-cn">{esc(para.get(key))}</span></div>'
                     parts.append(f'<div class="pan"><div class="anno-cn">{lb("段落中文", "lb-mean")}{esc(para.get("cn",""))}</div>'
                                  f'<div>{lb("主旨", "lb-main")}{esc(para.get("main",""))}</div>'
-                                 f'<div>{lb("作用", "lb-role")}{esc(para.get("structure",""))}</div>{sent}</div>')
+                                 f'<div>{lb("作用", "lb-role")}{esc(para.get("structure",""))}</div>{sent}{extra}</div>')
         else:
             parts.append(f'<p class="body">{esc(pg.get("passage", ""))}</p>')
         for q in pg["questions"]:
@@ -571,14 +810,40 @@ def main():
     parts.append('<textarea placeholder="Write your translation here"></textarea>')
     if MODE == "explain":
         tr = data["translation"]
-        blk = []
+        src_mp3 = sdir / "audio" / "translation.mp3"
+        if src_mp3.exists():
+            shutil.copy(src_mp3, outdir / "translation.mp3")
+            parts.append('<audio class="audio" id="au-translation" controls preload="metadata" '
+                         'data-src="translation.mp3" src="translation.mp3"></audio>')
         if tr.get("reference"):
-            blk.append(f'<div class="sum"><b>参考译文</b><p class="body">{esc(tr["reference"])}</p></div>')
+            parts.append(f'<details class="fold"><summary>参考译文（{len(tr["reference"].split())} 词）</summary>'
+                         f'<p class="body">{esc(tr["reference"])}</p></details>')
+        tblk = []
         if tr.get("points"):
-            blk.append("<b>踩分点与译法</b>" + "".join(
+            tblk.append(lb("踩分点与译法", "lb-map") + "".join(
                 f'<div class="bands"><div>· {esc(x)}</div></div>' for x in tr["points"]))
-        if blk:
-            parts.append('<div class="sum">' + "".join(blk) + "</div>")
+        tsent = sen["translation"].get("translation") or []
+        ttim = build_timing_index(sectiming["translation"])
+        norm = lambda x: re.sub(r"[^a-z0-9]", "", (x or "").lower())
+        if tsent:
+            tblk.append(lb("逐句拆解", "lb-chunk"))
+        for s in tsent:
+            t = ttim.get(norm(s.get("en", "")))
+            tblk.append(sentence_html(s, "au-translation", t[0], t[1]) if t else sentence_html(s))
+        parts.append('<div class="pan show">' + "".join(tblk) + "</div>")
+        side.append(("翻译思维链", think_translation(chain.get("translation") or {})))
+
+    # —— 侧边栏：写作/翻译思维链 ——
+    side_html = ""
+    if MODE == "explain" and side:
+        tabs = "".join(
+            f'<button class="stab{" on" if i == 0 else ""}" data-tab="t{i}" onclick="sideTab({i})">{esc(name)}</button>'
+            for i, (name, _) in enumerate(side))
+        panes = "".join(
+            f'<div class="spane{" on" if i == 0 else ""}" id="t{i}">{html}</div>'
+            for i, (_, html) in enumerate(side))
+        side_html = (f'<aside id="side"><div class="stabs">{tabs}'
+                     f'<button class="stab close" title="收起" onclick="toggleSide()">×</button></div>{panes}</aside>')
 
     # 纯题目版只嵌判分必需字段，避免学生查看源码就能读到解析与答案理由
     if MODE == "plain":
@@ -599,6 +864,10 @@ def main():
     else:
         embed = data
 
+    mode_btns = ('<button onclick="toggleAnalysis()">段落解析</button>'
+                 '<button onclick="toggleAnswers()">题目解析</button>'
+                 '<button onclick="toggleSide()">思维链</button>') if MODE == "explain" else ""
+
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</title><style>{CSS}</style></head><body>
@@ -610,20 +879,28 @@ def main():
 <span class="fsv" id="fsv">10.5</span>
 <button onclick="resetFont()">默认</button></span>
 <span class="grp"><label style="cursor:pointer;user-select:none"><input type="checkbox" id="cont"> 连播</label>
+<button onclick="openVocab()" id="vcount">生词表 0</button>
 <span id="score">客观题 --</span>
 <button onclick="check()">对答案</button><button onclick="showQA()">显示答案</button>
-<button onclick="toggleAnalysis()">段落解析</button><button onclick="toggleAnswers()">题目解析</button>
+{mode_btns}
 <button onclick="window.print()">打印</button></span></div>
 <div class="spacer"></div>
 <div class="paper">{''.join(parts)}</div>
+{side_html}
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
 <button onclick="closeReport()" style="width:100%;margin-top:10pt;padding:6pt">关闭</button></div></div>
 <div id="wdict"></div>
+<div id="vocab"><div class="vbox"><h3>我的生词表（<span id="vn">0</span> 词）</h3>
+<div class="vbar"><button onclick="exportVocab()">导出 Markdown</button>
+<button onclick="clearVocab()">清空</button>
+<button onclick="closeVocab()" style="margin-left:auto">关闭</button></div>
+<div id="vbox"></div></div></div>
 <div id="toast"></div>
 <script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}
 wrapWords(document.querySelector(".paper"));
 upgradeAudio();
-setTimeout(bindSentenceStop, 0);</script></body></html>"""
+setTimeout(bindSentenceStop, 0);
+updateVocabCount();</script></body></html>"""
     out = outdir / "index.html"
     out.write_text(html, encoding="utf-8")
     print(f"wrote {out} ({len(html)} bytes, mode={args.mode})")
