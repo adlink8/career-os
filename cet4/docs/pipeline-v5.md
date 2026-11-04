@@ -53,3 +53,21 @@
 - 2026.06 三套真题无官方答案页，未纳入答案基线
 - 7 套「-3」卷与第二套共用听力，听力统计按 14 套算
 - 真题 markdown 有 OCR 噪声（`cither`/`shrinks2`/全角逗号），修正副本在 `cet4/var/cet4-daily/bank-fixed/`，未回写知识库
+
+## 6. 成品卷台账（2026-11-04，10 套）
+
+| 卷 | 词数 | 真题感 | 比真卷(3.17) | 盲做 | 审查 |
+|---|---:|---:|---:|---:|---|
+| set-83.s2 | 372 | 4.67 | +1.50 | 5/5 | needs_revision |
+| set-81.s2 | 366 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-84.s2 | 358 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-85.s2 | 378 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-86.s2 | 360 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-91.s2 | 365 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-93.s2 | 369 | 4.33 | +1.16 | 5/5 | needs_revision |
+| set-87.s2 | 374 | 4.00 | +0.83 | 5/5 | needs_revision |
+| set-82.s2 | 368 | 3.00 | −0.17 | 5/5 | pass |
+| set-92.s2 | 368 | 3.00 | −0.17 | 5/5 | needs_revision |
+
+汇总：真题感 ≥ 真卷 **8/10**；盲做全对 **10/10**；审查通过 **1/10**（真卷同审基线 **0/8**）。
+台账文件：`cet4/var/cet4-daily/line-compare/ledger-v5.{json,md}`；生成脚本 `cet4/bin/cet4_ledger.py`。
