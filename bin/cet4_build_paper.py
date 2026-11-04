@@ -7,35 +7,39 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 from pathlib import Path
 
 CSS = """
+:root{--fs:10.5pt;--fsan:9pt}
 *{box-sizing:border-box}
-body{margin:0;background:#e9e9e9;font-family:"Times New Roman","SimSun",serif;color:#000;font-size:10.5pt;line-height:1.5}
+body{margin:0;background:#e9e9e9;font-family:"Times New Roman","SimSun",serif;color:#000;font-size:var(--fs);line-height:1.5}
 .paper{width:595.32pt;margin:16pt auto;background:#fff;padding:38pt 36pt 30pt;box-shadow:0 2px 16px rgba(0,0,0,.18)}
-.part{font-weight:bold;margin:14pt 0 6pt;font-size:11pt}
+.part{font-weight:bold;margin:14pt 0 6pt;font-size:1.05em}
 .sec{font-weight:bold;margin:8pt 0 4pt}
 .dir{font-style:italic;color:#333;margin:4pt 0 8pt}
 p.body{text-indent:2em;margin:0 0 5pt;text-align:justify}
 .q{margin:7pt 0}
 .opts{display:grid;grid-template-columns:1fr 1fr;column-gap:14pt;padding-left:12pt}
-.opt{display:block;cursor:pointer;padding:1pt 2pt;border-radius:2px}
+.opt{display:block;cursor:pointer;padding:1pt 2px;border-radius:2px}
 .opt input{display:none}
 .opt.sel{background:#e3f0ff}
 .opt.correct{background:#d9f2df;outline:1px solid #2e7d32}
 .opt.wrong{background:#fde0e0;outline:1px solid #c62828}
-input.blank{width:110pt;border:none;border-bottom:1px solid #666;font-family:inherit;font-size:10.5pt;text-align:center}
-select.stmt{font-family:inherit;font-size:10pt}
-.bank{display:grid;grid-template-columns:repeat(4,1fr);gap:2pt 10pt;margin:6pt 0 10pt;font-size:10pt}
+input.blank{width:110pt;border:none;border-bottom:1px solid #666;font-family:inherit;font-size:1em;text-align:center}
+select.stmt{font-family:inherit;font-size:.95em}
+.bank{display:grid;grid-template-columns:repeat(4,1fr);gap:2pt 10pt;margin:6pt 0 10pt;font-size:.95em}
 .bank div{border-bottom:1px dotted #ddd}
-textarea{width:100%;min-height:90pt;font-family:inherit;font-size:10.5pt;border:1px solid #ccc;border-radius:4pt;padding:6pt}
-.qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font:9pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
+textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid #ccc;border-radius:4pt;padding:6pt}
+.qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .qa.show{display:block}
-.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 12px;font:13px/1.4 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:14px;align-items:center;z-index:20}
-.bar input[type=range]{width:120px}
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 12px;font:13px/1.4 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap;z-index:20}
+.bar input[type=range]{width:110px;vertical-align:middle}
 .bar button{border:1px solid #666;background:#222;color:#fff;border-radius:4px;padding:3px 8px;cursor:pointer}
-.spacer{height:44px}
+.bar .grp{display:flex;gap:6px;align-items:center;border-left:1px solid #444;padding-left:12px}
+.bar .fsv{min-width:44px;text-align:center;color:#ffd479;font-variant-numeric:tabular-nums}
+.spacer{height:52px}
 .audio{width:100%;margin:4pt 0 6pt}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
 #report.show{display:flex}
@@ -44,29 +48,56 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:10.5pt;border:
 .w:hover{background:#eef4ff}
 #wdict{display:none;position:fixed;z-index:50;max-width:260pt;background:#fff;border:1px solid #999;border-radius:8pt;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:8pt 10pt;font:11pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
 #wdict.show{display:block}
-#wdict .hd{font-weight:700;font-size:13pt}
+#wdict .hd{font-weight:700;font-size:1.18em}
 #wdict .ipa{color:#555;margin-left:6pt}
 #wdict .pos{color:#7a5c00;margin-right:6pt}
 #wdict .btn{margin-top:6pt}
 #wdict button{border:1px solid #ccc;background:#fafafa;border-radius:6pt;padding:2pt 8pt;cursor:pointer}
-.pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font:9pt/1.7 -apple-system,"Microsoft YaHei","SimSun",sans-serif}
+.pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:calc(var(--fsan) * 1.0);line-height:1.7;font-family:-apple-system,"Microsoft YaHei","SimSun",sans-serif}
 .pan.show,.qax.show{display:block}
 .pan .cn{margin-bottom:3pt}
-.tr{margin:4pt 0 8pt;border-left:2pt solid #e0e0e0;padding-left:8pt;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
-.tr .line{cursor:pointer;padding:1pt 3pt;border-radius:2pt}
+.tr{margin:4pt 0 8pt;border-left:2pt solid #e0e0e0;padding-left:8pt;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.tr .line{cursor:pointer;padding:1pt 3px;border-radius:2px}
 .tr .line:hover{background:#eef4ff}
 .tr .line.on{background:#fff3cd}
 .tr .line .en{color:#111}
 .tr .line .cn{color:#5a5a5a}
-.sum{margin:4pt 0;padding:5pt 8pt;background:#f6f6f6;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
-.vt{width:100%;border-collapse:collapse;margin:4pt 0 8pt;font:9pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
-.vt td{border-bottom:1px dotted #ddd;padding:1pt 4pt;vertical-align:top}
+.sum{margin:4pt 0;padding:5pt 8pt;background:#f6f6f6;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.vt{width:100%;border-collapse:collapse;margin:4pt 0 8pt;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
+.vt td{border-bottom:1px dotted #ddd;padding:1pt 4px;vertical-align:top}
 .vt td:first-child{font-weight:600;width:24%}
 .vt td:nth-child(2){color:#555;width:24%}
-.trs{border-collapse:collapse;width:100%;font:9pt/1.6 -apple-system,"Microsoft YaHei",sans-serif;margin:4pt 0}
-.trs td,.trs th{border:1px solid #e2e2e2;padding:2pt 5pt;vertical-align:top;text-align:left}
-.bands{margin:4pt 0 8pt;font:9.5pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
+.trs{border-collapse:collapse;width:100%;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif;margin:4pt 0}
+.trs td,.trs th{border:1px solid #e2e2e2;padding:2pt 5px;vertical-align:top;text-align:left}
+.bands{margin:4pt 0 8pt;font-size:.9em;line-height:1.7;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .bands div{border-bottom:1px dotted #ddd;padding:1pt 0}
+/* —— 解析配色：标签chip + 成分色 —— */
+.lb{display:inline-block;min-width:4.2em;margin-right:4px;padding:0 4px;border-radius:3px;font-weight:600;font-size:.86em;line-height:1.5;color:#fff;background:#8a8a8a;text-align:center;vertical-align:1px}
+.lb-main{background:#1a5fb4}.lb-role{background:#813d9c}.lb-map{background:#0f6674}
+.lb-loc{background:#b8860b}.lb-para{background:#26a269}.lb-trap{background:#c01c28}
+.lb-why{background:#26a269}.lb-opt{background:#c01c28}.lb-chunk{background:#1a5fb4}
+.lb-mean{background:#5a5a5a}.lb-tip{background:#b35c00}.lb-band{background:#3d6b35}
+.r-subj{color:#1a5fb4;font-weight:600}
+.r-pred{color:#c01c28;font-weight:600}
+.r-obj{color:#26a269;font-weight:600}
+.r-adv{color:#813d9c;font-weight:600}
+.r-attr{color:#0f6674;font-weight:600}
+.r-comp{color:#8f5d00;font-weight:600}
+.r-other{color:#444}
+.loc{background:#fff3cd;padding:0 2px;border-radius:2px}
+.an{border-top:1px dotted #e2dcc8;margin-top:4px;padding-top:3px}
+.an .row{display:flex;gap:5px;align-items:flex-start;padding:1px 0}
+.an .lt{flex:0 0 auto;display:inline-block;min-width:2.4em;text-align:center;border-radius:3px;font-weight:700;font-size:.9em;color:#fff;background:#8a8a8a}
+.an .lt.ok{background:#26a269}
+.an .lt.bad{background:#c01c28}
+.an .tx{flex:1 1 auto}
+.an .tx b{color:#a01a26;font-weight:600}
+.par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
+.trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
+.anno-en{font-weight:600;color:#111}
+.anno-cn{color:#3f3f3f}
+.anno-tip{color:#8a5200}
+.dim{color:#7a7a7a}
 @media print{.bar,.qa,.pan,.qax,#wdict{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
@@ -162,11 +193,94 @@ function seek(aid, t, el){
   if(el) el.classList.add('on');
 }
 function speakW(w){ speak(w); }
+function setFont(pt){
+  pt = Math.max(7, Math.min(22, Math.round(pt*2)/2));
+  const an = Math.max(6, Math.round(pt*0.86*2)/2);
+  document.documentElement.style.setProperty('--fs', pt+'pt');
+  document.documentElement.style.setProperty('--fsan', an+'pt');
+  const v=document.getElementById('fsv'); if(v) v.textContent = pt.toFixed(1);
+  const r=document.getElementById('fsr'); if(r && Math.abs(parseFloat(r.value)-pt)>0.01) r.value = pt;
+  try{ localStorage.setItem('cet4_fs', pt); }catch(e){}
+}
+function stepFont(d){
+  let cur = 10.5;
+  try{ cur = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
+  setFont(cur + d);
+}
+function resetFont(){ setFont(10.5); }
+(function(){
+  let v = 10.5;
+  try{ v = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
+  setFont(v);
+})();
 """
 
 
 def esc(s):
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+ROLE_MAP = (("主", "r-subj"), ("谓", "r-pred"), ("宾", "r-obj"),
+            ("状", "r-adv"), ("定", "r-attr"), ("补", "r-comp"))
+
+
+def role_cls(role: str) -> str:
+    """成分 → 颜色类（主语蓝/谓语红/宾语绿/状语紫/定语青/补语棕）。"""
+    for k, c in ROLE_MAP:
+        if k in (role or ""):
+            return c
+    return "r-other"
+
+
+def lb(text: str, cls: str = "lb-mean") -> str:
+    """解析小标签 chip，颜色区分字段类别。"""
+    return f'<span class="lb {cls}">{esc(text)}</span>'
+
+
+def split_options(text: str) -> list[tuple[str, str]]:
+    """把 "A) 无中生有… B) 偷换概念…" 这类长串拆成 [(字母, 说明), …]。"""
+    if not text:
+        return []
+    t = text.replace("A）", "A)").replace("B）", "B)").replace("C）", "C)").replace("D）", "D)")
+    parts = re.split(r"(?=(?:^|[\s；;。、，,])([ABCD])[)）、．.]\s*)", t)
+    out, cur_l, buf = [], "", ""
+    for seg in parts:
+        if seg in ("A", "B", "C", "D"):
+            if cur_l:
+                out.append((cur_l, buf.strip(" ；;。、")))
+            cur_l, buf = seg, ""
+        else:
+            buf += seg
+    if cur_l:
+        out.append((cur_l, buf.strip(" ；;。、")))
+    out = [(k, v) for k, v in out if v]
+    return out if len(out) >= 2 else []
+
+
+def option_rows(q: dict, an: dict) -> str:
+    """答案 + 逐选项一行（每行一句）。"""
+    ans = (q.get("answer") or "").strip().upper()
+    rows = []
+    why = (an.get("why") or "").strip()
+    if why:
+        rows.append(f'<div class="row"><span class="lt ok">{esc(ans)}</span>'
+                    f'<span class="tx"><b>对：</b>{esc(why)}</span></div>')
+    opts = an.get("options") or []
+    if opts:
+        for o in opts:
+            lt = (o.get("letter") or "").strip().upper()
+            if lt == ans:
+                continue
+            ok = bool(o.get("ok"))
+            rows.append(f'<div class="row"><span class="lt {"ok" if ok else "bad"}">{esc(lt)}</span>'
+                        f'<span class="tx">{esc((o.get("why") or "").strip())}</span></div>')
+    else:
+        for lt, why_txt in split_options(an.get("trap") or ""):
+            if lt == ans:
+                continue
+            rows.append(f'<div class="row"><span class="lt bad">{esc(lt)}</span>'
+                        f'<span class="tx">{esc(why_txt)}</span></div>')
+    return '<div class="an">' + "".join(rows) + "</div>" if rows else ""
 
 
 def cloze_html(passage: str) -> str:
@@ -287,9 +401,7 @@ def main():
                              f'<span class="opts">{opts}</span></div>')
                 an = qan.get(q["no"])
                 if MODE == "explain" and an:
-                    parts.append(f'<div class="qax"><div><b>答案 {esc(q["answer"])}</b></div>'
-                                 f'<div>为什么对：{esc(an.get("why",""))}</div>'
-                                 f'<div>干扰项：{esc(an.get("trap",""))}</div></div>')
+                    parts.append('<div class="qax">' + option_rows(q, an) + '</div>')
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
@@ -312,8 +424,8 @@ def main():
                        '<th>为什么是它</th><th>其它候选为什么不行</th><th>顺流中文</th></tr>'
                        + rows + "</table>")
         if cexp.get("passage_cn"):
-            blk.append("<b>全文顺流直译</b>" + "".join(
-                f'<div class="bands"><div>{i}. {esc(x)}</div></div>'
+            blk.append(lb("全文顺流直译", "lb-mean") + "".join(
+                f'<div class="bands"><div><span class="dim">{i}.</span> {esc(x)}</div></div>'
                 for i, x in enumerate(cexp["passage_cn"], 1)))
         if blk:
             parts.append('<div class="pan show">' + "".join(blk) + "</div>")
@@ -325,14 +437,14 @@ def main():
         mx = mexp.get(k) or {}
         if MODE == "explain" and mx:
             sent = "".join(
-                f'<div style="margin-top:3pt"><b>{esc(s.get("en",""))}</b><br>'
-                f'<span style="color:#555">{esc(s.get("chunks",""))}</span><br>'
-                f'<span style="color:#666">{esc(s.get("cn",""))}</span>'
-                + (f'<div style="color:#7a5c00">↳ {esc(s.get("note",""))}</div>' if s.get("note") else "")
+                f'<div style="margin-top:4pt"><span class="anno-en">{esc(s.get("en",""))}</span><br>'
+                f'<span class="r-adv">{esc(s.get("chunks",""))}</span><br>'
+                f'<span class="anno-cn">{esc(s.get("cn",""))}</span>'
+                + (f'<div class="anno-tip">{lb("路标", "lb-tip")}{esc(s.get("note",""))}</div>' if s.get("note") else "")
                 + "</div>" for s in (mx.get("sentences") or []))
-            parts.append(f'<div class="pan"><div class="cn">{esc(mx.get("main",""))}</div>'
-                         f'<div style="color:#555">作用：{esc(mx.get("role",""))}</div>'
-                         f'<div style="color:#555">对应题号：{esc("、".join(mx.get("answers") or []) or "无")}</div>'
+            parts.append(f'<div class="pan"><div class="anno-cn">{lb("主旨", "lb-main")}{esc(mx.get("main",""))}</div>'
+                         f'<div>{lb("作用", "lb-role")}{esc(mx.get("role",""))}</div>'
+                         f'<div>{lb("对应题", "lb-map")}{esc("、".join(mx.get("answers") or []) or "无")}</div>'
                          f'{sent}</div>')
     letters = "".join(f'<option>{c}</option>' for c in r["match"]["paragraphs"].keys())
     for st in r["match"]["statements"]:
@@ -351,22 +463,22 @@ def main():
                 parts.append(f'<p class="body">{esc(para.get("en", ""))}</p>')
                 if MODE == "explain":
                     sent = "".join(
-                        f'<div style="margin-top:3pt"><b>{esc(s.get("en",""))}</b><br>' +
+                        f'<div style="margin-top:5pt"><span class="anno-en">{esc(s.get("en",""))}</span><br>' +
                         " ".join(
-                            f'{esc(c.get("en",""))}' + (
-                                f'<span style="color:#888">[{esc(c.get("role"))}：{esc(c.get("cn",""))}]</span>'
-                                if c.get("role") else
-                                f'<span style="color:#888">（{esc(c.get("cn",""))}）</span>'
-                                if c.get("cn") else "")
+                            f'<span class="{role_cls(c.get("role"))}">{esc(c.get("en",""))}</span>'
+                            + (f'<span class="dim">〔{esc(c.get("role"))}·{esc(c.get("cn",""))}〕</span>'
+                               if c.get("role") else
+                               f'<span class="dim">（{esc(c.get("cn",""))}）</span>'
+                               if c.get("cn") else "")
                             for c in (s.get("chunks") or [])) +
-                        (f'<div style="color:#555">意思：{esc(s.get("meaning",""))}</div>' if s.get("meaning") else "") +
-                        (f'<div style="color:#555">谁修饰谁：{esc(s.get("modifier",""))}</div>' if s.get("modifier") else "") +
-                        (f'<div style="color:#555">为啥：{esc(s.get("why",""))}</div>' if s.get("why") else "") +
-                        (f'<div style="color:#555">搭配：{esc(s.get("collocation",""))}</div>' if s.get("collocation") else "") +
+                        (f'<div>{lb("意思", "lb-mean")}<span class="anno-cn">{esc(s.get("meaning",""))}</span></div>' if s.get("meaning") else "") +
+                        (f'<div>{lb("谁修饰谁", "lb-chunk")}<span class="anno-cn">{esc(s.get("modifier",""))}</span></div>' if s.get("modifier") else "") +
+                        (f'<div>{lb("为啥", "lb-tip")}<span class="anno-tip">{esc(s.get("why",""))}</span></div>' if s.get("why") else "") +
+                        (f'<div>{lb("搭配", "lb-role")}<span class="anno-cn">{esc(s.get("collocation",""))}</span></div>' if s.get("collocation") else "") +
                         "</div>" for s in (para.get("sentences") or []))
-                    parts.append(f'<div class="pan"><div class="cn">{esc(para.get("cn",""))}</div>'
-                                 f'<div style="color:#555">主旨：{esc(para.get("main",""))}</div>'
-                                 f'<div style="color:#555">作用：{esc(para.get("structure",""))}</div>{sent}</div>')
+                    parts.append(f'<div class="pan"><div class="anno-cn">{lb("段落中文", "lb-mean")}{esc(para.get("cn",""))}</div>'
+                                 f'<div>{lb("主旨", "lb-main")}{esc(para.get("main",""))}</div>'
+                                 f'<div>{lb("作用", "lb-role")}{esc(para.get("structure",""))}</div>{sent}</div>')
         else:
             parts.append(f'<p class="body">{esc(pg.get("passage", ""))}</p>')
         for q in pg["questions"]:
@@ -376,17 +488,21 @@ def main():
             parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
                          f'{esc(q["stem"])}<div class="opts">{opts}</div></div>')
             if MODE == "explain":
-                oa_parts = []
+                ans = (q.get("answer") or "").strip().upper()
+                rows = []
                 for x in (q.get("option_analysis") or []):
-                    if isinstance(x, dict):
-                        oa_parts.append(f'<div>{esc(x.get("letter",""))}) {"✓" if x.get("correct") else "✗"} {esc(x.get("why",""))}</div>')
-                    else:
-                        oa_parts.append(f'<div>{esc(str(x))}</div>')
-                oa = "".join(oa_parts)
-                parts.append(f'<div class="qax"><div><b>答案 {esc(q["answer"])}</b></div>'
-                             + (f'<div>定位：{esc(q.get("evidence",""))}</div>' if q.get("evidence") else "")
-                             + (f'<div>同义替换：{esc((q.get("paraphrase") or {}).get("original",""))} → {esc((q.get("paraphrase") or {}).get("option",""))}</div>' if q.get("paraphrase") else "")
-                             + (f'<div>陷阱：{esc(q.get("trap",""))}</div>' if q.get("trap") else "")
+                    if not isinstance(x, dict):
+                        continue
+                    lt = (x.get("letter") or "").strip().upper()
+                    ok = lt == ans
+                    rows.append(f'<div class="row"><span class="lt {"ok" if ok else "bad"}">{esc(lt)}</span>'
+                                f'<span class="tx">{esc((x.get("why") or "").strip())}</span></div>')
+                oa = '<div class="an">' + "".join(rows) + "</div>" if rows else ""
+                para = q.get("paraphrase") or {}
+                parts.append(f'<div class="qax"><div>{lb("答案", "lb-para")}<b>{esc(ans)}</b></div>'
+                             + (f'<div>{lb("定位", "lb-loc")}<span class="loc">{esc(q.get("evidence",""))}</span></div>' if q.get("evidence") else "")
+                             + (f'<div>{lb("同义替换", "lb-map")}<span class="par">{esc(para.get("original",""))} → {esc(para.get("option",""))}</span></div>' if para else "")
+                             + (f'<div>{lb("陷阱", "lb-trap")}<span class="trap">{esc(q.get("trap",""))}</span></div>' if q.get("trap") else "")
                              + oa + '</div>')
 
     parts.append('<div class="part">Part IV &nbsp; Translation &nbsp;(30 minutes)</div>')
@@ -427,9 +543,16 @@ def main():
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</title><style>{CSS}</style></head><body>
 <div class="bar"><b>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</b>
-<span id="score">客观题 --</span>
+<span class="grp">字号
+<button onclick="stepFont(-1)" title="缩小">A−</button>
+<input id="fsr" type="range" min="7" max="22" step="0.5" value="10.5" oninput="setFont(parseFloat(this.value))">
+<button onclick="stepFont(1)" title="放大">A+</button>
+<span class="fsv" id="fsv">10.5</span>
+<button onclick="resetFont()">默认</button></span>
+<span class="grp"><span id="score">客观题 --</span>
 <button onclick="check()">对答案</button><button onclick="showQA()">显示答案</button>
-<button onclick="toggleAnalysis()">段落解析</button><button onclick="toggleAnswers()">题目解析</button><button onclick="window.print()">打印</button></div>
+<button onclick="toggleAnalysis()">段落解析</button><button onclick="toggleAnswers()">题目解析</button>
+<button onclick="window.print()">打印</button></span></div>
 <div class="spacer"></div>
 <div class="paper">{''.join(parts)}</div>
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
