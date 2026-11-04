@@ -56,6 +56,7 @@ select.stmt{font-family:inherit;font-size:.95em}
 textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid var(--line2);border-radius:4pt;padding:6pt;background:transparent;color:var(--fg)}
 .qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid var(--panb);background:var(--pan);font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .ansline{display:none}
+.qstem{font-style:italic;color:var(--fg2)}
 .qans{display:none;margin:3pt 0 2pt;padding:2pt 8pt;border-left:2pt solid var(--okfg);background:var(--okbg2);font-size:.86em;line-height:1.6;color:var(--okfg);font-family:-apple-system,"Microsoft YaHei",sans-serif}
 body.showans .qans{display:block}
 body.showans .qa{display:block}
@@ -1348,10 +1349,9 @@ def main():
                 parts.append(f'<audio class="audio" id="{aid}" preload="metadata" '
                              f'data-src="{audio.name}" src="{audio.name}"></audio>')
             lx = lexp.get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or {}
-            detail = []
             if MODE == "explain":
                 if piece.get("summary"):
-                    detail.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
+                    parts.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
                 cn_map = {x.get("i"): x.get("cn") for x in (lx.get("sentences") or [])}
                 timing = piece.get("timing") or []
                 starts = [(float(s.get("start") or 0),
@@ -1369,7 +1369,7 @@ def main():
                     for i, s in enumerate(lsent):
                         t = tmap.get(norm_txt(s.get("en", ""))) or (starts[i] if i < len(starts) else None)
                         blocks.append(sentence_html(s, aid, t[0], t[1]) if t else sentence_html(s))
-                    detail.append('<div class="tr">' + "".join(blocks) + "</div>")
+                    parts.append('<div class="tr">' + "".join(blocks) + "</div>")
                 else:
                     lines = []
                     for i, s in enumerate(timing, 1):
@@ -1379,27 +1379,26 @@ def main():
                                      f'<div class="en">{i}. {esc(en)}</div>'
                                      f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
                     if lines:
-                        detail.append('<div class="tr">' + "".join(lines) + "</div>")
+                        parts.append('<div class="tr">' + "".join(lines) + "</div>")
                 if lx.get("words"):
                     rows = "".join(
                         f'<tr><td class="w" data-w="{esc((x.get("w","")) .lower())}" onclick="speakW(\'{esc(x.get("w",""))}\')">{esc(x.get("w",""))}</td>'
                         f'<td class="ipa">{esc(x.get("ipa",""))}</td><td class="pos">{esc(x.get("pos",""))}</td>'
                         f'<td>{esc(x.get("cn",""))}</td></tr>' for x in lx["words"])
-                    detail.append('<table class="vt"><tr><th>本段难词（AI 预选·参考）</th><th>音标</th><th>词性</th><th>释义</th></tr>'
+                    parts.append('<table class="vt"><tr><th>本段难词（AI 预选·参考）</th><th>音标</th><th>词性</th><th>释义</th></tr>'
                                  + rows + "</table>")
             qan = {x.get("no"): x for x in (lx.get("qanalysis") or []) if x.get("no")}
             for q in piece["questions"]:
                 opts = "".join(
                     f'<label class="opt" data-q="{q["no"]}" data-l="{o[0]}" onclick="pick({q["no"]},\'{o[0]}\',this)">'
                     f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
+                stem_html = (f'<span class="qstem">{esc(q["stem"])}</span> ' if (q.get("stem") or "").strip() else "")
                 parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
-                             f'<span class="opts">{opts}</span></div>')
+                             f'{stem_html}<span class="opts">{opts}</span></div>')
                 parts.append(f'<div class="qans">答案：{esc(q["answer"])}</div>')
                 an = qan.get(q["no"])
                 if MODE == "explain" and an:
                     parts.append('<div class="qax">' + option_rows(q, an) + '</div>')
-            if detail:
-                parts.extend(detail)
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
