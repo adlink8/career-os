@@ -1,7 +1,597 @@
 [
  {
-  "start": 0.11,
-  "end": 10.55,
-  "text": "College English test, section A."
+  "start": 0.0,
+  "end": 26.0,
+  "text": "College English test. Band 4. Part 2. Listening comprehension. Section A. Directions. In this section, you will hear three news reports. At the end of each news report, you will hear two or three questions. Both the news reports and the questions will be spoken only once."
+ },
+ {
+  "start": 26.0,
+  "end": 43.0,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D. Then mark the corresponding letter on answer sheet 1 with a single line through the center."
+ },
+ {
+  "start": 44.0,
+  "end": 63.0,
+  "text": "News report 1. A 22-year-old Chinese woman who suffered from a persistent cough was shocked to learn that she had a piece of chicken bone lodged in her lung. The unnamed woman from the province of Shandong started to have coughing problems when she was 7 or 8 years old."
+ },
+ {
+  "start": 63.0,
+  "end": 75.0,
+  "text": "For 14 years, she made numerous hospital visits. However, no doctor could identify any problem. Her uncontrollable coughing was a mystery."
+ },
+ {
+  "start": 75.0,
+  "end": 89.0,
+  "text": "Finally, the woman got a full body scan at a hospital in the city of Qingdao. This special medical procedure revealed she had a chicken bone stuck in her lung. Doctors performed surgery and removed the bone."
+ },
+ {
+  "start": 89.0,
+  "end": 102.0,
+  "text": "The simple procedure went smoothly and the woman has recovered fully. With the bone finally removed from her lung, the woman is very happy that she no longer suffers from that annoying cough."
+ },
+ {
+  "start": 102.0,
+  "end": 108.0,
+  "text": "Questions 1 and 2 are based on a news report you have just heard."
+ },
+ {
+  "start": 108.0,
+  "end": 127.0,
+  "text": "Question 1. What was the woman's problem?"
+ },
+ {
+  "start": 127.0,
+  "end": 147.0,
+  "text": "Question 2. How was the woman's problem eventually solved?"
+ },
+ {
+  "start": 147.0,
+  "end": 165.0,
+  "text": "News report 2. A white sheep named Prickles that ran away from an Australian farm during the 2013 bushfires recently returned home. According to farmer Alice Gray, Prickles was only a lamb when she ran away."
+ },
+ {
+  "start": 165.0,
+  "end": 182.0,
+  "text": "The bushfires that hit the area back then destroyed a large part of her family's massive property. They thought Prickles had died in the fire. But instead, the young sheep escaped into a 200 acre forest near the farm."
+ },
+ {
+  "start": 182.0,
+  "end": 201.0,
+  "text": "Once the fires were over, the family had to fix the damage done to the farm. As it was such a large property, this included rebuilding about 50 kilometers of fencing. It was this huge fencing that prevented Prickles from finding her way back."
+ },
+ {
+  "start": 201.0,
+  "end": 218.0,
+  "text": "Over the years, the family spotted her a few times. They even recorded her with cameras installed to monitor deer activity. But while they knew Prickles was alive, they couldn't find her and never expected her to return by herself."
+ },
+ {
+  "start": 218.0,
+  "end": 222.0,
+  "text": "7 years later, they were proven wrong."
+ },
+ {
+  "start": 222.0,
+  "end": 247.0,
+  "text": "Questions 3 and 4 are based on the news report you have just heard. Question 3. What does the news report say about the white sheep Prickles?"
+ },
+ {
+  "start": 247.0,
+  "end": 266.0,
+  "text": "Question 4. What did the family do after the bushfires?"
+ },
+ {
+  "start": 266.0,
+  "end": 288.0,
+  "text": "News report 3. Tons of gold have fallen out of the sky in Russia after a cargo plane malfunctioned in mid-air this morning. The aircraft was carrying 265 million pounds worth of gold and diamonds when the door flew open sending the precious metal back to Earth."
+ },
+ {
+  "start": 288.0,
+  "end": 307.0,
+  "text": "According to the official news agency, Russian authorities have recovered more than 170 gold bars weighing 20 kilograms each. The plane was travelling from Yakutsk airport in a major diamond producing region to the city of Krasnoyarsk in Siberia."
+ },
+ {
+  "start": 307.0,
+  "end": 321.0,
+  "text": "However, the aircraft made an emergency landing in Magan after it began losing some of its valuable cargo. Reports suggest some bars of gold were scattered up to 15 miles away from the airport."
+ },
+ {
+  "start": 321.0,
+  "end": 334.0,
+  "text": "9 tons of gold on plane AN-12 belonged to a gold mine company. Police have sealed off the runway and say it is unclear if it was an accident or an attempted robbery."
+ },
+ {
+  "start": 334.0,
+  "end": 341.0,
+  "text": "Technical engineers who worked on the plane prior to take-off are reportedly going to be questioned by the police."
+ },
+ {
+  "start": 341.0,
+  "end": 346.0,
+  "text": "Questions 5-7 are based on the news report you have just heard."
+ },
+ {
+  "start": 346.0,
+  "end": 351.0,
+  "text": "Question 5. What is the news report mainly about?"
+ },
+ {
+  "start": 351.0,
+  "end": 366.0,
+  "text": "Question 6. What did the aircraft do when the incident happened?"
+ },
+ {
+  "start": 366.0,
+  "end": 386.0,
+  "text": "Question 6. What did the aircraft do when the incident happened?"
+ },
+ {
+  "start": 386.0,
+  "end": 410.0,
+  "text": "Question 7. What does the news report say about the technical engineers who worked on the plane before take-off?"
+ },
+ {
+  "start": 410.0,
+  "end": 427.0,
+  "text": "Question 8. In this section, you will hear two long conversations. At the end of each conversation, you will hear four questions. Both the conversation and the questions will be spoken only once."
+ },
+ {
+  "start": 427.0,
+  "end": 442.0,
+  "text": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D. Then mark the corresponding letter on answer sheet 1 with a single line through the center."
+ },
+ {
+  "start": 443.0,
+  "end": 458.0,
+  "text": "Question 1. Hello, you're through to customer service. This is Michael speaking. Before we continue, I just want to make you aware that this call is being recorded and may be used in the future for training purposes. What can I help you with today?"
+ },
+ {
+  "start": 458.0,
+  "end": 485.0,
+  "text": "Question 8. Hi, my name is Jean Seaman. I recently bought an office chair from your company, but I returned it about a week ago. I'm just calling to inquire when I will be able to get my money back. It says on your website that your company will pay back the money within three working days of you receiving the returned item. But it's been five working days and I haven't received anything."
+ },
+ {
+  "start": 485.0,
+  "end": 490.0,
+  "text": "Question 9. I'm sorry to hear that, Mr. Seaman. What's your customer reference number, please?"
+ },
+ {
+  "start": 490.0,
+  "end": 494.0,
+  "text": "Question 10. It's 389-460."
+ },
+ {
+  "start": 494.0,
+  "end": 511.0,
+  "text": "Question 11. Okay, 389-460. I'm just looking on the system here and according to our records, the chair you returned was received by our warehouse on Friday morning. The payment was made on Wednesday, but this seems to be a problem with your card number."
+ },
+ {
+  "start": 511.0,
+  "end": 523.0,
+  "text": "Question 12. My card number? Oh, maybe it has something to do with my new card. It was sent to me on Tuesday. Maybe the bank cancelled my old one before you made the payment."
+ },
+ {
+  "start": 523.0,
+  "end": 537.0,
+  "text": "Question 13. Well, you'll need to update your card details directly on our website. Just make sure you're logged in and then under the description of your personal information, you should see an option for updating payment methods."
+ },
+ {
+  "start": 537.0,
+  "end": 541.0,
+  "text": "I am logged in and I'll give that a go."
+ },
+ {
+  "start": 541.0,
+  "end": 546.0,
+  "text": "I'll make a note here on the system for you so that the payment will be made tomorrow morning."
+ },
+ {
+  "start": 546.0,
+  "end": 548.0,
+  "text": "Thank you very much."
+ },
+ {
+  "start": 548.0,
+  "end": 553.0,
+  "text": "Questions 8 to 11 are based on the conversation you just heard."
+ },
+ {
+  "start": 553.0,
+  "end": 559.0,
+  "text": "Question 8. Why does the man have his conversation with the woman recorded?"
+ },
+ {
+  "start": 567.0,
+  "end": 593.0,
+  "text": "Question 9. What is the woman's purpose of calling the furniture company?"
+ },
+ {
+  "start": 593.0,
+  "end": 613.0,
+  "text": "Question 10. What does the woman say about her bank card?"
+ },
+ {
+  "start": 613.0,
+  "end": 633.0,
+  "text": "Question 11. What does the man advise the woman to do?"
+ },
+ {
+  "start": 633.0,
+  "end": 637.0,
+  "text": "Question 12. I'm getting a bit hungry."
+ },
+ {
+  "start": 637.0,
+  "end": 642.0,
+  "text": "Question 13. Yes, me too. I'm starving. Are you going to prepare a meal for us?"
+ },
+ {
+  "start": 642.0,
+  "end": 649.0,
+  "text": "Question 14. No, sorry. I'm actually pretty worn out. Let's just go out somewhere close to eat."
+ },
+ {
+  "start": 649.0,
+  "end": 655.0,
+  "text": "Question 15. Well, I think we should stay in and save some cash. Can we get a meal delivered?"
+ },
+ {
+  "start": 655.0,
+  "end": 660.0,
+  "text": "Question 16. Yeah, great. I'll use that food delivery app on my phone."
+ },
+ {
+  "start": 660.0,
+  "end": 666.0,
+  "text": "Question 17. Do you want fried chicken, hamburgers or fish and chips?"
+ },
+ {
+  "start": 666.0,
+  "end": 671.0,
+  "text": "Question 18. Oh, can we stay away from the junk food? How about something healthy?"
+ },
+ {
+  "start": 671.0,
+  "end": 676.0,
+  "text": "Question 19. Okay. Well, there's a place that does salads."
+ },
+ {
+  "start": 676.0,
+  "end": 685.0,
+  "text": "Question 19. Let me have a look at that. Yeah, that looks delicious. But to be honest, I prefer something hot, not cold."
+ },
+ {
+  "start": 685.0,
+  "end": 687.0,
+  "text": "Question 19. How about Indian food?"
+ },
+ {
+  "start": 687.0,
+  "end": 696.0,
+  "text": "Question 19. That's not the kind of hot I need. I'm just not a fan of sauces that make me sweat and cry. I need something mild."
+ },
+ {
+  "start": 696.0,
+  "end": 707.0,
+  "text": "Question 19. Okay, so would you consider Mexico? Oh no, sorry. There's also very hot pepper in that. Would you like some Italian food perhaps?"
+ },
+ {
+  "start": 707.0,
+  "end": 712.0,
+  "text": "Question 19. It's a bit heavy, but it's great food for a cold night like this."
+ },
+ {
+  "start": 712.0,
+  "end": 724.0,
+  "text": "Question 19. Pizza, spaghetti with creamy sauce? I know it's really tasty and great comfort food, but it's too fattening for me. I'm trying to keep a slim figure, you know."
+ },
+ {
+  "start": 724.0,
+  "end": 731.0,
+  "text": "Oh, you're really difficult to please. Well, there's a nice Chinese restaurant that delivers."
+ },
+ {
+  "start": 731.0,
+  "end": 738.0,
+  "text": "Yes, I love Chinese food. Let me see. Oh, it's 15 kilometers away."
+ },
+ {
+  "start": 738.0,
+  "end": 743.0,
+  "text": "That's a bit too far away. Do you feel like Vietnamese food then?"
+ },
+ {
+  "start": 743.0,
+  "end": 747.0,
+  "text": "Yeah, awesome. It's healthy and we can afford it."
+ },
+ {
+  "start": 747.0,
+  "end": 751.0,
+  "text": "Great. Let's order Vietnamese right away."
+ },
+ {
+  "start": 751.0,
+  "end": 757.0,
+  "text": "Questions 12 to 15 are based on the conversation you have just heard."
+ },
+ {
+  "start": 757.0,
+  "end": 775.0,
+  "text": "Question 12. Why isn't the man going to cook?"
+ },
+ {
+  "start": 775.0,
+  "end": 796.0,
+  "text": "Question 13. What does the man say he'll do on his phone?"
+ },
+ {
+  "start": 796.0,
+  "end": 816.0,
+  "text": "Question 14. What does the woman think of Indian food?"
+ },
+ {
+  "start": 816.0,
+  "end": 835.0,
+  "text": "Question 15. What does the man think of a woman?"
+ },
+ {
+  "start": 835.0,
+  "end": 846.0,
+  "text": "Section C. Directions. In this section, you will hear three passages. At the end of each passage, you will hear three or four questions."
+ },
+ {
+  "start": 846.0,
+  "end": 860.0,
+  "text": "Both the passage and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C, and D."
+ },
+ {
+  "start": 860.0,
+  "end": 867.0,
+  "text": "Then mark the corresponding letter on answer sheet 1 with a single line through the center."
+ },
+ {
+  "start": 867.0,
+  "end": 879.0,
+  "text": "Passage 1. A new study carried out by the University of Lincoln has found a link between the personalities of cat owners and the behavior and well-being of their cats."
+ },
+ {
+  "start": 879.0,
+  "end": 889.0,
+  "text": "The findings suggest that just as a parent's personality can affect the personality of a child, the same is true for a cat and its owner."
+ },
+ {
+  "start": 889.0,
+  "end": 902.0,
+  "text": "Owners defined as individuals with high levels of anxiety, fear, anger, depression, and loneliness were more likely to have cats with behavioral issues."
+ },
+ {
+  "start": 902.0,
+  "end": 915.0,
+  "text": "Such cats displayed more aggressive and anxious behavioral styles as well as more stress-related sickness. They were also more likely to have an ongoing medical condition and be overweight."
+ },
+ {
+  "start": 915.0,
+  "end": 923.0,
+  "text": "The research also found that mentally well-adjusted owners had calmer, happier, and healthier cats."
+ },
+ {
+  "start": 924.0,
+  "end": 933.0,
+  "text": "The researchers explained that many owners regard their pets as a family member and form close social bonds with them."
+ },
+ {
+  "start": 933.0,
+  "end": 945.0,
+  "text": "The majority of owners want to provide the best care for their pets, and it's therefore possible that pets could be affected by the way their owners interact with and manage them."
+ },
+ {
+  "start": 945.0,
+  "end": 952.0,
+  "text": "The study highlights an important relationship between our personalities and the well-being of our pets."
+ },
+ {
+  "start": 952.0,
+  "end": 966.0,
+  "text": "Further research is needed to investigate the causal nature of this relationship and to look at how owners' personalities are directly influencing their pets' behavior and well-being."
+ },
+ {
+  "start": 966.0,
+  "end": 976.0,
+  "text": "It is possible that the well-being of pets is driven by the underlying nature of the owner, not simply by their conscious decisions and behaviors."
+ },
+ {
+  "start": 976.0,
+  "end": 982.0,
+  "text": "Questions 16 to 18 are based on the passage you have just heard."
+ },
+ {
+  "start": 982.0,
+  "end": 989.0,
+  "text": "Question 16. What do we learn from the new study by the University of Lincoln?"
+ },
+ {
+  "start": 989.0,
+  "end": 1004.0,
+  "text": "Question 17. What does the passage say most pet owners want to do?"
+ },
+ {
+  "start": 1004.0,
+  "end": 1024.0,
+  "text": "Question 17. What does the passage say most pet owners want to do?"
+ },
+ {
+  "start": 1024.0,
+  "end": 1048.0,
+  "text": "Question 18. What does the passage say is still needed to understand the effects of owners' personalities on their pets?"
+ },
+ {
+  "start": 1048.0,
+  "end": 1058.0,
+  "text": "Passage 2. One 60-minute run can add seven hours to your life. This was a claim made by The Times last week."
+ },
+ {
+  "start": 1058.0,
+  "end": 1063.0,
+  "text": "The claim was based on a new review of studies about the effects of running."
+ },
+ {
+  "start": 1063.0,
+  "end": 1076.0,
+  "text": "The review concluded that on average, runners live three years longer than non-runners, and that running does more to extend life than any other form of exercise."
+ },
+ {
+  "start": 1076.0,
+  "end": 1092.0,
+  "text": "But there's more to running than its health benefits. Research published in recent years has shown that running changes your brain and mind in some fascinating ways, from increasing your brain function to regulating your emotions."
+ },
+ {
+  "start": 1092.0,
+  "end": 1101.0,
+  "text": "However, the precise effects vary according to whether you've engaged in short, fast running, or long-distance running."
+ },
+ {
+  "start": 1101.0,
+  "end": 1114.0,
+  "text": "For example, in one study, researchers compared participants' ability to learn new words after several minutes of intense running and after 40 minutes of gentle running."
+ },
+ {
+  "start": 1114.0,
+  "end": 1125.0,
+  "text": "Participants were able to learn 20% faster after the intense running, and they showed a superior memory when tested again a week later."
+ },
+ {
+  "start": 1125.0,
+  "end": 1134.0,
+  "text": "In another study, researchers asked volunteers to jog for 30 minutes and then show them clips from a sad movie."
+ },
+ {
+  "start": 1134.0,
+  "end": 1144.0,
+  "text": "Participants who usually struggled to handle negative emotions were more intensely affected by the sad clips, just as you'd expect."
+ },
+ {
+  "start": 1144.0,
+  "end": 1150.0,
+  "text": "But crucially, this was less so if they had completed their 30 minutes jog."
+ },
+ {
+  "start": 1165.0,
+  "end": 1170.0,
+  "text": "Question 19. What did the new review of studies claim?"
+ },
+ {
+  "start": 1184.0,
+  "end": 1192.0,
+  "text": "Question 20. What is one effect that running has on people according to recent research?"
+ },
+ {
+  "start": 1194.0,
+  "end": 1205.0,
+  "text": "Question 21. What did another study find about the participants after they had a 30-minute jog?"
+ },
+ {
+  "start": 1205.0,
+  "end": 1215.0,
+  "text": "Question 21. What did another study find about the participants after they had a 30-minute jog?"
+ },
+ {
+  "start": 1224.0,
+  "end": 1231.0,
+  "text": "Question 22. What did another study find about the participants after they had a 30-minute jog?"
+ },
+ {
+  "start": 1231.0,
+  "end": 1240.0,
+  "text": "Question 23. What did another study find about the participants after they had a 30-minute jog?"
+ },
+ {
+  "start": 1240.0,
+  "end": 1250.0,
+  "text": "Question 24. What did another study find about the participants after they had a 30-minute jog?"
+ },
+ {
+  "start": 1270.0,
+  "end": 1278.0,
+  "text": "The client's main desire was to have a home with a unique design, so the architect was given complete freedom."
+ },
+ {
+  "start": 1278.0,
+  "end": 1284.0,
+  "text": "The building style is radically different from what was the fashion of the period."
+ },
+ {
+  "start": 1284.0,
+  "end": 1289.0,
+  "text": "At the time, most large homes were constructed of timber and brick."
+ },
+ {
+  "start": 1289.0,
+  "end": 1296.0,
+  "text": "This one, however, is made of concrete, a novel construction material in those days."
+ },
+ {
+  "start": 1296.0,
+  "end": 1302.0,
+  "text": "The interior of the house, including fittings and furniture, was also designed by the same person."
+ },
+ {
+  "start": 1302.0,
+  "end": 1306.0,
+  "text": "Most of the furniture you will see is original and in good condition."
+ },
+ {
+  "start": 1306.0,
+  "end": 1314.0,
+  "text": "However, those pieces in the children's bedrooms are copies built to the designs of the architect."
+ },
+ {
+  "start": 1314.0,
+  "end": 1320.0,
+  "text": "Fortunately, all the blueprints for both the building and its contents have been preserved,"
+ },
+ {
+  "start": 1320.0,
+  "end": 1324.0,
+  "text": "so we've been able to replace badly damaged furniture."
+ },
+ {
+  "start": 1324.0,
+  "end": 1327.0,
+  "text": "Let's begin our tour, starting from the rooms."
+ },
+ {
+  "start": 1327.0,
+  "end": 1333.0,
+  "text": "Questions 22 to 25 are based on the passage you have just heard."
+ },
+ {
+  "start": 1333.0,
+  "end": 1338.0,
+  "text": "Question 22. What do we learn about the speaker?"
+ },
+ {
+  "start": 1338.0,
+  "end": 1353.0,
+  "text": "Question 23. What did the architect do before beginning his design?"
+ },
+ {
+  "start": 1353.0,
+  "end": 1359.0,
+  "text": "Question 23. What did the architect do before beginning his design?"
+ },
+ {
+  "start": 1359.0,
+  "end": 1379.0,
+  "text": "Question 24. What did the architect's client mainly want?"
+ },
+ {
+  "start": 1389.0,
+  "end": 1416.0,
+  "text": "Question 25. What do we learn about the pieces of furniture in the children's bedrooms?"
+ },
+ {
+  "start": 1416.0,
+  "end": 1432.0,
+  "text": "Question 25. What did the architect do before beginning his design?"
  }
 ]
