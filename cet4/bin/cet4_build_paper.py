@@ -1267,6 +1267,38 @@ def main():
         return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
     sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation", "listening")}
+    rt_path = sdir / "reading-timing.json"
+    rtim = json.loads(rt_path.read_text(encoding="utf-8")) if rt_path.exists() else {}
+
+    def _norm(x):
+        return re.sub(r"[^a-z0-9]", "", (x or "").lower())
+
+    def rtim_of(key):
+        arr = rtim.get(key) or []
+        m = {}
+        for it in arr:
+            k = _norm(it.get("en"))
+            if k and k not in m:
+                m[k] = (float(it.get("start") or 0), float(it.get("end") or 0))
+        return arr, m
+
+    def reading_audio(key, label):
+        """四篇阅读的朗读音频条（没有音频就返回空串）。"""
+        src_mp3 = sdir / "reading-audio" / f"reading-{key}.mp3"
+        if not src_mp3.exists():
+            return ""
+        shutil.copy(src_mp3, outdir / src_mp3.name)
+        return (f'<audio class="audio" id="au-rd-{key}" preload="metadata" '
+                f'data-src="{src_mp3.name}" src="{src_mp3.name}"></audio>')
+
+    def sent_html_at(s, key, idx, arr, m):
+        t = m.get(_norm(s.get("en")))
+        if not t and idx < len(arr):
+            it = arr[idx]
+            t = (float(it.get("start") or 0), float(it.get("end") or 0))
+        aid = f"au-rd-{key}"
+        return sentence_html(s, aid, t[0], t[1]) if t else sentence_html(s)
+
     chain_path = sdir / "thinkchain.json"
     chain = json.loads(chain_path.read_text(encoding="utf-8")) if chain_path.exists() else {}
     sectiming = {}
@@ -1406,6 +1438,7 @@ def main():
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
     parts.append('<div class="sec">Section A</div>')
     parts.append('<div class="dir">Directions: Read the passage and choose one word for each blank from the word bank.</div>')
+    parts.append(reading_audio("cloze", "选词填空"))
     parts.append(cloze_html(r["cloze"]["passage"]))
     bank = "".join(f'<div>{k}) {esc(v)}</div>' for k, v in r["cloze"]["bank"].items())
     parts.append(f'<div class="bank">{bank}</div>')
@@ -1424,8 +1457,9 @@ def main():
                        + rows + "</table>")
         cl_sents = sen["cloze"].get("cloze") or []
         if cl_sents:
+            _arr, _m = rtim_of("cloze")
             blk.append(f'<div style="margin-top:6pt">{lb("逐句拆解", "lb-chunk")}</div>'
-                       + "".join(sentence_html(s) for s in cl_sents))
+                       + "".join(sent_html_at(x, "cloze", i, _arr, _m) for i, x in enumerate(cl_sents)))
         elif cexp.get("passage_cn"):
             blk.append(lb("全文顺流直译", "lb-mean") + "".join(
                 f'<div class="bands"><div><span class="dim">{i}.</span> {esc(x)}</div></div>'
@@ -1435,12 +1469,16 @@ def main():
 
     parts.append('<div class="sec">Section B</div>')
     parts.append('<div class="dir">Directions: Match each statement with the paragraph it is derived from.</div>')
+    parts.append(reading_audio("match", "匹配题"))
+    _marr, _mm = rtim_of("match")
+    _midx = 0
     for k, v in r["match"]["paragraphs"].items():
         parts.append(f'<p class="body"><b>{k})</b> {esc(v)}</p>')
         mx = mexp.get(k) or {}
         msent = sen["match"].get(f"match-{k}") or []
         if MODE == "explain" and (mx or msent):
-            sent = "".join(sentence_html(s) for s in msent)
+            sent = "".join(sent_html_at(x, "match", _midx + j, _marr, _mm) for j, x in enumerate(msent))
+            _midx += len(msent)
             parts.append(f'<div class="pan"><div class="anno-cn">{lb("主旨", "lb-main")}{esc(mx.get("main",""))}</div>'
                          f'<div>{lb("作用", "lb-role")}{esc(mx.get("role",""))}</div>'
                          f'<div>{lb("对应题", "lb-map")}{esc("、".join(mx.get("answers") or []) or "无")}</div>'
@@ -1457,11 +1495,17 @@ def main():
         parts.append(f'<div class="sec">Section C &nbsp; {label}</div>')
         start = 46 if key == "passage1" else 51
         parts.append(f'<div class="dir">Questions {start} to {start + 4} are based on the following passage.</div>')
+        parts.append(reading_audio(key, label))
+        pkey = key                      # 内层循环会复用同名变量，先存一份
+        _parr, _pm = rtim_of(pkey)
+        _pidx = 0
         if pg.get("paragraphs"):
             for para in pg["paragraphs"]:
                 parts.append(f'<p class="body">{esc(para.get("en", ""))}</p>')
                 if MODE == "explain":
-                    sent = "".join(sentence_html(s) for s in (para.get("sentences") or []))
+                    _ps = para.get("sentences") or []
+                    sent = "".join(sent_html_at(x, pkey, _pidx + j, _parr, _pm) for j, x in enumerate(_ps))
+                    _pidx += len(_ps)
                     extra = ""
                     for key, label in (("meaning", "意思"), ("modifier", "谁修饰谁"),
                                        ("why", "为啥"), ("collocation", "搭配")):
