@@ -195,6 +195,60 @@ def stage_tts(pids: list) -> None:
 DIRECTIONS = {'A': 'Section A. Directions: In this section, you will hear three news reports. At the end of each news report, you will hear two or three questions. Both the news report and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'B': 'Section B. Directions: In this section, you will hear two long conversations. At the end of each conversation, you will hear four questions. Both the conversation and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'C': 'Section C. Directions: In this section, you will hear three passages. At the end of each passage, you will hear three or four questions. Both the passage and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.'}
 
 
+def stage_reading(pids: list) -> None:
+    """四个阅读板块的朗读音轨（选词/匹配/双篇），旁白男声，段落间留停顿。"""
+    sys.path.insert(0, str(ROOT / "bin"))
+    from cet4_audio_assemble import decode, trim_silence, silence, breath, assemble, encode, SR  # type: ignore
+    import numpy as np
+
+    for pid in pids:
+        f = PAPERS / f"paper-{pid}.json"
+        d = json.loads(f.read_text(encoding="utf-8"))
+        r = d.get("reading") or {}
+        jobs = []
+        if (r.get("cloze") or {}).get("passage"):
+            jobs.append(("cloze", [r["cloze"]["passage"]]))
+        if (r.get("match") or {}).get("paragraphs"):
+            jobs.append(("match", [f"{k}. {v}" for k, v in r["match"]["paragraphs"].items()]))
+        for key in ("passage1", "passage2"):
+            paras = (r.get(key) or {}).get("paragraphs") or []
+            if paras:
+                jobs.append((key, [x.get("en", "") for x in paras]))
+        for key, texts in jobs:
+            name = f"reading-{pid}-{key}.mp3"
+            target = PAPERS / name
+            items, timing, bounds = [], [], []
+            for ti, text in enumerate(texts):
+                for sent in re.split(r"(?<=[.!?])\s+", text):
+                    sent = sent.strip()
+                    if len(sent.split()) < 3:
+                        continue
+                    items.append(("N", sent))
+                    timing.append({"en": sent, "role": "R", "para": ti})
+            if not items:
+                continue
+            with tempfile.TemporaryDirectory() as td:
+                tdp = Path(td)
+                files = synth_items(items, tdp)
+                pcm_items = [(trim_silence(decode(mp3)), role) for (role, _), mp3 in zip(items, files)]
+
+                def gaps(i, prev, nxt):
+                    a, b = timing[i], timing[i + 1]
+                    if a.get("para") != b.get("para"):
+                        return (0.72, 0.18)
+                    return (0.26, 0.08)
+
+                pcm, marks = assemble(pcm_items, gaps)
+                for t, m in zip(timing, marks):
+                    t["start"] = round(m["start"], 3)
+                    t["end"] = round(m["end"], 3)
+                encode(pcm, target)
+            d.setdefault("audio", {})[key] = name
+            d.setdefault("timing", {})[key] = timing
+            print(f"  paper-{pid} {key}: {name} {timing[-1]['end']:.0f}s / {len(timing)} 句")
+        f.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def stage_directions(pids: list) -> None:
     """把 Section A/B/C 的标准指令音拼到每节第一段音轨前（真题录音顺序：指令 → 正文 → 题目）。"""
     sys.path.insert(0, str(ROOT / "bin"))
@@ -298,7 +352,7 @@ def stage_insert(pids: list) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["script", "tts", "directions", "qaudio", "insert", "all"])
+    ap.add_argument("--stage", required=True, choices=["script", "tts", "directions", "qaudio", "reading", "insert", "all"])
     ap.add_argument("--gap", type=float, default=12.0, help="每题后答题停顿秒数")
     ap.add_argument("--papers", default="81")
     args = ap.parse_args()
@@ -315,6 +369,9 @@ def main() -> int:
     if args.stage in ("qaudio", "all"):
         print("[qaudio]")
         stage_qaudio(pids, args.gap)
+    if args.stage in ("reading", "all"):
+        print("[reading]")
+        stage_reading(pids)
     if args.stage in ("insert", "all"):
         print("[insert]")
         stage_insert(pids)

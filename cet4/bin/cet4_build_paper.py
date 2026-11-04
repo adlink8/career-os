@@ -1379,8 +1379,13 @@ def main():
         name = (data.get("audio") or {}).get(key)
         if not name:
             return ""
-        src_mp3 = sdir / "reading-audio" / name
-        if not src_mp3.exists():
+        # 先找卷子同目录（每套自带音轨），再退回全局 reading-audio 目录（演示卷）
+        src_mp3 = None
+        for cand in (src.parent / name, sdir / "reading-audio" / name):
+            if cand.exists():
+                src_mp3 = cand
+                break
+        if src_mp3 is None:
             return ""
         shutil.copy(src_mp3, outdir / src_mp3.name)
         return (f'<audio class="audio" id="au-rd-{key}" preload="metadata" '
