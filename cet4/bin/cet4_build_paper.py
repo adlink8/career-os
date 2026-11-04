@@ -1155,6 +1155,56 @@ def sentence_html(s: dict, aid: str = "", start: float = 0.0, end: float = 0.0) 
     return f'<div class="sent">{body}</div>'
 
 
+
+def _cloze_wordmap(cloze: dict) -> dict:
+    bank, ans = cloze.get("bank") or {}, cloze.get("answers") or {}
+    return {str(k): (bank.get(v) or "") for k, v in ans.items()}
+
+
+def _fill_blank(text: str, wordmap: dict) -> str:
+    return re.sub(r"__(\d+)__", lambda m: wordmap.get(m.group(1), m.group(0)), text or "")
+
+
+def fill_cloze_sentences(sents: list, cloze: dict) -> list:
+    """解析里不能留空：__26__ 换成答案词，中文里的 ___ 也按顺序补上。"""
+    wordmap = _cloze_wordmap(cloze)
+
+    def fill_cn(text: str, words: list) -> str:
+        def _num(m):
+            return wordmap.get(m.group(1), m.group(0))
+        text = re.sub(r"__(\d+)__", _num, text or "")
+        parts = re.split(r"(_{2,}|＿+)", text)
+        out, i = [], 0
+        for part in parts:
+            if part and re.fullmatch(r"_{2,}|＿+", part):
+                if i < len(words):
+                    out.append(f"〔{words[i]}〕")
+                    i += 1
+                else:
+                    out.append(part)
+            else:
+                out.append(part)
+        return "".join(out)
+
+    out = []
+    for s in sents or []:
+        s2 = dict(s)
+        raw_en = s.get("en") or ""
+        words = [wordmap.get(n, "") for n in re.findall(r"__(\d+)__", raw_en)]
+        s2["en"] = _fill_blank(raw_en, wordmap)
+        chunks = []
+        for ch in (s.get("chunks") or []):
+            c2 = dict(ch)
+            ch_en = ch.get("en") or ""
+            c2["en"] = _fill_blank(ch_en, wordmap)
+            local = [wordmap.get(n, "") for n in re.findall(r"__(\d+)__", ch_en)]
+            c2["cn"] = fill_cn(ch.get("cn") or "", local or words)
+            chunks.append(c2)
+        s2["chunks"] = chunks
+        s2["cn"] = fill_cn(s.get("cn") or "", words)
+        out.append(s2)
+    return out
+
 def think_writing(tc: dict) -> str:
     """写作思维链：拆题 → 立场 → 框架 → 填充 → 避坑。"""
     if not tc:
@@ -1267,6 +1317,8 @@ def main():
         return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
     sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation", "listening")}
+    stexp_path = sdir / "match-stmt-explain.json"
+    stexp = json.loads(stexp_path.read_text(encoding="utf-8")) if stexp_path.exists() else {}
     rt_path = sdir / "reading-timing.json"
     rtim = json.loads(rt_path.read_text(encoding="utf-8")) if rt_path.exists() else {}
 
@@ -1447,15 +1499,19 @@ def main():
     if MODE == "explain":
         blk = []
         if cexp.get("blanks"):
+            def _bfill(v, w):
+                return re.sub(r"_{2,}", w or "", str(v or ""))
+
             rows = "".join(
                 f'<tr><td><b>{esc(str(b.get("no")))}</b></td><td>{esc(b.get("answer",""))}) '
-                f'{esc(b.get("word",""))}</td><td>{esc(b.get("slot",""))}</td>'
-                f'<td>{esc(b.get("why",""))}</td><td>{esc(b.get("reject",""))}</td>'
+                f'{esc(b.get("word",""))}</td><td>{esc(_bfill(b.get("slot",""), b.get("word","")))}</td>'
+                f'<td>{esc(_bfill(b.get("why",""), b.get("word","")))}</td>'
+                f'<td>{esc(_bfill(b.get("reject",""), b.get("word","")))}</td>'
                 f'<td>{esc(b.get("cn",""))}</td></tr>' for b in cexp["blanks"])
             blk.append('<table class="trs"><tr><th>题</th><th>答案</th><th>空位语法槽</th>'
                        '<th>为什么是它</th><th>其它候选为什么不行</th><th>顺流中文</th></tr>'
                        + rows + "</table>")
-        cl_sents = sen["cloze"].get("cloze") or []
+        cl_sents = fill_cloze_sentences(sen["cloze"].get("cloze") or [], r["cloze"])
         if cl_sents:
             _arr, _m = rtim_of("cloze")
             blk.append(f'<div style="margin-top:6pt">{lb("逐句拆解", "lb-chunk")}</div>'
@@ -1487,6 +1543,22 @@ def main():
     for st in r["match"]["statements"]:
         parts.append(f'<div class="q"><b>{st["no"]}.</b> {esc(st["text"])} '
                      f'<select class="stmt" data-no="{st["no"]}"><option value="">--</option>{letters}</select></div>')
+        if MODE == "explain":
+            sa = stexp.get(str(st["no"])) or {}
+            ans_para = r["match"]["answers"].get(str(st["no"]), "")
+            bits = []
+            if ans_para:
+                bits.append(f'<div>{lb("答案", "lb-para")}<b>段落 {esc(ans_para)}</b></div>')
+            if sa.get("cn"):
+                bits.append(f'<div>{lb("句意", "lb-mean")}{esc(sa["cn"])}</div>')
+            if sa.get("key"):
+                bits.append(f'<div>{lb("定位", "lb-loc")}<span class="par">{esc(sa["key"])}</span></div>')
+            if sa.get("src"):
+                bits.append(f'<div>{lb("原文", "lb-chunk")}<span class="anno-en">{esc(sa["src"])}</span></div>')
+            if sa.get("trap"):
+                bits.append(f'<div>{lb("易错", "lb-trap")}<span class="trap">{esc(sa["trap"])}</span></div>')
+            if bits:
+                parts.append('<div class="qax">' + "".join(bits) + '</div>')
     ans_b = " ".join(f'{k}:{v}' for k, v in r["match"]["answers"].items())
     parts.append(f'<div class="qa">答案：{ans_b}</div>')
 
