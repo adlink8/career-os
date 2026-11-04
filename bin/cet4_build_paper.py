@@ -52,6 +52,16 @@ mark.hl-orange{background:#ffe0b2}
 mark.hl-purple{background:#e1bee7}
 span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
 span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
+#radial{position:fixed;z-index:60;width:208px;height:208px;display:none;pointer-events:none;user-select:none;-webkit-user-select:none}
+#radial.on{display:block}
+#radial .bg{position:absolute;inset:0;border-radius:50%;background:rgba(17,17,17,.78);border:1px solid #4b4b4b;box-shadow:0 12px 34px rgba(0,0,0,.42)}
+#radial .hub{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;background:#1b1b1b;border:1px solid #5a5a5a;color:#ffd479;display:flex;align-items:center;justify-content:center;text-align:center;font:12px/1.25 -apple-system,"Microsoft YaHei",sans-serif;padding:4px}
+#radial .ri{position:absolute;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:#262626;border:1px solid #6a6a6a;color:#fff;display:flex;align-items:center;justify-content:center;font:12px/1.15 -apple-system,"Microsoft YaHei",sans-serif;letter-spacing:.5px;transition:background .06s ease,transform .06s ease,border-color .06s ease,color .06s ease}
+#radial .ri.t-y{background:#fff3a8;color:#4a4000;border-color:#d3c25c}
+#radial .ri.t-g{background:#c8e6c9;color:#1b5e20;border-color:#8fc796}
+#radial .ri.t-r{background:#ffd6d6;color:#a01b1b;border-color:#e59a9a}
+#radial .ri.t-n{background:#fff8e1;color:#6b5410;border-color:#dcc98d}
+#radial .ri.hot{background:#2f6fb0;border-color:#a9cfef;color:#fff;transform:scale(1.14);box-shadow:0 6px 18px rgba(0,0,0,.45)}
 .spacer{height:52px}
 .audio{width:100%;margin:4pt 0 6pt}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
@@ -151,7 +161,7 @@ span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 .anno-cn{color:#3f3f3f}
 .anno-tip{color:#8a5200}
 .dim{color:#7a7a7a}
-@media print{.bar,.qa,.pan,.qax,#wdict,#ink{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
+@media print{.bar,.qa,.pan,.qax,#wdict,#ink,#radial{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
@@ -770,7 +780,108 @@ function inkInit2(){
     new MutationObserver(inkRedrawSoon).observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
   }
   document.addEventListener('click', function(){ if(strokes.length) inkRedrawSoon(); }, true);
+  try{
+    if(!localStorage.getItem('cet4_radial_tip')){
+      localStorage.setItem('cet4_radial_tip', '1');
+      setTimeout(function(){ hint('💡 按住鼠标中键 → 圆形工具盘，移动选工具，松开即用'); }, 1600);
+    }
+  }catch(e){}
 }
+
+/* ==================== 中键圆形工具盘（按住→移动→松开） ==================== */
+const RAD_ITEMS = [
+  { lb: '画笔', t: '', run: function(){ toggleInk(); } },
+  { lb: '橡皮', t: '', run: function(){ toggleErase(); } },
+  { lb: '清笔', t: '', run: function(){ clearInk(); } },
+  { lb: '荧光', t: 't-y', run: function(){ markSel('hl-yellow'); } },
+  { lb: '答案句', t: 't-g', run: function(){ markSel('hl-green'); } },
+  { lb: '红线', t: 't-r', run: function(){ markSel('redline'); } },
+  { lb: '批注', t: 't-n', run: function(){ noteSel(); } },
+  { lb: '清标', t: '', run: function(){ clearMarks(); } }
+];
+const RAD_SIZE = 208, RAD_R = 78, RAD_DEAD = 32;
+let radEl = null, radHub = null, radOpen = false, radHot = -1, radCx = 0, radCy = 0;
+
+function radBuild(){
+  if(radEl) return radEl;
+  radEl = document.createElement('div');
+  radEl.id = 'radial';
+  radEl.innerHTML = '<div class="bg"></div><div class="hub" id="radHub">工具盘</div>';
+  const step = 360 / RAD_ITEMS.length;
+  RAD_ITEMS.forEach(function(it, i){
+    const a = (-90 + i * step) * Math.PI / 180;
+    const b = document.createElement('div');
+    b.className = 'ri' + (it.t ? ' ' + it.t : '');
+    b.dataset.i = i;
+    b.style.left = (RAD_SIZE / 2 + Math.cos(a) * RAD_R) + 'px';
+    b.style.top = (RAD_SIZE / 2 + Math.sin(a) * RAD_R) + 'px';
+    b.textContent = it.lb;
+    radEl.appendChild(b);
+  });
+  document.body.appendChild(radEl);
+  radHub = document.getElementById('radHub');
+  return radEl;
+}
+function radOpenAt(x, y){
+  radBuild();
+  const half = RAD_SIZE / 2;
+  radCx = Math.max(half + 6, Math.min(window.innerWidth - half - 6, x));
+  radCy = Math.max(half + 6, Math.min(window.innerHeight - half - 6, y));
+  radEl.style.left = (radCx - half) + 'px';
+  radEl.style.top = (radCy - half) + 'px';
+  radEl.classList.add('on');
+  radOpen = true; radHot = -1;
+  radPaint();
+}
+function radPaint(){
+  const kids = radEl.querySelectorAll('.ri');
+  kids.forEach(function(b, i){ b.classList.toggle('hot', i === radHot); });
+  if(radHub) radHub.textContent = radHot >= 0 ? RAD_ITEMS[radHot].lb : '松开取消';
+}
+function radUpdate(x, y){
+  const dx = x - radCx, dy = y - radCy;
+  let idx = -1;
+  if(Math.hypot(dx, dy) >= RAD_DEAD){
+    const step = 360 / RAD_ITEMS.length;
+    const deg = (Math.atan2(dy, dx) * 180 / Math.PI + 90 + 720) % 360;
+    idx = Math.round(deg / step) % RAD_ITEMS.length;
+  }
+  if(idx !== radHot){ radHot = idx; radPaint(); }
+}
+function radClose(){
+  if(!radEl) return;
+  radEl.classList.remove('on');
+  radOpen = false; radHot = -1;
+}
+function radCommit(){
+  const idx = radHot;
+  radClose();
+  if(idx >= 0) setTimeout(function(){ RAD_ITEMS[idx].run(); }, 0);
+}
+document.addEventListener('mousedown', function(e){
+  if(e.button !== 1) return;
+  e.preventDefault();
+  radOpenAt(e.clientX, e.clientY);
+}, true);
+/* 兜底：菜单开着时左键/滚轮 = 取消，避免卡住 */
+document.addEventListener('mousedown', function(e){ if(radOpen && e.button === 0) radClose(); }, true);
+window.addEventListener('wheel', function(){ if(radOpen) radClose(); }, { capture: true, passive: true });
+document.addEventListener('mousemove', function(e){
+  if(!radOpen) return;
+  radUpdate(e.clientX, e.clientY);
+}, true);
+/* 中键松开：Chromium 只发 auxclick（不发 mouseup），两个都接，谁先到谁提交 */
+function radRelease(e){
+  if(!radOpen || e.button !== 1) return;
+  e.preventDefault();
+  radUpdate(e.clientX, e.clientY);
+  radCommit();
+}
+document.addEventListener('mouseup', radRelease, true);
+document.addEventListener('auxclick', radRelease, true);
+document.addEventListener('pointercancel', function(){ if(radOpen) radClose(); }, true);
+document.addEventListener('keydown', function(e){ if(radOpen && e.key === 'Escape') radClose(); });
+window.addEventListener('blur', radClose);
 """
 
 
