@@ -92,6 +92,8 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .an .lt.bad{background:#c01c28}
 .an .tx{flex:1 1 auto}
 .an .tx b{color:#a01a26;font-weight:600}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 14px;border-radius:6px;font:12px/1.6 -apple-system,"Microsoft YaHei",sans-serif;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
+#toast.show{opacity:.94}
 .par{color:#1a6b3c;background:#e8f6ec;padding:0 2px;border-radius:2px}
 .trap{color:#a01a26;background:#fdeaea;padding:0 2px;border-radius:2px}
 .anno-en{font-weight:600;color:#111}
@@ -186,11 +188,66 @@ function check(){
 function closeReport(){document.getElementById('report').classList.remove('show')}
 function speak(t){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
 function showQA(){document.querySelectorAll('.qa').forEach(e=>e.classList.toggle('show'))}
-function seek(aid, t, el){
+function seek(aid, t, end, el){
   const a=document.getElementById(aid); if(!a) return;
-  a.currentTime=t; a.play().catch(()=>{});
+  document.querySelectorAll('audio').forEach(b=>{ if(b!==a && !b.paused) b.pause(); });
+  a.dataset.stop = (document.getElementById('cont') && document.getElementById('cont').checked) ? '' : (end || '');
   document.querySelectorAll('.tr .line.on').forEach(e=>e.classList.remove('on'));
   if(el) el.classList.add('on');
+  try{ a.currentTime=t; }catch(e){}
+  a.play().catch(()=>{});
+  // 某些 HTTP 服务不支持 Range，会导致跳转静默失效 → 稍后重试一次
+  setTimeout(()=>{
+    if(Math.abs(a.currentTime - t) > 0.8 && a.readyState >= 1){
+      try{ a.currentTime = t; }catch(e){}
+      setTimeout(()=>{
+        if(Math.abs(a.currentTime - t) > 1.2) hint('音频跳句失败：当前打开方式不支持定位，请改用本地浏览器直接打开该 HTML 文件');
+      }, 500);
+    }
+  }, 350);
+}
+let _toastTimer = null;
+function hint(msg){
+  const t = document.getElementById('toast'); if(!t) return;
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>t.classList.remove('show'), 3600);
+}
+/* 单句模式：到下一句起点自动停；勾选「连播」则一直播下去 */
+function bindSentenceStop(){
+  document.querySelectorAll('audio').forEach(a=>{
+    if(a.dataset.bound) return;
+    a.dataset.bound = '1';
+    a.addEventListener('play', ()=>{
+      document.querySelectorAll('audio').forEach(b=>{ if(b!==a && !b.paused) b.pause(); });
+    });
+    a.addEventListener('timeupdate', ()=>{
+      const stop = parseFloat(a.dataset.stop || '0');
+      if(stop && a.currentTime >= stop - 0.06 && !a.paused){ a.pause(); a.dataset.stop = ''; }
+    });
+  });
+}
+/* 音频先抓成 Blob：Blob 支持随机访问，HTTP 不支持 Range 时也能精确跳句 */
+async function upgradeAudio(){
+  const list = [...document.querySelectorAll('audio[data-src]')];
+  for(const a of list){
+    if(a.dataset.blobbed) continue;
+    try{
+      const r = await fetch(a.dataset.src, {cache:'force-cache'});
+      if(!r.ok) continue;
+      const buf = await r.arrayBuffer();
+      if(!buf.byteLength) continue;
+      const url = URL.createObjectURL(new Blob([buf], {type:'audio/mpeg'}));
+      const was = a.currentTime, playing = !a.paused;
+      a.dataset.blobbed = '1';
+      a.src = url;
+      a.addEventListener('loadedmetadata', ()=>{
+        try{ if(was) a.currentTime = was; }catch(e){}
+        if(playing) a.play().catch(()=>{});
+      }, {once:true});
+      a.load();
+    }catch(e){ /* file:// 下 fetch 被拦，保留原生 src：本地文件本身支持跳转 */ }
+  }
 }
 function speakW(w){ speak(w); }
 function setFont(pt){
@@ -370,17 +427,20 @@ def main():
             aid = f"au-{Path(piece.get('audio') or 'x').stem}"
             if audio and audio.exists():
                 shutil.copy(audio, outdir / audio.name)
-                parts.append(f'<audio class="audio" id="{aid}" controls src="{audio.name}"></audio>')
+                parts.append(f'<audio class="audio" id="{aid}" controls preload="metadata" '
+                             f'data-src="{audio.name}" src="{audio.name}"></audio>')
             lx = lexp.get(f"{sec['name']}-{Path(piece.get('audio') or 'x').stem}") or {}
             if MODE == "explain":
                 if piece.get("summary"):
                     parts.append(f'<div class="sum"><b>大意</b>　{esc(piece["summary"])}</div>')
                 cn_map = {x.get("i"): x.get("cn") for x in (lx.get("sentences") or [])}
                 lines = []
-                for i, s in enumerate(piece.get("timing") or [], 1):
+                timing = piece.get("timing") or []
+                for i, s in enumerate(timing, 1):
                     en = s.get("en") or s.get("text") or ""
                     st = float(s.get("start") or 0)
-                    lines.append(f'<div class="line" onclick="seek(\'{aid}\',{st:.3f},this)">'
+                    nxt = float(timing[i].get("start") or 0) if i < len(timing) else 0
+                    lines.append(f'<div class="line" onclick="seek(\'{aid}\',{st:.3f},{nxt:.3f},this)">'
                                  f'<div class="en">{i}. {esc(en)}</div>'
                                  f'<div class="cn">{esc(cn_map.get(i) or "")}</div></div>')
                 if lines:
@@ -549,7 +609,8 @@ def main():
 <button onclick="stepFont(1)" title="放大">A+</button>
 <span class="fsv" id="fsv">10.5</span>
 <button onclick="resetFont()">默认</button></span>
-<span class="grp"><span id="score">客观题 --</span>
+<span class="grp"><label style="cursor:pointer;user-select:none"><input type="checkbox" id="cont"> 连播</label>
+<span id="score">客观题 --</span>
 <button onclick="check()">对答案</button><button onclick="showQA()">显示答案</button>
 <button onclick="toggleAnalysis()">段落解析</button><button onclick="toggleAnswers()">题目解析</button>
 <button onclick="window.print()">打印</button></span></div>
@@ -558,8 +619,11 @@ def main():
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
 <button onclick="closeReport()" style="width:100%;margin-top:10pt;padding:6pt">关闭</button></div></div>
 <div id="wdict"></div>
+<div id="toast"></div>
 <script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}
-wrapWords(document.querySelector(".paper"));</script></body></html>"""
+wrapWords(document.querySelector(".paper"));
+upgradeAudio();
+setTimeout(bindSentenceStop, 0);</script></body></html>"""
     out = outdir / "index.html"
     out.write_text(html, encoding="utf-8")
     print(f"wrote {out} ({len(html)} bytes, mode={args.mode})")
