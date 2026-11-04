@@ -36,8 +36,8 @@ def main():
             "cloze": {"passage": cloze["passage"], "bank": cloze["bank"], "answers": cloze["answers"]},
             "match": {"title": match["title"], "paragraphs": match["paragraphs"],
                       "statements": match["statements"], "answers": match["answers"]},
-            "passage1": {"title": r1.get("title"), "questions": r1["questions"]},
-            "passage2": {"title": r2.get("title"), "questions": r2["questions"]},
+            "passage1": {"title": r1.get("title"), "questions": r1["questions"], "paragraphs": r1.get("paragraphs")},
+            "passage2": {"title": r2.get("title"), "questions": r2["questions"], "paragraphs": r2.get("paragraphs")},
         },
         "translation": writing_t["translation"],
     }

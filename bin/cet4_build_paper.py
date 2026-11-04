@@ -40,11 +40,66 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:10.5pt;border:
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
 #report.show{display:flex}
 #reportBox{background:#fff;padding:16pt;border-radius:10pt;width:340pt;font:12pt/1.7 -apple-system,"Microsoft YaHei",sans-serif}
-@media print{.bar,.qa{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
+.w{cursor:context-menu}
+.w:hover{background:#eef4ff}
+#wdict{display:none;position:fixed;z-index:50;max-width:260pt;background:#fff;border:1px solid #999;border-radius:8pt;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:8pt 10pt;font:11pt/1.6 -apple-system,"Microsoft YaHei",sans-serif}
+#wdict.show{display:block}
+#wdict .hd{font-weight:700;font-size:13pt}
+#wdict .ipa{color:#555;margin-left:6pt}
+#wdict .pos{color:#7a5c00;margin-right:6pt}
+#wdict .btn{margin-top:6pt}
+#wdict button{border:1px solid #ccc;background:#fafafa;border-radius:6pt;padding:2pt 8pt;cursor:pointer}
+.pan,.qax{display:none;margin:2pt 0 8pt;padding:6pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font:9pt/1.7 -apple-system,"Microsoft YaHei","SimSun",sans-serif}
+.pan.show,.qax.show{display:block}
+.pan .cn{margin-bottom:3pt}
+@media print{.bar,.qa,.pan,.qax,#wdict{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
 const P = PAPER;
+const WORDS = window.__WORDS__ || {};
+function wrapWords(root){
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  let n;
+  while((n = w.nextNode())){
+    const host = n.parentElement;
+    if(!host || host.closest('.pan,.qax,.qa,#wdict')) continue;
+    if(/[A-Za-z]{2}/.test(n.textContent)) nodes.push(n);
+  }
+  nodes.forEach(node=>{
+    const frag = document.createDocumentFragment();
+    node.textContent.split(/([A-Za-z][A-Za-z'-]+)/).forEach((part, i)=>{
+      if(i % 2 === 1){
+        const sp = document.createElement('span');
+        sp.className = 'w'; sp.dataset.w = part.toLowerCase(); sp.textContent = part;
+        frag.appendChild(sp);
+      } else if(part){ frag.appendChild(document.createTextNode(part)); }
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+function showDict(el, x, y){
+  const w = el.dataset.w;
+  const info = WORDS[w] || {};
+  const box = document.getElementById('wdict');
+  box.innerHTML = `<div class="hd">${w}<span class="ipa">${info.phonetic||''}</span></div>`+
+    `<div><span class="pos">${info.pos||''}</span>${info.cn||'暂无释义'}</div>`+
+    `<div class="btn"><button onclick="speakWord('${w}')">🔊 朗读</button></div>`;
+  box.style.left = Math.min(x + 12, innerWidth - 280) + 'px';
+  box.style.top = Math.min(y + 12, innerHeight - 160) + 'px';
+  box.classList.add('show');
+}
+function speakWord(w){ if(!window.speechSynthesis) return; const u=new SpeechSynthesisUtterance(w); u.lang='en-US'; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+document.addEventListener('contextmenu', e=>{
+  const t = e.target;
+  if(t && t.classList && t.classList.contains('w')){ e.preventDefault(); showDict(t, e.clientX, e.clientY); }
+  else { const b=document.getElementById('wdict'); if(b) b.classList.remove('show'); }
+});
+document.addEventListener('click', ()=>{ const b=document.getElementById('wdict'); if(b) b.classList.remove('show'); });
+function toggleAnalysis(){ document.querySelectorAll('.pan').forEach(e=>e.classList.toggle('show')); }
+function toggleAnswers(){ document.querySelectorAll('.qax').forEach(e=>e.classList.toggle('show')); }
+
 let answers = {};
 function pick(no, letter, el){
   answers[no] = letter;
@@ -103,10 +158,18 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("paper")
     ap.add_argument("--outdir", default="var/cet4-daily/paper-demo")
+    ap.add_argument("--mode", default="explain", choices=["plain", "explain"])
+    ap.add_argument("--words", default="var/cet4-daily/words.json")
     args = ap.parse_args()
+    global MODE
+    MODE = args.mode
     src = Path(args.paper)
     data = json.loads(src.read_text(encoding="utf-8"))
-    outdir = Path(args.outdir)
+    words_path = Path(args.words)
+    words = json.loads(words_path.read_text(encoding="utf-8")) if words_path.exists() else []
+    wdict = {x["word"].lower(): x for x in words if x.get("word")}
+    wjs = "window.__WORDS__ = " + json.dumps(wdict, ensure_ascii=False) + ";"
+    outdir = Path(args.outdir) / args.mode
     outdir.mkdir(parents=True, exist_ok=True)
 
     parts = []
@@ -165,6 +228,18 @@ def main():
         if pg.get("paragraphs"):
             for para in pg["paragraphs"]:
                 parts.append(f'<p class="body">{esc(para.get("en", ""))}</p>')
+                if MODE == "explain":
+                    sent = "".join(
+                        f'<div style="margin-top:3pt"><b>{esc(s.get("en",""))}</b><br>' +
+                        " ".join(f'{esc(c.get("en",""))}<span style="color:#888">[{esc(c.get("role",""))}：{esc(c.get("cn",""))}]</span>' for c in (s.get("chunks") or [])) +
+                        (f'<div style="color:#555">意思：{esc(s.get("meaning",""))}</div>' if s.get("meaning") else "") +
+                        (f'<div style="color:#555">谁修饰谁：{esc(s.get("modifier",""))}</div>' if s.get("modifier") else "") +
+                        (f'<div style="color:#555">为啥：{esc(s.get("why",""))}</div>' if s.get("why") else "") +
+                        (f'<div style="color:#555">搭配：{esc(s.get("collocation",""))}</div>' if s.get("collocation") else "") +
+                        "</div>" for s in (para.get("sentences") or []))
+                    parts.append(f'<div class="pan"><div class="cn">{esc(para.get("cn",""))}</div>'
+                                 f'<div style="color:#555">主旨：{esc(para.get("main",""))}</div>'
+                                 f'<div style="color:#555">作用：{esc(para.get("structure",""))}</div>{sent}</div>')
         else:
             parts.append(f'<p class="body">{esc(pg.get("passage", ""))}</p>')
         for q in pg["questions"]:
@@ -173,6 +248,19 @@ def main():
                 f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
             parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
                          f'{esc(q["stem"])}<div class="opts">{opts}</div></div>')
+            if MODE == "explain":
+                oa_parts = []
+                for x in (q.get("option_analysis") or []):
+                    if isinstance(x, dict):
+                        oa_parts.append(f'<div>{esc(x.get("letter",""))}) {"✓" if x.get("correct") else "✗"} {esc(x.get("why",""))}</div>')
+                    else:
+                        oa_parts.append(f'<div>{esc(str(x))}</div>')
+                oa = "".join(oa_parts)
+                parts.append(f'<div class="qax"><div><b>答案 {esc(q["answer"])}</b></div>'
+                             + (f'<div>定位：{esc(q.get("evidence",""))}</div>' if q.get("evidence") else "")
+                             + (f'<div>同义替换：{esc((q.get("paraphrase") or {}).get("original",""))} → {esc((q.get("paraphrase") or {}).get("option",""))}</div>' if q.get("paraphrase") else "")
+                             + (f'<div>陷阱：{esc(q.get("trap",""))}</div>' if q.get("trap") else "")
+                             + oa + '</div>')
 
     parts.append('<div class="part">Part IV &nbsp; Translation &nbsp;(30 minutes)</div>')
     parts.append(f'<div class="dir">Directions: Translate the following passage into English.</div>')
@@ -185,15 +273,17 @@ def main():
 <div class="bar"><b>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</b>
 <span id="score">客观题 --</span>
 <button onclick="check()">对答案</button><button onclick="showQA()">显示答案</button>
-<button onclick="window.print()">打印</button></div>
+<button onclick="toggleAnalysis()">段落解析</button><button onclick="toggleAnswers()">题目解析</button><button onclick="window.print()">打印</button></div>
 <div class="spacer"></div>
 <div class="paper">{''.join(parts)}</div>
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
 <button onclick="closeReport()" style="width:100%;margin-top:10pt;padding:6pt">关闭</button></div></div>
-<script>const PAPER = {json.dumps(data, ensure_ascii=False)};{JS}</script></body></html>"""
+<div id="wdict"></div>
+<script>{wjs}const PAPER = {json.dumps(data, ensure_ascii=False)};{JS}
+wrapWords(document.querySelector(".paper"));</script></body></html>"""
     out = outdir / "index.html"
     out.write_text(html, encoding="utf-8")
-    print(f"wrote {out} ({len(html)} bytes)")
+    print(f"wrote {out} ({len(html)} bytes, mode={args.mode})")
 
 
 if __name__ == "__main__":
