@@ -1317,6 +1317,22 @@ def main():
         return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
     sen = {k: load_sent(k) for k in ("cloze", "match", "writing", "translation", "listening")}
+    qexp_path = sdir / "question-explain.json"
+    qexp = json.loads(qexp_path.read_text(encoding="utf-8")) if qexp_path.exists() else {}
+
+    def q_sent_html(qid, prefix=""):
+        d = qexp.get(qid) or {}
+        chunks = list(d.get("chunks") or [])
+        if not chunks:
+            return ""
+        if prefix:
+            chunks = [{"en": prefix, "role": "", "cn": ""}] + chunks
+        return sentence_html({"chunks": chunks, "cn": d.get("cn") or ""})
+
+    def q_block(title, qid, prefix=""):
+        h = q_sent_html(qid, prefix)
+        return (f'<div style="margin-top:4pt">{lb(title, "lb-chunk")}{h}</div>') if h else ""
+
     stexp_path = sdir / "match-stmt-explain.json"
     stexp = json.loads(stexp_path.read_text(encoding="utf-8")) if stexp_path.exists() else {}
     rt_path = sdir / "reading-timing.json"
@@ -1483,8 +1499,13 @@ def main():
                 if MODE == "explain":
                     qline = (f'<div>{lb("问句", "lb-map")}<span class="qstem">{esc(q["stem"])}</span></div>'
                              if (q.get("stem") or "").strip() else "")
-                    if an or qline:
-                        parts.append('<div class="qax">' + qline + (option_rows(q, an) if an else "") + '</div>')
+                    stem_block = q_block("题干逐句", f'L{int(q["no"])}S')
+                    _opts_html = "".join(q_sent_html(f'L{int(q["no"])}{_l}', prefix=_l + ")") for _l in "ABCD")
+                    opt_block = (f'<div style="margin-top:4pt">{lb("选项逐句", "lb-chunk")}</div>' + _opts_html) if _opts_html else ""
+
+                    if an or qline or stem_block:
+                        parts.append('<div class="qax">' + qline + stem_block
+                                     + (option_rows(q, an) if an else "") + opt_block + '</div>')
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
@@ -1557,6 +1578,9 @@ def main():
                 bits.append(f'<div>{lb("原文", "lb-chunk")}<span class="anno-en">{esc(sa["src"])}</span></div>')
             if sa.get("trap"):
                 bits.append(f'<div>{lb("易错", "lb-trap")}<span class="trap">{esc(sa["trap"])}</span></div>')
+            st_sent = q_block("陈述逐句", f'M{int(st["no"])}')
+            if st_sent:
+                bits.append(st_sent)
             if bits:
                 parts.append('<div class="qax">' + "".join(bits) + '</div>')
     ans_b = " ".join(f'{k}:{v}' for k, v in r["match"]["answers"].items())
@@ -1611,7 +1635,12 @@ def main():
                              + (f'<div>{lb("定位", "lb-loc")}<span class="loc">{esc(q.get("evidence",""))}</span></div>' if q.get("evidence") else "")
                              + (f'<div>{lb("同义替换", "lb-map")}<span class="par">{esc(para.get("original",""))} → {esc(para.get("option",""))}</span></div>' if para else "")
                              + (f'<div>{lb("陷阱", "lb-trap")}<span class="trap">{esc(q.get("trap",""))}</span></div>' if q.get("trap") else "")
-                             + oa + '</div>')
+                             + oa
+                             + q_block("题干逐句", f'R{int(q["no"])}S')
+                             + ((f'<div style="margin-top:4pt">{lb("选项逐句", "lb-chunk")}</div>'
+                                 + "".join(q_sent_html(f'R{int(q["no"])}{_l}', prefix=_l + ")") for _l in "ABCD"))
+                                if any(qexp.get(f'R{int(q["no"])}{_l}') for _l in "ABCD") else "")
+                             + '</div>')
 
     parts.append('<div class="part">Part IV &nbsp; Translation &nbsp;(30 minutes)</div>')
     if MODE == "explain":
