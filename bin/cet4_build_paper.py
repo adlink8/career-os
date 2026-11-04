@@ -34,11 +34,24 @@ select.stmt{font-family:inherit;font-size:.95em}
 textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px solid #ccc;border-radius:4pt;padding:6pt}
 .qa{display:none;margin:4pt 0 0;padding:5pt 8pt;border-left:2pt solid #c9a227;background:#fbf9f1;font-size:.86em;line-height:1.6;font-family:-apple-system,"Microsoft YaHei",sans-serif}
 .qa.show{display:block}
-.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:6px 12px;font:13px/1.4 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:nowrap;overflow-x:auto;z-index:20}
-.bar input[type=range]{width:110px;vertical-align:middle}
-.bar button{border:1px solid #666;background:#222;color:#fff;border-radius:4px;padding:3px 8px;cursor:pointer}
-.bar .grp{display:flex;gap:6px;align-items:center;border-left:1px solid #444;padding-left:12px}
+.bar{position:fixed;top:0;left:0;right:0;background:#111;color:#fff;padding:5px 10px;font:13px/1.35 -apple-system,"Microsoft YaHei",sans-serif;display:flex;gap:9px;align-items:center;flex-wrap:nowrap;overflow-x:auto;z-index:20;white-space:nowrap}
+.bar .ttl{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar input[type=range]{width:96px;vertical-align:middle}
+.bar button{border:1px solid #666;background:#222;color:#fff;border-radius:4px;padding:3px 7px;cursor:pointer;white-space:nowrap;font:12px/1.35 -apple-system,"Microsoft YaHei",sans-serif}
+.bar .grp{display:flex;gap:5px;align-items:center;border-left:1px solid #444;padding-left:9px;flex:none}
 .bar .fsv{min-width:44px;text-align:center;color:#ffd479;font-variant-numeric:tabular-nums}
+.bar .lbl{color:#9a9a9a;font-size:12px;margin-right:-2px}
+.bar button.on{background:#2f6fb0;border-color:#8dbdea}
+.bar select{background:#222;color:#fff;border:1px solid #666;border-radius:4px;font:12px/1.2 inherit;padding:2px 0;margin:0}
+#ink{position:fixed;top:0;left:0;z-index:15;pointer-events:none;touch-action:none}
+#ink.on{pointer-events:auto;cursor:crosshair}
+mark.hl-yellow{background:#fff3a8}
+mark.hl-green{background:#c8e6c9}
+mark.hl-red{background:#ffd6d6}
+mark.hl-orange{background:#ffe0b2}
+mark.hl-purple{background:#e1bee7}
+span.redline{text-decoration:underline;text-decoration-color:#e53935;text-decoration-thickness:2px}
+span.noted{background:#fff8e1;border-bottom:1px dotted #c9a227;cursor:help}
 .spacer{height:52px}
 .audio{width:100%;margin:4pt 0 6pt}
 #report{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center}
@@ -138,7 +151,7 @@ textarea{width:100%;min-height:90pt;font-family:inherit;font-size:1em;border:1px
 .anno-cn{color:#3f3f3f}
 .anno-tip{color:#8a5200}
 .dim{color:#7a7a7a}
-@media print{.bar,.qa,.pan,.qax,#wdict{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
+@media print{.bar,.qa,.pan,.qax,#wdict,#ink{display:none!important}.paper{box-shadow:none;margin:0}@page{size:A4;margin:38pt 36pt 30pt}}
 """
 
 JS = """
@@ -399,6 +412,365 @@ function resetFont(){ setFont(10.5); }
   try{ v = parseFloat(localStorage.getItem('cet4_fs')) || 10.5; }catch(e){}
   setFont(v);
 })();
+"""
+
+
+INK = r"""
+/* ==================== 画笔 / 标注：笔迹锚在文字上，改字号/展开解析后跟着走 ==================== */
+const INK_SLUG = (((PAPER.meta || {}).name) || 'paper').replace(/[^A-Za-z0-9\u4e00-\u9fa5]+/g, '_').slice(0, 60);
+const INK_KEY = 'ink_' + INK_SLUG;
+const MARK_KEY = 'mk_' + INK_SLUG;
+const inkCvs = document.getElementById('ink');
+const inkCtx = inkCvs ? inkCvs.getContext('2d') : null;
+let inkOn = false, eraseOn = false, strokes = [], curStroke = null, inkRaf = 0, inkMap = null;
+
+function inkPaperEl(){ return document.querySelector('.paper'); }
+function inkElById(a){
+  if(!a) return null;
+  if(!inkMap) inkMap = new Map();
+  if(inkMap.has(a)) return inkMap.get(a);
+  const e = document.querySelector('[data-ink="' + a + '"]');
+  inkMap.set(a, e);
+  return e;
+}
+function inkTextOffset(host, node, off){
+  let total = 0, n;
+  const w = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  while((n = w.nextNode())){
+    if(n === node) return total + off;
+    total += n.textContent.length;
+  }
+  return null;
+}
+function inkRangeAt(host, off){
+  let total = 0, n;
+  const w = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  while((n = w.nextNode())){
+    const L = n.textContent.length;
+    if(off < total + L && L > 0){
+      const s = Math.max(0, Math.min(L - 1, off - total));
+      const r = document.createRange();
+      r.setStart(n, s); r.setEnd(n, s + 1);
+      return r;
+    }
+    total += L;
+  }
+  return null;
+}
+function inkRangeSpan(host, s, e){
+  let total = 0, n, startN = null, startO = 0, endN = null, endO = 0;
+  const w = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  while((n = w.nextNode())){
+    const L = n.textContent.length, a = total, b = total + L;
+    if(startN === null && s < b){ startN = n; startO = Math.max(0, Math.min(L, s - a)); }
+    if(startN !== null && e <= b){ endN = n; endO = Math.max(0, Math.min(L, e - a)); break; }
+    total = b;
+  }
+  if(!startN) return null;
+  if(!endN){ endN = startN; endO = startN.textContent.length; }
+  try{
+    const r = document.createRange();
+    r.setStart(startN, startO); r.setEnd(endN, endO);
+    return r;
+  }catch(err){ return null; }
+}
+function inkCaret(x, y){
+  if(!inkCvs) return null;
+  const prev = inkCvs.style.pointerEvents;
+  inkCvs.style.pointerEvents = 'none';
+  let out = null;
+  try{
+    if(document.caretPositionFromPoint){
+      const cp = document.caretPositionFromPoint(x, y);
+      if(cp) out = { node: cp.offsetNode, off: cp.offset };
+    }
+    if(!out && document.caretRangeFromPoint){
+      const r = document.caretRangeFromPoint(x, y);
+      if(r) out = { node: r.startContainer, off: r.startOffset };
+    }
+  }catch(err){}
+  inkCvs.style.pointerEvents = prev;
+  return out;
+}
+function inkPoint(x, y){
+  const paper = inkPaperEl();
+  const hit = inkCaret(x, y);
+  let host = null, off = null;
+  if(hit && hit.node && hit.node.nodeType === 3){
+    let h = hit.node.parentElement;
+    while(h && h !== paper && !h.dataset.ink) h = h.parentElement;
+    if(h && h.dataset && h.dataset.ink){
+      const t = inkTextOffset(h, hit.node, hit.off);
+      if(t != null){ host = h; off = t; }
+    }
+  }
+  if(!host){
+    const prev = inkCvs.style.pointerEvents;
+    inkCvs.style.pointerEvents = 'none';
+    const list = document.elementsFromPoint(x, y) || [];
+    inkCvs.style.pointerEvents = prev;
+    for(const e of list){
+      const a = (e.closest ? e.closest('[data-ink]') : null);
+      if(a){ host = a; break; }
+    }
+  }
+  if(!host) return null;
+  let rect = null;
+  if(off != null){
+    const r = inkRangeAt(host, off);
+    if(r){ const q = r.getBoundingClientRect(); if(q.width || q.height) rect = q; }
+  }
+  if(!rect) rect = host.getBoundingClientRect();
+  return { a: host.dataset.ink, off: off, dx: x - rect.left, dy: y - rect.top };
+}
+function inkRedraw(){
+  if(!inkCtx) return;
+  const W = innerWidth, H = innerHeight;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const pw = Math.round(W * dpr), ph = Math.round(H * dpr);
+  if(inkCvs.width !== pw || inkCvs.height !== ph){
+    inkCvs.width = pw; inkCvs.height = ph;
+    inkCvs.style.width = W + 'px'; inkCvs.style.height = H + 'px';
+  }
+  inkCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  inkCtx.clearRect(0, 0, W, H);
+  inkCtx.lineCap = 'round'; inkCtx.lineJoin = 'round';
+  let lastKey = '', lastLeft = 0, lastTop = 0;
+  function posOf(p){
+    const key = (p.a || '') + '|' + (p.off == null ? 'x' : p.off);
+    if(key === lastKey) return { x: lastLeft + p.dx, y: lastTop + p.dy };
+    const el = inkElById(p.a);
+    if(!el) return null;
+    let r = null;
+    if(p.off != null){
+      const rg = inkRangeAt(el, p.off);
+      if(rg){ const q = rg.getBoundingClientRect(); if(q.width || q.height) r = q; }
+    }
+    if(!r) r = el.getBoundingClientRect();
+    lastKey = key; lastLeft = r.left; lastTop = r.top;
+    return { x: r.left + p.dx, y: r.top + p.dy };
+  }
+  for(const st of strokes){
+    const col = st.color || '#e53935', lw = st.width || 2.8;
+    const pts = [];
+    for(const p of (st.pts || [])){ const a = posOf(p); if(a) pts.push(a); }
+    if(!pts.length) continue;
+    inkCtx.strokeStyle = col; inkCtx.fillStyle = col; inkCtx.lineWidth = lw;
+    if(pts.length === 1){
+      inkCtx.beginPath(); inkCtx.arc(pts[0].x, pts[0].y, Math.max(1, lw / 2), 0, 6.284); inkCtx.fill();
+      continue;
+    }
+    inkCtx.beginPath(); inkCtx.moveTo(pts[0].x, pts[0].y);
+    for(let i = 1; i < pts.length; i++) inkCtx.lineTo(pts[i].x, pts[i].y);
+    inkCtx.stroke();
+  }
+}
+function inkRedrawSoon(){
+  if(inkRaf) return;
+  inkRaf = requestAnimationFrame(function(){ inkRaf = 0; inkRedraw(); });
+}
+function inkSave(){
+  try{
+    const slim = strokes.map(function(st){
+      return { color: st.color, width: st.width, pts: (st.pts || []).map(function(p){
+        return { a: p.a, off: p.off, dx: Math.round(p.dx * 10) / 10, dy: Math.round(p.dy * 10) / 10 };
+      }) };
+    });
+    localStorage.setItem(INK_KEY, JSON.stringify(slim));
+  }catch(e){ hint('笔迹存不进本地存储（写满了）：点「清笔」清掉一些再写'); }
+}
+function inkSyncUI(silent){
+  if(!inkCvs) return;
+  const active = inkOn || eraseOn;
+  inkCvs.classList.toggle('on', active);
+  const p = document.getElementById('tbPen'), q = document.getElementById('tbErase');
+  if(p) p.classList.toggle('on', inkOn && !eraseOn);
+  if(q) q.classList.toggle('on', eraseOn);
+  inkCvs.style.cursor = eraseOn ? 'cell' : 'crosshair';
+  if(silent) return;
+  if(!active) hint('画笔已关：现在可以正常选文字、点选项了');
+  else if(eraseOn) hint('橡皮已开：点一下或划过笔迹就擦掉；再点🧽关掉');
+  else hint('画笔已开：直接在卷面上写画（关掉后才能选文字/点选项）');
+}
+function toggleInk(){ inkOn = !inkOn; if(inkOn) eraseOn = false; else eraseOn = false; inkSyncUI(false); }
+function toggleErase(){ eraseOn = !eraseOn; if(eraseOn) inkOn = true; inkSyncUI(false); }
+function clearInk(){
+  if(!strokes.length){ hint('现在没有笔迹'); return; }
+  strokes = []; curStroke = null;
+  inkRedraw(); inkSave(); hint('笔迹已清除');
+}
+function inkErase(x, y){
+  const before = strokes.length;
+  strokes = strokes.filter(function(st){
+    return !(st.pts || []).some(function(p){
+      const el = inkElById(p.a);
+      if(!el) return false;
+      let r = null;
+      if(p.off != null){ const rg = inkRangeAt(el, p.off); if(rg){ const q = rg.getBoundingClientRect(); if(q.width || q.height) r = q; } }
+      if(!r) r = el.getBoundingClientRect();
+      return Math.hypot(r.left + p.dx - x, r.top + p.dy - y) < 15;
+    });
+  });
+  if(strokes.length !== before){ inkRedraw(); inkSave(); }
+}
+function assignInkAnchors(paper){
+  const SKIP = '.w,mark,span.redline,span.noted,#vocab,#wdict,script,style,textarea,button,select,option,input,audio';
+  let seq = 0, n;
+  const w = document.createTreeWalker(paper, NodeFilter.SHOW_TEXT);
+  while((n = w.nextNode())){
+    if(!/[A-Za-z0-9\u4e00-\u9fa5]/.test(n.textContent)) continue;
+    let h = n.parentElement;
+    while(h && h !== paper && h.matches && h.matches(SKIP)) h = h.parentElement;
+    if(!h || h === paper) continue;
+    if(!h.dataset.ink) h.dataset.ink = 'a' + (++seq);
+  }
+  inkMap = null;
+}
+function inkMarkRange(cls, tag, note){
+  const sel = getSelection();
+  if(!sel || !sel.rangeCount || sel.isCollapsed){ hint('先用鼠标选中要标注的文字，再点按钮'); return; }
+  const r = sel.getRangeAt(0);
+  const paper = inkPaperEl();
+  if(!paper || !paper.contains(r.commonAncestorContainer)){ hint('只能在试卷正文上标注'); return; }
+  const el = document.createElement(tag);
+  el.className = cls;
+  if(note){ el.dataset.note = note; el.title = note; }
+  try{ r.surroundContents(el); }
+  catch(e){
+    try{ el.appendChild(r.extractContents()); r.insertNode(el); }
+    catch(e2){ hint('这段跨了多个排版块，换个短一点的选段'); return; }
+  }
+  sel.removeAllRanges();
+  inkMarkSave();
+  hint(cls === 'noted' ? '批注已加' : '标注已加');
+  inkRedrawSoon();
+}
+function markSel(cls){ inkMarkRange(cls, cls === 'redline' ? 'span' : 'mark', ''); }
+function noteSel(){
+  const sel = getSelection();
+  if(!sel || !sel.rangeCount || sel.isCollapsed){ hint('先选中要批注的文字'); return; }
+  const t = prompt('批注内容：');
+  if(!t) return;
+  inkMarkRange('noted', 'span', t);
+}
+function inkElOffsets(host, el){
+  let total = 0, s = null, e = 0, n;
+  const w = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  while((n = w.nextNode())){
+    const L = n.textContent.length;
+    if(el.contains(n)){ if(s === null) s = total; e = total + L; }
+    total += L;
+  }
+  return (s === null) ? null : { s: s, e: e };
+}
+function inkMarkSave(){
+  const paper = inkPaperEl();
+  if(!paper) return;
+  const out = [];
+  paper.querySelectorAll('mark, span.redline, span.noted').forEach(function(el){
+    const host = el.parentElement ? el.parentElement.closest('[data-ink]') : null;
+    if(!host) return;
+    const sp = inkElOffsets(host, el);
+    if(!sp) return;
+    out.push({ a: host.dataset.ink, s: sp.s, e: sp.e, cls: el.className, note: el.dataset.note || '' });
+  });
+  try{ localStorage.setItem(MARK_KEY, JSON.stringify(out)); }catch(e){}
+}
+function inkMarkApply(){
+  let data = [];
+  try{ data = JSON.parse(localStorage.getItem(MARK_KEY) || '[]') || []; }catch(e){ return; }
+  if(!data.length) return;
+  const jobs = [];
+  data.forEach(function(m){
+    if(!m || !m.a || !m.cls) return;
+    const host = inkElById(m.a);
+    if(!host) return;
+    const r = inkRangeSpan(host, m.s, m.e);
+    if(r) jobs.push({ r: r, m: m });
+  });
+  jobs.forEach(function(j){
+    const tag = (j.m.cls === 'redline' || j.m.cls === 'noted') ? 'span' : 'mark';
+    const el = document.createElement(tag);
+    el.className = j.m.cls;
+    if(j.m.note){ el.dataset.note = j.m.note; el.title = j.m.note; }
+    try{ j.r.surroundContents(el); }
+    catch(e){ try{ el.appendChild(j.r.extractContents()); j.r.insertNode(el); }catch(e2){} }
+  });
+}
+function clearMarks(){
+  const paper = inkPaperEl();
+  if(!paper) return;
+  const els = paper.querySelectorAll('mark, span.redline, span.noted');
+  if(!els.length){ hint('当前没有高亮/红线/批注'); return; }
+  els.forEach(function(el){
+    const p = el.parentNode;
+    if(!p) return;
+    while(el.firstChild) p.insertBefore(el.firstChild, el);
+    p.removeChild(el);
+  });
+  try{ localStorage.removeItem(MARK_KEY); }catch(e){}
+  inkRedrawSoon();
+  hint('已清除全部高亮 / 红线 / 批注');
+}
+if(inkCvs){
+  inkCvs.addEventListener('pointerdown', function(e){
+    if(!inkOn) return;
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    try{ inkCvs.setPointerCapture(e.pointerId); }catch(err){}
+    if(eraseOn){ inkErase(e.clientX, e.clientY); e.preventDefault(); return; }
+    const p = inkPoint(e.clientX, e.clientY);
+    if(!p) return;
+    const c = document.getElementById('penColor'), wd = document.getElementById('penWidth');
+    curStroke = { color: c ? c.value : '#e53935', width: wd ? parseFloat(wd.value) : 2.8, pts: [p] };
+    strokes.push(curStroke);
+    inkRedraw();
+    e.preventDefault();
+  });
+  inkCvs.addEventListener('pointermove', function(e){
+    if(!inkOn) return;
+    if(eraseOn){
+      if(e.pointerType === 'mouse' && !(e.buttons & 1)) return;
+      inkErase(e.clientX, e.clientY);
+      return;
+    }
+    if(!curStroke) return;
+    const p = inkPoint(e.clientX, e.clientY);
+    if(!p) return;
+    const last = curStroke.pts[curStroke.pts.length - 1];
+    if(last && last.a === p.a && Math.abs(last.dx - p.dx) < 1.2 && Math.abs(last.dy - p.dy) < 1.2) return;
+    if(curStroke.pts.length > 1500) return;
+    curStroke.pts.push(p);
+    inkRedraw();
+    e.preventDefault();
+  });
+  function inkEndStroke(){ if(curStroke){ curStroke = null; inkSave(); } }
+  inkCvs.addEventListener('pointerup', inkEndStroke);
+  inkCvs.addEventListener('pointercancel', inkEndStroke);
+}
+document.addEventListener('click', function(e){
+  const t = e.target && e.target.closest ? e.target.closest('span.noted') : null;
+  if(t && t.dataset.note) hint('批注：' + t.dataset.note);
+});
+function inkInit2(){
+  if(!inkCvs || !inkCtx) return;
+  const paper = inkPaperEl();
+  if(!paper) return;
+  assignInkAnchors(paper);
+  try{
+    const raw = localStorage.getItem(INK_KEY);
+    const d = raw ? JSON.parse(raw) : null;
+    if(Array.isArray(d)) strokes = d;
+  }catch(e){}
+  inkMarkApply();
+  inkRedraw();
+  window.addEventListener('scroll', inkRedrawSoon, { passive: true });
+  window.addEventListener('resize', inkRedrawSoon);
+  document.querySelectorAll('.side').forEach(function(s){ s.addEventListener('scroll', inkRedrawSoon, { passive: true }); });
+  if(window.MutationObserver){
+    new MutationObserver(inkRedrawSoon).observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
+  }
+  document.addEventListener('click', function(){ if(strokes.length) inkRedrawSoon(); }, true);
+}
 """
 
 
@@ -887,13 +1259,25 @@ def main():
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</title><style>{CSS}</style></head><body>
-<div class="bar"><b>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</b>
+<div class="bar"><b class="ttl">{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</b>
 <span class="grp">字号
 <button onclick="stepFont(-1)" title="缩小">A−</button>
 <input id="fsr" type="range" min="7" max="22" step="0.5" value="10.5" oninput="setFont(parseFloat(this.value))">
 <button onclick="stepFont(1)" title="放大">A+</button>
 <span class="fsv" id="fsv">10.5</span>
 <button onclick="resetFont()">默认</button></span>
+<span class="grp">
+<button id="tbPen" onclick="toggleInk()" title="开/关自由画笔：可在卷面任意书写圈画，笔迹跟着文字走">✒️ 画笔</button>
+<select id="penColor" title="笔色"><option value="#e53935">红</option><option value="#111111">黑</option><option value="#1565c0">蓝</option><option value="#2e7d32">绿</option></select>
+<select id="penWidth" title="笔粗"><option value="1.6">细</option><option value="2.8" selected>中</option><option value="5">粗</option></select>
+<button id="tbErase" onclick="toggleErase()" title="橡皮：点或划过笔迹即可擦除">🧽 橡皮</button>
+<button onclick="clearInk()" title="清除全部笔迹">清笔</button></span>
+<span class="grp"><span class="lbl">标注</span>
+<button onclick="markSel('hl-yellow')" title="荧光笔：先选中文字再点">荧光</button>
+<button onclick="markSel('hl-green')" title="答案句：先选中文字再点">答案句</button>
+<button onclick="markSel('redline')" title="红线：先选中文字再点">红线</button>
+<button onclick="noteSel()" title="批注：先选中文字再点">批注</button>
+<button onclick="clearMarks()" title="清除全部高亮/红线/批注">清标</button></span>
 <span class="grp"><label style="cursor:pointer;user-select:none"><input type="checkbox" id="cont"> 连播</label>
 <button onclick="openVocab()" id="vcount">生词表 0</button>
 <span id="score">客观题 --</span>
@@ -911,8 +1295,10 @@ def main():
 <button onclick="closeVocab()" style="margin-left:auto">关闭</button></div>
 <div id="vbox"></div></div></div>
 <div id="toast"></div>
-<script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}
+<canvas id="ink"></canvas>
+<script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}{INK}
 wrapWords(document.querySelector(".paper"));
+inkInit2();
 upgradeAudio();
 setTimeout(bindSentenceStop, 0);
 updateVocabCount();</script></body></html>"""
