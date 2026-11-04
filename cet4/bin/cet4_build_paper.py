@@ -1329,6 +1329,28 @@ def main():
             chunks = [{"en": prefix, "role": "", "cn": ""}] + chunks
         return sentence_html({"chunks": chunks, "cn": d.get("cn") or ""})
 
+    pan_issues = []
+
+    def reading_pan(cn: str, main: str, role: str, answers: str, sent_html: str, extras: str = "") -> str:
+        """四篇阅读共用的段落解析块：标签与顺序完全一致，避免三种长相。"""
+        bits = []
+        if cn:
+            bits.append(f'<div class="anno-cn">{lb("段落中文", "lb-mean")}{esc(cn)}</div>')
+        if main:
+            bits.append(f'<div>{lb("主旨", "lb-main")}{esc(main)}</div>')
+        if role:
+            bits.append(f'<div>{lb("作用", "lb-role")}{esc(role)}</div>')
+        if answers:
+            bits.append(f'<div>{lb("对应题", "lb-map")}{esc(answers)}</div>')
+        if sent_html:
+            bits.append(f'<div style="margin-top:4pt">{lb("逐句拆解", "lb-chunk")}</div>' + sent_html)
+        missing = [n for n, v in (("段落中文", cn), ("主旨", main), ("作用", role), ("逐句", sent_html)) if not v]
+        if missing:
+            pan_issues.append(f"缺少{'/'.join(missing)}")
+        if extras:
+            bits.append(extras)
+        return '<div class="pan">' + "".join(bits) + '</div>' if bits else ""
+
     def q_block(title, qid, prefix=""):
         h = q_sent_html(qid, prefix)
         return (f'<div style="margin-top:4pt">{lb(title, "lb-chunk")}{h}</div>') if h else ""
@@ -1535,8 +1557,10 @@ def main():
         cl_sents = fill_cloze_sentences(sen["cloze"].get("cloze") or [], r["cloze"])
         if cl_sents:
             _arr, _m = rtim_of("cloze")
-            blk.append(f'<div style="margin-top:6pt">{lb("逐句拆解", "lb-chunk")}</div>'
-                       + "".join(sent_html_at(x, "cloze", i, _arr, _m) for i, x in enumerate(cl_sents)))
+            cl_cn = "".join((x.get("cn") or "") for x in cl_sents).strip()
+            blk.append(reading_pan(cl_cn, cexp.get("main", ""), cexp.get("role", ""), "",
+                                   "".join(sent_html_at(x, "cloze", i, _arr, _m)
+                                           for i, x in enumerate(cl_sents))))
         elif cexp.get("passage_cn"):
             blk.append(lb("全文顺流直译", "lb-mean") + "".join(
                 f'<div class="bands"><div><span class="dim">{i}.</span> {esc(x)}</div></div>'
@@ -1556,10 +1580,8 @@ def main():
         if MODE == "explain" and (mx or msent):
             sent = "".join(sent_html_at(x, "match", _midx + j, _marr, _mm) for j, x in enumerate(msent))
             _midx += len(msent)
-            parts.append(f'<div class="pan"><div class="anno-cn">{lb("主旨", "lb-main")}{esc(mx.get("main",""))}</div>'
-                         f'<div>{lb("作用", "lb-role")}{esc(mx.get("role",""))}</div>'
-                         f'<div>{lb("对应题", "lb-map")}{esc("、".join(mx.get("answers") or []) or "无")}</div>'
-                         f'{sent}</div>')
+            para_cn = "".join((x.get("cn") or "") for x in msent).strip()
+            parts.append(reading_pan(para_cn, mx.get("main", ""), mx.get("role", ""), "", sent))
     letters = "".join(f'<option>{c}</option>' for c in r["match"]["paragraphs"].keys())
     for st in r["match"]["statements"]:
         parts.append(f'<div class="q"><b>{st["no"]}.</b> {esc(st["text"])} '
@@ -1603,13 +1625,12 @@ def main():
                     sent = "".join(sent_html_at(x, pkey, _pidx + j, _parr, _pm) for j, x in enumerate(_ps))
                     _pidx += len(_ps)
                     extra = ""
-                    for key, label in (("meaning", "意思"), ("modifier", "谁修饰谁"),
-                                       ("why", "为啥"), ("collocation", "搭配")):
-                        if para.get(key):
-                            extra += f'<div>{lb(label, "lb-mean")}<span class="anno-cn">{esc(para.get(key))}</span></div>'
-                    parts.append(f'<div class="pan"><div class="anno-cn">{lb("段落中文", "lb-mean")}{esc(para.get("cn",""))}</div>'
-                                 f'<div>{lb("主旨", "lb-main")}{esc(para.get("main",""))}</div>'
-                                 f'<div>{lb("作用", "lb-role")}{esc(para.get("structure",""))}</div>{sent}{extra}</div>')
+                    for _k2, _l2 in (("meaning", "意思"), ("modifier", "谁修饰谁"),
+                                     ("why", "为啥"), ("collocation", "搭配")):
+                        if para.get(_k2):
+                            extra += f'<div>{lb(_l2, "lb-mean")}<span class="anno-cn">{esc(para.get(_k2))}</span></div>'
+                    parts.append(reading_pan(para.get("cn", ""), para.get("main", ""),
+                                             para.get("structure", ""), "", sent, extra))
         else:
             parts.append(f'<p class="body">{esc(pg.get("passage", ""))}</p>')
         for q in pg["questions"]:
@@ -1696,6 +1717,13 @@ def main():
 
     mode_btns = ('<button id="btnAll" onclick="toggleAll()">展开解析</button>'
                  '<button onclick="toggleSide()">思维链</button>') if MODE == "explain" else ""
+
+    if MODE == "explain":
+        if pan_issues:
+            raise SystemExit("阅读解析结构不一致：" + "；".join(pan_issues[:5]) + f"（共 {len(pan_issues)} 处）")
+        bad = re.findall(r'<div class="chk"><span class="(?!r-|w |dim)[^"]*">', "".join(parts))
+        if bad:
+            raise SystemExit(f"逐句解析存在无成分标签的意群 {len(bad)} 处（会渲染成灰括号）")
 
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
