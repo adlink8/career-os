@@ -195,6 +195,53 @@ def stage_tts(pids: list) -> None:
 DIRECTIONS = {'A': 'Section A. Directions: In this section, you will hear three news reports. At the end of each news report, you will hear two or three questions. Both the news report and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'B': 'Section B. Directions: In this section, you will hear two long conversations. At the end of each conversation, you will hear four questions. Both the conversation and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.', 'C': 'Section C. Directions: In this section, you will hear three passages. At the end of each passage, you will hear three or four questions. Both the passage and the questions will be spoken only once. After you hear a question, you must choose the best answer from the four choices marked A, B, C and D.'}
 
 
+def stage_extra(pids: list) -> None:
+    """写作与翻译音轨：写作=题目要求+范文；翻译=英文参考译文。"""
+    sys.path.insert(0, str(ROOT / "bin"))
+    from cet4_audio_assemble import decode, trim_silence, silence, breath, assemble, encode, SR  # type: ignore
+
+    for pid in pids:
+        f = PAPERS / f"paper-{pid}.json"
+        d = json.loads(f.read_text(encoding="utf-8"))
+        jobs = []
+        w = d.get("writing") or {}
+        if w.get("directions"):
+            jobs.append(("writing", [w.get("directions"), w.get("model_essay") or ""]))
+        t = d.get("translation") or {}
+        if t.get("reference"):
+            jobs.append(("translation", [t["reference"]]))
+        for key, texts in jobs:
+            jobs_name = f"{key}-{pid}.mp3"
+            target = PAPERS / jobs_name
+            items, timing = [], []
+            for ti, text in enumerate(texts):
+                for sent in re.split(r"(?<=[.!?])\s+", text or ""):
+                    sent = sent.strip()
+                    if len(sent.split()) < 3:
+                        continue
+                    items.append(("N", sent))
+                    timing.append({"en": sent, "role": "X", "para": ti})
+            if not items:
+                continue
+            with tempfile.TemporaryDirectory() as td:
+                files = synth_items(items, Path(td))
+                pcm_items = [(trim_silence(decode(mp3)), role) for (role, _), mp3 in zip(items, files)]
+
+                def gaps(i, prev, nxt):
+                    if timing[i].get("para") != timing[i + 1].get("para"):
+                        return (0.9, 0.16)
+                    return (0.26, 0.08)
+
+                pcm, marks = assemble(pcm_items, gaps)
+                for tt, m in zip(timing, marks):
+                    tt["start"] = round(m["start"], 3)
+                    tt["end"] = round(m["end"], 3)
+                encode(pcm, target)
+            d.setdefault("audio", {})[key] = jobs_name
+            print(f"  paper-{pid} {key}: {jobs_name} {timing[-1]['end']:.0f}s / {len(timing)} 句")
+        f.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def stage_reading(pids: list) -> None:
     """四个阅读板块的朗读音轨（选词/匹配/双篇），旁白男声，段落间留停顿。"""
     sys.path.insert(0, str(ROOT / "bin"))
@@ -352,7 +399,7 @@ def stage_insert(pids: list) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["script", "tts", "directions", "qaudio", "reading", "insert", "all"])
+    ap.add_argument("--stage", required=True, choices=["script", "tts", "directions", "qaudio", "reading", "extra", "insert", "all"])
     ap.add_argument("--gap", type=float, default=12.0, help="每题后答题停顿秒数")
     ap.add_argument("--papers", default="81")
     args = ap.parse_args()
@@ -372,6 +419,9 @@ def main() -> int:
     if args.stage in ("reading", "all"):
         print("[reading]")
         stage_reading(pids)
+    if args.stage in ("extra", "all"):
+        print("[extra]")
+        stage_extra(pids)
     if args.stage in ("insert", "all"):
         print("[insert]")
         stage_insert(pids)

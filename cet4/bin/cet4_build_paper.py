@@ -1429,8 +1429,13 @@ def main():
         w = data["writing"]
         # 音频
         _amap = data.get("audio") or {}
-        src_mp3 = sdir / "audio" / _amap["writing"] if _amap.get("writing") else None
-        if src_mp3 and src_mp3.exists():
+        src_mp3 = None
+        if _amap.get("writing"):
+            for cand in (src.parent / _amap["writing"], sdir / "audio" / _amap["writing"]):
+                if cand.exists():
+                    src_mp3 = cand
+                    break
+        if src_mp3 is not None:
             shutil.copy(src_mp3, outdir / "writing.mp3")
             parts.append('<audio class="audio" id="au-writing" preload="metadata" '
                          'data-src="writing.mp3" src="writing.mp3"></audio>')
@@ -1685,8 +1690,13 @@ def main():
     if MODE == "explain":
         tr = data["translation"]
         _amap2 = data.get("audio") or {}
-        src_mp3 = sdir / "audio" / _amap2["translation"] if _amap2.get("translation") else None
-        if src_mp3 and src_mp3.exists():
+        src_mp3 = None
+        if _amap2.get("translation"):
+            for cand in (src.parent / _amap2["translation"], sdir / "audio" / _amap2["translation"]):
+                if cand.exists():
+                    src_mp3 = cand
+                    break
+        if src_mp3 is not None:
             shutil.copy(src_mp3, outdir / "translation.mp3")
             parts.append('<audio class="audio" id="au-translation" preload="metadata" '
                          'data-src="translation.mp3" src="translation.mp3"></audio>')

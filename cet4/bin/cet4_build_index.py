@@ -42,7 +42,7 @@ def meta_of(paper: dict) -> dict:
             "match_paras": len(match.get("paragraphs") or {}),
             "match_stmts": len(match.get("statements") or []),
             "questions": len(p1.get("questions") or []) + len(p2.get("questions") or []),
-            "zh": len(str(tr.get("zh") or "")),
+            "zh": len(__import__("re").findall(r"[\u4e00-\u9fff]", str(tr.get("zh") or ""))),
             "essay": len(str(wr.get("model_essay") or "").split()),
             "listen_tracks": sum(1 for sec in ((paper.get("listening") or {}).get("sections") or [])
                                  for pc in (sec.get("pieces") or []) if pc.get("audio")),
