@@ -1392,13 +1392,15 @@ def main():
                 opts = "".join(
                     f'<label class="opt" data-q="{q["no"]}" data-l="{o[0]}" onclick="pick({q["no"]},\'{o[0]}\',this)">'
                     f'<input type="radio" name="q{q["no"]}">{esc(o)}</label>' for o in q["options"])
-                stem_html = (f'<span class="qstem">{esc(q["stem"])}</span> ' if (q.get("stem") or "").strip() else "")
                 parts.append(f'<div class="q" data-no="{q["no"]}" data-ans="{q["answer"]}"><b>{q["no"]}.</b> '
-                             f'{stem_html}<span class="opts">{opts}</span></div>')
+                             f'<span class="opts">{opts}</span></div>')
                 parts.append(f'<div class="qans">答案：{esc(q["answer"])}</div>')
                 an = qan.get(q["no"])
-                if MODE == "explain" and an:
-                    parts.append('<div class="qax">' + option_rows(q, an) + '</div>')
+                if MODE == "explain":
+                    qline = (f'<div>{lb("问句", "lb-map")}<span class="qstem">{esc(q["stem"])}</span></div>'
+                             if (q.get("stem") or "").strip() else "")
+                    if an or qline:
+                        parts.append('<div class="qax">' + qline + (option_rows(q, an) if an else "") + '</div>')
 
     r = data["reading"]
     parts.append('<div class="part">Part III &nbsp; Reading Comprehension &nbsp;(40 minutes)</div>')
