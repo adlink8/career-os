@@ -67,8 +67,17 @@ def jparse(txt: str):
         return []
 
 
-def mock_items(round_no: int) -> list:
-    files = sorted(SRC.glob(f"set-*.r{round_no}.json")) if round_no > 1 else sorted(SRC.glob("set-*.json"))
+def mock_items(round_no: int, pattern: str = "") -> list:
+    if pattern:
+        files = []
+        for pat in pattern.split("|"):
+            files.extend(sorted(SRC.glob(pat)))
+        files = [f for f in files if re.fullmatch(r"set-\d{2}\.json", f.name) or
+                 re.fullmatch(r"set-\d{2}\.r\d+\.json", f.name)]
+    elif round_no > 1:
+        files = sorted(SRC.glob(f"set-*.r{round_no}.json"))
+    else:
+        files = sorted(SRC.glob("set-*.json"))
     files = [f for f in files if not re.search(r"\.(review|solve|flag|v\d)", f.name)]
     out = []
     for f in files:
@@ -100,9 +109,28 @@ def main() -> int:
     ap.add_argument("--n-real", type=int, default=10)
     ap.add_argument("--batch", type=int, default=5)
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--glob", default="", help="只取匹配的稿子，多个用 | 分隔，如 set-1[1-9].json|set-20.json")
+    ap.add_argument("--from-out", action="store_true", help="改用外刊改造稿（var/cet4-daily/out/*.json）做模拟组")
+    ap.add_argument("--tag", default="", help="输出文件名后缀")
     args = ap.parse_args()
 
-    items = mock_items(args.round) + real_items(args.n_real)
+    if args.from_out:
+        outdir = ROOT / "var" / "cet4-daily" / "out"
+        mock = []
+        for f in sorted(outdir.glob("*.json")):
+            if ".q." in f.name or ".timing." in f.name or ".review" in f.name:
+                continue
+            try:
+                d = json.loads(f.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            p = (d.get("passage") or "").strip()
+            if 320 <= len(p.split()) <= 400:
+                mm = re.search(r"-(\d{2})\.json$", f.name)
+                mock.append({"id": f"O{mm.group(1) if mm else f.name[:10]}", "text": p, "group": "mock", "src": f.name})
+        items = mock + real_items(args.n_real)
+    else:
+        items = mock_items(args.round, args.glob) + real_items(args.n_real)
     random.Random(2027).shuffle(items)
     print(f"材料：模拟 {sum(1 for i in items if i['group']=='mock')} + 真题 {sum(1 for i in items if i['group']=='real')}")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -126,7 +154,7 @@ def main() -> int:
         truth = "模拟" if it["group"] == "mock" else "真题"
         rows.append({"id": it["id"], "group": it["group"], "src": it["src"], "guess": guess,
                      "right": guess == truth, "confidence": g.get("confidence"), "reason": g.get("reason")})
-    (OUT / f"discriminate-r{args.round}.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+    (OUT / f"discriminate-{args.tag or ('r' + str(args.round))}.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
 
     def rate(g):
         gs = [r for r in rows if r["group"] == g]
@@ -141,7 +169,7 @@ def main() -> int:
     for r in rows:
         if r["group"] == "mock":
             print(f'  {r["id"]} 判{r["guess"] or "?"} 信{r["confidence"]} {r["reason"]}')
-    print("明细:", OUT / f"discriminate-r{args.round}.json")
+    print("明细:", OUT / f"discriminate-{args.tag or ('r' + str(args.round))}.json")
     return 0
 
 
