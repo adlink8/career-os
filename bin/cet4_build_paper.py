@@ -352,7 +352,13 @@ def main():
                 if MODE == "explain":
                     sent = "".join(
                         f'<div style="margin-top:3pt"><b>{esc(s.get("en",""))}</b><br>' +
-                        " ".join(f'{esc(c.get("en",""))}<span style="color:#888">[{esc(c.get("role",""))}：{esc(c.get("cn",""))}]</span>' for c in (s.get("chunks") or [])) +
+                        " ".join(
+                            f'{esc(c.get("en",""))}' + (
+                                f'<span style="color:#888">[{esc(c.get("role"))}：{esc(c.get("cn",""))}]</span>'
+                                if c.get("role") else
+                                f'<span style="color:#888">（{esc(c.get("cn",""))}）</span>'
+                                if c.get("cn") else "")
+                            for c in (s.get("chunks") or [])) +
                         (f'<div style="color:#555">意思：{esc(s.get("meaning",""))}</div>' if s.get("meaning") else "") +
                         (f'<div style="color:#555">谁修饰谁：{esc(s.get("modifier",""))}</div>' if s.get("modifier") else "") +
                         (f'<div style="color:#555">为啥：{esc(s.get("why",""))}</div>' if s.get("why") else "") +
@@ -398,6 +404,25 @@ def main():
         if blk:
             parts.append('<div class="sum">' + "".join(blk) + "</div>")
 
+    # 纯题目版只嵌判分必需字段，避免学生查看源码就能读到解析与答案理由
+    if MODE == "plain":
+        r_ = data["reading"]
+        embed = {
+            "meta": data.get("meta"),
+            "listening": {"questions": [{"no": q["no"], "answer": q["answer"]}
+                                        for q in data["listening"]["questions"]]},
+            "reading": {
+                "cloze": {"answers": r_["cloze"]["answers"]},
+                "match": {"answers": r_["match"]["answers"]},
+                "passage1": {"questions": [{"no": q["no"], "answer": q["answer"]}
+                                           for q in r_["passage1"]["questions"]]},
+                "passage2": {"questions": [{"no": q["no"], "answer": q["answer"]}
+                                           for q in r_["passage2"]["questions"]]},
+            },
+        }
+    else:
+        embed = data
+
     html = f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(data.get('meta',{}).get('name','CET-4 模拟卷'))}</title><style>{CSS}</style></head><body>
@@ -410,7 +435,7 @@ def main():
 <div id="report"><div id="reportBox"><h3 style="margin:0 0 10pt">得分</h3><div id="reportBody"></div>
 <button onclick="closeReport()" style="width:100%;margin-top:10pt;padding:6pt">关闭</button></div></div>
 <div id="wdict"></div>
-<script>{wjs}const PAPER = {json.dumps(data, ensure_ascii=False)};{JS}
+<script>{wjs}const PAPER = {json.dumps(embed, ensure_ascii=False)};{JS}
 wrapWords(document.querySelector(".paper"));</script></body></html>"""
     out = outdir / "index.html"
     out.write_text(html, encoding="utf-8")

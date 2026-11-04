@@ -97,7 +97,19 @@ def flat_paras(p) -> str:
 
 
 def section_text(sec: dict) -> str:
-    return " ".join([sec.get("passage") or "", flat_paras(sec.get("paragraphs"))])
+    """只取英文正文（段落级 en 缺失时退回逐句 en），避免中文译文混进“正文”。"""
+    parts = [sec.get("passage") or ""]
+    paras = sec.get("paragraphs")
+    items = list(paras.values()) if isinstance(paras, dict) else (paras or [])
+    for p in items:
+        if isinstance(p, str):
+            parts.append(p)
+        elif isinstance(p, dict):
+            if p.get("en"):
+                parts.append(p["en"])
+            else:
+                parts.extend(s.get("en") or "" for s in (p.get("sentences") or []) if isinstance(s, dict))
+    return re.sub(r"\s+", " ", " ".join(parts)).strip()
 
 
 def bow(s: str) -> set:

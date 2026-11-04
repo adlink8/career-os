@@ -1,4 +1,64 @@
-# CET-4 每日模拟题管线（设计稿 v1）
+# CET-4 每日模拟题管线
+
+## 现状 v2（2026-11-04，以此为准；下面 v1 章节仅存档）
+
+**硬规则（不可违背）**
+
+1. **不设脚本通过门**。脚本只拼证据、跑流程；通过与否只看独立审查老师的 `verdict`。
+2. **写手与审查永远是两个独立 CB 会话**，禁止自审；自审产物只能算草稿。
+3. **审查的 `must_fix` 必须回灌给 repair 会话**。只重跑 writer 等于同一篇文章重掷骰子（实测：74→62→78 抖动，回灌后 80→pass 90）。
+4. 正文与题目分开迭代：正文定稿后用 `--qonly` 只改题，避免"改题顺手改正文"互相拉扯（实测：同一篇 70→60→70 抖动，冻结正文后一次 pass 94）。
+5. 数据诚实：无官方答案的题标 `cb-recommended`；ASR 转写不是官方文本；来源缺失就写缺失，不许编。
+
+**链路 v2**
+
+```
+fetch(RSS) → candidate_input(清正文/去噪) → adapt(writer: 改写+段析) → reviewer
+   ↑                                                              ↓ needs_revision
+   └──────────── repair(must_fix 回灌) ←──────────────────────────┘
+        ↓ pass
+swap_section(换入整卷, 第二篇自动重编号 51-55)
+        ↓
+listen/writing/cloze/match explain(讲解内容) → build_paper(plain|explain)
+        ↓
+review_paper(整卷 3 票, 多数决) → 发布
+```
+
+**关键脚本**
+
+| 用途 | 脚本 |
+|---|---|
+| 选材 | `bin/cet4_daily_fetch.py`（HTMLParser 正文提取，BBC 这类页面不再混入标签） |
+| 候选→输入 | `bin/cet4_candidate_input.py <idx> <out.json>` |
+| 出题/审查/修复 | `bin/cet4_roles.py --type ... --role writer|reviewer|repair [--qonly]` |
+| 修复循环 | `bin/cet4_pipeline.py --type ... --input ... --rounds N [--resume] [--qonly]` |
+| 换入整卷 | `bin/cet4_swap_section.py --paper ... --section ... --from ...` |
+| 讲解内容 | `cet4_listen_explain.py` / `cet4_writing_explain.py` / `cet4_cloze_explain.py` / `cet4_match_explain.py` |
+| 渲染 | `bin/cet4_build_paper.py <paper.json> --mode plain|explain` |
+| 整卷审查 | `bin/cet4_review_paper.py <paper.json> --voters 3` |
+| 装配自检（证据，非门） | `bin/cet4_paper_audit.py` |
+
+**真题基准（21 套实测，2026-11-04 重算）**
+
+| 板块 | 实测 |
+|---|---|
+| Section C 正文 | 348–375 词（中位 358），每篇 5 题 |
+| Section B | 10–15 段（中位 12–13），段落正文均 1015 词，10 条陈述，2–5 段冗余 |
+| 选词填空 | 188–316 词（均值 243），15 词库选 10 |
+| 翻译 | 138–159 汉字，3–6 句 |
+| 写作 | 情景观点式，120–180 词 |
+
+> 旧文档写的 "10–11 段"（Section B）与 "188–267 词"（选词）都是提取正则只认到 K) 造成的错误基准，已修 `bin/cet4_full_extract.py` 并重算 KB。
+
+**已知缺口（未完成，标注 PARTIAL）**
+
+- 每日定时任务尚未挂上（需 Windows 任务计划调用 `cet4_daily_fetch.py` → 管线）。
+- 听力 8 段音频仍是设计样本，尚未按日从候选文章生成；听力脚本无独立审查通过记录。
+- 一整套 57 题的全自动日产能未验证（当前是分题型独立跑完再装配）。
+
+---
+
+# 设计稿 v1（存档）
 
 > 目标：每天自动产出一篇「CET-4 仔细阅读风格」模拟题（350±60 词 + 5 题 + 解析 + 双语逐句），并生成可直接做题的 HTML。
 > 现状：选材脚本已实现（`bin/cet4_daily_fetch.py`，本次实跑通过）；改写与出题由 CodeBuddy 承担；HTML 生成待接模板。
