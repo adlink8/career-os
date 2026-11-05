@@ -155,6 +155,8 @@ def main() -> int:
     ap.add_argument("--baseline", default="")
     ap.add_argument("--trials", type=int, default=0, help="覆盖配置里的试次数")
     ap.add_argument("--judges", type=int, default=0)
+    ap.add_argument("--mock-csv", default="", help="临时覆盖模拟卷列表，如 171")
+    ap.add_argument("--reals", type=int, default=0)
     args = ap.parse_args()
 
     cfg = load_cfg()
@@ -162,6 +164,10 @@ def main() -> int:
         cfg["trials"] = args.trials
     if args.judges:
         cfg["judges"] = args.judges
+    if args.mock_csv:
+        cfg["mock"] = [x for x in re.split(r"[,\s]+", args.mock_csv) if x]
+    if args.reals:
+        cfg["reals"] = args.reals
     OUT.mkdir(parents=True, exist_ok=True)
     if not (OUT / "harness.json").exists():
         (OUT / "harness.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1), encoding="utf-8")
